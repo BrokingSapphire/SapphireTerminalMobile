@@ -1,0 +1,2 @@
+D:/Flutter/New folder/sapphire/android/app/.cxx/RelWithDebInfo/482r3a6x/x86_64/CMakeFiles/edit_cache.dir
+D:/Flutter/New folder/sapphire/android/app/.cxx/RelWithDebInfo/482r3a6x/x86_64/CMakeFiles/rebuild_cache.dir

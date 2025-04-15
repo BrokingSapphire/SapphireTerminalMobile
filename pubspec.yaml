@@ -1,0 +1,109 @@
+name: sapphire
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.3
+
+dependencies:
+  camera: ^0.11.1
+  confetti: null
+  cupertino_icons: ^1.0.8
+  flutter:
+    sdk: flutter
+  flutter_exif_rotation: null
+  flutter_neumorphic: ^3.2.0
+  flutter_screenutil: null
+  flutter_secure_storage: ^9.2.4
+  flutter_slidable: ^4.0.0
+  flutter_svg: ^2.0.17
+  font_awesome_flutter: ^10.8.0
+  google_fonts: ^6.2.1
+  google_mlkit_face_detection: ^0.12.0
+  holdable_button: null
+  http: ^1.2.1
+  image: ^4.5.3
+  path_provider: ^2.1.5
+  percent_indicator: ^4.2.4
+  perfect_freehand: ^2.3.2
+  pinput: null
+  scribble: ^0.10.0+1
+  signature: null
+  url_launcher: ^6.3.1
+
+dev_dependencies:
+  flutter_lints: ^4.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/bottomBarIcons/
+    - assets/icons/
+    - assets/svgs/
+
+    - lib/screens/home/watchlist/
+    - assets/icons/chat.png
+    - assets/images/aadharcard.png
+    - assets/images/bank transfer.png
+    - assets/images/ChartIQ.png
+    - assets/images/esignscreen.png
+    - assets/images/google pay logo.png
+    - assets/images/icici logo.png
+    - assets/images/kotakbanklogo.png
+    - assets/images/line.png
+    - assets/images/netbanking.png
+    - assets/images/netbanking logo.png
+    - assets/images/nomineescreen.png
+    - assets/images/pan.png
+    - assets/images/paytm logo.png
+    - assets/images/phonepe logo.png
+    - assets/images/profile.png
+    - assets/images/QR.png
+    - assets/images/reliance logo.png
+    - assets/images/safe.png
+    - assets/images/signatureverificationpage.png
+    - assets/images/tradingview.png
+    - assets/images/upi.png
+    - assets/images/upi logo.png
+    - assets/images/Vector.png
+    - assets/images/visa.png
+    - assets/images/whiteLogo.png
+    - assets/images/ipvscreen.png
+    - assets/images/phonepay.svg
+    - assets/images/gpay.svg
+    - assets/images/paytm.svg
+    - assets/images/bank.svg
+    - assets/images/upi.svg
+    - assets/icons/search.svg
+    - assets/icons/search.png
+    - assets/images/Info.svg
+    - assets/images/Redo.svg
+    - assets/svgs/
+    - assets/svgs/funds.svg
+    - assets/emptyPng/holdingEquity.png
+    - assets/emptyPng/instruments.png
+    - assets/emptyPng/trades.png
+    - assets/emptyPng/holdingsMutualFunds.png
+    - assets/emptyPng/holdingsPosition.png
+    - assets/emptyPng/orders.png
+    
+    
+
+  fonts:
+    - family: SFPro
+      fonts:
+        - asset: assets/fonts/SF-Pro-Display-Regular.ttf
+        - asset: assets/fonts/SF-Pro-Display-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/SF-Pro-Display-Light.ttf
+          weight: 300
+        - asset: assets/fonts/SF-Pro-Display-Semibold.ttf
+          weight: 600

@@ -1,0 +1,2 @@
+E:/Shashwat/sapphire/android/app/.cxx/RelWithDebInfo/436q46m4/armeabi-v7a/CMakeFiles/edit_cache.dir
+E:/Shashwat/sapphire/android/app/.cxx/RelWithDebInfo/436q46m4/armeabi-v7a/CMakeFiles/rebuild_cache.dir

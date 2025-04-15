@@ -1,0 +1,2 @@
+E:/Shashwat/sapphire/android/app/.cxx/Debug/70mx2u5d/x86/CMakeFiles/edit_cache.dir
+E:/Shashwat/sapphire/android/app/.cxx/Debug/70mx2u5d/x86/CMakeFiles/rebuild_cache.dir

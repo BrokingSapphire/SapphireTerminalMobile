@@ -1,0 +1,2 @@
+D:/Flutter/New folder/sapphire/android/app/.cxx/Debug/3kg3pm4n/x86/CMakeFiles/edit_cache.dir
+D:/Flutter/New folder/sapphire/android/app/.cxx/Debug/3kg3pm4n/x86/CMakeFiles/rebuild_cache.dir
