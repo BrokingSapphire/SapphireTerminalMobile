@@ -1,0 +1,2 @@
+D:/Sapphire/SapphireTerminalMobile/android/app/.cxx/Debug/4k1l4w44/x86_64/CMakeFiles/edit_cache.dir
+D:/Sapphire/SapphireTerminalMobile/android/app/.cxx/Debug/4k1l4w44/x86_64/CMakeFiles/rebuild_cache.dir
