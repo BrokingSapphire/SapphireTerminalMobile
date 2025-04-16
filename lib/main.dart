@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sapphire/referAFriend.dart';
 import 'package:sapphire/screens/accountSection/accountScreen.dart';
 import 'package:sapphire/screens/accountSection/fundsScreen.dart';
 import 'package:sapphire/screens/accountSection/ledgerScreen.dart';
@@ -25,7 +26,7 @@ import 'package:sapphire/screens/signUp/NomineeScreen.dart';
 import 'package:sapphire/screens/signUp/SelfieCameraScreen.dart';
 import 'package:sapphire/screens/signUp/SignCanvaScreen.dart';
 import 'package:sapphire/screens/signUp/congratulationsScreen.dart';
-import 'package:sapphire/screens/signUp/desktopAuthScreen.dart';
+// import 'package:sapphire/screens/signUp/desktopAuthScreen.dart';
 import 'package:sapphire/screens/signUp/eSignScreen.dart';
 import 'package:sapphire/screens/signUp/emailScreen.dart';
 import 'package:sapphire/screens/signUp/familyDetailsScreen.dart';
@@ -49,8 +50,7 @@ import 'package:sapphire/screens/signUp/verifyAadharScreen.dart';
 import 'package:sapphire/screens/signUp/yourInvestmentProfile.dart';
 import 'package:sapphire/utils/appTheme.dart';
 import 'package:sapphire/utils/watchlistTabBar.dart';
-=======
->>>>>>> 242e7a4bd18ffec27d204c2a79169761cc566a61
+import 'package:sapphire/verifiedP&L.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -105,7 +105,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
     return ScreenUtilInit(
       designSize: const Size(393, 852),
       minTextAdapt: true,
@@ -123,13 +122,10 @@ class MyApp extends StatelessWidget {
           //   email: "",
           // ));
           // home: SellScreenWrapper());
-          home: InitialScreen(),
+          // home: InitialScreen(),
+          home: VerifiedPnL(),
         );
       },
-=======
-    return MaterialApp(
-      home: Container(),
->>>>>>> 242e7a4bd18ffec27d204c2a79169761cc566a61
     );
   }
 }
