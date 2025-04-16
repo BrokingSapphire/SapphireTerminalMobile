@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class GovernmeSecurities extends StatefulWidget {
-  const GovernmeSecurities({super.key});
+class GovernmentSecurities extends StatefulWidget {
+  const GovernmentSecurities({super.key});
 
   @override
-  State<GovernmeSecurities> createState() => _GovernmeSecuritiesState();
+  State<GovernmentSecurities> createState() => _GovernmentSecuritiesState();
 }
 
-class _GovernmeSecuritiesState extends State<GovernmeSecurities> {
+class _GovernmentSecuritiesState extends State<GovernmentSecurities> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
