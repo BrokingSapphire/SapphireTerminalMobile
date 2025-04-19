@@ -97,7 +97,7 @@ flutter:
     - assets/emptyPng/holdingsMutualFunds.png
     - assets/emptyPng/holdingsPosition.png
     - assets/emptyPng/orders.png
-    
+    - assets/svgs/compass.svg
     
 
   fonts:
