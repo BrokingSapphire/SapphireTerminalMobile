@@ -249,37 +249,89 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                     itemBuilder: (context, itemIndex) {
                       final item = currentItems[itemIndex];
                       if (item is String) {
-                        // Render category
-                        return Container(
+                        // Render category with dividers and slidable delete option
+                        return Slidable(
                           key: ValueKey('category_$item'),
-
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          endActionPane: ActionPane(
+                            motion: const DrawerMotion(),
+                            extentRatio: 0.2,
                             children: [
-                              if (itemIndex == 0)
+                              Expanded(
+                                child: Row(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.stretch,
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            left: BorderSide(
+                                                color: Color(0xFF2F2F2F),
+                                                width: 1),
+                                            right: BorderSide(
+                                                color: Color(0xFF2F2F2F),
+                                                width: 1),
+                                            bottom: BorderSide(
+                                                color: Color(0xFF2F2F2F),
+                                                width: 1),
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                watchlistData[_selectedIndex]
+                                                ['items']
+                                                    .removeAt(itemIndex);
+                                                print(
+                                                    "Deleted category '$item' from Watchlist ${tabNames[_selectedIndex]}");
+                                              });
+                                            },
+                                            child: SvgPicture.asset(
+                                              "assets/svgs/delete.svg",
+                                              color: Color(0xff1DB954),
+                                              width: 24.w,
+                                              height: 24.h,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          child: Container(
+                            margin: EdgeInsets.symmetric(),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (itemIndex == 0)
+                                  Divider(
+                                    color: Color(0xFF2F2F2F),
+                                    thickness: 1,
+                                    height: 1.h,
+                                  ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 6.h, horizontal: 16.w),
+                                  child: Text(
+                                    item,
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: const Color(0xffEBEEF5),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
                                 Divider(
                                   color: Color(0xFF2F2F2F),
                                   thickness: 1,
                                   height: 1.h,
                                 ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 6.h, horizontal: 16.w),
-                                child: Text(
-                                  item,
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: const Color(0xffEBEEF5),
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              Divider(
-                                color: Color(0xFF2F2F2F),
-                                thickness: 1,
-                                height: 1.h,
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         );
                       } else if (item is Map<String, String>) {
