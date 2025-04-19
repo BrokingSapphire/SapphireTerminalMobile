@@ -201,7 +201,7 @@ class WatchlistTabBar extends StatelessWidget {
               ),
             ),
             SizedBox(height: 12.h),
-            constWidgets.textField("Category Name", controller, isDark: true),
+            constWidgets.textField("", controller, isDark: true),
             SizedBox(height: 8.h),
             constWidgets.greenButton("Add", onTap: () {
               if (controller.text.trim().isNotEmpty) {
