@@ -138,7 +138,7 @@ class WatchlistTabBar extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 12.h),
-              constWidgets.textField("My Watchlist", controller,
+            constWidgets.textField("", controller,
                   isDark: isDark),
               SizedBox(height: 16.h),
               constWidgets.greenButton("Create", onTap: () {
