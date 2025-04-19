@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sapphire/referAFriend.dart';
 import 'package:sapphire/screens/accountSection/accountScreen.dart';
 import 'package:sapphire/screens/accountSection/fundsScreen.dart';
 import 'package:sapphire/screens/accountSection/ledgerScreen.dart';
