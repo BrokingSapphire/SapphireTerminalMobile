@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -173,6 +175,89 @@ class _WatchlistScreenState extends State<WatchlistScreen>
     });
   }
 
+  void _showEditCategoryDialog(
+      BuildContext context, String currentName, int itemIndex) {
+    final TextEditingController controller =
+    TextEditingController(text: currentName);
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true, // Allows dynamic height with keyboard
+      backgroundColor: const Color(0xff121413), // Match app's dark theme
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+      ),
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+          left: 16.w,
+          right: 16.w,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 15.h,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(height: 16.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Edit Category",
+                  style: TextStyle(
+                    fontSize: 21.sp,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xffEBEEF5),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.close, color: Colors.white),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            ),
+            SizedBox(height: 6.h),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Enter New Category Name",
+                style: TextStyle(
+                  color: const Color(0xffEBEEF5),
+                  fontSize: 14.sp,
+                ),
+              ),
+            ),
+            SizedBox(height: 12.h),
+            TextField(
+              controller: controller,
+              style: TextStyle(color: Colors.white, fontSize: 14.sp),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: const Color(0xff1C2524),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.r),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding:
+                EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+              ),
+            ),
+            SizedBox(height: 8.h),
+            constWidgets.greenButton("Save", onTap: () {
+              if (controller.text.trim().isNotEmpty) {
+                setState(() {
+                  watchlistData[_selectedIndex]['items'][itemIndex] = controller
+                      .text
+                      .trim()
+                      .toUpperCase(); // Update category name in all caps
+                });
+                Navigator.pop(context);
+              }
+            }),
+            SizedBox(height: 15.h),
+          ],
+        ),
+      ),
+    );
+  }
   Widget _buildWatchlistTab(int index, bool isDark) {
     // Safely access the unified items list
     final watchlist = watchlistData[index];
@@ -302,35 +387,47 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                               ),
                             ],
                           ),
-                          child: Container(
-                            margin: EdgeInsets.symmetric(),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                if (itemIndex == 0)
+                          child: GestureDetector(
+                            onLongPress: () {
+                              // Use a Timer to ensure 2-second long press
+                              Timer(Duration(milliseconds: 2000), () {
+                                // Check if the widget is still mounted to avoid setState errors
+                                if (mounted) {
+                                  _showEditCategoryDialog(
+                                      context, item, itemIndex);
+                                }
+                              });
+                            },
+                            child: Container(
+                              margin: EdgeInsets.symmetric(),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  if (itemIndex == 0)
+                                    Divider(
+                                      color: Color(0xFF2F2F2F),
+                                      thickness: 1,
+                                      height: 1.h,
+                                    ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 6.h, horizontal: 16.w),
+                                    child: Text(
+                                      item,
+                                      style: TextStyle(
+                                        fontSize: 14.sp,
+                                        color: const Color(0xffEBEEF5),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
                                   Divider(
                                     color: Color(0xFF2F2F2F),
                                     thickness: 1,
                                     height: 1.h,
                                   ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 6.h, horizontal: 16.w),
-                                  child: Text(
-                                    item,
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: const Color(0xffEBEEF5),
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                                Divider(
-                                  color: Color(0xFF2F2F2F),
-                                  thickness: 1,
-                                  height: 1.h,
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         );
