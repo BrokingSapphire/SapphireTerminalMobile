@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'package:sapphire/screens/home/discover/pledge.dart';
-import 'package:sapphire/screens/accountSection/fundSettelmentFrequency.dart';
-import 'package:sapphire/screens/home/discover/ipo.dart';
-import 'package:sapphire/screens/home/discover/governmentSecurities.dart';
-import 'package:sapphire/screens/accountSection/auction.dart';
-import 'package:sapphire/screens/accountSection/dematAccountDetails.dart';
-import 'package:sapphire/screens/accountSection/referAFriend.dart';
+import 'package:sapphire/referAFriend.dart';
 import 'package:sapphire/screens/accountSection/accountScreen.dart';
 import 'package:sapphire/screens/accountSection/fundsScreen.dart';
 import 'package:sapphire/screens/accountSection/ledgerScreen.dart';
