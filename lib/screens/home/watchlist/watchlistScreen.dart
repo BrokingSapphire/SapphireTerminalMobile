@@ -132,11 +132,8 @@ class _WatchlistScreenState extends State<WatchlistScreen>
     watchlistData = [
       {
         'items': [
-          'Banking', // Category
           ...initialWatchlistData.sublist(0, 2), // First two stocks
-          'FMCG', // Category
           ...initialWatchlistData.sublist(2, 5), // Next three stocks
-          'Automobile', // Category
           ...initialWatchlistData.sublist(5), // Remaining stocks
         ],
       }
@@ -347,37 +344,22 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                                   CrossAxisAlignment.stretch,
                                   children: [
                                     Expanded(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                            left: BorderSide(
-                                                color: Color(0xFF2F2F2F),
-                                                width: 1),
-                                            right: BorderSide(
-                                                color: Color(0xFF2F2F2F),
-                                                width: 1),
-                                            bottom: BorderSide(
-                                                color: Color(0xFF2F2F2F),
-                                                width: 1),
-                                          ),
-                                        ),
-                                        child: Center(
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                watchlistData[_selectedIndex]
-                                                ['items']
-                                                    .removeAt(itemIndex);
-                                                print(
-                                                    "Deleted category '$item' from Watchlist ${tabNames[_selectedIndex]}");
-                                              });
-                                            },
-                                            child: SvgPicture.asset(
-                                              "assets/svgs/delete.svg",
-                                              color: Color(0xff1DB954),
-                                              width: 24.w,
-                                              height: 24.h,
-                                            ),
+                                      child: Center(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              watchlistData[_selectedIndex]
+                                              ['items']
+                                                  .removeAt(itemIndex);
+                                              print(
+                                                  "Deleted category '$item' from Watchlist ${tabNames[_selectedIndex]}");
+                                            });
+                                          },
+                                          child: SvgPicture.asset(
+                                            "assets/svgs/delete.svg",
+                                            color: Color(0xff1DB954),
+                                            width: 24.w,
+                                            height: 24.h,
                                           ),
                                         ),
                                       ),
@@ -399,6 +381,7 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                               });
                             },
                             child: Container(
+                              width: double.infinity,
                               margin: EdgeInsets.symmetric(),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -415,17 +398,17 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                                     child: Text(
                                       item,
                                       style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: const Color(0xffEBEEF5),
+                                        fontSize: 16.sp,
+                                        color: Colors.grey,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                   ),
-                                  Divider(
-                                    color: Color(0xFF2F2F2F),
-                                    thickness: 1,
-                                    height: 1.h,
-                                  ),
+                                  // Divider(
+                                  //   color: Color(0xFF2F2F2F),
+                                  //   thickness: 1,
+                                  //   height: 1.h,
+                                  // ),
                                 ],
                               ),
                             ),
