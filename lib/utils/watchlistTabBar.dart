@@ -201,8 +201,13 @@ class WatchlistTabBar extends StatelessWidget {
               constWidgets.greenButton("Add", onTap: () {
                 if (controller.text.trim().isNotEmpty) {
                   setState(() {
-                    categories.add(controller.text.trim());
-                    controller.clear();
+                    String input = controller.text.trim();
+                    if (input.isNotEmpty) {
+                      String capitalized =
+                      input.toUpperCase(); // Convert to uppercase
+                      categories.add(capitalized); // Add the uppercase version
+                      controller.clear(); // Clear the input field
+                    }
                   });
                 }
               }),
@@ -326,11 +331,11 @@ class WatchlistTabBar extends StatelessWidget {
             ],
           ),
           // Add a thin divider
-          Divider(
-            height: 1.h, // Thin height
-            thickness: 0.5, // Thin thickness
-            color: const Color(0xff2F2F2F), // Matching the dark theme
-          ),
+          // Divider(
+          //   height: 1.h, // Thin height
+          //   thickness: 0.5, // Thin thickness
+          //   color: const Color(0xff2F2F2F), // Matching the dark theme
+          // ),
         ],
       ),
     );

@@ -253,19 +253,30 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                         return Container(
                           key: ValueKey('category_$item'),
                           margin: EdgeInsets.symmetric(
-                              vertical: 4.h, horizontal: 16.w),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              // Divider(
+                              //   color: Color(0xFF2F2F2F),
+                              //   thickness: 1,
+                              //   height: 1.h,
+                              // ),
                               Padding(
-                                padding: EdgeInsets.only(top: 6.h, bottom: 2.h),
+                                padding: EdgeInsets.symmetric(vertical: 6.h,horizontal: 16.w),
                                 child: Text(
                                   item,
                                   style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color:
-                                          isDark ? Colors.white : Colors.black),
+                                    fontSize: 14.sp,
+                                    color: const Color(0xffEBEEF5),
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
+                              ),
+                              Divider(
+                                color: Color(0xFF2F2F2F),
+                                thickness: 1,
+                                height: 1.h,
                               ),
                             ],
                           ),

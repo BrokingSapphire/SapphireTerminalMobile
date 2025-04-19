@@ -84,6 +84,7 @@ class Assets {
   static const String discoverDiscover = 'lib/screens/home/discover/discover.dart';
   static const String discoverGovernmentSecurities = 'lib/screens/home/discover/governmentSecurities.dart';
   static const String discoverIpo = 'lib/screens/home/discover/ipo.dart';
+  static const String discoverPledge = 'lib/screens/home/discover/pledge.dart';
   static const String emptyPngHoldingEquity = 'assets/emptyPng/holdingEquity.png';
   static const String emptyPngHoldingsMutualFunds = 'assets/emptyPng/holdingsMutualFunds.png';
   static const String emptyPngHoldingsPosition = 'assets/emptyPng/holdingsPosition.png';
@@ -148,10 +149,12 @@ class Assets {
   static const String imagesVector = 'assets/images/Vector.png';
   static const String imagesVisa = 'assets/images/visa.png';
   static const String imagesWhiteLogo = 'assets/images/whiteLogo.png';
-  static const String libDematAccountDetails = 'lib/dematAccountDetails.dart';
   static const String libMain = 'lib/main.dart';
-  static const String libPledge = 'lib/pledge.dart';
-  static const String libVerifiedP&L = 'lib/verifiedP&L.dart';
+  static const String libThemeProvider = 'lib/themeProvider.dart';
+  static const String manageActiveSegments = 'lib/screens/accountSection/manage/activeSegments.dart';
+  static const String manageBankAccounts = 'lib/screens/accountSection/manage/bankAccounts.dart';
+  static const String manageFreezeAccount = 'lib/screens/accountSection/manage/freezeAccount.dart';
+  static const String manageGiftStocks = 'lib/screens/accountSection/manage/giftStocks.dart';
   static const String mutualFundsMutualScreen = 'lib/screens/home/holdings/mutualFunds/mutualScreen.dart';
   static const String optionsClosedOptionGridScreen = 'lib/screens/home/trades/options/ClosedOptionGridScreen.dart';
   static const String optionsClosedOptionListScreen = 'lib/screens/home/trades/options/ClosedOptionListScreen.dart';
@@ -167,6 +170,8 @@ class Assets {
   static const String ordersGttScreenWrapper = 'lib/screens/home/orders/gttScreenWrapper.dart';
   static const String ordersOrderSection = 'lib/screens/home/orders/orderSection.dart';
   static const String positionsPosition = 'lib/screens/home/holdings/positions/position.dart';
+  static const String reportsOrderBook = 'lib/screens/accountSection/reports/orderBook.dart';
+  static const String reportsTradeBook = 'lib/screens/accountSection/reports/tradeBook.dart';
   static const String sapphireTerminalMobileAssetsLogo = 'assets/Logo.svg';
   static const String sellScreensIcebergSellScreen = 'lib/screens/orderWindow/SellScreens/icebergSellScreen.dart';
   static const String sellScreensInstantSellScreen = 'lib/screens/orderWindow/SellScreens/instantSellScreen.dart';
