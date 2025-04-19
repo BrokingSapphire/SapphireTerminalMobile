@@ -25,6 +25,7 @@ class basketSelectScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -88,7 +89,7 @@ class basketSelectScreen extends StatelessWidget {
 
               // Search Bar
               constWidgets.searchField(
-                  context, "Search Everything...", "orders"),
+                  context, "Search Everything...", "orders", isDark),
               SizedBox(height: 11.h),
 
               Divider(color: Color(0xff2f2f2f)),

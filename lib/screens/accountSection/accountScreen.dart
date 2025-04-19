@@ -128,18 +128,20 @@ class _AccountScreenState extends State<AccountScreen> {
     );
   }
 
-  Widget rightLeftCards(String lname, String rname, double _width) {
+  Widget rightLeftCards(
+      String lname, String rname, double _width, bool isDark) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        constWidgets.choiceChip(lname, _segments, context, _width),
-        constWidgets.choiceChip(rname, _segments, context, _width),
+        constWidgets.choiceChip(lname, _segments, context, _width, isDark),
+        constWidgets.choiceChip(rname, _segments, context, _width, isDark),
       ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 15.w),
       child: Scaffold(
@@ -422,23 +424,28 @@ class _AccountScreenState extends State<AccountScreen> {
                               horizontal: 16.w, vertical: 18.h),
                           child: Column(
                             children: [
-                              rightLeftCards("NSE-EQUITY", "BSE-EQUITY", width),
+                              rightLeftCards(
+                                  "NSE-EQUITY", "BSE-EQUITY", width, isDark),
                               SizedBox(
                                 height: 10.h,
                               ),
-                              rightLeftCards("NSE-EQUITY", "BSE-EQUITY", width),
+                              rightLeftCards(
+                                  "NSE-EQUITY", "BSE-EQUITY", width, isDark),
                               SizedBox(
                                 height: 10.h,
                               ),
-                              rightLeftCards("NSE-EQUITY", "BSE-EQUITY", width),
+                              rightLeftCards(
+                                  "NSE-EQUITY", "BSE-EQUITY", width, isDark),
                               SizedBox(
                                 height: 10.h,
                               ),
-                              rightLeftCards("NSE-EQUITY", "BSE-EQUITY", width),
+                              rightLeftCards(
+                                  "NSE-EQUITY", "BSE-EQUITY", width, isDark),
                               SizedBox(
                                 height: 10.h,
                               ),
-                              rightLeftCards("NSE-EQUITY", "BSE-EQUITY", width),
+                              rightLeftCards(
+                                  "NSE-EQUITY", "BSE-EQUITY", width, isDark),
                               SizedBox(
                                 height: 10.h,
                               ),

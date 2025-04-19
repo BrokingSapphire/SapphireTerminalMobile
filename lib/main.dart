@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sapphire/referAFriend.dart';
+
+import 'package:sapphire/screens/home/discover/pledge.dart';
+import 'package:sapphire/screens/accountSection/fundSettelmentFrequency.dart';
+import 'package:sapphire/screens/home/discover/ipo.dart';
+import 'package:sapphire/screens/home/discover/governmentSecurities.dart';
+import 'package:sapphire/screens/accountSection/auction.dart';
+import 'package:sapphire/screens/accountSection/dematAccountDetails.dart';
+import 'package:sapphire/screens/accountSection/referAFriend.dart';
 import 'package:sapphire/screens/accountSection/accountScreen.dart';
 import 'package:sapphire/screens/accountSection/fundsScreen.dart';
 import 'package:sapphire/screens/accountSection/ledgerScreen.dart';
@@ -26,7 +33,6 @@ import 'package:sapphire/screens/signUp/NomineeScreen.dart';
 import 'package:sapphire/screens/signUp/SelfieCameraScreen.dart';
 import 'package:sapphire/screens/signUp/SignCanvaScreen.dart';
 import 'package:sapphire/screens/signUp/congratulationsScreen.dart';
-// import 'package:sapphire/screens/signUp/desktopAuthScreen.dart';
 import 'package:sapphire/screens/signUp/eSignScreen.dart';
 import 'package:sapphire/screens/signUp/emailScreen.dart';
 import 'package:sapphire/screens/signUp/familyDetailsScreen.dart';
@@ -48,14 +54,21 @@ import 'package:sapphire/screens/signUp/signatureVerificationScreen.dart';
 import 'package:sapphire/screens/signUp/tradingExperienceScreen.dart';
 import 'package:sapphire/screens/signUp/verifyAadharScreen.dart';
 import 'package:sapphire/screens/signUp/yourInvestmentProfile.dart';
+import 'package:sapphire/screens/accountSection/verifiedP&L.dart';
+
+// App theme & provider
 import 'package:sapphire/utils/appTheme.dart';
-import 'package:sapphire/utils/watchlistTabBar.dart';
-import 'package:sapphire/verifiedP&L.dart';
+import 'package:sapphire/themeProvider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -86,7 +99,7 @@ void naviRep(Widget nextScreen, BuildContext context) {
     PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => nextScreen,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(1.0, 0.0); // Slide from right
+        const begin = Offset(1.0, 0.0);
         const end = Offset.zero;
         const curve = Curves.easeInOut;
 
@@ -105,25 +118,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider =
+        Provider.of<ThemeProvider>(context); // 👈 Connect theme
+
     return ScreenUtilInit(
       designSize: const Size(393, 852),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
         return MaterialApp(
-          navigatorKey: navigatorKey, // Set navigator key here
-
+          navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
           theme: AppThemes.lightTheme,
           darkTheme: AppThemes.darkTheme,
-          themeMode: ThemeMode.system,
-          // home: InitialScreen()
-          // home: MobileOtp(
-          //   email: "",
-          // ));
-          // home: SellScreenWrapper());
-          // home: InitialScreen(),
-          home: VerifiedPnL(),
+          themeMode: themeProvider.themeMode, // 👈 Dynamic theme mode
+          home: InitialScreen(),
         );
       },
     );

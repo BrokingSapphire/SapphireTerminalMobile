@@ -22,6 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
@@ -54,6 +55,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Text(
                                   "Welcome",
                                   style: TextStyle(
+                                      color:
+                                          isDark ? Colors.white : Colors.black,
                                       fontSize: 34.sp,
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -61,6 +64,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Text(
                                   "Login to your account",
                                   style: TextStyle(
+                                      color:
+                                          isDark ? Colors.white : Colors.black,
                                       fontSize: 21.sp,
                                       fontWeight: FontWeight.w400),
                                 ),
@@ -77,9 +82,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 15),
                               labelText: "Client ID",
-                              labelStyle: TextStyle(color: Color(0xffC9CACC)),
+                              labelStyle: TextStyle(
+                                  color: isDark
+                                      ? const Color(0xFFC9CACC)
+                                      : const Color(0xFF6B7280)),
                               hintStyle: TextStyle(
-                                  color: Color(0xFFC9CACC), fontSize: 15.sp),
+                                  color: isDark
+                                      ? const Color(0xFFC9CACC)
+                                      : const Color(0xFF6B7280),
+                                  fontSize: 15.sp),
                               border: OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(30.r)),
@@ -103,14 +114,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                   'assets/svgs/user.svg',
                                   height: 20.h,
                                   width: 20.w,
-                                  color: Color(0xffC9CACC),
+                                  color: isDark
+                                      ? const Color(0xFFC9CACC)
+                                      : const Color(0xFF6B7280),
                                 ),
                               ),
                               prefixIconConstraints:
                                   BoxConstraints(minWidth: 40.w),
                             ),
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 16.sp),
+                            style: TextStyle(
+                                color: isDark ? Colors.white : Colors.black,
+                                fontSize: 16.sp),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your Client ID';
@@ -130,9 +144,16 @@ class _LoginScreenState extends State<LoginScreen> {
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 15),
                               labelText: "Password",
-                              labelStyle: TextStyle(color: Color(0xffC9CACC)),
+                              labelStyle: TextStyle(
+                                color: isDark
+                                    ? const Color(0xFFC9CACC)
+                                    : const Color(0xFF6B7280),
+                              ),
                               hintStyle: TextStyle(
-                                  color: Color(0xFFC9CACC), fontSize: 15.sp),
+                                  color: isDark
+                                      ? const Color(0xFFC9CACC)
+                                      : const Color(0xFF6B7280),
+                                  fontSize: 15.sp),
                               border: OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(30.r)),
@@ -156,7 +177,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   'assets/svgs/key.svg',
                                   height: 20.h,
                                   width: 20.w,
-                                  color: Color(0xffC9CACC),
+                                  color: isDark
+                                      ? const Color(0xFFC9CACC)
+                                      : const Color(0xFF6B7280),
                                 ),
                               ),
                               prefixIconConstraints:
@@ -177,7 +200,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                         : 'assets/svgs/eye.svg', // 👁️ open
                                     height: 20.h,
                                     width: 20.w,
-                                    color: Color(0xffC9CACC),
+                                    color: isDark
+                                        ? const Color(0xFFC9CACC)
+                                        : const Color(0xFF6B7280),
                                   ),
                                 ),
                               ),
@@ -200,7 +225,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Align(
                               child: Row(
                                 children: [
-                                  InkWell(
+                                  GestureDetector(
+                                    behavior: HitTestBehavior.opaque,
                                     onTap: () {
                                       setState(() {
                                         rememberMe = !rememberMe;
@@ -224,7 +250,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                               vertical: 15.h),
                                           child: Text(
                                             "Remember Me",
-                                            style: TextStyle(fontSize: 11.sp),
+                                            style: TextStyle(
+                                              fontSize: 11.sp,
+                                              color: isDark
+                                                  ? const Color(0xFFC9CACC)
+                                                  : const Color(0xFF6B7280),
+                                            ),
                                           ),
                                         ),
                                       ],

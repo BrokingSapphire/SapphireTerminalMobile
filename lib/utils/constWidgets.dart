@@ -9,7 +9,7 @@ import '../main.dart';
 
 class constWidgets {
   static Widget searchField(
-      BuildContext context, String hintText, String pageKey) {
+      BuildContext context, String hintText, String pageKey, bool isDark) {
     return Row(
       children: [
         // Expanded ensures TextField takes up full width
@@ -22,7 +22,9 @@ class constWidgets {
             child: Container(
               height: 48.h,
               decoration: BoxDecoration(
-                color: Color(0xFF121413),
+                color: isDark ? Color(0xFF121413) : Color(0xFFF4F4F9),
+                // border: Border.all(
+                //     color: isDark ? Colors.transparent : Colors.grey),
                 borderRadius: BorderRadius.circular(6.r),
               ),
               child: Row(
@@ -62,13 +64,14 @@ class constWidgets {
               onApply: (selectedFilters) {
                 // Handle the selected filters if needed
               },
+              isDark: isDark,
             );
           },
           child: Container(
             height: 48.h,
             width: 48.h, // Square (same height & width)
             decoration: BoxDecoration(
-              color: Color(0xFF121413),
+              color: isDark ? Color(0xFF121413) : Color(0xFFF4F4F9),
               borderRadius: BorderRadius.circular(6.r),
             ),
             child: Center(
@@ -95,7 +98,7 @@ class constWidgets {
   }
 
   static Widget watchListDataView(String leadImageLink, String title,
-      String subtitle, String trail1, String trail2) {
+      String subtitle, String trail1, String trail2, bool isDark) {
     return Column(
       children: [
         Container(
@@ -105,10 +108,10 @@ class constWidgets {
             children: [
               // Leading image (Circle Avatar)
               CircleAvatar(
-                radius: 18.r,
-                backgroundColor: Colors.white,
-                backgroundImage: NetworkImage(leadImageLink),
-              ),
+                  radius: 18.r,
+                  backgroundColor: isDark ? Colors.white : Colors.transparent,
+                  backgroundImage:
+                      AssetImage("assets/images/reliance logo.png")),
               SizedBox(width: 10.w), // Space between avatar and text
 
               // Column for Title and Subtitle
@@ -117,12 +120,16 @@ class constWidgets {
                 children: [
                   Text(
                     title,
-                    style: TextStyle(fontSize: 15.sp),
+                    style: TextStyle(
+                        fontSize: 15.sp,
+                        color: isDark ? Colors.white : Colors.black),
                   ),
                   SizedBox(height: 0.h), // Space between title and subtitle
                   Text(
                     subtitle,
-                    style: TextStyle(fontSize: 15.sp),
+                    style: TextStyle(
+                        fontSize: 15.sp,
+                        color: isDark ? Colors.white : Colors.black),
                   ),
                 ],
               ),
@@ -136,8 +143,10 @@ class constWidgets {
                 children: [
                   Text(
                     "₹$trail1",
-                    style:
-                        TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.bold,
+                        color: isDark ? Colors.white : Colors.black),
                   ),
                   Text(
                     trail2,
@@ -313,7 +322,9 @@ class constWidgets {
   }
 
   static Widget textField(String hintText, TextEditingController controller,
-      {bool isPhoneNumber = false, bool isCapital = false}) {
+      {bool isPhoneNumber = false,
+      bool isCapital = false,
+      required bool isDark}) {
     return TextFormField(
       textCapitalization:
           isCapital ? TextCapitalization.characters : TextCapitalization.none,
@@ -335,7 +346,8 @@ class constWidgets {
                     SnackBar(
                       content: Text(
                         "Phone number must start with 6, 7, 8, or 9",
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                            color: isDark ? Colors.white : Colors.black),
                       ),
                       duration: Duration(seconds: 1),
                       backgroundColor: Colors.red,
@@ -359,8 +371,11 @@ class constWidgets {
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         labelText: hintText,
-        labelStyle: TextStyle(color: Color(0xffC9CACC)),
-        hintStyle: TextStyle(color: Color(0xFFC9CACC), fontSize: 15.sp),
+        labelStyle:
+            TextStyle(color: isDark ? const Color(0xffC9CACC) : Colors.black),
+        hintStyle: TextStyle(
+            color: isDark ? const Color(0xFFC9CACC) : Colors.black,
+            fontSize: 15.sp),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(30.r)),
         ),
@@ -381,7 +396,8 @@ class constWidgets {
                     Text(
                       "+91",
                       style: TextStyle(
-                          color: Color(0xffC9CACC),
+                          color:
+                              isDark ? const Color(0xffC9CACC) : Colors.black,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w500),
                     ),
@@ -399,7 +415,8 @@ class constWidgets {
         prefixIconConstraints:
             isPhoneNumber ? BoxConstraints(minWidth: 20) : null,
       ),
-      style: TextStyle(color: Colors.white, fontSize: 16.sp),
+      style: TextStyle(
+          color: isDark ? Colors.white : Colors.black, fontSize: 16.sp),
     );
   }
 
@@ -684,7 +701,8 @@ class constWidgets {
     );
   }
 
-  static choiceChip(String text, bool val, BuildContext context, double width) {
+  static choiceChip(
+      String text, bool val, BuildContext context, double width, bool isDark) {
     return Container(
       child: Center(
         child: Text(
@@ -692,7 +710,9 @@ class constWidgets {
           style: TextStyle(
             fontSize: 12.sp, // Increased font size to match image
             fontWeight: FontWeight.w400,
-            color: Colors.white, // White text to match black background
+            color: isDark
+                ? Colors.white
+                : Colors.black, // White text to match black background
           ),
         ),
       ),
@@ -708,8 +728,9 @@ class constWidgets {
         borderRadius:
             BorderRadius.circular(3.r), // Larger rounded corners to match image
         color: val
-            ? Color(0xFF26382F)
-            : Color(0xff121413), // Black background to match image
+            ? (isDark ? Colors.green.withOpacity(0.2) : Colors.green.shade100)
+            : (isDark ? const Color(0xFF26382F) : Colors.grey.shade100),
+        // Black background to match image
       ),
     );
   }
@@ -827,8 +848,9 @@ class _CustomTabBarState extends State<CustomTabBar> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      color: Colors.black,
+      color: isDark ? Colors.black : Colors.white,
       padding: EdgeInsets.symmetric(vertical: 2.h),
       child: Column(
         children: [
@@ -851,7 +873,9 @@ class _CustomTabBarState extends State<CustomTabBar> {
                           fontWeight: FontWeight.w500,
                           color: isSelected
                               ? Color(0xff1DB954)
-                              : Color(0xffEBEEF5),
+                              : isDark
+                                  ? Color(0xffEBEEF5)
+                                  : Colors.black,
                         ),
                       ),
                       SizedBox(height: 5.h),

@@ -173,7 +173,7 @@ class _WatchlistScreenState extends State<WatchlistScreen>
     });
   }
 
-  Widget _buildWatchlistTab(int index) {
+  Widget _buildWatchlistTab(int index, bool isDark) {
     // Safely access the unified items list
     final watchlist = watchlistData[index];
     List<dynamic> currentItems = watchlist['items'] is List
@@ -188,7 +188,7 @@ class _WatchlistScreenState extends State<WatchlistScreen>
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 16.w),
             child: constWidgets.searchField(
-                context, "Search Everything...", "watchlist"),
+                context, "Search Everything...", "watchlist", isDark),
           ),
         ),
         Expanded(
@@ -232,7 +232,7 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                             style: TextStyle(
                                 fontSize: 24.sp,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white)),
+                                color: isDark ? Colors.white : Colors.black)),
                         SizedBox(height: 10.h),
                         SizedBox(
                             width: 250.w,
@@ -258,11 +258,13 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: EdgeInsets.only(top: 6.h,bottom: 2.h),
+                                padding: EdgeInsets.only(top: 6.h, bottom: 2.h),
                                 child: Text(
                                   item,
                                   style: TextStyle(
-                                      fontSize: 14.sp, color: Colors.white),
+                                      fontSize: 14.sp,
+                                      color:
+                                          isDark ? Colors.white : Colors.black),
                                 ),
                               ),
                             ],
@@ -378,6 +380,7 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                               item['company']!,
                               item['price']!,
                               item['change']!,
+                              isDark,
                             ),
                           ),
                         );
@@ -404,12 +407,13 @@ class _WatchlistScreenState extends State<WatchlistScreen>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        surfaceTintColor: Colors.black,
+        surfaceTintColor: isDark ? Colors.black : Colors.white,
         shadowColor: Colors.transparent,
-        backgroundColor: const Color(0xff000000),
+        backgroundColor: isDark ? const Color(0xff000000) : Colors.white,
         automaticallyImplyLeading: false,
         toolbarHeight: 0,
       ),
@@ -425,21 +429,29 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                         style: TextStyle(
                             fontSize: 22.sp,
                             fontWeight: FontWeight.bold,
-                            color: const Color(0xffEBEEF5))),
+                            color: isDark
+                                ? const Color(0xffEBEEF5)
+                                : Colors.black)),
                     Spacer(),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: GestureDetector(
                         onTap: () => navi(FundsScreen(), context),
                         child: SvgPicture.asset("assets/svgs/wallet.svg",
-                            width: 22.w, height: 25.h, color: Colors.white70),
+                            width: 22.w,
+                            height: 25.h,
+                            colorFilter: ColorFilter.mode(
+                                isDark ? Colors.white70 : Colors.black,
+                                BlendMode.srcIn)),
                       ),
                     ),
                     InkWell(
                       onTap: () =>
                           naviWithoutAnimation(context, ProfileScreen()),
                       child: CircleAvatar(
-                        backgroundColor: const Color(0xff021814),
+                        backgroundColor: isDark
+                            ? const Color(0xff021814)
+                            : Colors.grey.shade200,
                         radius: 22.r,
                         child: Text("NK",
                             style: TextStyle(
@@ -457,8 +469,10 @@ class _WatchlistScreenState extends State<WatchlistScreen>
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    MarketDataCard("NIFTY 50", "23,018.20", "-218.20 (1.29%)"),
-                    MarketDataCard("SENSEX", "73,018.20", "+218.20 (1.29%)"),
+                    MarketDataCard(
+                        context, "NIFTY 50", "23,018.20", "-218.20 (1.29%)"),
+                    MarketDataCard(
+                        context, "SENSEX", "73,018.20", "+218.20 (1.29%)"),
                   ]),
             ),
           ),
@@ -505,7 +519,7 @@ class _WatchlistScreenState extends State<WatchlistScreen>
           controller: _pageController,
           onPageChanged: _onPageChanged,
           itemCount: tabNames.length,
-          itemBuilder: (context, index) => _buildWatchlistTab(index),
+          itemBuilder: (context, index) => _buildWatchlistTab(index, isDark),
         ),
       ),
     );
@@ -538,6 +552,7 @@ class _WatchlistTabBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return WatchlistTabBar(
       tabNames: tabNames,
       selectedIndex: selectedIndex,
@@ -545,6 +560,7 @@ class _WatchlistTabBarDelegate extends SliverPersistentHeaderDelegate {
       onEditWatchlist: onEditWatchlist,
       onCreateWatchlist: onCreateWatchlist,
       onAddCategory: onAddCategory,
+      isDark: isDark,
     );
   }
 
@@ -560,38 +576,48 @@ class _WatchlistTabBarDelegate extends SliverPersistentHeaderDelegate {
   }
 }
 
-Widget MarketDataCard(String title, String price, String change) {
+/// MarketDataCard: A card displaying market data, now fully theme-aware
+Widget MarketDataCard(
+    BuildContext context, String title, String price, String change) {
   final bool isPositive = change.startsWith('+');
-  final Color changeColor = isPositive ? Colors.green : Colors.red;
+  final Color changeColor = isPositive
+      ? Theme.of(context).colorScheme.primary
+      : Theme.of(context).colorScheme.error;
 
   return Container(
     height: 62.h,
     width: 175.w,
     padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
     decoration: BoxDecoration(
-      color: const Color(0xff121413),
+      // Card background adapts to theme
+      color: Theme.of(context).colorScheme.surface,
       borderRadius: BorderRadius.circular(10.r),
-      border: Border.all(color: const Color(0xff2F2F2F), width: 1.5.w),
+      // Card border adapts to theme divider
+      border: Border.all(color: Theme.of(context).dividerColor, width: 1.5.w),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Title text adapts to theme
         Text(title,
             style: TextStyle(
-                color: const Color(0xffEBEEF5),
-                fontSize: 14.sp,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontWeight: FontWeight.bold)),
         SizedBox(height: 2.h),
+        // Price & change container adapts to theme
         Container(
           padding: EdgeInsets.all(2.w),
           decoration: BoxDecoration(
-              color: const Color(0xff121413),
+              color: Theme.of(context).colorScheme.background,
               borderRadius: BorderRadius.circular(6.r)),
           child: Row(mainAxisSize: MainAxisSize.min, children: [
+            // Price text adapts to theme
             Text(price,
-                style:
-                    TextStyle(color: const Color(0xffEBEEF5), fontSize: 12.sp)),
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.onBackground,
+                    fontSize: 12.sp)),
             SizedBox(width: 6.w),
+            // Change text uses theme primary/error
             Text(change, style: TextStyle(color: changeColor, fontSize: 12.sp)),
           ]),
         ),

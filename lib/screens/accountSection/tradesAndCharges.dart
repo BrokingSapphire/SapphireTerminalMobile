@@ -42,6 +42,7 @@ class _TradesandchargesState extends State<Tradesandcharges> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black, // or your desired color
@@ -212,7 +213,7 @@ class _TradesandchargesState extends State<Tradesandcharges> {
 
                 /// **Search Bar**
                 constWidgets.searchField(
-                    context, "Search company or stock", "positions"),
+                    context, "Search company or stock", "positions", isDark),
                 SizedBox(height: 10.h),
               ],
             ),

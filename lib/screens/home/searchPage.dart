@@ -68,8 +68,9 @@ class _searchPageScreenState extends State<searchPageScreen>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: isDark ? Colors.black : Colors.white,
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -82,7 +83,8 @@ class _searchPageScreenState extends State<searchPageScreen>
                   children: [
                     InkWell(
                       onTap: () => Navigator.pop(context),
-                      child: Icon(Icons.arrow_back, color: Colors.white),
+                      child: Icon(Icons.arrow_back,
+                          color: isDark ? Colors.white : Colors.black),
                     ),
                     SizedBox(width: 10.w),
                     Expanded(
@@ -93,11 +95,13 @@ class _searchPageScreenState extends State<searchPageScreen>
                           decoration: InputDecoration(
                             hintText: "Search Anything...",
                             hintStyle: TextStyle(
-                              color: Colors.grey[400],
+                              color: isDark ? Colors.grey[400] : Colors.black,
                               fontSize: 14.sp,
                             ),
                             filled: true,
-                            fillColor: const Color(0xff2F2F2F),
+                            fillColor: isDark
+                                ? const Color(0xff2F2F2F)
+                                : const Color(0xFFF4F4F9),
                             prefixIcon: Padding(
                               padding: EdgeInsets.only(left: 16.w, right: 10.w),
                               child: SvgPicture.asset(
@@ -105,7 +109,7 @@ class _searchPageScreenState extends State<searchPageScreen>
                                 width: 18.w,
                                 height: 18.h,
                                 colorFilter: ColorFilter.mode(
-                                  Colors.grey[400]!,
+                                  isDark ? Colors.white : Colors.black,
                                   BlendMode.srcIn,
                                 ),
                               ),
@@ -123,7 +127,9 @@ class _searchPageScreenState extends State<searchPageScreen>
                               borderSide: BorderSide.none,
                             ),
                           ),
-                          style: const TextStyle(color: Colors.white),
+                          style: TextStyle(
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
                         ),
                       ),
                     ),
@@ -170,7 +176,9 @@ class _searchPageScreenState extends State<searchPageScreen>
                                       stock["name"],
                                       style: TextStyle(
                                         fontSize: 14.sp,
-                                        color: Colors.white,
+                                        color: isDark
+                                            ? Colors.white
+                                            : Colors.black,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -179,7 +187,9 @@ class _searchPageScreenState extends State<searchPageScreen>
                                       stock["date"],
                                       style: TextStyle(
                                         fontSize: 11.sp,
-                                        color: const Color(0xffC9CACC),
+                                        color: isDark
+                                            ? Color(0xffC9CACC)
+                                            : Colors.black,
                                       ),
                                     ),
                                   ],
@@ -193,7 +203,8 @@ class _searchPageScreenState extends State<searchPageScreen>
                                     "NSE",
                                     style: TextStyle(
                                       fontSize: 13.sp,
-                                      color: Colors.white,
+                                      color:
+                                          isDark ? Colors.white : Colors.black,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -202,7 +213,9 @@ class _searchPageScreenState extends State<searchPageScreen>
                                     stock["type"],
                                     style: TextStyle(
                                       fontSize: 11.sp,
-                                      color: const Color(0xffC9CACC),
+                                      color: isDark
+                                          ? Color(0xffC9CACC)
+                                          : Colors.black,
                                     ),
                                   ),
                                 ],
@@ -224,8 +237,8 @@ class _searchPageScreenState extends State<searchPageScreen>
                         Divider(
                           height: 1.h,
                           color: const Color(0xff2F2F2F),
-                          indent: 16.w,
-                          endIndent: 16.w,
+                          // indent: 16.w,
+                          // endIndent: 16.w,
                         ),
                       ],
                     );

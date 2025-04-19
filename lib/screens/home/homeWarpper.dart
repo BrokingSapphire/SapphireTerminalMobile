@@ -37,6 +37,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Stack(
       children: [
         // Main App Content
@@ -46,7 +47,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
             physics: const NeverScrollableScrollPhysics(), // Disable swipe
             children: [
               const WatchlistScreen(),
-               OrderSection(),
+              OrderSection(),
               const HoldingsScreen(),
               const TradesScreen(),
               const DiscoverScreen(),
@@ -70,7 +71,8 @@ class _HomeWrapperState extends State<HomeWrapper> {
                   currentIndex: _selectedIndex,
                   selectedItemColor: const Color(0xff1DB954),
                   unselectedItemColor: const Color(0xff959595),
-                  backgroundColor: const Color(0xFF020202),
+                  backgroundColor:
+                      isDark ? const Color(0xFF020202) : Colors.white,
                   type: BottomNavigationBarType.fixed,
                   onTap: _onItemTapped,
                   selectedLabelStyle: TextStyle(fontSize: 13.sp),

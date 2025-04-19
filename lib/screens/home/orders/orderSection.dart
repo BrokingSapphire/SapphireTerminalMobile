@@ -314,6 +314,7 @@ class _OrderTabContentState extends State<OrderTabContent> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     // Define different data for each tab with 17 entries (original 2 + 15 more)
     List<Map<String, String>> orderData;
     switch (widget.tabType) {
@@ -918,7 +919,7 @@ class _OrderTabContentState extends State<OrderTabContent> {
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 16.w),
             child: constWidgets.searchField(
-                context, "Search Everything...", "orders"),
+                context, "Search Everything...", "orders", isDark),
           ),
         ),
         Expanded(

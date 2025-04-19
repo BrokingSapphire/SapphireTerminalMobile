@@ -21,6 +21,7 @@ class _MobileOtpState extends State<MobileOtp> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -75,6 +76,7 @@ class _MobileOtpState extends State<MobileOtp> {
                     "Phone Number",
                     _phoneNumber,
                     isPhoneNumber: true,
+                    isDark: isDark,
                   ),
                 ),
                 SizedBox(height: 20.h), // Extra spacing

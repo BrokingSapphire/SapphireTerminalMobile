@@ -12,6 +12,7 @@ class EquityScreen extends StatefulWidget {
 class _EquityScreenState extends State<EquityScreen> {
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     // Dummy data for equity items
     List<Map<String, String>> equityData = [
       {
@@ -169,7 +170,7 @@ class _EquityScreenState extends State<EquityScreen> {
                 height: 15.h,
               ),
               constWidgets.searchField(
-                  context, "Search Everything...", "equity"),
+                  context, "Search Everything...", "equity", isDark),
               SizedBox(
                 height: 12.h,
               ),

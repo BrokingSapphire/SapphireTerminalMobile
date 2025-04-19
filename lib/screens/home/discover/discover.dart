@@ -10,6 +10,7 @@ import 'package:sapphire/screens/accountSection/ledgerScreen.dart';
 import 'package:sapphire/screens/accountSection/profileScreen.dart';
 import 'package:sapphire/screens/accountSection/profitAndLoss.dart';
 import 'package:sapphire/screens/accountSection/tradesAndCharges.dart';
+import 'package:sapphire/screens/home/discover/governmentSecurities.dart';
 import 'package:sapphire/screens/home/orders/alertScreen.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
@@ -204,6 +205,8 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                               size: 15.sp),
                           onTap: () {
                             // navi(FundsScreen(), context);
+                            // navigate to governmentSecurities.dart
+                            navi(GovernmentSecurities(), context);
                           },
                         ),
                         Divider(

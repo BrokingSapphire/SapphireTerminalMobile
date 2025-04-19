@@ -108,6 +108,7 @@ class _tradingExperinceScreenState extends State<tradingExperinceScreen> {
     width = MediaQuery.of(context).size.width / 2 - 20;
     width2 = MediaQuery.of(context).size.width / 2 - 32;
     width3 = MediaQuery.of(context).size.width / 3 - 15;
+    final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(),
@@ -134,23 +135,25 @@ class _tradingExperinceScreenState extends State<tradingExperinceScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildSelectableChip("experience", "No experience", width2),
-                _buildSelectableChip("experience", "<1 year", width2),
+                _buildSelectableChip(
+                    "experience", "No experience", width2, isDark),
+                _buildSelectableChip("experience", "<1 year", width2, isDark),
               ],
             ),
             SizedBox(height: 16.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildSelectableChip("experience", "1-5 years", width2),
-                _buildSelectableChip("experience", "5-10 years", width2),
+                _buildSelectableChip("experience", "1-5 years", width2, isDark),
+                _buildSelectableChip(
+                    "experience", "5-10 years", width2, isDark),
               ],
             ),
             SizedBox(height: 16.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                _buildSelectableChip("experience", "10+ years", width2),
+                _buildSelectableChip("experience", "10+ years", width2, isDark),
               ],
             ),
             SizedBox(height: 18.h),
@@ -164,18 +167,23 @@ class _tradingExperinceScreenState extends State<tradingExperinceScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildSelectableChip("income", "<1 lakh", width3),
-                _buildSelectableChip("income", "1 Lakh - 5 Lakh", width3),
-                _buildSelectableChip("income", "5 Lakh - 10 Lakh", width3),
+                _buildSelectableChip("income", "<1 lakh", width3, isDark),
+                _buildSelectableChip(
+                    "income", "1 Lakh - 5 Lakh", width3, isDark),
+                _buildSelectableChip(
+                    "income", "5 Lakh - 10 Lakh", width3, isDark),
               ],
             ),
             SizedBox(height: 16.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildSelectableChip("income", "10 Lakh - 25 Lakh", width3),
-                _buildSelectableChip("income", "25 Lakh - 1 Crore", width3),
-                _buildSelectableChip("income", "More than 1 CR", width3),
+                _buildSelectableChip(
+                    "income", "10 Lakh - 25 Lakh", width3, isDark),
+                _buildSelectableChip(
+                    "income", "25 Lakh - 1 Crore", width3, isDark),
+                _buildSelectableChip(
+                    "income", "More than 1 CR", width3, isDark),
               ],
             ),
             SizedBox(height: 10.h),
@@ -184,9 +192,11 @@ class _tradingExperinceScreenState extends State<tradingExperinceScreen> {
             SizedBox(height: 12.h),
             Row(
               children: [
-                _buildChip("settlement", "Monthly", width: 106.w),
+                _buildChip("settlement", "Monthly",
+                    width: 106.w, isDark: isDark),
                 SizedBox(width: 16.w),
-                _buildChip("settlement", "Quarterly", width: 106.w),
+                _buildChip("settlement", "Quarterly",
+                    width: 106.w, isDark: isDark),
               ],
             ),
             const Spacer(),
@@ -202,7 +212,8 @@ class _tradingExperinceScreenState extends State<tradingExperinceScreen> {
     );
   }
 
-  Widget _buildChip(String category, String value, {double? width}) {
+  Widget _buildChip(String category, String value,
+      {double? width, required bool isDark}) {
     final isSelected =
         (category == "experience" && selectedExperience == value) ||
             (category == "income" && selectedIncome == incomeMap[value]) ||
@@ -215,18 +226,20 @@ class _tradingExperinceScreenState extends State<tradingExperinceScreen> {
         isSelected,
         context,
         width ?? 140.w,
+        isDark,
       ),
     );
   }
 
-  Widget _buildSelectableChip(String category, String value, double width) {
+  Widget _buildSelectableChip(
+      String category, String value, double width, bool isDark) {
     final isSelected =
         (category == "experience" && selectedExperience == value) ||
             (category == "income" && selectedIncome == incomeMap[value]);
 
     return InkWell(
       onTap: () => _selectOption(category, value),
-      child: constWidgets.choiceChip(value, isSelected, context, width),
+      child: constWidgets.choiceChip(value, isSelected, context, width, isDark),
     );
   }
 }

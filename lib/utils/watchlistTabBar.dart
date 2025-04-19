@@ -9,6 +9,7 @@ class WatchlistTabBar extends StatelessWidget {
   final Function(int index, String newName)? onEditWatchlist;
   final Function(String name)? onCreateWatchlist;
   final Function(List<String> categories)? onAddCategory;
+  final bool isDark;
 
   const WatchlistTabBar({
     super.key,
@@ -18,6 +19,7 @@ class WatchlistTabBar extends StatelessWidget {
     this.onEditWatchlist,
     this.onCreateWatchlist,
     this.onAddCategory,
+    required this.isDark,
   });
 
   void _showEditWatchlistModal(
@@ -27,7 +29,7 @@ class WatchlistTabBar extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: const Color(0xff121413),
+      backgroundColor: isDark ? const Color(0xff121413) : Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       builder: (context) => Padding(
         padding: EdgeInsets.only(
@@ -44,9 +46,12 @@ class WatchlistTabBar extends StatelessWidget {
               children: [
                 Text("Rename Watchlist",
                     style: TextStyle(
-                        fontSize: 21.sp, fontWeight: FontWeight.bold)),
+                        fontSize: 21.sp,
+                        fontWeight: FontWeight.bold,
+                        color: isDark ? Colors.white : Colors.black)),
                 IconButton(
-                  icon: const Icon(Icons.close, color: Colors.white),
+                  icon: Icon(Icons.close,
+                      color: isDark ? Colors.white : Colors.black),
                   onPressed: () => Navigator.pop(context),
                 ),
               ],
@@ -56,12 +61,14 @@ class WatchlistTabBar extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Text(
                 "Enter New Name",
-                style:
-                    TextStyle(color: const Color(0xffEBEEF5), fontSize: 14.sp),
+                style: TextStyle(
+                    color: isDark ? const Color(0xffEBEEF5) : Colors.black,
+                    fontSize: 14.sp),
               ),
             ),
             SizedBox(height: 12.h),
-            constWidgets.textField("Watchlist Name", controller),
+            constWidgets.textField("Watchlist Name", controller,
+                isDark: isDark),
             SizedBox(height: 16.h),
             constWidgets.greenButton("Save", onTap: () {
               if (controller.text.trim().isNotEmpty) {
@@ -82,7 +89,7 @@ class WatchlistTabBar extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: const Color(0xff121413),
+      backgroundColor: isDark ? const Color(0xff121413) : Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
@@ -102,9 +109,12 @@ class WatchlistTabBar extends StatelessWidget {
                 children: [
                   Text("Create New Watchlist",
                       style: TextStyle(
-                          fontSize: 21.sp, fontWeight: FontWeight.bold)),
+                          fontSize: 21.sp,
+                          fontWeight: FontWeight.bold,
+                          color: isDark ? Colors.white : Colors.black)),
                   IconButton(
-                    icon: const Icon(Icons.close, color: Colors.white),
+                    icon: Icon(Icons.close,
+                        color: isDark ? Colors.white : Colors.black),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ],
@@ -115,11 +125,13 @@ class WatchlistTabBar extends StatelessWidget {
                 child: Text(
                   "Enter Watchlist Name",
                   style: TextStyle(
-                      color: const Color(0xffEBEEF5), fontSize: 14.sp),
+                      color: isDark ? Color(0xffEBEEF5) : Colors.black,
+                      fontSize: 14.sp),
                 ),
               ),
               SizedBox(height: 12.h),
-              constWidgets.textField("My Watchlist", controller),
+              constWidgets.textField("My Watchlist", controller,
+                  isDark: isDark),
               SizedBox(height: 16.h),
               constWidgets.greenButton("Create", onTap: () {
                 if (controller.text.trim().isNotEmpty) {
@@ -142,7 +154,7 @@ class WatchlistTabBar extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: const Color(0xff121413),
+      backgroundColor: isDark ? const Color(0xff121413) : Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -162,9 +174,12 @@ class WatchlistTabBar extends StatelessWidget {
                 children: [
                   Text("Add Categories",
                       style: TextStyle(
-                          fontSize: 21.sp, fontWeight: FontWeight.bold)),
+                          fontSize: 21.sp,
+                          fontWeight: FontWeight.bold,
+                          color: isDark ? Colors.white : Colors.black)),
                   IconButton(
-                    icon: const Icon(Icons.close, color: Colors.white),
+                    icon: Icon(Icons.close,
+                        color: isDark ? Colors.white : Colors.black),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ],
@@ -175,11 +190,13 @@ class WatchlistTabBar extends StatelessWidget {
                 child: Text(
                   "Enter Category Name",
                   style: TextStyle(
-                      color: const Color(0xffEBEEF5), fontSize: 14.sp),
+                      color: isDark ? Color(0xffEBEEF5) : Colors.black,
+                      fontSize: 14.sp),
                 ),
               ),
               SizedBox(height: 12.h),
-              constWidgets.textField("Category Name", controller),
+              constWidgets.textField("Category Name", controller,
+                  isDark: isDark),
               SizedBox(height: 8.h),
               constWidgets.greenButton("Add", onTap: () {
                 if (controller.text.trim().isNotEmpty) {
@@ -195,9 +212,11 @@ class WatchlistTabBar extends StatelessWidget {
                   children: categories
                       .map((cat) => ListTile(
                             title: Text(cat,
-                                style: const TextStyle(color: Colors.white)),
-                            leading:
-                                const Icon(Icons.label, color: Colors.white),
+                                style: TextStyle(
+                                    color:
+                                        isDark ? Colors.white : Colors.black)),
+                            leading: Icon(Icons.label,
+                                color: isDark ? Colors.white : Colors.black),
                           ))
                       .toList(),
                 ),
@@ -217,25 +236,27 @@ class WatchlistTabBar extends StatelessWidget {
   void _showOptionsBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xff121413),
+      backgroundColor: isDark ? const Color(0xff121413) : Colors.white,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            leading: const Icon(Icons.playlist_add, color: Colors.white),
-            title: const Text("Create Watchlist",
-                style: TextStyle(color: Colors.white)),
+            leading: Icon(Icons.playlist_add,
+                color: isDark ? Colors.white : Colors.black),
+            title: Text("Create Watchlist",
+                style: TextStyle(color: isDark ? Colors.white : Colors.black)),
             onTap: () {
               Navigator.pop(context);
               _showCreateWatchlistModal(context);
             },
           ),
           ListTile(
-            leading: const Icon(Icons.category, color: Colors.white),
-            title: const Text("Add Category",
-                style: TextStyle(color: Colors.white)),
+            leading: Icon(Icons.category,
+                color: isDark ? Colors.white : Colors.black),
+            title: Text("Add Category",
+                style: TextStyle(color: isDark ? Colors.white : Colors.black)),
             onTap: () {
               Navigator.pop(context);
               _showAddCategoryModal(context);
@@ -249,7 +270,7 @@ class WatchlistTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black,
+      color: isDark ? Colors.black : Colors.white,
       padding: EdgeInsets.symmetric(horizontal: 8.w),
       child: Column(
         children: [
@@ -274,6 +295,7 @@ class WatchlistTabBar extends StatelessWidget {
                                 color: isSelected
                                     ? const Color(0xff1DB954)
                                     : Colors.transparent,
+                                // color: isSelected ? (isDark ? Colo : const Color(0xff1DB954)) : (isDark ? Colors.transparent : Colors.transparent),
                                 width: 2,
                               ),
                             ),
@@ -283,7 +305,9 @@ class WatchlistTabBar extends StatelessWidget {
                             child: Text(
                               tabNames[index],
                               style: TextStyle(
-                                color: isSelected ? Colors.green : Colors.white,
+                                color: isSelected
+                                    ? Colors.green
+                                    : (isDark ? Colors.white : Colors.black),
                                 fontSize: 14.sp,
                               ),
                             ),
@@ -295,7 +319,8 @@ class WatchlistTabBar extends StatelessWidget {
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.add, color: Colors.white),
+                icon: Icon(Icons.add,
+                    color: isDark ? Colors.white : Colors.black),
                 onPressed: () => _showOptionsBottomSheet(context),
               ),
             ],

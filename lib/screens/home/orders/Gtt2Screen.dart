@@ -32,6 +32,7 @@ class _gtt2ScreenState extends State<gtt2Screen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 38,
@@ -52,7 +53,7 @@ class _gtt2ScreenState extends State<gtt2Screen> {
         child: Column(
           children: [
             SizedBox(height: 12.h),
-            constWidgets.searchField(context, "Search GTT", "orders"),
+            constWidgets.searchField(context, "Search GTT", "orders", isDark),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 12.h),
               child: Align(

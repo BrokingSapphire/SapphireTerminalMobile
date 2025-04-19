@@ -113,6 +113,7 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 46,
@@ -152,9 +153,11 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
                 style: TextStyle(color: Colors.white, fontSize: 14.sp),
               ),
               SizedBox(height: 16.h),
-              constWidgets.textField("IFSC Code", ifscController),
+              constWidgets.textField("IFSC Code", ifscController,
+                  isDark: isDark),
               SizedBox(height: 12.h),
-              constWidgets.textField('Account Number', accountNumberController),
+              constWidgets.textField('Account Number', accountNumberController,
+                  isDark: isDark),
               SizedBox(height: 18.h),
               Text(
                 "Account Type",
@@ -167,9 +170,9 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  _buildSelectableChip("Savings"),
+                  _buildSelectableChip("Savings", isDark),
                   SizedBox(width: 20.w),
-                  _buildSelectableChip("Current"),
+                  _buildSelectableChip("Current", isDark),
                 ],
               ),
               SizedBox(height: 24.h),
@@ -234,11 +237,11 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
     );
   }
 
-  Widget _buildSelectableChip(String value) {
+  Widget _buildSelectableChip(String value, bool isDark) {
     bool isSelected = selectedAccountType == value;
     return InkWell(
       onTap: () => _selectAccountType(value),
-      child: constWidgets.choiceChip(value, isSelected, context, 100.w),
+      child: constWidgets.choiceChip(value, isSelected, context, 100.w, isDark),
     );
   }
 }

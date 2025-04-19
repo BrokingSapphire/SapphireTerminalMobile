@@ -39,6 +39,7 @@ class _gtt3ScreenState extends State<gtt3Screen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 38,
@@ -59,7 +60,7 @@ class _gtt3ScreenState extends State<gtt3Screen> {
         child: Column(
           children: [
             SizedBox(height: 12.h),
-            constWidgets.searchField(context, "Search GTT", "orders"),
+            constWidgets.searchField(context, "Search GTT", "orders", isDark),
             SizedBox(height: 12.h),
             Expanded(
               child: ListView.builder(

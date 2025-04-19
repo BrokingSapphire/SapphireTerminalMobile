@@ -223,6 +223,7 @@ void showFilterBottomSheet({
   required BuildContext context,
   required String pageKey,
   required Function(List<Map<String, String>>) onApply,
+  required bool isDark,
 }) {
   final options = filterConfig[pageKey] ?? [];
 
@@ -232,7 +233,7 @@ void showFilterBottomSheet({
 
   showModalBottomSheet(
     context: context,
-    backgroundColor: const Color(0xFF121413),
+    backgroundColor: isDark ? const Color(0xFF121413) : const Color(0xFFF4F4F9),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
     ),
@@ -260,7 +261,7 @@ void showFilterBottomSheet({
                         width: 40.w,
                         margin: EdgeInsets.only(bottom: 16.h),
                         decoration: BoxDecoration(
-                          color: Colors.grey.shade700,
+                          color: isDark ? Colors.grey.shade700 : Colors.black,
                           borderRadius: BorderRadius.circular(2.r),
                         ),
                       ),
@@ -268,7 +269,7 @@ void showFilterBottomSheet({
                     Text(
                       "Sort By",
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: Colors.white,
+                            color: isDark ? Colors.white : Colors.black,
                             fontSize: 18.sp,
                           ),
                     ),
@@ -288,7 +289,7 @@ void showFilterBottomSheet({
                                   height: 20
                                       .h, // You can adjust the size as per your requirement
                                   width: 20.w,
-                                  color: Colors.white,
+                                  color: isDark ? Colors.white : Colors.black,
                                 )
                               else
                                 Text(""), // Fallback if no SVG
@@ -296,7 +297,7 @@ void showFilterBottomSheet({
                               Text(
                                 option.label,
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: isDark ? Colors.white : Colors.black,
                                   fontSize: 16.sp,
                                 ),
                               ),
@@ -328,6 +329,7 @@ void showFilterBottomSheet({
                                       isDirectionSelected, // Highlight the selected option
                                       context,
                                       130.w,
+                                      isDark,
                                     ),
                                   ),
                                 ),

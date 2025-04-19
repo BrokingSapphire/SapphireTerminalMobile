@@ -506,8 +506,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
 
-                // Market Cards (NIFTY, SENSEX)
-
                 SliverPersistentHeader(
                   pinned: true,
                   delegate: _ProfileHeaderDelegate(),

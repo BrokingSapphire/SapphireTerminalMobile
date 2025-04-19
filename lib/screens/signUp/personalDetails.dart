@@ -84,6 +84,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     width = MediaQuery.of(context).size.width / 3 - 20;
     return Scaffold(
       appBar: AppBar(
@@ -122,7 +123,11 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                     .map((item) => InkWell(
                           onTap: () => _selectOccupation(item),
                           child: constWidgets.choiceChip(
-                              item, selectedOccupation == item, context, width),
+                              item,
+                              selectedOccupation == item,
+                              context,
+                              width,
+                              isDark),
                         ))
                     .toList(),
               ),
@@ -135,13 +140,13 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                   InkWell(
                     onTap: () => setState(() => isPoliticallyExposed = true),
                     child: constWidgets.choiceChip(
-                        "Yes", isPoliticallyExposed, context, 82.w),
+                        "Yes", isPoliticallyExposed, context, 82.w, isDark),
                   ),
                   SizedBox(width: 20.w),
                   InkWell(
                     onTap: () => setState(() => isPoliticallyExposed = false),
                     child: constWidgets.choiceChip(
-                        "No", !isPoliticallyExposed, context, 82.w),
+                        "No", !isPoliticallyExposed, context, 82.w, isDark),
                   ),
                 ],
               ),

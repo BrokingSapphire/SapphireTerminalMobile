@@ -276,6 +276,7 @@ class _PanDetailsState extends State<PanDetails> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 46,
@@ -305,7 +306,8 @@ class _PanDetailsState extends State<PanDetails> {
                 style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w400),
               ),
               SizedBox(height: 16.h),
-              constWidgets.textField("PAN Number", panNumber, isCapital: true),
+              constWidgets.textField("PAN Number", panNumber,
+                  isCapital: true, isDark: isDark),
               SizedBox(height: 18.h),
               InkWell(
                 onTap: () => showFindPanBottomSheet(context),

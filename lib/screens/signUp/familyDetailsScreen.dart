@@ -98,6 +98,7 @@ class _FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     width = MediaQuery.of(context).size.width / 3 - 20;
     return Scaffold(
       appBar: AppBar(
@@ -125,9 +126,11 @@ class _FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
                   style:
                       TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w600)),
               SizedBox(height: 16.h),
-              constWidgets.textField("Father's Name", fathersName),
+              constWidgets.textField("Father's Name", fathersName,
+                  isDark: isDark),
               SizedBox(height: 16.h),
-              constWidgets.textField("Mother's Name", mothersName),
+              constWidgets.textField("Mother's Name", mothersName,
+                  isDark: isDark),
               SizedBox(height: 20.h),
               Text("Marital Status",
                   style:
@@ -136,9 +139,9 @@ class _FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildSelectableChip("Single"),
-                  _buildSelectableChip("Married"),
-                  _buildSelectableChip("Divorced"),
+                  _buildSelectableChip("Single", isDark),
+                  _buildSelectableChip("Married", isDark),
+                  _buildSelectableChip("Divorced", isDark),
                 ],
               ),
             ],
@@ -174,11 +177,11 @@ class _FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
     );
   }
 
-  Widget _buildSelectableChip(String value) {
+  Widget _buildSelectableChip(String value, bool isDark) {
     final isSelected = selectedMaritalStatus == value;
     return InkWell(
       onTap: () => setState(() => selectedMaritalStatus = value),
-      child: constWidgets.choiceChip(value, isSelected, context, width),
+      child: constWidgets.choiceChip(value, isSelected, context, width, isDark),
     );
   }
 }

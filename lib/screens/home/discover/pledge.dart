@@ -167,11 +167,13 @@ class _CustomTabBarState extends State<CustomTabBar> {
 class PledgeContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: constWidgets.searchField(context, 'Search......', 'pledge'),
+          child: constWidgets.searchField(
+              context, 'Search......', 'pledge', isDark),
         ),
         SizedBox(height: 10.h),
         Expanded(

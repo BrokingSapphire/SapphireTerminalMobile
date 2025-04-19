@@ -38,6 +38,7 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
   ];
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: SingleChildScrollView(
@@ -75,7 +76,7 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
 
               // 👉 Replace this with your actual custom search bar
               constWidgets.searchField(
-                  context, "Search Mutual Funds....", "mutual_funds"),
+                  context, "Search Mutual Funds....", "mutual_funds", isDark),
 
               SizedBox(height: 16.h),
 

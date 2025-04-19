@@ -87,6 +87,7 @@ class _positionScreenState extends State<positionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Padding(
@@ -117,7 +118,7 @@ class _positionScreenState extends State<positionScreen> {
                 height: 15.h,
               ),
               constWidgets.searchField(
-                  context, "Search Everything...", "positions"),
+                  context, "Search Everything...", "positions", isDark),
               SizedBox(
                 height: 15.h,
               ),

@@ -248,6 +248,7 @@ class _ProfitAndLossState extends State<ProfitAndLoss>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black, // or your desired color
@@ -415,7 +416,7 @@ class _ProfitAndLossState extends State<ProfitAndLoss>
                       ),
                       SizedBox(height: 16.h),
                       constWidgets.searchField(
-                          context, "Search company or stock", "equity"),
+                          context, "Search company or stock", "equity", isDark),
                       SizedBox(height: 16.h),
                     ],
                   ),

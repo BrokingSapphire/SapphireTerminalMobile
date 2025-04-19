@@ -54,16 +54,17 @@ class _DisclosureState extends State<Disclosure> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     double progress = (maxCountdown - countdown) / maxCountdown;
 
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        backgroundColor: Colors.black,
+        backgroundColor: isDark ? Colors.black : Colors.white,
         title: Text(
           "Risk Disclosure on Derivatives",
           style: TextStyle(
-            color: Colors.white,
+            color: isDark ? Colors.white : Colors.black,
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
           ),
@@ -78,7 +79,7 @@ class _DisclosureState extends State<Disclosure> {
           ),
         ),
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: isDark ? Colors.black : Colors.white,
       body: Column(
         children: [
           // Centered content
@@ -93,20 +94,24 @@ class _DisclosureState extends State<Disclosure> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       _buildBulletPoint(
-                          "9 out of 10 individual traders in the equity Futures and Options Segment incurred net losses."),
+                          "9 out of 10 individual traders in the equity Futures and Options Segment incurred net losses.",
+                          isDark),
                       _buildBulletPoint(
-                          "On average, loss-makers registered a net trading loss close to ₹50,000."),
+                          "On average, loss-makers registered a net trading loss close to ₹50,000.",
+                          isDark),
                       _buildBulletPoint(
-                          "Over and above the net trading losses incurred, loss-makers expended an additional 28% of net trading losses as transaction costs."),
+                          "Over and above the net trading losses incurred, loss-makers expended an additional 28% of net trading losses as transaction costs.",
+                          isDark),
                       _buildBulletPoint(
-                          "Those making net trading profits incurred between 15% to 50% of such profits as transaction costs."),
+                          "Those making net trading profits incurred between 15% to 50% of such profits as transaction costs.",
+                          isDark),
                       SizedBox(height: 15.h),
                       RichText(
                         textAlign: TextAlign.left,
                         text: TextSpan(
                           text: "Source: ",
-                          style: GoogleFonts.poppins(
-                            color: Colors.white54,
+                          style: TextStyle(
+                            color: isDark ? Colors.white54 : Colors.black54,
                             fontSize: 12.sp,
                           ),
                           children: [
@@ -127,7 +132,7 @@ class _DisclosureState extends State<Disclosure> {
                               text:
                                   " dated January 25, 2023, on \"Analysis of Profit and Loss of Individual Traders dealing in equity Futures and Options (F&O) Segment\", wherein Aggregate Level findings are based on annual Profit/Loss incurred by individual traders in equity F&O during FY 2021-22.",
                               style: TextStyle(
-                                color: Colors.white54,
+                                color: isDark ? Colors.white54 : Colors.black54,
                                 fontSize: 12.sp,
                               ),
                             ),
@@ -216,7 +221,7 @@ class _DisclosureState extends State<Disclosure> {
     );
   }
 
-  Widget _buildBulletPoint(String text) {
+  Widget _buildBulletPoint(String text, bool isDark) {
     return Column(
       children: [
         Row(
@@ -226,7 +231,7 @@ class _DisclosureState extends State<Disclosure> {
               padding: const EdgeInsets.only(top: 6),
               child: Icon(
                 Icons.fiber_manual_record,
-                color: Colors.white,
+                color: isDark ? Colors.white : Colors.black,
                 size: 8.sp,
               ),
             ),
@@ -235,7 +240,7 @@ class _DisclosureState extends State<Disclosure> {
               child: Text(
                 text,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: isDark ? Colors.white : Colors.black,
                   fontSize: 14.sp,
                 ),
                 softWrap: true,

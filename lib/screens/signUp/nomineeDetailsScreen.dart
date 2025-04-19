@@ -198,6 +198,7 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 46,
@@ -241,7 +242,7 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
             child: ListView.builder(
               itemCount: nominees.length,
               itemBuilder: (context, index) {
-                return _buildNomineeCard(index);
+                return _buildNomineeCard(index, isDark);
               },
             ),
           ),
@@ -263,7 +264,7 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
     );
   }
 
-  Widget _buildNomineeCard(int index) {
+  Widget _buildNomineeCard(int index, bool isDark) {
     return Container(
       margin: EdgeInsets.only(bottom: 15.h),
       padding: EdgeInsets.all(15.w),
@@ -285,10 +286,12 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
             ],
           ),
           SizedBox(height: 16.h),
-          constWidgets.textField("Name", nominees[index]["nameController"]),
+          constWidgets.textField("Name", nominees[index]["nameController"],
+              isDark: isDark),
           SizedBox(height: 12.h),
           constWidgets.textField(
-              "Nominee PAN", nominees[index]["panController"]),
+              "Nominee PAN", nominees[index]["panController"],
+              isDark: isDark),
           SizedBox(height: 12.h),
           GestureDetector(
             onTap: () => _selectRelation(index),

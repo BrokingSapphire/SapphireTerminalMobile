@@ -17,6 +17,7 @@ class _pepScreenState extends State<pepScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     width = MediaQuery.of(context).size.width / 2 - 20;
     print(width);
     return Scaffold(
@@ -50,17 +51,17 @@ class _pepScreenState extends State<pepScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                constWidgets.choiceChip("Yes", false, context, 82.w),
+                constWidgets.choiceChip("Yes", false, context, 82.w, isDark),
                 SizedBox(
                   width: 20.w,
                 ),
-                constWidgets.choiceChip("No", true, context, 82.w),
+                constWidgets.choiceChip("No", true, context, 82.w, isDark),
               ],
             ),
 
             Expanded(child: SizedBox()),
 
-            constWidgets.greenButton("Continue",onTap: (){
+            constWidgets.greenButton("Continue", onTap: () {
               navi(linkBankScreen(), context);
             }),
             SizedBox(height: 10.h),

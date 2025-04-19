@@ -23,6 +23,7 @@ class _basketScreenState extends State<basketScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SafeArea(
       child: Scaffold(
         appBar: PreferredSize(
@@ -56,7 +57,7 @@ class _basketScreenState extends State<basketScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 2.w),
                 child: constWidgets.searchField(
-                    context, "Search Everything...", "orders"),
+                    context, "Search Everything...", "orders", isDark),
               ),
               SizedBox(height: 16.h),
               Padding(
@@ -69,7 +70,7 @@ class _basketScreenState extends State<basketScreen> {
                             fontSize: 14.sp, color: Color(0xffEBEEF5))),
                     InkWell(
                       onTap: () {
-                        _showCreateBasketModal(context);
+                        _showCreateBasketModal(context, isDark);
                       },
                       child: Text(
                         "+ New Basket",
@@ -137,7 +138,7 @@ class _basketScreenState extends State<basketScreen> {
     );
   }
 
-  void _showCreateBasketModal(BuildContext context) {
+  void _showCreateBasketModal(BuildContext context, bool isDark) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -173,7 +174,7 @@ class _basketScreenState extends State<basketScreen> {
                 ),
               ),
               SizedBox(height: 12.h),
-              constWidgets.textField("MY BSKT", mybasketname),
+              constWidgets.textField("MY BSKT", mybasketname, isDark: isDark),
               SizedBox(height: 16.h),
               constWidgets.greenButton("Create", onTap: () {
                 navi(basketSelectScreen(), context);

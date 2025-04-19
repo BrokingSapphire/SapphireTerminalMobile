@@ -27,6 +27,7 @@ class _settingsScreenState extends State<settingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -112,6 +113,7 @@ class _settingsScreenState extends State<settingsScreen> {
                                       !isDarkTheme,
                                       context,
                                       130.w,
+                                      isDark,
                                     ),
                                   ),
 
@@ -129,6 +131,7 @@ class _settingsScreenState extends State<settingsScreen> {
                                       isDarkTheme,
                                       context,
                                       130.w,
+                                      isDark,
                                     ),
                                   ),
                                 ],

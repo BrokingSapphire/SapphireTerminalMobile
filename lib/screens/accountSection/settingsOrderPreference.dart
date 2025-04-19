@@ -36,7 +36,7 @@ class _SettingsOrderPreferenceState extends State<SettingsOrderPreference> {
     "Retail"
   ];
 
-  Widget sections(List list) {
+  Widget sections(List list, bool isDark) {
     String sectionTitle = list[0];
 
     return Column(
@@ -66,6 +66,7 @@ class _SettingsOrderPreferenceState extends State<SettingsOrderPreference> {
                 selectedProductType[sectionTitle] == list[1],
                 context,
                 width,
+                isDark,
               ),
             ),
             GestureDetector(
@@ -79,6 +80,7 @@ class _SettingsOrderPreferenceState extends State<SettingsOrderPreference> {
                 selectedProductType[sectionTitle] == list[2],
                 context,
                 width,
+                isDark,
               ),
             ),
             GestureDetector(
@@ -92,6 +94,7 @@ class _SettingsOrderPreferenceState extends State<SettingsOrderPreference> {
                 selectedProductType[sectionTitle] == list[3],
                 context,
                 width,
+                isDark,
               ),
             ),
           ],
@@ -116,6 +119,7 @@ class _SettingsOrderPreferenceState extends State<SettingsOrderPreference> {
                 selectedOrderType[sectionTitle] == "Limit",
                 context,
                 width,
+                isDark,
               ),
             ),
             GestureDetector(
@@ -129,6 +133,7 @@ class _SettingsOrderPreferenceState extends State<SettingsOrderPreference> {
                 selectedOrderType[sectionTitle] == "Market",
                 context,
                 width,
+                isDark,
               ),
             ),
             GestureDetector(
@@ -142,6 +147,7 @@ class _SettingsOrderPreferenceState extends State<SettingsOrderPreference> {
                 selectedOrderType[sectionTitle] == "Retain",
                 context,
                 width,
+                isDark,
               ),
             ),
           ],
@@ -157,32 +163,32 @@ class _SettingsOrderPreferenceState extends State<SettingsOrderPreference> {
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width / 3 - 20;
-
+    final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return SafeArea(
       child: Scaffold(
-         appBar: AppBar(
-        backgroundColor: Colors.black, // or your desired color
-        elevation: 0,
-        scrolledUnderElevation: 0, // prevent shadow when scrolling
-        surfaceTintColor: Colors.transparent,
-                leadingWidth: 32.w,
+        appBar: AppBar(
+          backgroundColor: Colors.black, // or your desired color
+          elevation: 0,
+          scrolledUnderElevation: 0, // prevent shadow when scrolling
+          surfaceTintColor: Colors.transparent,
+          leadingWidth: 32.w,
 
-        title: Padding(
-          padding: const EdgeInsets.only(top: 15),
-          child: Text(
-            "Order Preference",
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
+          title: Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: Text(
+              "Order Preference",
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
+            ),
+          ),
+          leading: Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(Icons.arrow_back)),
           ),
         ),
-        leading: Padding(
-          padding: const EdgeInsets.only(top: 15),
-          child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.arrow_back)),
-        ),
-      ),
         body: Column(
           children: [
             // Fixed Divider
@@ -197,13 +203,13 @@ class _SettingsOrderPreferenceState extends State<SettingsOrderPreference> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 10.h),
-                      sections(equityCash),
+                      sections(equityCash, isDark),
                       SizedBox(height: 24.h),
-                      sections(equityDerivatives),
+                      sections(equityDerivatives, isDark),
                       SizedBox(height: 24.h),
-                      sections(currDerivatives),
+                      sections(currDerivatives, isDark),
                       SizedBox(height: 24.h),
-                      sections(commDerivatives),
+                      sections(commDerivatives, isDark),
                       SizedBox(height: 24.h),
                       Container(
                         height: 44.h,
