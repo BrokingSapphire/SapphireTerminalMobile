@@ -179,11 +179,9 @@ class _WatchlistScreenState extends State<WatchlistScreen>
 
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, // Allows dynamic height with keyboard
-      backgroundColor: const Color(0xff121413), // Match app's dark theme
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-      ),
+      isScrollControlled: true,
+      backgroundColor: const Color(0xff121413),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       builder: (context) => Padding(
         padding: EdgeInsets.only(
           left: 16.w,
@@ -205,6 +203,11 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                     color: const Color(0xffEBEEF5),
                   ),
                 ),
+                Spacer(),
+                IconButton(
+                    onPressed: () {},
+                    icon: SvgPicture.asset("assets/svgs/delete.svg",
+                        color: Colors.white)),
                 IconButton(
                   icon: const Icon(Icons.close, color: Colors.white),
                   onPressed: () => Navigator.pop(context),
@@ -225,16 +228,23 @@ class _WatchlistScreenState extends State<WatchlistScreen>
             SizedBox(height: 12.h),
             TextField(
               controller: controller,
-              style: TextStyle(color: Colors.white, fontSize: 14.sp),
               decoration: InputDecoration(
-                filled: true,
-                fillColor: const Color(0xff1C2524),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                  borderSide: BorderSide.none,
-                ),
                 contentPadding:
-                EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+                EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                hintText: "Enter Category Name",
+                labelStyle: TextStyle(color: Color(0xffC9CACC)),
+                hintStyle: TextStyle(color: Color(0xFFC9CACC), fontSize: 15.sp),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                  borderSide: BorderSide(color: Color(0XFF2F2F2F)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                  borderSide: BorderSide(color: Colors.green, width: 2.0),
+                ),
               ),
             ),
             SizedBox(height: 8.h),

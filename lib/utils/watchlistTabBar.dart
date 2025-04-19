@@ -75,8 +75,28 @@ class WatchlistTabBar extends StatelessWidget {
               ),
             ),
             SizedBox(height: 12.h),
-          constWidgets.textField("", controller,
-                isDark: isDark),
+            TextField(
+              controller: controller,
+              decoration: InputDecoration(
+                contentPadding:
+                EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                hintText: "Enter Watchlist Name",
+                labelStyle: TextStyle(color: Color(0xffC9CACC)),
+                hintStyle:
+                TextStyle(color: Color(0xFFC9CACC), fontSize: 15.sp),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                  borderSide: BorderSide(color: Color(0XFF2F2F2F)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                  borderSide: BorderSide(color: Colors.green, width: 2.0),
+                ),
+              ),
+            ),
             SizedBox(height: 16.h),
             constWidgets.greenButton("Save", onTap: () {
               if (controller.text.trim().isNotEmpty) {
@@ -138,8 +158,28 @@ class WatchlistTabBar extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 12.h),
-            constWidgets.textField("", controller,
-                  isDark: isDark),
+              TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  contentPadding:
+                  EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  hintText: "Enter Watchlist Name",
+                  labelStyle: TextStyle(color: Color(0xffC9CACC)),
+                  hintStyle:
+                  TextStyle(color: Color(0xFFC9CACC), fontSize: 15.sp),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                    borderSide: BorderSide(color: Color(0XFF2F2F2F)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                    borderSide: BorderSide(color: Colors.green, width: 2.0),
+                  ),
+                ),
+              ),
               SizedBox(height: 16.h),
               constWidgets.greenButton("Create", onTap: () {
                 if (controller.text.trim().isNotEmpty) {
@@ -201,8 +241,28 @@ class WatchlistTabBar extends StatelessWidget {
               ),
             ),
             SizedBox(height: 12.h),
-            constWidgets.textField("", controller, isDark: true),
-            SizedBox(height: 8.h),
+            TextField(
+              controller: controller,
+              decoration: InputDecoration(
+                contentPadding:
+                EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                hintText: "Enter Category Name",
+                labelStyle: TextStyle(color: Color(0xffC9CACC)),
+                hintStyle:
+                TextStyle(color: Color(0xFFC9CACC), fontSize: 15.sp),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                  borderSide: BorderSide(color: Color(0XFF2F2F2F)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                  borderSide: BorderSide(color: Colors.green, width: 2.0),
+                ),
+              ),
+            ),            SizedBox(height: 8.h),
             constWidgets.greenButton("Add", onTap: () {
               if (controller.text.trim().isNotEmpty) {
                 String input = controller.text.trim();
