@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class WatchlistTabBar extends StatelessWidget {
@@ -49,6 +50,13 @@ class WatchlistTabBar extends StatelessWidget {
                         fontSize: 21.sp,
                         fontWeight: FontWeight.bold,
                         color: isDark ? Colors.white : Colors.black)),
+                Spacer(),
+                IconButton(
+                    onPressed: () {},
+                    icon: SvgPicture.asset(
+                      "assets/svgs/delete.svg",
+                      color: Colors.white,
+                    )),
                 IconButton(
                   icon: Icon(Icons.close,
                       color: isDark ? Colors.white : Colors.black),
@@ -67,7 +75,7 @@ class WatchlistTabBar extends StatelessWidget {
               ),
             ),
             SizedBox(height: 12.h),
-            constWidgets.textField("Watchlist Name", controller,
+          constWidgets.textField("", controller,
                 isDark: isDark),
             SizedBox(height: 16.h),
             constWidgets.greenButton("Save", onTap: () {
