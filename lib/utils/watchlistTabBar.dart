@@ -149,92 +149,66 @@ class WatchlistTabBar extends StatelessWidget {
 
   void _showAddCategoryModal(BuildContext context) {
     final controller = TextEditingController();
-    final List<String> categories = [];
 
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: isDark ? const Color(0xff121413) : Colors.white,
+      backgroundColor: const Color(0xff121413),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (context) => StatefulBuilder(builder: (context, setState) {
-        return Padding(
-          padding: EdgeInsets.only(
-            left: 16.w,
-            right: 16.w,
-            bottom: MediaQuery.of(context).viewInsets.bottom + 15.h,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: 16.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Add Categories",
-                      style: TextStyle(
-                          fontSize: 21.sp,
-                          fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.white : Colors.black)),
-                  IconButton(
-                    icon: Icon(Icons.close,
-                        color: isDark ? Colors.white : Colors.black),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
-              SizedBox(height: 6.h),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Enter Category Name",
-                  style: TextStyle(
-                      color: isDark ? Color(0xffEBEEF5) : Colors.black,
-                      fontSize: 14.sp),
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+          left: 16.w,
+          right: 16.w,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 15.h,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(height: 16.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Add Category",
+                  style:
+                  TextStyle(fontSize: 21.sp, fontWeight: FontWeight.bold),
                 ),
-              ),
-              SizedBox(height: 12.h),
-              constWidgets.textField("Category Name", controller,
-                  isDark: isDark),
-              SizedBox(height: 8.h),
-              constWidgets.greenButton("Add", onTap: () {
-                if (controller.text.trim().isNotEmpty) {
-                  setState(() {
-                    String input = controller.text.trim();
-                    if (input.isNotEmpty) {
-                      String capitalized =
-                      input.toUpperCase(); // Convert to uppercase
-                      categories.add(capitalized); // Add the uppercase version
-                      controller.clear(); // Clear the input field
-                    }
-                  });
-                }
-              }),
-              if (categories.isNotEmpty) ...[
-                SizedBox(height: 16.h),
-                Column(
-                  children: categories
-                      .map((cat) => ListTile(
-                            title: Text(cat,
-                                style: TextStyle(
-                                    color:
-                                        isDark ? Colors.white : Colors.black)),
-                            leading: Icon(Icons.label,
-                                color: isDark ? Colors.white : Colors.black),
-                          ))
-                      .toList(),
+                IconButton(
+                  icon: const Icon(Icons.close, color: Colors.white),
+                  onPressed: () => Navigator.pop(context),
                 ),
-                constWidgets.greenButton("Save Categories", onTap: () {
-                  onAddCategory?.call(categories);
-                  Navigator.pop(context);
-                }),
               ],
-              SizedBox(height: 15.h),
-            ],
-          ),
-        );
-      }),
+            ),
+            SizedBox(height: 6.h),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Enter Category Name",
+                style: TextStyle(
+                  color: const Color(0xffEBEEF5),
+                  fontSize: 14.sp,
+                ),
+              ),
+            ),
+            SizedBox(height: 12.h),
+            constWidgets.textField("Category Name", controller, isDark: true),
+            SizedBox(height: 8.h),
+            constWidgets.greenButton("Add", onTap: () {
+              if (controller.text.trim().isNotEmpty) {
+                String input = controller.text.trim();
+                String capitalized =
+                input.toUpperCase(); // Convert to uppercase
+                onAddCategory
+                    ?.call([capitalized]); // Call callback with single category
+                Navigator.pop(context); // Close the modal
+              }
+            }),
+            SizedBox(height: 15.h),
+          ],
+        ),
+      ),
     );
   }
 

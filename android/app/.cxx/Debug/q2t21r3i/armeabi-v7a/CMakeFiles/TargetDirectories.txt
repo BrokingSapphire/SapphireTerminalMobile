@@ -1,0 +1,2 @@
+D:/Flutter/SapphireTerminalMobile/android/app/.cxx/Debug/q2t21r3i/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/Flutter/SapphireTerminalMobile/android/app/.cxx/Debug/q2t21r3i/armeabi-v7a/CMakeFiles/rebuild_cache.dir
