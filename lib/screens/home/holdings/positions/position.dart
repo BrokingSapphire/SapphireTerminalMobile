@@ -90,88 +90,94 @@ class _positionScreenState extends State<positionScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 15.h,
-              ),
-              Container(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 15.h,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(6.r),
-                    color: const Color(0xFF121413)),
+                    color: isDark
+                        ? const Color(0xFF121413)
+                        : const Color(0xFFF4F4F9)),
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 6.h),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      constWidgets.singleCard(
-                          "Total Gain", '₹15,11,750', "Total Loss", "-₹45,096"),
+                      constWidgets.singleCard("Total Gain", '₹15,11,750',
+                          "Total Loss", "-₹45,096", isDark),
                     ],
                   ),
                 ),
               ),
-              SizedBox(
-                height: 15.h,
-              ),
-              constWidgets.searchField(
+            ),
+            SizedBox(
+              height: 15.h,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: constWidgets.searchField(
                   context, "Search Everything...", "positions", isDark),
-              SizedBox(
-                height: 15.h,
-              ),
-              if (positionData.isEmpty)
-                Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                          height: 150.h,
-                          width: 150.w,
-                          child: Image.asset(
-                              "assets/emptyPng/holdingsPosition.png")),
-                      Text(
-                        "No Open Positions",
-                        style: TextStyle(
-                            fontSize: 24.sp, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 15.h,
+            ),
+            if (positionData.isEmpty)
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                        height: 150.h,
+                        width: 150.w,
+                        child: Image.asset(
+                            "assets/emptyPng/holdingsPosition.png")),
+                    Text(
+                      "No Open Positions",
+                      style: TextStyle(
+                          fontSize: 24.sp, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      width: 250.w,
+                      child: Text(
+                        "Your active trades will be listed here. Start trading today!",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 18.sp, color: Colors.grey),
                       ),
-                      SizedBox(
-                        width: 250.w,
-                        child: Text(
-                          "Your active trades will be listed here. Start trading today!",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 18.sp, color: Colors.grey),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              else
-                ListView(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    children: [
-                      ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: positionData.length,
-                          itemBuilder: (context, index) {
-                            var data = positionData[index];
-                            return positionScreenTiles(
-                              data['title'],
-                              data['midtitle'],
-                              data['subtitle'],
-                              data['trail1'],
-                              data['trail2'],
-                              data['trail3'],
-                              data['isBuy'],
-                            );
-                          })
-                    ])
-            ],
-          ),
+                    ),
+                  ],
+                ),
+              )
+            else
+              ListView(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  children: [
+                    ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: positionData.length,
+                        itemBuilder: (context, index) {
+                          var data = positionData[index];
+                          return positionScreenTiles(
+                            data['title'],
+                            data['midtitle'],
+                            data['subtitle'],
+                            data['trail1'],
+                            data['trail2'],
+                            data['trail3'],
+                            data['isBuy'],
+                            isDark,
+                          );
+                        })
+                  ])
+          ],
         ),
       ),
     );
@@ -185,11 +191,12 @@ class _positionScreenState extends State<positionScreen> {
     String trail2,
     String trail3,
     bool isBuy,
+    bool isDark,
   ) {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Container(
             height: 95.h,
             child: Row(
@@ -207,21 +214,27 @@ class _positionScreenState extends State<positionScreen> {
                   children: [
                     Text(
                       title,
-                      style: TextStyle(fontSize: 13.sp),
+                      style: TextStyle(
+                          fontSize: 13.sp,
+                          color: isDark ? Colors.white : Colors.black),
                     ),
                     SizedBox(
                       height: 10.h,
                     ),
                     Text(
                       midtitle,
-                      style: TextStyle(fontSize: 11.sp),
+                      style: TextStyle(
+                          fontSize: 11.sp,
+                          color: isDark ? Colors.white : Colors.black),
                     ),
                     SizedBox(
                       height: 10.h,
                     ),
                     Text(
                       subtitle,
-                      style: TextStyle(fontSize: 11.sp),
+                      style: TextStyle(
+                          fontSize: 11.sp,
+                          color: isDark ? Colors.white : Colors.black),
                     ),
                   ],
                 ),
@@ -245,7 +258,13 @@ class _positionScreenState extends State<positionScreen> {
                       padding:
                           EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                       decoration: BoxDecoration(
-                        color: isBuy ? Color(0xff143520) : Color(0xff3A0C0C),
+                        color: isBuy
+                            ? (isDark
+                                ? Color(0xff143520)
+                                : Colors.green.withOpacity(0.2))
+                            : (isDark
+                                ? Color(0xff3A0C0C)
+                                : Color(0xffFF0000).withOpacity(0.2)),
                         borderRadius: BorderRadius.circular(4.r),
                       ),
                       child: Text(
@@ -263,7 +282,8 @@ class _positionScreenState extends State<positionScreen> {
                       padding:
                           EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                       decoration: BoxDecoration(
-                        color: Color(0xff333333),
+                        color:
+                            isDark ? Color(0xff333333) : Colors.grey.shade700,
                         borderRadius: BorderRadius.circular(4.r),
                       ),
                       child: Text(
@@ -281,7 +301,7 @@ class _positionScreenState extends State<positionScreen> {
           ),
         ),
         Divider(
-          color: Color(0xFF2f2f2f),
+          color: isDark ? Color(0xFF2f2f2f) : const Color(0xffD1D5DB),
         )
       ],
     );

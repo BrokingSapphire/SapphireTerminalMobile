@@ -136,59 +136,67 @@ class _EquityScreenState extends State<EquityScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 16.h,
-              ),
-              Container(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 16.h,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Container(
                 height: 145.h,
                 width: double.infinity,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(6.r),
-                    color: const Color(0xFF121413)),
+                    color: isDark
+                        ? const Color(0xFF121413)
+                        : const Color(0xFFF4F4F9)),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     constWidgets.singleCard("Current Value", '₹15,11,750',
-                        "Overall Loss", "-₹45,096"),
+                        "Overall Loss", "-₹45,096", isDark),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: Divider(
-                        color: Color(0xff2F2F2F),
+                        color: isDark
+                            ? const Color(0xff2F2F2F)
+                            : const Color(0xffD1D5DB),
                         thickness: 1,
                       ),
                     ),
                     constWidgets.singleCard("Invested Value", "₹19,91,071",
-                        "Today’s Loss", "-₹4,837")
+                        "Today’s Loss", "-₹4,837", isDark)
                   ],
                 ),
               ),
-              SizedBox(
-                height: 15.h,
-              ),
-              constWidgets.searchField(
+            ),
+            SizedBox(
+              height: 15.h,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: constWidgets.searchField(
                   context, "Search Everything...", "equity", isDark),
-              SizedBox(
-                height: 12.h,
-              ),
-              // ListView.builder to render the equity data
-              ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return constWidgets.equityScreenTiles(
-                      equityData[index]["name"]!,
-                      equityData[index]["quantity"]!,
-                      equityData[index]["loss"]!,
-                      equityData[index]["ltp"]!);
-                },
-                itemCount: equityData.length,
-                shrinkWrap: true,
-              )
-            ],
-          ),
+            ),
+            SizedBox(
+              height: 12.h,
+            ),
+            // ListView.builder to render the equity data
+            ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return constWidgets.equityScreenTiles(
+                    equityData[index]["name"]!,
+                    equityData[index]["quantity"]!,
+                    equityData[index]["loss"]!,
+                    equityData[index]["ltp"]!,
+                    isDark);
+              },
+              itemCount: equityData.length,
+              shrinkWrap: true,
+            )
+          ],
         ),
       ),
     );

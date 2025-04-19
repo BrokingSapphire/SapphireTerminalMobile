@@ -169,7 +169,7 @@ class constWidgets {
   }
 
   static Widget singleCard(String firtTitle, String firstValue,
-      String secondTitle, String secondValue) {
+      String secondTitle, String secondValue, bool isDark) {
     return Container(
       height: 120.h / 2,
       child: Padding(
@@ -183,7 +183,9 @@ class constWidgets {
               children: [
                 Text(
                   firtTitle,
-                  style: TextStyle(fontSize: 13.sp),
+                  style: TextStyle(
+                      fontSize: 13.sp,
+                      color: isDark ? Colors.white : Colors.black),
                 ),
                 Text(
                   firstValue,
@@ -200,7 +202,9 @@ class constWidgets {
               children: [
                 Text(
                   secondTitle,
-                  style: TextStyle(fontSize: 13.sp),
+                  style: TextStyle(
+                      fontSize: 13.sp,
+                      color: isDark ? Colors.white : Colors.black),
                 ),
                 RichText(
                   text: TextSpan(
@@ -222,7 +226,7 @@ class constWidgets {
                         text: "(-22.51%)",
                         style: TextStyle(
                           fontSize: 10.sp,
-                          color: Colors.white,
+                          color: isDark ? Colors.white : Colors.black,
                         ),
                       ),
                     ],
@@ -236,12 +240,12 @@ class constWidgets {
     );
   }
 
-  static equityScreenTiles(
-      String title, String subtitle, String trail1, String trail2) {
+  static Widget equityScreenTiles(String title, String subtitle, String trail1,
+      String trail2, bool isDark) {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Container(
             height: 64.h,
             child: Row(
@@ -259,14 +263,18 @@ class constWidgets {
                   children: [
                     Text(
                       title,
-                      style: TextStyle(fontSize: 13.sp),
+                      style: TextStyle(
+                          fontSize: 13.sp,
+                          color: isDark ? Colors.white : Colors.black),
                     ),
                     SizedBox(
                       height: 14.h,
                     ),
                     Text(
                       subtitle,
-                      style: TextStyle(fontSize: 11.sp),
+                      style: TextStyle(
+                          fontSize: 11.sp,
+                          color: isDark ? Colors.white : Colors.black),
                     ),
                   ],
                 ),
@@ -288,7 +296,9 @@ class constWidgets {
                     ),
                     Text(
                       trail2,
-                      style: TextStyle(fontSize: 11.sp),
+                      style: TextStyle(
+                          fontSize: 11.sp,
+                          color: isDark ? Colors.white : Colors.black),
                     ),
                   ],
                 ),
@@ -297,7 +307,7 @@ class constWidgets {
           ),
         ),
         Divider(
-          color: Color(0xFF2f2f2f),
+          color: isDark ? Color(0xFF2f2f2f) : const Color(0xffD1D5DB),
         )
       ],
     );

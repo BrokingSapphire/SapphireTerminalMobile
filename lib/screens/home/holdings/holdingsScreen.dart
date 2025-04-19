@@ -48,9 +48,10 @@ class _HoldingsScreenState extends State<HoldingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: isDark ? Colors.black : Colors.white,
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
@@ -65,7 +66,7 @@ class _HoldingsScreenState extends State<HoldingsScreen> {
                           style: TextStyle(
                             fontSize: 22.sp,
                             fontWeight: FontWeight.bold,
-                            color: const Color(0xffEBEEF5),
+                            color: isDark ? Colors.white : Colors.black,
                           ),
                         ),
                         Spacer(),
@@ -79,7 +80,7 @@ class _HoldingsScreenState extends State<HoldingsScreen> {
                               "assets/svgs/wallet.svg",
                               width: 22.w,
                               height: 25.h,
-                              color: Colors.white70,
+                              color: isDark ? Colors.white70 : Colors.black,
                             ),
                           ),
                         ),
@@ -88,7 +89,9 @@ class _HoldingsScreenState extends State<HoldingsScreen> {
                             navi(const ProfileScreen(), context);
                           },
                           child: CircleAvatar(
-                            backgroundColor: const Color(0xff021814),
+                            backgroundColor: isDark
+                                ? Color(0xff021814)
+                                : Colors.grey.shade700,
                             radius: 22.r,
                             child: Text(
                               "NK",
@@ -158,8 +161,9 @@ class CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      color: const Color(0xff000000),
+      color: isDark ? Colors.black : Colors.white,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: List.generate(tabNames.length, (index) {
@@ -186,7 +190,11 @@ class CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
                       tabNames[index],
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: isSelected ? Colors.green : Colors.white,
+                        color: isSelected
+                            ? Colors.green
+                            : isDark
+                                ? Colors.white
+                                : Colors.black,
                         fontSize: 14.sp,
                       ),
                     ),
