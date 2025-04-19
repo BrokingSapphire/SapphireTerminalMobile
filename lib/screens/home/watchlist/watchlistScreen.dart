@@ -581,12 +581,8 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: GestureDetector(
                         onTap: () => navi(FundsScreen(), context),
-                        child: SvgPicture.asset("assets/svgs/wallet.svg",
-                            width: 22.w,
-                            height: 25.h,
-                            colorFilter: ColorFilter.mode(
-                                isDark ? Colors.white70 : Colors.black,
-                                BlendMode.srcIn)),
+                        child: SvgPicture.asset("assets/svgs/fundsNew.svg",
+                            width: 20.w, height: 23.h, color: Colors.white),
                       ),
                     ),
                     InkWell(
@@ -709,7 +705,7 @@ class _WatchlistTabBarDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 48.0;
+  double get maxExtent => 55.0;
 
   @override
   double get minExtent => 48.0;

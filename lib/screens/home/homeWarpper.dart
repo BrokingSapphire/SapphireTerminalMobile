@@ -127,7 +127,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
                       icon: SizedBox(
                         // height: 34.h,
                         child: SvgPicture.asset(
-                          "assets/svgs/trades.svg",
+                          "assets/svgs/lightbulb.svg",
                           width: 22.w,
                           height: 25.h,
                           color: _selectedIndex == 3
@@ -141,7 +141,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
                       icon: SizedBox(
                         // height: 34.h,
                         child: SvgPicture.asset(
-                          "assets/svgs/discover.svg",
+                          "assets/svgs/compass.svg",
                           width: 22.w,
                           height: 25.h,
                           color: _selectedIndex == 4

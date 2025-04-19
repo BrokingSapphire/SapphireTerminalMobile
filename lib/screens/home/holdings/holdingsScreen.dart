@@ -76,12 +76,8 @@ class _HoldingsScreenState extends State<HoldingsScreen> {
                             onTap: () {
                               navi(FundsScreen(), context);
                             },
-                            child: SvgPicture.asset(
-                              "assets/svgs/wallet.svg",
-                              width: 22.w,
-                              height: 25.h,
-                              color: isDark ? Colors.white70 : Colors.black,
-                            ),
+                            child:SvgPicture.asset("assets/svgs/fundsNew.svg",
+                                width: 20.w, height: 23.h, color: Colors.white),
                           ),
                         ),
                         InkWell(
