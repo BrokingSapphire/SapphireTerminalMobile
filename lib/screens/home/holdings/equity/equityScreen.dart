@@ -132,6 +132,7 @@ class _EquityScreenState extends State<EquityScreen> {
         ),
       );
     }
+    // adding comment
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),

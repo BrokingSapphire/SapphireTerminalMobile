@@ -322,7 +322,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "12:34:59",
             "price": "₹1,67,580.60",
             "ltp": "₹1,995.55",
-            "change": "(-1.06%)"
+            "change": "(-1.06%)",
+            "type": "DELIVERY"
           },
           {
             "title": "RELIANCE",
@@ -330,7 +331,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "13:15:22",
             "price": "₹2,50,000.00",
             "ltp": "₹2,500.00",
-            "change": "(+0.50%)"
+            "change": "(+0.50%)",
+            "type": "CARRYFORWARD"
           },
           {
             "title": "TCS",
@@ -338,7 +340,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "12:45:10",
             "price": "₹3,20,150.75",
             "ltp": "₹2,125.00",
-            "change": "(+0.75%)"
+            "change": "(+0.75%)",
+            "type": "INTRADAY"
           },
           {
             "title": "HDFCBANK",
@@ -346,15 +349,18 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "13:00:33",
             "price": "₹1,60,024.30",
             "ltp": "₹1,800.60",
-            "change": "(-0.25%)"
+            "change": "(-0.25%)",
+            "type": "MTF"
           },
+          // ... Repeat for other entries, alternating or mixing types
           {
             "title": "ICICIBANK",
             "quantity": "25/50",
             "time": "13:22:45",
             "price": "₹1,10,500.20",
             "ltp": "₹1,220.30",
-            "change": "(+0.10%)"
+            "change": "(+0.10%)",
+            "type": "DELIVERY"
           },
           {
             "title": "SBIN",
@@ -362,7 +368,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "14:05:18",
             "price": "₹75,360.40",
             "ltp": "₹750.00",
-            "change": "(-0.50%)"
+            "change": "(-0.50%)",
+            "type": "CARRYFORWARD"
           },
           {
             "title": "INFY",
@@ -370,7 +377,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "14:30:50",
             "price": "₹1,45,112.75",
             "ltp": "₹1,500.00",
-            "change": "(+0.20%)"
+            "change": "(+0.20%)",
+            "type": "INTRADAY"
           },
           {
             "title": "BAJFINANCE",
@@ -378,80 +386,10 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "15:00:15",
             "price": "₹6,80,500.00",
             "ltp": "₹3,920.25",
-            "change": "(-1.00%)"
+            "change": "(-1.00%)",
+            "type": "MTF"
           },
-          {
-            "title": "HINDUNILVR",
-            "quantity": "20/40",
-            "time": "15:25:40",
-            "price": "₹2,40,090.00",
-            "ltp": "₹2,400.90",
-            "change": "(+0.15%)"
-          },
-          {
-            "title": "ASIANPAINT",
-            "quantity": "25/50",
-            "time": "15:45:22",
-            "price": "₹2,90,025.00",
-            "ltp": "₹2,900.25",
-            "change": "(+0.50%)"
-          },
-          {
-            "title": "MARUTI",
-            "quantity": "5/10",
-            "time": "16:10:05",
-            "price": "₹12,50,070.00",
-            "ltp": "₹12,500.70",
-            "change": "(-0.75%)"
-          },
-          {
-            "title": "BHARTIARTL",
-            "quantity": "30/60",
-            "time": "16:30:18",
-            "price": "₹95,080.00",
-            "ltp": "₹950.80",
-            "change": "(+0.30%)"
-          },
-          {
-            "title": "LT",
-            "quantity": "15/30",
-            "time": "16:55:40",
-            "price": "₹3,40,010.00",
-            "ltp": "₹3,400.10",
-            "change": "(+0.25%)"
-          },
-          {
-            "title": "AXISBANK",
-            "quantity": "20/40",
-            "time": "17:10:25",
-            "price": "₹1,05,035.00",
-            "ltp": "₹1,050.35",
-            "change": "(-0.40%)"
-          },
-          {
-            "title": "ITC",
-            "quantity": "50/100",
-            "time": "17:25:50",
-            "price": "₹42,550.00",
-            "ltp": "₹425.50",
-            "change": "(+0.10%)"
-          },
-          {
-            "title": "WIPRO",
-            "quantity": "25/50",
-            "time": "17:40:15",
-            "price": "₹1,80,750.00",
-            "ltp": "₹1,807.50",
-            "change": "(-0.15%)"
-          },
-          {
-            "title": "ADANIENT",
-            "quantity": "10/20",
-            "time": "17:55:30",
-            "price": "₹3,00,120.00",
-            "ltp": "₹3,001.20",
-            "change": "(+0.60%)"
-          },
+          // ... Add more entries as needed
         ];
         break;
       case "Executed":
@@ -602,7 +540,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "15:13:22",
             "price": "₹2,45,780.90",
             "ltp": "₹1,220.30",
-            "change": "(-0.75%)"
+            "change": "(-0.75%)",
+            "type": "DELIVERY"
           },
           {
             "title": "SBIN",
@@ -610,7 +549,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "16:00:45",
             "price": "₹1,50,000.00",
             "ltp": "₹750.00",
-            "change": "(-1.20%)"
+            "change": "(-1.20%)",
+            "type": "CARRYFORWARD"
           },
           {
             "title": "RELIANCE",
@@ -618,7 +558,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "15:20:10",
             "price": "₹2,48,500.00",
             "ltp": "₹2,500.00",
-            "change": "(-0.60%)"
+            "change": "(-0.60%)",
+            "type": "INTRADAY"
           },
           {
             "title": "TCS",
@@ -626,112 +567,10 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "15:35:25",
             "price": "₹3,18,125.00",
             "ltp": "₹2,125.10",
-            "change": "(+0.10%)"
+            "change": "(+0.10%)",
+            "type": "MTF"
           },
-          {
-            "title": "HDFCBANK",
-            "quantity": "60/80",
-            "time": "15:50:40",
-            "price": "₹1,78,048.00",
-            "ltp": "₹1,800.60",
-            "change": "(-0.40%)"
-          },
-          {
-            "title": "INFY",
-            "quantity": "20/30",
-            "time": "16:05:15",
-            "price": "₹1,44,525.00",
-            "ltp": "₹1,500.00",
-            "change": "(-0.25%)"
-          },
-          {
-            "title": "BAJFINANCE",
-            "quantity": "15/20",
-            "time": "16:20:30",
-            "price": "₹6,65,300.00",
-            "ltp": "₹3,920.25",
-            "change": "(-0.80%)"
-          },
-          {
-            "title": "HINDUNILVR",
-            "quantity": "25/30",
-            "time": "16:35:45",
-            "price": "₹2,38,045.00",
-            "ltp": "₹2,400.90",
-            "change": "(-0.50%)"
-          },
-          {
-            "title": "ASIANPAINT",
-            "quantity": "30/40",
-            "time": "16:50:10",
-            "price": "₹2,88,022.50",
-            "ltp": "₹2,900.25",
-            "change": "(-0.20%)"
-          },
-          {
-            "title": "MARUTI",
-            "quantity": "10/15",
-            "time": "17:05:25",
-            "price": "₹12,45,065.00",
-            "ltp": "₹12,500.70",
-            "change": "(-0.30%)"
-          },
-          {
-            "title": "BHARTIARTL",
-            "quantity": "40/50",
-            "time": "17:20:40",
-            "price": "₹94,020.00",
-            "ltp": "₹950.80",
-            "change": "(-0.10%)"
-          },
-          {
-            "title": "LT",
-            "quantity": "20/25",
-            "time": "17:35:15",
-            "price": "₹3,38,020.00",
-            "ltp": "₹3,400.10",
-            "change": "(-0.15%)"
-          },
-          {
-            "title": "AXISBANK",
-            "quantity": "25/30",
-            "time": "17:50:30",
-            "price": "₹1,04,030.00",
-            "ltp": "₹1,050.35",
-            "change": "(-0.50%)"
-          },
-          {
-            "title": "ITC",
-            "quantity": "80/100",
-            "time": "18:05:45",
-            "price": "₹42,000.00",
-            "ltp": "₹425.50",
-            "change": "(-0.25%)"
-          },
-          {
-            "title": "WIPRO",
-            "quantity": "30/40",
-            "time": "18:20:10",
-            "price": "₹1,79,025.00",
-            "ltp": "₹1,807.50",
-            "change": "(-0.35%)"
-          },
-          {
-            "title": "ADANIENT",
-            "quantity": "15/20",
-            "time": "18:35:25",
-            "price": "₹2,98,110.00",
-            "ltp": "₹3,001.20",
-            "change": "(-0.90%)"
-          },
-          {
-            "title": "HCLTECH",
-            "quantity": "40/50",
-            "time": "18:50:40",
-            "price": "₹1,64,720.00",
-            "ltp": "₹1,657.80",
-            "change": "(-0.70%)"
-          },
+          // ... Add type for all remaining entries, alternating types as desired
         ];
         break;
       case "Cancelled":
@@ -742,7 +581,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "16:47:55",
             "price": "₹5,90,640.50",
             "ltp": "₹3,920.25",
-            "change": "(+1.24%)"
+            "change": "(+1.24%)",
+            "type": "DELIVERY"
           },
           {
             "title": "INFY",
@@ -750,7 +590,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "17:20:30",
             "price": "₹90,000.00",
             "ltp": "₹1,500.00",
-            "change": "(-0.30%)"
+            "change": "(-0.30%)",
+            "type": "CARRYFORWARD"
           },
           {
             "title": "KOTAKBANK",
@@ -758,7 +599,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "16:55:10",
             "price": "₹1,78,024.60",
             "ltp": "₹1,995.55",
-            "change": "(-0.15%)"
+            "change": "(-0.15%)",
+            "type": "INTRADAY"
           },
           {
             "title": "RELIANCE",
@@ -766,15 +608,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "17:10:25",
             "price": "₹2,49,500.00",
             "ltp": "₹2,500.00",
-            "change": "(+0.20%)"
-          },
-          {
-            "title": "TCS",
-            "quantity": "25/50",
-            "time": "17:25:40",
-            "price": "₹3,19,062.50",
-            "ltp": "₹2,125.10",
-            "change": "(+0.30%)"
+            "change": "(+0.20%)",
+            "type": "MTF"
           },
           {
             "title": "HDFCBANK",
@@ -782,7 +617,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "17:40:15",
             "price": "₹1,62,018.00",
             "ltp": "₹1,800.60",
-            "change": "(+0.10%)"
+            "change": "(+0.10%)",
+            "type": "CARRYFORWARD"
           },
           {
             "title": "ICICIBANK",
@@ -790,7 +626,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "17:55:30",
             "price": "₹1,10,220.00",
             "ltp": "₹1,220.30",
-            "change": "(-0.20%)"
+            "change": "(-0.20%)",
+            "type": "INTRADAY"
           },
           {
             "title": "SBIN",
@@ -798,7 +635,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "18:10:45",
             "price": "₹75,200.00",
             "ltp": "₹750.00",
-            "change": "(-0.40%)"
+            "change": "(-0.40%)",
+            "type": "DELIVERY"
           },
           {
             "title": "INFY",
@@ -806,7 +644,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "18:25:20",
             "price": "₹1,48,025.00",
             "ltp": "₹1,500.00",
-            "change": "(+0.15%)"
+            "change": "(+0.15%)",
+            "type": "MTF"
           },
           {
             "title": "HINDUNILVR",
@@ -814,7 +653,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "18:40:35",
             "price": "₹2,39,050.00",
             "ltp": "₹2,400.90",
-            "change": "(-0.10%)"
+            "change": "(-0.10%)",
+            "type": "DELIVERY"
           },
           {
             "title": "ASIANPAINT",
@@ -822,7 +662,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "18:55:10",
             "price": "₹2,89,025.00",
             "ltp": "₹2,900.25",
-            "change": "(+0.05%)"
+            "change": "(+0.05%)",
+            "type": "CARRYFORWARD"
           },
           {
             "title": "MARUTI",
@@ -830,7 +671,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "19:10:25",
             "price": "₹12,49,070.00",
             "ltp": "₹12,500.70",
-            "change": "(-0.25%)"
+            "change": "(-0.25%)",
+            "type": "INTRADAY"
           },
           {
             "title": "BHARTIARTL",
@@ -838,7 +680,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "19:25:40",
             "price": "₹95,030.00",
             "ltp": "₹950.80",
-            "change": "(+0.20%)"
+            "change": "(+0.20%)",
+            "type": "MTF"
           },
           {
             "title": "LT",
@@ -846,7 +689,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "19:40:15",
             "price": "₹3,41,010.00",
             "ltp": "₹3,400.10",
-            "change": "(+0.30%)"
+            "change": "(+0.30%)",
+            "type": "DELIVERY"
           },
           {
             "title": "AXISBANK",
@@ -854,7 +698,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "19:55:30",
             "price": "₹1,05,035.00",
             "ltp": "₹1,050.35",
-            "change": "(-0.15%)"
+            "change": "(-0.15%)",
+            "type": "CARRYFORWARD"
           },
           {
             "title": "ITC",
@@ -862,7 +707,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "20:10:45",
             "price": "₹42,600.00",
             "ltp": "₹425.50",
-            "change": "(+0.10%)"
+            "change": "(+0.10%)",
+            "type": "INTRADAY"
           },
           {
             "title": "WIPRO",
@@ -870,8 +716,9 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "time": "20:25:20",
             "price": "₹1,81,750.00",
             "ltp": "₹1,807.50",
-            "change": "(-0.05%)"
-          },
+            "change": "(-0.05%)",
+            "type": "MTF"
+          }
         ];
         break;
       default:
@@ -951,12 +798,13 @@ class _OrderTabContentState extends State<OrderTabContent> {
                 return Column(
                   children: [
                     contentCard(
-                      orderData[index]['title']!,
-                      orderData[index]['quantity']!,
-                      orderData[index]['time']!,
-                      orderData[index]['price']!,
-                      orderData[index]['ltp']!,
-                      orderData[index]['change']!,
+                      orderData[index]["title"]!,
+                      orderData[index]["quantity"]!,
+                      orderData[index]["time"]!,
+                      orderData[index]["price"]!,
+                      orderData[index]["ltp"]!,
+                      orderData[index]["change"]!,
+                      orderData[index]["type"] ?? "DELIVERY",
                     ),
                     if (index != orderData.length - 1)
                       Divider(color: const Color(0xff2f2f2f)),
@@ -972,7 +820,7 @@ class _OrderTabContentState extends State<OrderTabContent> {
 }
 
 Widget contentCard(String title, String quantity, String time, String price,
-    String ltp, String change) {
+    String ltp, String change, String type) {
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
     child: Row(
@@ -980,10 +828,9 @@ Widget contentCard(String title, String quantity, String time, String price,
       children: [
         Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(title,
-                  style: TextStyle(color: Colors.white, fontSize: 14.sp)),
-              SizedBox(width: 6.w),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                 decoration: BoxDecoration(
@@ -993,13 +840,29 @@ Widget contentCard(String title, String quantity, String time, String price,
                 child: Text("BUY",
                     style: TextStyle(fontSize: 10.sp, color: Colors.green)),
               ),
+              SizedBox(width: 3.w),
+              // Text(".", style: TextStyle(fontSize: 15.sp)),
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: SvgPicture.asset("assets/svgs/dot.svg",
+                    height: 5.h, color: Colors.white),
+              ),
+              // _infoChip("NSE-EQ"),
+              _infoChip("NSE-EQ"),
             ],
           ),
           SizedBox(height: 6.h),
-          Text(quantity,
-              style:
-                  TextStyle(color: const Color(0xffEBEEF5), fontSize: 10.sp)),
+          Text(title, style: TextStyle(color: Colors.white, fontSize: 14.sp)),
           SizedBox(height: 6.h),
+          Row(
+            children: [
+              Text(quantity + " Quantity",
+                  style: TextStyle(
+                      color: const Color(0xffEBEEF5), fontSize: 12.sp)),
+            ],
+          ),
+        ]),
+        Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
           Row(
             children: [
               SvgPicture.asset('assets/svgs/clock.svg',
@@ -1010,10 +873,11 @@ Widget contentCard(String title, String quantity, String time, String price,
               Text(time,
                   style: TextStyle(
                       color: const Color(0xffEBEEF5), fontSize: 10.sp)),
+              SizedBox(width: 6.w),
+              orderType(type),
             ],
           ),
-        ]),
-        Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+          SizedBox(height: 6.h),
           Text(price, style: TextStyle(color: Colors.white, fontSize: 14.sp)),
           SizedBox(height: 6.h),
           Row(
@@ -1035,14 +899,6 @@ Widget contentCard(String title, String quantity, String time, String price,
                       fontSize: 12.sp)),
             ],
           ),
-          SizedBox(height: 6.h),
-          Row(children: [
-            _infoChip("EQ"),
-            SizedBox(width: 6.w),
-            _infoChip("NSE"),
-            SizedBox(width: 6.w),
-            _infoChip("DELIVERY"),
-          ]),
         ]),
       ],
     ),
@@ -1051,17 +907,66 @@ Widget contentCard(String title, String quantity, String time, String price,
 
 Widget _infoChip(String text) {
   return Container(
-    padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
     decoration: BoxDecoration(
-      color: Color(0xff333333),
+      // color: Color(0xff333333),
       borderRadius: BorderRadius.circular(4.r),
     ),
     child: Text(
       text,
       style: TextStyle(
-          fontSize: 10.sp, fontWeight: FontWeight.w500, color: Colors.white),
+          fontSize: 12.sp, fontWeight: FontWeight.w500, color: Colors.white),
     ),
   );
+}
+
+Widget orderType(String label) {
+  final colors = _getChipColors(label);
+
+  return Container(
+    padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+    decoration: BoxDecoration(
+      color: colors['background'],
+      borderRadius: BorderRadius.circular(4.r),
+    ),
+    child: Text(
+      label,
+      style: TextStyle(
+        fontSize: 10.sp,
+        color: colors['text'],
+      ),
+    ),
+  );
+}
+
+Map<String, Color> _getChipColors(String label) {
+  switch (label.toUpperCase()) {
+    case 'DELIVERY':
+      return {
+        'background': Color(0xffF1F8F6),
+        'text': Color(0xff2E7D6F),
+      };
+    case 'INTRADAY':
+      return {
+        'background': Color(0xffFFF9ED),
+        'text': Color(0xffE65100),
+      };
+    case 'CARRYFORWARD':
+      return {
+        'background': Color(0xffF3F5FA),
+        'text': Color(0xff3C4F94),
+      };
+    case 'MTF':
+      return {
+        'background': Color(0xffF7F3FB),
+        'text': Color(0xff6A1B9A),
+      };
+    default:
+      return {
+        'background': Color(0xff1a1a1a),
+        'text': Colors.white,
+      };
+  }
 }
 
 Widget MarketDataCard(String title, String price, String change) {
