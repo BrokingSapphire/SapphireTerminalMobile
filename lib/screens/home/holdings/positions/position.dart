@@ -85,6 +85,85 @@ class _positionScreenState extends State<positionScreen> {
     }
   ];
 
+  Widget positionCard(String firstValue, String secondValue, bool isDark) {
+    // Determine titles based on values
+    String firstTitle = firstValue.contains('-') ? "Total Loss" : "Total Gain";
+    String secondTitle =
+        secondValue.contains('-') ? "Today's Loss" : "Today's Gain";
+
+    return Container(
+      height: 120.h / 2,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  firstTitle,
+                  style: TextStyle(
+                      fontSize: 13.sp,
+                      color: isDark ? Colors.white : Colors.black),
+                ),
+                Text(
+                  firstValue,
+                  style: TextStyle(
+                      fontSize: 17.sp,
+                      fontWeight: FontWeight.w600,
+                      color:
+                          firstValue.contains('-') ? Colors.red : Colors.green),
+                ),
+              ],
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  secondTitle,
+                  style: TextStyle(
+                      fontSize: 13.sp,
+                      color: isDark ? Colors.white : Colors.black),
+                ),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: secondValue,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 17.sp,
+                            color: secondValue.contains('-')
+                                ? Colors.red
+                                : Colors.green),
+                      ),
+                      TextSpan(
+                        text: "   ", // Adding spaces for width
+                        style: TextStyle(fontSize: 10.sp),
+                      ),
+                      TextSpan(
+                        text: "(-22.51%)",
+                        style: TextStyle(
+                          fontSize: 10.sp,
+                          color: secondValue.contains('-')
+                              ? Colors.red
+                              : Colors.green,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -110,8 +189,7 @@ class _positionScreenState extends State<positionScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      constWidgets.singleCard("Total Gain", '+₹15,11,750',
-                          "Total Loss", "-₹45,096", isDark),
+                      positionCard('+₹15,11,750', "-₹45,096", isDark),
                     ],
                   ),
                 ),
