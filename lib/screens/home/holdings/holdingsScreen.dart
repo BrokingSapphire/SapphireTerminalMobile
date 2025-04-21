@@ -7,6 +7,7 @@ import 'package:sapphire/screens/accountSection/profileScreen.dart';
 import 'package:sapphire/screens/home/holdings/mutualFunds/mutualScreen.dart';
 import 'package:sapphire/screens/home/holdings/positions/position.dart';
 import 'package:sapphire/utils/constWidgets.dart';
+import 'package:sapphire/utils/naviWithoutAnimation.dart';
 import 'equity/equityScreen.dart';
 
 class HoldingsScreen extends StatefulWidget {
@@ -74,9 +75,9 @@ class _HoldingsScreenState extends State<HoldingsScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           child: GestureDetector(
                             onTap: () {
-                              navi(FundsScreen(), context);
+                              naviWithoutAnimation(context, FundsScreen());
                             },
-                            child:SvgPicture.asset("assets/svgs/fundsNew.svg",
+                            child:SvgPicture.asset("assets/svgs/wallet.svg",
                                 width: 20.w, height: 23.h, color: Colors.white),
                           ),
                         ),

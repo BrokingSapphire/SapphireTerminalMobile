@@ -92,10 +92,10 @@ class _TradesScreenState extends State<TradesScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: GestureDetector(
                         onTap: () {
-                          navi(FundsScreen(), context);
+                          naviWithoutAnimation(context, FundsScreen());
                         },
                         child: SvgPicture.asset(
-                          "assets/svgs/fundsNew.svg",
+                          "assets/svgs/wallet.svg",
                           width: 20.w,
                           height: 23.h,
                           color: Colors.white,

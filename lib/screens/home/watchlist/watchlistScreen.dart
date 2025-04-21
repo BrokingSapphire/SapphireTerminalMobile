@@ -683,8 +683,8 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: GestureDetector(
-                        onTap: () => navi(FundsScreen(), context),
-                        child: SvgPicture.asset("assets/svgs/fundsNew.svg",
+                        onTap: () => naviWithoutAnimation(context, FundsScreen()),
+                        child: SvgPicture.asset("assets/svgs/wallet.svg",
                             width: 20.w, height: 23.h, color: Colors.white),
                       ),
                     ),

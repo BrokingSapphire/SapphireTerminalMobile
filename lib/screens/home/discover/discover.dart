@@ -13,6 +13,7 @@ import 'package:sapphire/screens/accountSection/tradesAndCharges.dart';
 import 'package:sapphire/screens/home/discover/governmentSecurities.dart';
 import 'package:sapphire/screens/home/orders/alertScreen.dart';
 import 'package:sapphire/utils/constWidgets.dart';
+import 'package:sapphire/utils/naviWithoutAnimation.dart';
 
 class DiscoverScreen extends StatefulWidget {
   const DiscoverScreen({super.key});
@@ -71,10 +72,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             child: GestureDetector(
                               onTap: () {
-                                navi(FundsScreen(), context);
+                                naviWithoutAnimation(context, FundsScreen());
                               },
-                              child: SvgPicture.asset(
-                                  "assets/svgs/fundsNew.svg",
+                              child: SvgPicture.asset("assets/svgs/wallet.svg",
                                   width: 20.w,
                                   height: 23.h,
                                   color: Colors.white),

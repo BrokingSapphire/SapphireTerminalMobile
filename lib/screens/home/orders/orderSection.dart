@@ -85,9 +85,9 @@ class _OrderSectionState extends State<OrderSection> {
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: GestureDetector(
                       onTap: () {
-                        navi(FundsScreen(), context);
+                        naviWithoutAnimation(context, FundsScreen());
                       },
-                      child: SvgPicture.asset("assets/svgs/fundsNew.svg",
+                      child: SvgPicture.asset("assets/svgs/wallet.svg",
                           width: 20.w, height: 23.h, color: Colors.white),
                     ),
                   ),
