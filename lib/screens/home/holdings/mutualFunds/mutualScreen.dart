@@ -36,6 +36,153 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
       "icon": Icons.wb_sunny,
     },
   ];
+
+  Widget mutualFundCard(
+      String firtTitle,
+      String firstValue,
+      String secondTitle,
+      String secondValue,
+      bool isDark,
+      String thirdTitle,
+      String thirdValue,
+      String fourthTitle,
+      String fourthValue) {
+    return Column(
+      children: [
+        Container(
+          height: 120.h / 2,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      firtTitle,
+                      style: TextStyle(
+                          fontSize: 13.sp,
+                          color: isDark ? Colors.white : Colors.black),
+                    ),
+                    Text(
+                      firstValue,
+                      style: TextStyle(
+                          fontSize: 17.sp,
+                          fontWeight: FontWeight.w600,
+                          color: isDark ? Colors.white : Colors.black),
+                    ),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      secondTitle,
+                      style: TextStyle(
+                          fontSize: 13.sp,
+                          color: isDark ? Colors.white : Colors.black),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: secondValue,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 17.sp,
+                                color: secondValue.contains('-')
+                                    ? Colors.red
+                                    : Colors.green),
+                          ),
+                          TextSpan(
+                            text: "   ", // Adding spaces for width
+                            style: TextStyle(fontSize: 10.sp),
+                          ),
+                          TextSpan(
+                            text: "(-22.51%)",
+                            style: TextStyle(
+                              fontSize: 10.sp,
+                              color: isDark ? Colors.white : Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Divider(
+              color: isDark ? Color(0xFF2f2f2f) : const Color(0xffD1D5DB),
+            )),
+        Container(
+          height: 120.h / 2,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      thirdTitle,
+                      style: TextStyle(
+                          fontSize: 13.sp,
+                          color: isDark ? Colors.white : Colors.black),
+                    ),
+                    Text(
+                      thirdValue,
+                      style: TextStyle(
+                          fontSize: 17.sp,
+                          fontWeight: FontWeight.w600,
+                          color: isDark ? Colors.white : Colors.black),
+                    ),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      fourthTitle,
+                      style: TextStyle(
+                          fontSize: 13.sp,
+                          color: isDark ? Colors.white : Colors.black),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: fourthValue,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 17.sp,
+                                color: fourthValue.contains('-')
+                                    ? Colors.red
+                                    : Colors.green),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -60,17 +207,17 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    constWidgets.singleCard("Current Value", '₹15,11,750',
-                        "Overall Loss", "-₹45,096", isDark),
-                    Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.w),
-                        child: Divider(
-                          color: isDark
-                              ? Color(0xFF2f2f2f)
-                              : const Color(0xffD1D5DB),
-                        )),
-                    constWidgets.singleCard("Invested Value", "₹19,91,071",
-                        "XIRR", "-₹4,837", isDark)
+                    mutualFundCard(
+                      "Current Value",
+                      '₹15,11,750',
+                      "Overall Loss",
+                      "-₹45,096",
+                      isDark,
+                      "Invested Value",
+                      "₹19,91,071",
+                      "XIRR",
+                      "-₹4,837",
+                    ),
                   ],
                 ),
               ),
