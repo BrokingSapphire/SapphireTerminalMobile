@@ -131,9 +131,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                         SizedBox(height: 10.h),
                         ListTile(
                           leading: SvgPicture.asset(
-                            'assets/icons/funds.svg',
-                            width: 24.w,
-                            height: 24.h,
+                            'assets/svgs/ipo.svg',
+                            width: 36.w,
+                            height: 36.h,
                             color: Colors.white,
                           ),
                           title: Text(
@@ -158,9 +158,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                         ),
                         ListTile(
                           leading: SvgPicture.asset(
-                            'assets/icons/funds.svg',
-                            width: 24.w,
-                            height: 24.h,
+                            'assets/svgs/pledge.svg',
+                            width: 36.w,
+                            height: 36.h,
                             color: Colors.white,
                           ),
                           title: Text(
@@ -185,9 +185,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                         ),
                         ListTile(
                           leading: SvgPicture.asset(
-                            'assets/icons/funds.svg',
-                            width: 24.w,
-                            height: 24.h,
+                            'assets/svgs/landmark.svg',
+                            width: 36.w,
+                            height: 36.h,
                             color: Colors.white,
                           ),
                           title: Text(
@@ -214,9 +214,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                         ),
                         ListTile(
                           leading: SvgPicture.asset(
-                            'assets/icons/funds.svg',
-                            width: 24.w,
-                            height: 24.h,
+                            'assets/svgs/auctions.svg',
+                            width: 36.w,
+                            height: 36.h,
                             color: Colors.white,
                           ),
                           title: Text(
@@ -241,9 +241,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                         ),
                         ListTile(
                           leading: SvgPicture.asset(
-                            'assets/icons/funds.svg',
-                            width: 24.w,
-                            height: 24.h,
+                            'assets/svgs/priceAlerts.svg',
+                            width: 36.w,
+                            height: 36.h,
                             color: Colors.white,
                           ),
                           title: Text(
