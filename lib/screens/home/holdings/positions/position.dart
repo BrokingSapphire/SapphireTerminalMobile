@@ -169,12 +169,18 @@ class _positionScreenState extends State<positionScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 15.h,
-            ),
+      child: RefreshIndicator(
+        onRefresh: () async {
+          // Add your refresh logic here
+        },
+        color: const Color(0xff1DB954), // Green refresh indicator
+        backgroundColor: isDark ? const Color(0xff121413) : Colors.white,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 15.h,
+              ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Container(
@@ -238,27 +244,27 @@ class _positionScreenState extends State<positionScreen> {
                   shrinkWrap: true,
                   children: [
                     ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: positionData.length,
-                        itemBuilder: (context, index) {
-                          var data = positionData[index];
-                          return positionScreenTiles(
-                            data['title'],
-                            data['midtitle'],
-                            data['subtitle'],
-                            data['trail1'],
-                            data['trail2'],
-                            data['trail3'],
-                            data['isBuy'],
-                            isDark,
-                          );
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: positionData.length,
+                      itemBuilder: (context, index) {
+                        var data = positionData[index];
+                        return positionScreenTiles(
+                          data['title'],
+                          data['midtitle'],
+                          data['subtitle'],
+                          data['trail1'],
+                          data['trail2'],
+                          data['trail3'],
+                          data['isBuy'],
+                          isDark,
+                        );
                         })
                   ])
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget positionScreenTiles(

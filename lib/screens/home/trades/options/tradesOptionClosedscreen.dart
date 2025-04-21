@@ -38,81 +38,81 @@ class _TradesOptionClosedScreen extends State<TradesOptionClosedScreen>
                 SizedBox(height: 5.h),
 
                 // Stats Container
-                Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-                  decoration: BoxDecoration(
-                    color: Color(0xff021813),
-                    borderRadius: BorderRadius.circular(12.r),
-                    border: Border.all(
-                      color: Color(0xff02d8b1),
-                      width: 1, // Set border size to 2
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              statTextUp('Avg Return/Trade', '₹4,284'),
-                              SizedBox(height: 8.h),
-                              statTextUp('Avg Return/Month', '₹48,284'),
-                            ],
-                          ),
-                          CircularPercentIndicator(
-                            radius: 43.r,
-                            lineWidth: 15.w,
-                            percent:
-                                ((dynamicPercent ?? 0).clamp(0, 100)) / 100,
-                            center: RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text:
-                                        '${(dynamicPercent ?? 0).toStringAsFixed(1)}%\n',
-                                    style: GoogleFonts.poppins(
-                                      color: Colors.white,
-                                      fontSize: 11
-                                          .sp, // Larger font size for percentage
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: 'Accuracy',
-                                    style: GoogleFonts.poppins(
-                                      color: Colors.white,
-                                      fontSize: 8
-                                          .sp, // Smaller font size for "Accuracy"
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            progressColor: const Color(0xff4FF4AF),
-                            backgroundColor: const Color(0XFFFF504C),
-                            circularStrokeCap: CircularStrokeCap.round,
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 2.h),
-                      Divider(color: Color(0xff2F2F2F)),
-                      SizedBox(height: 2.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          statText('Closed Trades', '205'),
-                          statText('Avg Duration', '4 days'),
-                          statText('Avg Margin/Trade', '₹48,284'),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   padding:
+                //       EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                //   decoration: BoxDecoration(
+                //     color: Color(0xff021813),
+                //     borderRadius: BorderRadius.circular(12.r),
+                //     border: Border.all(
+                //       color: Color(0xff02d8b1),
+                //       width: 1, // Set border size to 2
+                //     ),
+                //   ),
+                //   child: Column(
+                //     children: [
+                //       Row(
+                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         children: [
+                //           Column(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: [
+                //               statTextUp('Avg Return/Trade', '₹4,284'),
+                //               SizedBox(height: 8.h),
+                //               statTextUp('Avg Return/Month', '₹48,284'),
+                //             ],
+                //           ),
+                //           CircularPercentIndicator(
+                //             radius: 43.r,
+                //             lineWidth: 15.w,
+                //             percent:
+                //                 ((dynamicPercent ?? 0).clamp(0, 100)) / 100,
+                //             center: RichText(
+                //               textAlign: TextAlign.center,
+                //               text: TextSpan(
+                //                 children: [
+                //                   TextSpan(
+                //                     text:
+                //                         '${(dynamicPercent ?? 0).toStringAsFixed(1)}%\n',
+                //                     style: GoogleFonts.poppins(
+                //                       color: Colors.white,
+                //                       fontSize: 11
+                //                           .sp, // Larger font size for percentage
+                //                       fontWeight: FontWeight.w500,
+                //                     ),
+                //                   ),
+                //                   TextSpan(
+                //                     text: 'Accuracy',
+                //                     style: GoogleFonts.poppins(
+                //                       color: Colors.white,
+                //                       fontSize: 8
+                //                           .sp, // Smaller font size for "Accuracy"
+                //                     ),
+                //                   ),
+                //                 ],
+                //               ),
+                //             ),
+                //             progressColor: const Color(0xff4FF4AF),
+                //             backgroundColor: const Color(0XFFFF504C),
+                //             circularStrokeCap: CircularStrokeCap.round,
+                //           ),
+                //         ],
+                //       ),
+                //       SizedBox(height: 2.h),
+                //       Divider(color: Color(0xff2F2F2F)),
+                //       SizedBox(height: 2.h),
+                //       Row(
+                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //         children: [
+                //           statText('Closed Trades', '205'),
+                //           statText('Avg Duration', '4 days'),
+                //           statText('Avg Margin/Trade', '₹48,284'),
+                //         ],
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 SizedBox(height: 16.h),
                 // Search & Toggle View
                 Row(

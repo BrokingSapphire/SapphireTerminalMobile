@@ -187,105 +187,112 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 16.h),
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: RefreshIndicator(
+          onRefresh: () async {
+            // Add your refresh logic here
+          },
+          color: const Color(0xff1DB954), // Green refresh indicator
+          backgroundColor: isDark ? const Color(0xff121413) : Colors.white,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: 16.h),
 
-            // Summary Card
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Container(
-                height: 145.h,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6.r),
-                    color: isDark
-                        ? const Color(0xFF121413)
-                        : const Color(0xFFF4F4F9)),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    mutualFundCard(
-                      "Current Value",
-                      '₹15,11,750',
-                      "Overall Loss",
-                      "-₹45,096",
-                      isDark,
-                      "Invested Value",
-                      "₹19,91,071",
-                      "XIRR",
-                      "-₹4,837",
+                // Summary Card
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Container(
+                    height: 145.h,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6.r),
+                        color: isDark
+                            ? const Color(0xFF121413)
+                            : const Color(0xFFF4F4F9)),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        mutualFundCard(
+                          "Current Value",
+                          '₹15,11,750',
+                          "Overall Loss",
+                          "-₹45,096",
+                          isDark,
+                          "Invested Value",
+                          "₹19,91,071",
+                          "XIRR",
+                          "-₹4,837",
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(height: 16.h),
+                SizedBox(height: 16.h),
 
-            // 👉 Replace this with your actual custom search bar
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: constWidgets.searchField(
-                  context, "Search Mutual Funds....", "mutual_funds", isDark),
-            ),
-
-            SizedBox(height: 16.h),
-
-            if (mutualFundsData.isEmpty)
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                        height: 150.h,
-                        width: 150.w,
-                        child: Image.asset(
-                            "assets/emptyPng/holdingsMutualFunds.png")),
-                    Text(
-                      "No Mutual Fund Investment",
-                      style: TextStyle(
-                          fontSize: 24.sp, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      width: 250.w,
-                      child: Text(
-                        "Invest in mutual funds and grow your wealth over time.",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 18.sp, color: Colors.grey),
-                      ),
-                    ),
-                  ],
+                // 👉 Replace this with your actual custom search bar
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: constWidgets.searchField(context,
+                      "Search Mutual Funds....", "mutual_funds", isDark),
                 ),
-              )
-            else
-              ListView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  children: [
-                    ListView.builder(
+
+                SizedBox(height: 16.h),
+
+                if (mutualFundsData.isEmpty)
+                  Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                            height: 150.h,
+                            width: 150.w,
+                            child: Image.asset(
+                                "assets/emptyPng/holdingsMutualFunds.png")),
+                        Text(
+                          "No Mutual Fund Investment",
+                          style: TextStyle(
+                              fontSize: 24.sp, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: 250.w,
+                          child: Text(
+                            "Invest in mutual funds and grow your wealth over time.",
+                            textAlign: TextAlign.center,
+                            style:
+                                TextStyle(fontSize: 18.sp, color: Colors.grey),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                else
+                  ListView(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: mutualFundsData.length,
-                      itemBuilder: (context, index) {
-                        var data = mutualFundsData[index];
-                        return _fundTile(
-                          title: data['title'],
-                          category: data['category'],
-                          invested: data['invested'],
-                          returns: data['returns'],
-                          isGain: data['isGain'],
-                          icon: data['icon'],
-                          isDark: isDark,
-                        );
-                      },
-                    )
-                  ]),
-          ],
-        ),
-      ),
-    );
+                      children: [
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: mutualFundsData.length,
+                          itemBuilder: (context, index) {
+                            var data = mutualFundsData[index];
+                            return _fundTile(
+                              title: data['title'],
+                              category: data['category'],
+                              invested: data['invested'],
+                              returns: data['returns'],
+                              isGain: data['isGain'],
+                              icon: data['icon'],
+                              isDark: isDark,
+                            );
+                          },
+                        )
+                      ]),
+              ],
+            ),
+          ),
+        ));
   }
 
   Widget _summaryRow(String lTitle, String lVal, String rTitle, String rVal,

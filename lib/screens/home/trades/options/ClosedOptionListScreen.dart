@@ -18,6 +18,8 @@ class _ClosedOptionListScreen extends State<ClosedOptionListScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             buildTradeCard(),
+            SizedBox(height: 12.h,),
+            buildTradeCard()
           ],
         ),
       ),
@@ -34,7 +36,6 @@ class _ClosedOptionListScreen extends State<ClosedOptionListScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// Top Row - Logo + Title + Status
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

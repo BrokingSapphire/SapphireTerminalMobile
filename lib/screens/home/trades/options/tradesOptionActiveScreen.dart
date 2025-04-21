@@ -25,6 +25,8 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
             ),
             SizedBox(height: 12.h),
             buildTradeCard(),
+            SizedBox(height: 12.h),
+            buildTradeCard()
           ],
         ),
       ),

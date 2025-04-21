@@ -15,9 +15,11 @@ class _closedGridScreenState extends State<closedGridScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
         child: Column(
           children: [
-            SizedBox(height: 6.h,),
+            SizedBox(height: 6.h),
+            // Trade Card 1
             Container(
               padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 16.h),
               decoration: BoxDecoration(
@@ -57,7 +59,8 @@ class _closedGridScreenState extends State<closedGridScreen>
                                   ),
                                   SizedBox(width: 8.w),
                                   Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 6.h, vertical: 2.w),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 6.h, vertical: 2.w),
                                     decoration: BoxDecoration(
                                       color: Color(0xff143520),
                                       borderRadius: BorderRadius.circular(4.r),
@@ -74,7 +77,8 @@ class _closedGridScreenState extends State<closedGridScreen>
                               ),
                               Text(
                                 'Reliance Industries Ltd.',
-                                style: TextStyle(color: Color(0xffEBEEF5), fontSize: 11.sp),
+                                style: TextStyle(
+                                    color: Color(0xffEBEEF5), fontSize: 11.sp),
                               ),
                             ],
                           ),
@@ -85,11 +89,13 @@ class _closedGridScreenState extends State<closedGridScreen>
                         children: [
                           Text(
                             "Status",
-                            style: TextStyle(color: Color(0xffEBEEF5), fontSize: 13.sp),
+                            style:
+                                TextStyle(color: Color(0xffEBEEF5), fontSize: 13.sp),
                           ),
                           SizedBox(height: 4.h),
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 6.w, vertical: 2.h),
                             decoration: BoxDecoration(
                               color: Color(0xff69686230),
                               borderRadius: BorderRadius.circular(4.r),
@@ -107,9 +113,11 @@ class _closedGridScreenState extends State<closedGridScreen>
                     ],
                   ),
                   SizedBox(height: 12.h),
-                  tradeDetailRow('Entry', '₹1,580.60', '14 Feb 2025 |', ' 8:32 pm'),
+                  tradeDetailRow(
+                      'Entry', '₹1,580.60', '14 Feb 2025 |', ' 8:32 pm'),
                   SizedBox(height: 12.h),
-                  tradeDetailRow('Exit  ', '₹1,752.12', '15 Feb 2025 |', ' 9:32 pm'),
+                  tradeDetailRow(
+                      'Exit  ', '₹1,752.12', '15 Feb 2025 |', ' 9:32 pm'),
                   SizedBox(height: 12.h),
                   Container(
                     height: 28.h,
@@ -157,7 +165,8 @@ class _closedGridScreenState extends State<closedGridScreen>
                             child: Text(
                               'About Trade',
                               style: TextStyle(
-                                  color: Color(0xffEBEEF5), fontWeight: FontWeight.w600),
+                                  color: Color(0xffEBEEF5),
+                                  fontWeight: FontWeight.w600),
                             ),
                           ),
                         ),
@@ -167,6 +176,322 @@ class _closedGridScreenState extends State<closedGridScreen>
                 ],
               ),
             ),
+            // Trade Card 2
+            SizedBox(height: 12.h),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 16.h),
+              decoration: BoxDecoration(
+                color: Color(0xff121413),
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 14.r,
+                            child: ClipOval(
+                              child: Image.asset(
+                                'assets/images/tcs logo.png', // Different logo
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 8.w),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    'TCS',
+                                    style: TextStyle(
+                                      color: Color(0xffEBEEF5),
+                                      fontSize: 13.sp,
+                                    ),
+                                  ),
+                                  SizedBox(width: 8.w),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 6.h, vertical: 2.w),
+                                    decoration: BoxDecoration(
+                                      color: Color(0xff351414),
+                                      borderRadius: BorderRadius.circular(4.r),
+                                    ),
+                                    child: Text(
+                                      'SELL',
+                                      style: TextStyle(
+                                        color: Color(0xffFF4D4D),
+                                        fontSize: 10.sp,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                'Tata Consultancy Services',
+                                style: TextStyle(
+                                    color: Color(0xffEBEEF5), fontSize: 11.sp),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            "Status",
+                            style:
+                                TextStyle(color: Color(0xffEBEEF5), fontSize: 13.sp),
+                          ),
+                          SizedBox(height: 4.h),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 6.w, vertical: 2.h),
+                            decoration: BoxDecoration(
+                              color: Color(0xff143520),
+                              borderRadius: BorderRadius.circular(4.r),
+                            ),
+                            child: Text(
+                              'Target Hit',
+                              style: TextStyle(
+                                color: Color(0xff1DB954),
+                                fontSize: 10.sp,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12.h),
+                  tradeDetailRow(
+                      'Entry', '₹4,120.30', '10 Feb 2025 |', ' 10:15 am'),
+                  SizedBox(height: 12.h),
+                  tradeDetailRow(
+                      'Exit  ', '₹4,050.75', '11 Feb 2025 |', ' 3:45 pm'),
+                  SizedBox(height: 12.h),
+                  Container(
+                    height: 28.h,
+                    padding: EdgeInsets.symmetric(vertical: 1.h),
+                    decoration: BoxDecoration(
+                      color: Color(0xff58585850),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Net loss:',
+                          style: TextStyle(
+                            color: Color(0xffEBEEF5),
+                            fontSize: 12.sp,
+                          ),
+                        ),
+                        SizedBox(width: 5.w),
+                        Text(
+                          '-1.68%',
+                          style: TextStyle(
+                            color: Color(0xffFF4D4D),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 12.h),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: 34.h,
+                          child: OutlinedButton(
+                            onPressed: () {},
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(color: Color(0xff2F2F2F)),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                            ),
+                            child: Text(
+                              'About Trade',
+                              style: TextStyle(
+                                  color: Color(0xffEBEEF5),
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            // Trade Card 3
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 16.h),
+              decoration: BoxDecoration(
+                color: Color(0xff121413),
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 14.r,
+                            child: ClipOval(
+                              child: Image.asset(
+                                'assets/images/hdfc logo.png', // Different logo
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 8.w),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    'HDFCBANK',
+                                    style: TextStyle(
+                                      color: Color(0xffEBEEF5),
+                                      fontSize: 13.sp,
+                                    ),
+                                  ),
+                                  SizedBox(width: 8.w),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 6.h, vertical: 2.w),
+                                    decoration: BoxDecoration(
+                                      color: Color(0xff143520),
+                                      borderRadius: BorderRadius.circular(4.r),
+                                    ),
+                                    child: Text(
+                                      'BUY',
+                                      style: TextStyle(
+                                        color: Color(0xff22a06b),
+                                        fontSize: 10.sp,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                'HDFC Bank Ltd.',
+                                style: TextStyle(
+                                    color: Color(0xffEBEEF5), fontSize: 11.sp),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            "Status",
+                            style:
+                                TextStyle(color: Color(0xffEBEEF5), fontSize: 13.sp),
+                          ),
+                          SizedBox(height: 4.h),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 6.w, vertical: 2.h),
+                            decoration: BoxDecoration(
+                              color: Color(0xff69686230),
+                              borderRadius: BorderRadius.circular(4.r),
+                            ),
+                            child: Text(
+                              'Stopped',
+                              style: TextStyle(
+                                color: Color(0xffFF4D4D),
+                                fontSize: 10.sp,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12.h),
+                  tradeDetailRow(
+                      'Entry', '₹1,650.45', '12 Feb 2025 |', ' 9:00 am'),
+                  SizedBox(height: 12.h),
+                  tradeDetailRow(
+                      'Exit  ', '₹1,620.10', '13 Feb 2025 |', ' 2:30 pm'),
+                  SizedBox(height: 12.h),
+                  Container(
+                    height: 28.h,
+                    padding: EdgeInsets.symmetric(vertical: 1.h),
+                    decoration: BoxDecoration(
+                      color: Color(0xff58585850),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Net loss:',
+                          style: TextStyle(
+                            color: Color(0xffEBEEF5),
+                            fontSize: 12.sp,
+                          ),
+                        ),
+                        SizedBox(width: 5.w),
+                        Text(
+                          '-1.84%',
+                          style: TextStyle(
+                            color: Color(0xffFF4D4D),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 12.h),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: 34.h,
+                          child: OutlinedButton(
+                            onPressed: () {},
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(color: Color(0xff2F2F2F)),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                            ),
+                            child: Text(
+                              'About Trade',
+                              style: TextStyle(
+                                  color: Color(0xffEBEEF5),
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 16.h), // Extra padding at the bottom
           ],
         ),
       ),
@@ -174,20 +499,17 @@ class _closedGridScreenState extends State<closedGridScreen>
   }
 }
 
-Widget tradeDetailRow(String title, String value, String date , String time) {
+Widget tradeDetailRow(String title, String value, String date, String time) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Text(
         title,
-        style: TextStyle(color: Color(0xffEBEEF5),fontSize: 13.sp),
+        style: TextStyle(color: Color(0xffEBEEF5), fontSize: 13.sp),
       ),
       Text(
         value,
-        style: TextStyle(
-            color: Color(0xffEBEEF5),
-            fontSize: 13.sp
-        ),
+        style: TextStyle(color: Color(0xffEBEEF5), fontSize: 13.sp),
       ),
       Text(
         date + time,

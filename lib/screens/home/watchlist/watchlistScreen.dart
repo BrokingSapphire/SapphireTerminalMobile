@@ -644,68 +644,10 @@ class _WatchlistScreenState extends State<WatchlistScreen>
       children: [
         // Search field
         Expanded(
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: "Search Everything...",
-              prefixIcon: Icon(Icons.search, color: Colors.grey),
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 14.h, horizontal: 10.w),
-              filled: true,
-              fillColor: isDark ? Color(0xFF121413) : Color(0xFFF4F4F9),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(6.r),
-                borderSide: BorderSide.none,
-              ),
-            ),
-            style: TextStyle(
-                color: isDark ? Colors.white : Colors.black, fontSize: 16.sp),
-            onChanged: (val) {
-              setState(() {
-                _searchQuery = val;
-              });
-            },
-          ),
+          child: constWidgets.searchField(
+              context, "Search Everything...", "orders", isDark),
         ),
-        SizedBox(width: 10.w),
-        // Filter icon
-        GestureDetector(
-          onTap: () {
-            showFilterBottomSheet(
-              context: context,
-              pageKey: "watchlist",
-              isDark: isDark,
-              onApply: (selectedFilters) {
-                if (selectedFilters.isNotEmpty) {
-                  setState(() {
-                    _selectedFilterLabel = selectedFilters[0]['label'];
-                    _selectedDirection = selectedFilters[0]['direction'];
-                  });
-                } else {
-                  setState(() {
-                    _selectedFilterLabel = null;
-                    _selectedDirection = null;
-                  });
-                }
-                Navigator.pop(
-                    context); // Close the bottom sheet after selection
-              },
-            );
-          },
-          child: Container(
-            height: 48.h,
-            width: 48.h,
-            decoration: BoxDecoration(
-              color: isDark ? Color(0xFF121413) : Color(0xFFF4F4F9),
-              borderRadius: BorderRadius.circular(6.r),
-            ),
-            child: Center(
-              child: Image.asset(
-                'assets/icons/filter.png',
-                scale: 2,
-              ),
-            ),
-          ),
-        ),
+        
       ],
     );
   }

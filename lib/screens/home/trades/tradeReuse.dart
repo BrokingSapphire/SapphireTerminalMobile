@@ -57,8 +57,7 @@ class _TradesTabContentState extends State<TradesTabContent> {
               isActive = value;
             });
           }),
-          // The Expanded is only used here, after toggle and SizedBox
-          // This ensures the parent is bounded by Scaffold/other parent
+          
           Flexible(
             child: _buildContent(widget.tabType),
           ),
@@ -75,7 +74,7 @@ class _TradesTabContentState extends State<TradesTabContent> {
         return isActive
             ? const TradesFutureActiveScreen()
             : const TradesFutureClosedScreen();
-      case "stock":
+      case "stocks":
         return isActive
             ? const TradesActiveScreen()
             : const tradesClosedScreen();

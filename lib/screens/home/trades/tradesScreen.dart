@@ -20,7 +20,7 @@ class TradesScreen extends StatefulWidget {
 
 class _TradesScreenState extends State<TradesScreen> {
   late PageController _pageController;
-  final List<String> tabs = ["Stock", "Futures", "Options", "Commodity"];
+  final List<String> tabs = ["Stocks", "Futures", "Options", "Commodity"];
   int _selectedIndex = 0;
 
   @override
@@ -48,70 +48,81 @@ class _TradesScreenState extends State<TradesScreen> {
     });
   }
 
+  // Refresh logic
+  Future<void> _onRefresh() async {
+    // Simulate a network fetch or data refresh
+    await Future.delayed(const Duration(seconds: 2));
+    // Add your refresh logic here, e.g., fetch new data
+    setState(() {
+      // Update UI if needed
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xff000000),
         appBar: AppBar(
-          elevation: 0, // Remove shadow
-          surfaceTintColor:
-              Colors.black, // Prevent grey overlay (for Material 3)
+          elevation: 0,
+          surfaceTintColor: Colors.black,
           shadowColor: Colors.transparent,
           backgroundColor: const Color(0xff000000),
-          automaticallyImplyLeading: false, // ✅ As requested
-          toolbarHeight: 0, // Hides visible AppBar but keeps safe area layout
+          automaticallyImplyLeading: false,
+          toolbarHeight: 0,
         ),
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            // AppBar title as scrollable
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                 child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Trades",
-                        style: TextStyle(
-                          fontSize: 22.sp,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xffEBEEF5),
-                        ),
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Trades",
+                      style: TextStyle(
+                        fontSize: 22.sp,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xffEBEEF5),
                       ),
-                      Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: GestureDetector(
-                          onTap: () {
-                            navi(FundsScreen(), context);
-                          },
-                          child: SvgPicture.asset("assets/svgs/fundsNew.svg",
-                              width: 20.w, height: 23.h, color: Colors.white),
-                        ),
-                      ),
-                      InkWell(
+                    ),
+                    Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: GestureDetector(
                         onTap: () {
-                          naviWithoutAnimation(context, ProfileScreen());
+                          navi(FundsScreen(), context);
                         },
-                        child: CircleAvatar(
-                          backgroundColor: const Color(0xff021814),
-                          radius: 22.r,
-                          child: Text(
-                            "NK",
-                            style: TextStyle(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.bold,
-                              color: const Color(0xff22A06B),
-                            ),
+                        child: SvgPicture.asset(
+                          "assets/svgs/fundsNew.svg",
+                          width: 20.w,
+                          height: 23.h,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        naviWithoutAnimation(context, ProfileScreen());
+                      },
+                      child: CircleAvatar(
+                        backgroundColor: const Color(0xff021814),
+                        radius: 22.r,
+                        child: Text(
+                          "NK",
+                          style: TextStyle(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xff22A06B),
                           ),
                         ),
-                      )
-                    ]),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-
-            // Market Cards scroll away
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.only(left: 16.w, right: 16.w),
@@ -124,8 +135,6 @@ class _TradesScreenState extends State<TradesScreen> {
                 ),
               ),
             ),
-
-            // Sticky Custom Tab Bar
             SliverPersistentHeader(
               pinned: true,
               delegate: CustomTabBarDelegate(
@@ -135,27 +144,31 @@ class _TradesScreenState extends State<TradesScreen> {
               ),
             ),
           ],
-          body: SingleChildScrollView(
-            // Added to handle overflow
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height -
-                        100.h, // Adjust based on header height
-                    child: PageView.builder(
-                      controller: _pageController,
-                      onPageChanged: _onPageChanged,
-                      itemCount: tabs.length,
-                      itemBuilder: (context, index) {
-                        return TradesTabContent(tabType: tabs[index]);
-                      },
+          body: RefreshIndicator(
+            onRefresh: _onRefresh,
+            color: const Color(0xff1DB954), // Refresh indicator color
+            backgroundColor: const Color(0xff121413),
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(), // Ensures scrollability
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height - 100.h,
+                      child: PageView.builder(
+                        controller: _pageController,
+                        onPageChanged: _onPageChanged,
+                        itemCount: tabs.length,
+                        itemBuilder: (context, index) {
+                          return TradesTabContent(tabType: tabs[index]);
+                        },
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -232,7 +245,6 @@ class CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
   }
 }
 
-// Market Card UI
 Widget MarketDataCard(String title, String price, String change) {
   final bool isPositive = change.startsWith('+');
   final Color changeColor = isPositive ? Colors.green : Colors.red;

@@ -792,28 +792,35 @@ class _OrderTabContentState extends State<OrderTabContent> {
               }
               return true;
             },
-            child: ListView.builder(
-              itemCount: orderData.length,
-              itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    contentCard(
-                      orderData[index]["title"]!,
-                      orderData[index]["quantity"]!,
-                      orderData[index]["time"]!,
-                      orderData[index]["price"]!,
-                      orderData[index]["ltp"]!,
-                      orderData[index]["change"]!,
-                      orderData[index]["type"] ?? "DELIVERY",
-                    ),
-                    if (index != orderData.length - 1)
-                      Divider(color: const Color(0xff2f2f2f)),
-                  ],
-                );
+            child: RefreshIndicator(
+              color: Color(0xff1DB954),
+              onRefresh: () async {
+                await Future.delayed(const Duration(seconds: 1));
+                setState(() {});
               },
+              child: ListView.builder(
+                itemCount: orderData.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      contentCard(
+                        orderData[index]["title"]!,
+                        orderData[index]["quantity"]!,
+                        orderData[index]["time"]!,
+                        orderData[index]["price"]!,
+                        orderData[index]["ltp"]!,
+                        orderData[index]["change"]!,
+                        orderData[index]["type"] ?? "DELIVERY",
+                      ),
+                      if (index != orderData.length - 1)
+                        Divider(color: const Color(0xff2f2f2f)),
+                    ],
+                  );
+                },
+              ),
             ),
           ),
-        ),
+        )
       ],
     );
   }
@@ -840,10 +847,14 @@ Widget contentCard(String title, String quantity, String time, String price,
                 child: Text("BUY",
                     style: TextStyle(fontSize: 10.sp, color: Colors.green)),
               ),
-              SizedBox(width: 3.w),
-              // Text(".", style: TextStyle(fontSize: 15.sp)),
+              SizedBox(width: 4.w),
+              Text(
+                "•",
+                style: TextStyle(color: Colors.grey),
+              ),
+
               Padding(
-                padding: const EdgeInsets.all(2.0),
+                padding: const EdgeInsets.all(0.0),
                 child: SvgPicture.asset("assets/svgs/dot.svg",
                     height: 5.h, color: Colors.white),
               ),
@@ -943,23 +954,23 @@ Map<String, Color> _getChipColors(String label) {
   switch (label.toUpperCase()) {
     case 'DELIVERY':
       return {
-        'background': Color(0xffF1F8F6),
-        'text': Color(0xff2E7D6F),
+        'background': Color(0xff1e2e2a),
+        'text': Color(0xffa5d6c9),
       };
     case 'INTRADAY':
       return {
-        'background': Color(0xffFFF9ED),
-        'text': Color(0xffE65100),
+        'background': Color(0xff33260d),
+        'text': Color(0xffffb74d),
       };
     case 'CARRYFORWARD':
       return {
-        'background': Color(0xffF3F5FA),
-        'text': Color(0xff3C4F94),
+        'background': Color(0xff1f2537),
+        'text': Color(0xff9fa8da),
       };
     case 'MTF':
       return {
-        'background': Color(0xffF7F3FB),
-        'text': Color(0xff6A1B9A),
+        'background': Color(0xff2a1e38),
+        'text': Color(0xffce93d8),
       };
     default:
       return {

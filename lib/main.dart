@@ -43,8 +43,6 @@ import 'package:sapphire/screens/signUp/tradingExperienceScreen.dart';
 import 'package:sapphire/screens/signUp/verifyAadharScreen.dart';
 import 'package:sapphire/screens/signUp/yourInvestmentProfile.dart';
 import 'package:sapphire/screens/accountSection/verifiedP&L.dart';
-
-// App theme & provider
 import 'package:sapphire/utils/appTheme.dart';
 import 'package:sapphire/themeProvider.dart';
 
