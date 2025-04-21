@@ -192,7 +192,7 @@ class constWidgets {
                   style: TextStyle(
                       fontSize: 17.sp,
                       fontWeight: FontWeight.w600,
-                      color: Colors.green),
+                      color: isDark ? Colors.white : Colors.black),
                 ),
               ],
             ),
@@ -251,7 +251,7 @@ class constWidgets {
             child: Row(
               children: [
                 Container(
-                    height: 45.h,
+                    height: 56.h,
                     width: 2.w,
                     color: trail1.startsWith("-") ? Colors.red : Colors.green),
                 SizedBox(
@@ -268,13 +268,52 @@ class constWidgets {
                           color: isDark ? Colors.white : Colors.black),
                     ),
                     SizedBox(
-                      height: 14.h,
+                      height: 5.h,
                     ),
-                    Text(
-                      subtitle,
-                      style: TextStyle(
-                          fontSize: 11.sp,
-                          color: isDark ? Colors.white : Colors.black),
+                    Row(
+                      children: [
+                        Text(
+                          // subtitle,
+                          "Avg.  :",
+                          style: TextStyle(
+                              fontSize: 11.sp,
+                              color: isDark ? Colors.grey : Colors.black),
+                        ),
+                        SizedBox(
+                          width: 4.w,
+                        ),
+                        Text(
+                          // subtitle,
+                          "1,250",
+                          style: TextStyle(
+                              fontSize: 11.sp,
+                              color: isDark ? Colors.white : Colors.black),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 1.h,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          // subtitle,
+                          "Invt.  :",
+                          style: TextStyle(
+                              fontSize: 11.sp,
+                              color: isDark ? Colors.grey : Colors.black),
+                        ),
+                        SizedBox(
+                          width: 4.w,
+                        ),
+                        Text(
+                          // subtitle,
+                          "1,05,832",
+                          style: TextStyle(
+                              fontSize: 11.sp,
+                              color: isDark ? Colors.white : Colors.black),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -292,13 +331,43 @@ class constWidgets {
                               : Colors.green),
                     ),
                     SizedBox(
-                      height: 14.h,
+                      height: 5.h,
                     ),
-                    Text(
-                      trail2,
-                      style: TextStyle(
-                          fontSize: 11.sp,
-                          color: isDark ? Colors.white : Colors.black),
+                    Row(
+                      children: [
+                        Text(
+                          // trail2
+                          "LTP : ",
+                          style: TextStyle(
+                              fontSize: 11.sp,
+                              color: isDark ? Colors.grey : Colors.black),
+                        ),
+                        Text(
+                          "1,731.05 (-1.63%)",
+                          style: TextStyle(
+                              fontSize: 11.sp,
+                              color: isDark ? Colors.white : Colors.black),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 1.h,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Quantity : ",
+                          style: TextStyle(
+                              fontSize: 11.sp,
+                              color: isDark ? Colors.grey : Colors.black),
+                        ),
+                        Text(
+                          "365",
+                          style: TextStyle(
+                              fontSize: 11.sp,
+                              color: isDark ? Colors.white : Colors.black),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -732,7 +801,7 @@ class constWidgets {
         border: Border.all(
           color: val
               ? Colors.green
-              : Colors.grey.shade800, // Gray border to match image
+              : Color(0xffD1D5DB), // Gray border to match image
           width: 1.5, // Slightly thicker border for visibility
         ),
         borderRadius:
