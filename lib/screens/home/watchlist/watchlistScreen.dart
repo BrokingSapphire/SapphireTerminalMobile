@@ -12,6 +12,7 @@ import 'package:sapphire/utils/constWidgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sapphire/utils/naviWithoutAnimation.dart';
 import 'package:sapphire/utils/watchlistTabBar.dart';
+import 'package:sapphire/utils/filters.dart'; // For showFilterBottomSheet
 
 class WatchlistScreen extends StatefulWidget {
   const WatchlistScreen({super.key});
@@ -22,6 +23,11 @@ class WatchlistScreen extends StatefulWidget {
 
 class _WatchlistScreenState extends State<WatchlistScreen>
     with SingleTickerProviderStateMixin {
+  // --- Added for filter/sort/search ---
+  String? _selectedFilterLabel;
+  String? _selectedDirection;
+  String _searchQuery = '';
+  //-----------------------------------
   late PageController _pageController;
   List<String> tabNames = ['Watchlist 1'];
   int _selectedIndex = 0;
@@ -121,14 +127,13 @@ class _WatchlistScreenState extends State<WatchlistScreen>
     },
   ];
 
-  // Define watchlistData as List<Map<String, dynamic>> to store a unified list of items
   List<Map<String, dynamic>> watchlistData = [];
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: _selectedIndex);
-    // Initialize watchlistData with a unified list of categories and stocks
+    // Initialize watchlistData
     watchlistData = [
       {
         'items': [
@@ -172,10 +177,23 @@ class _WatchlistScreenState extends State<WatchlistScreen>
     });
   }
 
+  // --- Refresh logic ---
+  Future<void> _onRefresh() async {
+    // Simulate a network fetch or data refresh
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {
+      // Example: Reset or update watchlistData for the current tab
+      watchlistData[_selectedIndex]['items'] = [
+        ...initialWatchlistData, // Reload initial data or fetch new data
+      ];
+      print("Refreshed Watchlist ${tabNames[_selectedIndex]}");
+    });
+  }
+
   void _showEditCategoryDialog(
       BuildContext context, String currentName, int itemIndex) {
     final TextEditingController controller =
-    TextEditingController(text: currentName);
+        TextEditingController(text: currentName);
 
     showModalBottomSheet(
       context: context,
@@ -230,7 +248,7 @@ class _WatchlistScreenState extends State<WatchlistScreen>
               controller: controller,
               decoration: InputDecoration(
                 contentPadding:
-                EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 hintText: "Enter Category Name",
                 labelStyle: TextStyle(color: Color(0xffC9CACC)),
                 hintStyle: TextStyle(color: Color(0xFFC9CACC), fontSize: 15.sp),
@@ -265,12 +283,74 @@ class _WatchlistScreenState extends State<WatchlistScreen>
       ),
     );
   }
+
   Widget _buildWatchlistTab(int index, bool isDark) {
-    // Safely access the unified items list
-    final watchlist = watchlistData[index];
-    List<dynamic> currentItems = watchlist['items'] is List
-        ? List<dynamic>.from(watchlist['items'])
+    List<dynamic> currentItems = watchlistData[index]['items'] is List
+        ? List<dynamic>.from(watchlistData[index]['items'])
         : [];
+
+    // --- Apply search filter ---
+    if (_searchQuery.isNotEmpty) {
+      currentItems = currentItems.where((item) {
+        if (item is Map<String, String>) {
+          return (item['symbol']
+                      ?.toLowerCase()
+                      .contains(_searchQuery.toLowerCase()) ??
+                  false) ||
+              (item['company']
+                      ?.toLowerCase()
+                      .contains(_searchQuery.toLowerCase()) ??
+                  false);
+        } else if (item is String) {
+          return item.toLowerCase().contains(_searchQuery.toLowerCase());
+        }
+        return false;
+      }).toList();
+    }
+
+    // --- Apply sorting if a filter is selected ---
+    if (_selectedFilterLabel != null && _selectedDirection != null) {
+      List<String> categories = currentItems.whereType<String>().toList();
+      List<Map<String, String>> stocks =
+          currentItems.whereType<Map<String, String>>().toList();
+
+      if (_selectedFilterLabel == 'Alphabetical') {
+        stocks.sort((a, b) {
+          String aStr = a['symbol'] ?? '';
+          String bStr = b['symbol'] ?? '';
+          int cmp = aStr.compareTo(bStr);
+          return _selectedDirection == 'A–Z' ? cmp : -cmp;
+        });
+      } else if (_selectedFilterLabel == 'Price') {
+        stocks.sort((a, b) {
+          double aPrice = double.tryParse(a['price'] ?? '') ?? 0;
+          double bPrice = double.tryParse(b['price'] ?? '') ?? 0;
+          return _selectedDirection == 'Ascending'
+              ? aPrice.compareTo(bPrice)
+              : bPrice.compareTo(aPrice);
+        });
+      } else if (_selectedFilterLabel == 'Change (1 Day)') {
+        stocks.sort((a, b) {
+          double aChange = double.tryParse((a['change'] ?? '')
+                  .split(' ')
+                  .first
+                  .replaceAll('+', '')
+                  .replaceAll('%', '')) ??
+              0;
+          double bChange = double.tryParse((b['change'] ?? '')
+                  .split(' ')
+                  .first
+                  .replaceAll('+', '')
+                  .replaceAll('%', '')) ??
+              0;
+          return _selectedDirection == 'Ascending'
+              ? aChange.compareTo(bChange)
+              : bChange.compareTo(aChange);
+        });
+      }
+      currentItems = [...categories, ...stocks];
+      watchlistData[index]['items'] = currentItems;
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -279,8 +359,7 @@ class _WatchlistScreenState extends State<WatchlistScreen>
           visible: _isSearchBarVisible,
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 16.w),
-            child: constWidgets.searchField(
-                context, "Search Everything...", "watchlist", isDark),
+            child: _searchAndFilterBar(isDark),
           ),
         ),
         Expanded(
@@ -336,223 +415,295 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                       ],
                     ),
                   )
-                : ReorderableListView.builder(
-                    itemCount: currentItems.length,
-                    itemBuilder: (context, itemIndex) {
-                      final item = currentItems[itemIndex];
-                      if (item is String) {
-                        // Render category with dividers and slidable delete option
-                        return Slidable(
-                          key: ValueKey('category_$item'),
-                          endActionPane: ActionPane(
-                            motion: const DrawerMotion(),
-                            extentRatio: 0.2,
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.stretch,
-                                  children: [
-                                    Expanded(
-                                      child: Center(
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              watchlistData[_selectedIndex]
-                                              ['items']
-                                                  .removeAt(itemIndex);
-                                              print(
-                                                  "Deleted category '$item' from Watchlist ${tabNames[_selectedIndex]}");
-                                            });
-                                          },
-                                          child: SvgPicture.asset(
-                                            "assets/svgs/delete.svg",
-                                            color: Color(0xff1DB954),
-                                            width: 24.w,
-                                            height: 24.h,
+                : RefreshIndicator(
+                    color: Color(0xff1DB954), // Match app's theme
+                    onRefresh: _onRefresh,
+                    child: ReorderableListView.builder(
+                      itemCount: currentItems.length,
+                      itemBuilder: (context, itemIndex) {
+                        final item = currentItems[itemIndex];
+                        if (item is String) {
+                          // Render category with dividers and slidable delete option
+                          return Slidable(
+                            key: ValueKey('category_$item'),
+                            endActionPane: ActionPane(
+                              motion: const DrawerMotion(),
+                              extentRatio: 0.2,
+                              children: [
+                                Expanded(
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      Expanded(
+                                        child: Center(
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                watchlistData[_selectedIndex]
+                                                        ['items']
+                                                    .removeAt(itemIndex);
+                                                print(
+                                                    "Deleted category '$item' from Watchlist ${tabNames[_selectedIndex]}");
+                                              });
+                                            },
+                                            child: SvgPicture.asset(
+                                              "assets/svgs/delete.svg",
+                                              color: Color(0xff1DB954),
+                                              width: 24.w,
+                                              height: 24.h,
+                                            ),
                                           ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            child: GestureDetector(
+                              onLongPress: () {
+                                // Use a Timer to ensure 2-second long press
+                                Timer(Duration(milliseconds: 2000), () {
+                                  if (mounted) {
+                                    _showEditCategoryDialog(
+                                        context, item, itemIndex);
+                                  }
+                                });
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                margin: EdgeInsets.symmetric(),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if (itemIndex == 0)
+                                      Divider(
+                                        color: Color(0xFF2F2F2F),
+                                        thickness: 1,
+                                        height: 1.h,
+                                      ),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 6.h, horizontal: 16.w),
+                                      child: Text(
+                                        item,
+                                        style: TextStyle(
+                                          fontSize: 16.sp,
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
-                          child: GestureDetector(
-                            onLongPress: () {
-                              // Use a Timer to ensure 2-second long press
-                              Timer(Duration(milliseconds: 2000), () {
-                                // Check if the widget is still mounted to avoid setState errors
-                                if (mounted) {
-                                  _showEditCategoryDialog(
-                                      context, item, itemIndex);
-                                }
-                              });
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              margin: EdgeInsets.symmetric(),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  if (itemIndex == 0)
-                                    Divider(
-                                      color: Color(0xFF2F2F2F),
-                                      thickness: 1,
-                                      height: 1.h,
+                            ),
+                          );
+                        } else if (item is Map<String, String>) {
+                          // Render stock
+                          return Container(
+                            key: ValueKey('stock_${item['symbol']}'),
+                            decoration: BoxDecoration(
+                                border: Border(
+                                    bottom: BorderSide(
+                                        color: Color(0xFF2F2F2F), width: 1))),
+                            child: Slidable(
+                              key: ValueKey("slidable_${item['symbol']}"),
+                              closeOnScroll: true,
+                              startActionPane: ActionPane(
+                                  motion: const DrawerMotion(),
+                                  extentRatio: 0.4,
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: [
+                                            Expanded(
+                                                child: Center(
+                                                    child: SvgPicture.asset(
+                                                        "assets/svgs/chart-candlestick.svg",
+                                                        color: Color(
+                                                            0xff1DB954)))),
+                                            Container(
+                                                width: 1,
+                                                color: Color(0xFF2F2F2F)),
+                                            Expanded(
+                                                child: Center(
+                                                    child: SvgPicture.asset(
+                                                        "assets/svgs/link.svg",
+                                                        color: Color(
+                                                            0xff1DB954)))),
+                                            Container(
+                                                width: 1,
+                                                color: Color(0xFF2F2F2F)),
+                                            Expanded(
+                                                child: Center(
+                                                    child: SvgPicture.asset(
+                                                        "assets/svgs/bookmark-x.svg",
+                                                        color: Color(
+                                                            0xff1DB954)))),
+                                            Container(
+                                                width: 1,
+                                                color: Color(0xFF2F2F2F)),
+                                          ]),
                                     ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 6.h, horizontal: 16.w),
-                                    child: Text(
-                                      item,
-                                      style: TextStyle(
-                                        fontSize: 16.sp,
-                                        color: Colors.grey,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                  ]),
+                              endActionPane: ActionPane(
+                                  motion: const DrawerMotion(),
+                                  extentRatio: 0.4,
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: [
+                                            Container(
+                                                width: 1,
+                                                color: Color(0xFF2F2F2F)),
+                                            Expanded(
+                                              child: GestureDetector(
+                                                behavior:
+                                                    HitTestBehavior.opaque,
+                                                onTap: () => Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            BuyScreenWrapper(
+                                                                isbuy: true))),
+                                                child: Center(
+                                                    child: Text("B",
+                                                        style: TextStyle(
+                                                            color: Colors.green,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 18.sp))),
+                                              ),
+                                            ),
+                                            Container(
+                                                width: 1,
+                                                color: Color(0xFF2F2F2F)),
+                                            Expanded(
+                                              child: GestureDetector(
+                                                behavior:
+                                                    HitTestBehavior.opaque,
+                                                onTap: () => Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            BuyScreenWrapper(
+                                                                isbuy: false))),
+                                                child: Center(
+                                                    child: Text("S",
+                                                        style: TextStyle(
+                                                            color: Colors.red,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 18.sp))),
+                                              ),
+                                            ),
+                                          ]),
                                     ),
-                                  ),
-                                  // Divider(
-                                  //   color: Color(0xFF2F2F2F),
-                                  //   thickness: 1,
-                                  //   height: 1.h,
-                                  // ),
-                                ],
+                                  ]),
+                              child: constWidgets.watchListDataView(
+                                "https://companieslogo.com/img/orig/${item['symbol']}.png?t=1720244493",
+                                item['symbol']!,
+                                item['company']!,
+                                item['price']!,
+                                item['change']!,
+                                isDark,
                               ),
                             ),
-                          ),
-                        );
-                      } else if (item is Map<String, String>) {
-                        // Render stock
-                        return Container(
-                          key: ValueKey('stock_${item['symbol']}'),
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  bottom: BorderSide(
-                                      color: Color(0xFF2F2F2F), width: 1))),
-                          child: Slidable(
-                            key: ValueKey("slidable_${item['symbol']}"),
-                            closeOnScroll: true,
-                            startActionPane: ActionPane(
-                                motion: const DrawerMotion(),
-                                extentRatio: 0.4,
-                                children: [
-                                  Expanded(
-                                    child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        children: [
-                                          Expanded(
-                                              child: Center(
-                                                  child: SvgPicture.asset(
-                                                      "assets/svgs/chart-candlestick.svg",
-                                                      color:
-                                                          Color(0xff1DB954)))),
-                                          Container(
-                                              width: 1,
-                                              color: Color(0xFF2F2F2F)),
-                                          Expanded(
-                                              child: Center(
-                                                  child: SvgPicture.asset(
-                                                      "assets/svgs/link.svg",
-                                                      color:
-                                                          Color(0xff1DB954)))),
-                                          Container(
-                                              width: 1,
-                                              color: Color(0xFF2F2F2F)),
-                                          Expanded(
-                                              child: Center(
-                                                  child: SvgPicture.asset(
-                                                      "assets/svgs/bookmark-x.svg",
-                                                      color:
-                                                          Color(0xff1DB954)))),
-                                          Container(
-                                              width: 1,
-                                              color: Color(0xFF2F2F2F)),
-                                        ]),
-                                  ),
-                                ]),
-                            endActionPane: ActionPane(
-                                motion: const DrawerMotion(),
-                                extentRatio: 0.4,
-                                children: [
-                                  Expanded(
-                                    child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        children: [
-                                          Container(
-                                              width: 1,
-                                              color: Color(0xFF2F2F2F)),
-                                          Expanded(
-                                            child: GestureDetector(
-                                              behavior: HitTestBehavior.opaque,
-                                              onTap: () => Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          BuyScreenWrapper(
-                                                              isbuy: true))),
-                                              child: Center(
-                                                  child: Text("B",
-                                                      style: TextStyle(
-                                                          color: Colors.green,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 18.sp))),
-                                            ),
-                                          ),
-                                          Container(
-                                              width: 1,
-                                              color: Color(0xFF2F2F2F)),
-                                          Expanded(
-                                            child: GestureDetector(
-                                              behavior: HitTestBehavior.opaque,
-                                              onTap: () => Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          BuyScreenWrapper(
-                                                              isbuy: false))),
-                                              child: Center(
-                                                  child: Text("S",
-                                                      style: TextStyle(
-                                                          color: Colors.red,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 18.sp))),
-                                            ),
-                                          ),
-                                        ]),
-                                  ),
-                                ]),
-                            child: constWidgets.watchListDataView(
-                              "https://companieslogo.com/img/orig/${item['symbol']}.png?t=1720244493",
-                              item['symbol']!,
-                              item['company']!,
-                              item['price']!,
-                              item['change']!,
-                              isDark,
-                            ),
-                          ),
-                        );
-                      }
-                      return SizedBox
-                          .shrink(); // Fallback for invalid item types
-                    },
-                    onReorder: (int oldIndex, int newIndex) {
-                      setState(() {
-                        if (oldIndex < newIndex) newIndex -= 1;
-                        final item = currentItems.removeAt(oldIndex);
-                        currentItems.insert(newIndex, item);
-                        watchlistData[_selectedIndex]['items'] = currentItems;
-                        print(
-                            "Reordered items in Watchlist ${tabNames[_selectedIndex]}: ${currentItems.map((e) => e is String ? e : e['symbol']).toList()}");
-                      });
-                    },
+                          );
+                        }
+                        return SizedBox
+                            .shrink(); // Fallback for invalid item types
+                      },
+                      onReorder: (int oldIndex, int newIndex) {
+                        setState(() {
+                          if (oldIndex < newIndex) newIndex -= 1;
+                          final item = currentItems.removeAt(oldIndex);
+                          currentItems.insert(newIndex, item);
+                          watchlistData[_selectedIndex]['items'] = currentItems;
+                          print(
+                              "Reordered items in Watchlist ${tabNames[_selectedIndex]}: ${currentItems.map((e) => e is String ? e : e['symbol']).toList()}");
+                        });
+                      },
+                    ),
                   ),
+          ),
+        )
+      ],
+    );
+  }
+
+  // --- Custom search/filter bar with search and filter callbacks ---
+  Widget _searchAndFilterBar(bool isDark) {
+    return Row(
+      children: [
+        // Search field
+        Expanded(
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: "Search Everything...",
+              prefixIcon: Icon(Icons.search, color: Colors.grey),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 14.h, horizontal: 10.w),
+              filled: true,
+              fillColor: isDark ? Color(0xFF121413) : Color(0xFFF4F4F9),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(6.r),
+                borderSide: BorderSide.none,
+              ),
+            ),
+            style: TextStyle(
+                color: isDark ? Colors.white : Colors.black, fontSize: 16.sp),
+            onChanged: (val) {
+              setState(() {
+                _searchQuery = val;
+              });
+            },
+          ),
+        ),
+        SizedBox(width: 10.w),
+        // Filter icon
+        GestureDetector(
+          onTap: () {
+            showFilterBottomSheet(
+              context: context,
+              pageKey: "watchlist",
+              isDark: isDark,
+              onApply: (selectedFilters) {
+                if (selectedFilters.isNotEmpty) {
+                  setState(() {
+                    _selectedFilterLabel = selectedFilters[0]['label'];
+                    _selectedDirection = selectedFilters[0]['direction'];
+                  });
+                } else {
+                  setState(() {
+                    _selectedFilterLabel = null;
+                    _selectedDirection = null;
+                  });
+                }
+                Navigator.pop(
+                    context); // Close the bottom sheet after selection
+              },
+            );
+          },
+          child: Container(
+            height: 48.h,
+            width: 48.h,
+            decoration: BoxDecoration(
+              color: isDark ? Color(0xFF121413) : Color(0xFFF4F4F9),
+              borderRadius: BorderRadius.circular(6.r),
+            ),
+            child: Center(
+              child: Image.asset(
+                'assets/icons/filter.png',
+                scale: 2,
+              ),
+            ),
           ),
         ),
       ],
@@ -619,10 +770,8 @@ class _WatchlistScreenState extends State<WatchlistScreen>
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    MarketDataCard(
-                        context, "NIFTY 50", "23,018.20", "-218.20 (1.29%)"),
-                    MarketDataCard(
-                        context, "SENSEX", "73,018.20", "+218.20 (1.29%)"),
+                    MarketDataCard("NIFTY 50", "23,018.20", "-218.20 (1.29%)"),
+                    MarketDataCard("SENSEX", "73,018.20", "+218.20 (1.29%)"),
                   ]),
             ),
           ),
@@ -650,7 +799,6 @@ class _WatchlistScreenState extends State<WatchlistScreen>
               onAddCategory: (categories) {
                 setState(() {
                   if (_selectedIndex < watchlistData.length) {
-                    // Append new categories to the items list
                     watchlistData[_selectedIndex]['items'] = [
                       ...watchlistData[_selectedIndex]['items'],
                       ...categories
@@ -726,50 +874,51 @@ class _WatchlistTabBarDelegate extends SliverPersistentHeaderDelegate {
   }
 }
 
-/// MarketDataCard: A card displaying market data, now fully theme-aware
-Widget MarketDataCard(
-    BuildContext context, String title, String price, String change) {
+Widget MarketDataCard(String title, String price, String change) {
   final bool isPositive = change.startsWith('+');
-  final Color changeColor = isPositive
-      ? Theme.of(context).colorScheme.primary
-      : Theme.of(context).colorScheme.error;
+  final Color changeColor = isPositive ? Colors.green : Colors.red;
 
   return Container(
     height: 62.h,
     width: 175.w,
     padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
     decoration: BoxDecoration(
-      // Card background adapts to theme
-      color: Theme.of(context).colorScheme.surface,
+      color: const Color(0xff121413),
       borderRadius: BorderRadius.circular(10.r),
-      // Card border adapts to theme divider
-      border: Border.all(color: Theme.of(context).dividerColor, width: 1.5.w),
+      border: Border.all(color: const Color(0xff2F2F2F), width: 1.5.w),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Title text adapts to theme
-        Text(title,
-            style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontWeight: FontWeight.bold)),
+        Text(
+          title,
+          style: TextStyle(
+              color: const Color(0xffEBEEF5),
+              fontSize: 14.sp,
+              fontWeight: FontWeight.bold),
+        ),
         SizedBox(height: 2.h),
-        // Price & change container adapts to theme
         Container(
           padding: EdgeInsets.all(2.w),
           decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              borderRadius: BorderRadius.circular(6.r)),
-          child: Row(mainAxisSize: MainAxisSize.min, children: [
-            // Price text adapts to theme
-            Text(price,
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.onBackground,
-                    fontSize: 12.sp)),
-            SizedBox(width: 6.w),
-            // Change text uses theme primary/error
-            Text(change, style: TextStyle(color: changeColor, fontSize: 12.sp)),
-          ]),
+            color: const Color(0xff121413),
+            borderRadius: BorderRadius.circular(6.r),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                price,
+                style:
+                    TextStyle(color: const Color(0xffEBEEF5), fontSize: 12.sp),
+              ),
+              SizedBox(width: 6.w),
+              Text(
+                change,
+                style: TextStyle(color: changeColor, fontSize: 12.sp),
+              ),
+            ],
+          ),
         ),
       ],
     ),
