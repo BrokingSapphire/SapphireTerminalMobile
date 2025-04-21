@@ -213,16 +213,83 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        mutualFundCard(
-                          "Current Value",
-                          '₹15,11,750',
-                          "Overall Loss",
-                          "-₹45,096",
-                          isDark,
-                          "Invested Value",
-                          "₹19,91,071",
-                          "XIRR",
-                          "-₹4,837",
+                        constWidgets.singleCard("Current Value", '₹15,11,750',
+                            "Overall Loss", "-₹45,096", isDark),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.w),
+                          child: Divider(
+                            color: isDark
+                                ? const Color(0xff2F2F2F)
+                                : const Color(0xffD1D5DB),
+                            thickness: 1,
+                          ),
+                        ),
+                        Container(
+                          height: 120.h / 2,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Invested Value",
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: isDark
+                                              ? Colors.white
+                                              : Colors.black),
+                                    ),
+                                    SizedBox(
+                                      height: 4.h,
+                                    ),
+                                    Text(
+                                      "₹19,91,071",
+                                      style: TextStyle(
+                                          fontSize: 17.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: isDark
+                                              ? Colors.white
+                                              : Colors.black),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      "XIRR",
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: isDark
+                                              ? Colors.white
+                                              : Colors.black),
+                                    ),
+                                    SizedBox(
+                                      height: 4.h,
+                                    ),
+                                    RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          TextSpan(
+                                            text: "-6.75%",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 17.sp,
+                                                color: Colors.red),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ],
                     ),

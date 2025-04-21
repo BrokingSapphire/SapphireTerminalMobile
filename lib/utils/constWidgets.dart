@@ -187,6 +187,9 @@ class constWidgets {
                       fontSize: 13.sp,
                       color: isDark ? Colors.white : Colors.black),
                 ),
+                SizedBox(
+                  height: 4.h,
+                ),
                 Text(
                   firstValue,
                   style: TextStyle(
@@ -206,20 +209,23 @@ class constWidgets {
                       fontSize: 13.sp,
                       color: isDark ? Colors.white : Colors.black),
                 ),
+                SizedBox(
+                  height: 4.h,
+                ),
                 RichText(
                   text: TextSpan(
                     children: [
                       TextSpan(
                         text: secondValue,
                         style: TextStyle(
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.w600,
                             fontSize: 17.sp,
                             color: secondValue.contains('-')
                                 ? Colors.red
                                 : Colors.green),
                       ),
                       TextSpan(
-                        text: "   ", // Adding spaces for width
+                        text: " ", // Adding spaces for width
                         style: TextStyle(fontSize: 10.sp),
                       ),
                       TextSpan(
@@ -291,7 +297,6 @@ class constWidgets {
                         ),
                       ],
                     ),
-                    
                     Row(
                       children: [
                         Text(

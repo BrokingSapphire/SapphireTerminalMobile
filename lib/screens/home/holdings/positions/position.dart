@@ -226,7 +226,8 @@ class _positionScreenState extends State<positionScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        positionCard('+₹15,11,750', "-₹45,096", isDark),
+                        constWidgets.singleCard("Total Gain", '₹15,11,750',
+                            "Today's Loss", "-₹45,096", isDark),
                       ],
                     ),
                   ),
