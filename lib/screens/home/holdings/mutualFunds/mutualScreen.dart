@@ -70,7 +70,7 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
                               : const Color(0xffD1D5DB),
                         )),
                     constWidgets.singleCard("Invested Value", "₹19,91,071",
-                        "Today’s Loss", "-₹4,837", isDark)
+                        "XIRR", "-₹4,837", isDark)
                   ],
                 ),
               ),
@@ -182,7 +182,7 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -224,9 +224,13 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
                           ),
                           // Top right icon inside circular background
                           CircleAvatar(
-                            radius: 16.r,
+                            radius: 20.r,
                             backgroundColor: const Color(0xFFEDEDED),
-                            child: Icon(icon, color: Colors.red, size: 16),
+                            // child: Icon(icon, color: Colors.red, size: 16),
+                            child: Image.asset(
+                              "assets/images/reliance logo.png",
+                              fit: BoxFit.fill,
+                            ),
                           )
                         ],
                       ),

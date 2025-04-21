@@ -13,8 +13,8 @@ class _positionScreenState extends State<positionScreen> {
   List<Map<String, dynamic>> positionData = [
     {
       "title": "ALKYLAMINE",
-      "midtitle": "Alklyl Amines Chemical Tech",
-      "subtitle": "59 Qty × Avg 2,670.84",
+      "midtitle": "Alklyl Amines Chemical Ltd",
+      "subtitle": "1,782 (-2.5%)",
       "trail1": "+3,20,734.12 (+1.5%)",
       "trail2": "BUY",
       "trail3": "INTRADAY",
@@ -23,7 +23,7 @@ class _positionScreenState extends State<positionScreen> {
     {
       "title": "ALKYLAMINE 1200 CC",
       "midtitle": "24 April 2025",
-      "subtitle": "59 Qty × Avg 2,670.84",
+      "subtitle": "1,782 (-2.5%)",
       "trail1": "-3,23,067.14 (-1.5%)",
       "trail2": "SELL",
       "trail3": "INTRADAY",
@@ -32,7 +32,7 @@ class _positionScreenState extends State<positionScreen> {
     {
       "title": "ALKYLAMINE FUT",
       "midtitle": "27 Mar 2025",
-      "subtitle": "59 Qty × Avg 2,670.84",
+      "subtitle": "1,782 (-2.5%)",
       "trail1": "+3,20,734.12 (+1.5%)",
       "trail2": "BUY",
       "trail3": "INTRADAY",
@@ -41,7 +41,7 @@ class _positionScreenState extends State<positionScreen> {
     {
       "title": "ALKYLAMINE 1200 CE",
       "midtitle": "24 Apr 2025",
-      "subtitle": "59 Qty × Avg 2,670.84",
+      "subtitle": "1,782 (-2.5%)",
       "trail1": "-3,23,067.14 (-1.5%)",
       "trail2": "SELL",
       "trail3": "CARRYFORWARD",
@@ -50,7 +50,7 @@ class _positionScreenState extends State<positionScreen> {
     {
       "title": "ALKYLAMINE",
       "midtitle": "Alklyl Amines Chemical Tech",
-      "subtitle": "59 Qty × Avg 2,670.84",
+      "subtitle": "1,782 (-2.5%)",
       "trail1": "+3,20,734.12 (+1.5%)",
       "trail2": "BUY",
       "trail3": "INTRADAY",
@@ -59,7 +59,7 @@ class _positionScreenState extends State<positionScreen> {
     {
       "title": "ALKYLAMINE 1200 CC",
       "midtitle": "24 April 2025",
-      "subtitle": "59 Qty × Avg 2,670.84",
+      "subtitle": "1,782 (-2.5%)",
       "trail1": "-3,23,067.14 (-1.5%)",
       "trail2": "SELL",
       "trail3": "INTRADAY",
@@ -68,7 +68,7 @@ class _positionScreenState extends State<positionScreen> {
     {
       "title": "ALKYLAMINE FUT",
       "midtitle": "27 Mar 2025",
-      "subtitle": "59 Qty × Avg 2,670.84",
+      "subtitle": "1,782 (-2.5%)",
       "trail1": "+3,20,734.12 (+1.5%)",
       "trail2": "BUY",
       "trail3": "INTRADAY",
@@ -77,7 +77,7 @@ class _positionScreenState extends State<positionScreen> {
     {
       "title": "ALKYLAMINE 1200 CE",
       "midtitle": "24 Apr 2025",
-      "subtitle": "59 Qty × Avg 2,670.84",
+      "subtitle": "1,782 (-2.5%)",
       "trail1": "-3,23,067.14 (-1.5%)",
       "trail2": "SELL",
       "trail3": "CARRYFORWARD",
@@ -110,7 +110,7 @@ class _positionScreenState extends State<positionScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      constWidgets.singleCard("Total Gain", '₹15,11,750',
+                      constWidgets.singleCard("Total Gain", '+₹15,11,750',
                           "Total Loss", "-₹45,096", isDark),
                     ],
                   ),
@@ -196,13 +196,13 @@ class _positionScreenState extends State<positionScreen> {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
           child: Container(
-            height: 95.h,
+            // height: 95.h,
             child: Row(
               children: [
                 Container(
-                    height: 75.h,
+                    height: 70.h,
                     width: 2.w,
                     color: trail1.startsWith("-") ? Colors.red : Colors.green),
                 SizedBox(
@@ -219,22 +219,60 @@ class _positionScreenState extends State<positionScreen> {
                           color: isDark ? Colors.white : Colors.black),
                     ),
                     SizedBox(
-                      height: 10.h,
+                      height: 6.h,
                     ),
                     Text(
                       midtitle,
                       style: TextStyle(
-                          fontSize: 11.sp,
+                          fontSize: 12.sp,
                           color: isDark ? Colors.white : Colors.black),
                     ),
                     SizedBox(
-                      height: 10.h,
+                      height: 5.h,
                     ),
-                    Text(
-                      subtitle,
-                      style: TextStyle(
-                          fontSize: 11.sp,
-                          color: isDark ? Colors.white : Colors.black),
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 6.w, vertical: 2.h),
+                          decoration: BoxDecoration(
+                            color: isBuy
+                                ? (isDark
+                                    ? Color(0xff143520)
+                                    : Colors.green.withOpacity(0.2))
+                                : (isDark
+                                    ? Color(0xff3A0C0C)
+                                    : Color(0xffFF0000).withOpacity(0.2)),
+                            borderRadius: BorderRadius.circular(4.r),
+                          ),
+                          child: Text(
+                            trail2,
+                            style: TextStyle(
+                              fontSize: 10.sp,
+                              color: isBuy ? Colors.green : Colors.red,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5.w,
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 6.w, vertical: 2.h),
+                          decoration: BoxDecoration(
+                            color:
+                                isDark ? Color(0xff333333) : Color(0xffE3E6EB),
+                            borderRadius: BorderRadius.circular(4.r),
+                          ),
+                          child: Text(
+                            trail3,
+                            style: TextStyle(
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.w500,
+                                color: isDark ? Colors.white : Colors.black),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -252,47 +290,48 @@ class _positionScreenState extends State<positionScreen> {
                               : Colors.green),
                     ),
                     SizedBox(
-                      height: 10.h,
+                      height: 6.h,
                     ),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
-                      decoration: BoxDecoration(
-                        color: isBuy
-                            ? (isDark
-                                ? Color(0xff143520)
-                                : Colors.green.withOpacity(0.2))
-                            : (isDark
-                                ? Color(0xff3A0C0C)
-                                : Color(0xffFF0000).withOpacity(0.2)),
-                        borderRadius: BorderRadius.circular(4.r),
-                      ),
-                      child: Text(
-                        trail2,
-                        style: TextStyle(
-                          fontSize: 10.sp,
-                          color: isBuy ? Colors.green : Colors.red,
+                    Row(
+                      children: [
+                        Text(
+                          "LTP :",
+                          style: TextStyle(
+                              fontSize: 11.sp,
+                              color: isDark ? Colors.grey : Colors.black),
                         ),
-                      ),
+                        SizedBox(
+                          width: 5.w,
+                        ),
+                        Text(
+                          subtitle,
+                          style: TextStyle(
+                              fontSize: 11.sp,
+                              color: isDark ? Colors.white : Colors.black),
+                        ),
+                      ],
                     ),
                     SizedBox(
-                      height: 10.h,
+                      height: 1.h,
                     ),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
-                      decoration: BoxDecoration(
-                        color:
-                            isDark ? Color(0xff333333) : Colors.grey.shade700,
-                        borderRadius: BorderRadius.circular(4.r),
-                      ),
-                      child: Text(
-                        trail3,
-                        style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white),
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          "Quantity :",
+                          style: TextStyle(
+                              fontSize: 11.sp,
+                              color: isDark ? Colors.grey : Colors.black),
+                        ),
+                        SizedBox(
+                          width: 5.w,
+                        ),
+                        Text(
+                          "365",
+                          style: TextStyle(
+                              fontSize: 11.sp,
+                              color: isDark ? Colors.white : Colors.black),
+                        ),
+                      ],
                     ),
                   ],
                 ),

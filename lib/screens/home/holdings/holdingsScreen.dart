@@ -87,7 +87,7 @@ class _HoldingsScreenState extends State<HoldingsScreen> {
                           child: CircleAvatar(
                             backgroundColor: isDark
                                 ? Color(0xff021814)
-                                : Colors.grey.shade700,
+                                : Color(0xff22A06B).withOpacity(0.2),
                             radius: 22.r,
                             child: Text(
                               "NK",
@@ -98,7 +98,7 @@ class _HoldingsScreenState extends State<HoldingsScreen> {
                               ),
                             ),
                           ),
-                        )
+                        ),
                       ]),
                 ),
               ),
