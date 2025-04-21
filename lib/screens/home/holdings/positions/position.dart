@@ -85,6 +85,37 @@ class _positionScreenState extends State<positionScreen> {
     }
   ];
 
+  // Function to get chip colors based on label
+  Map<String, Color> _getChipColors(String label) {
+    switch (label.toUpperCase()) {
+      case 'DELIVERY':
+        return {
+          'background': Color(0xff1e2e2a),
+          'text': Color(0xffa5d6c9),
+        };
+      case 'INTRADAY':
+        return {
+          'background': Color(0xff33260d),
+          'text': Color(0xffffb74d),
+        };
+      case 'CARRYFORWARD':
+        return {
+          'background': Color(0xff1f2537),
+          'text': Color(0xff9fa8da),
+        };
+      case 'MTF':
+        return {
+          'background': Color(0xff2a1e38),
+          'text': Color(0xffce93d8),
+        };
+      default:
+        return {
+          'background': Color(0xff1a1a1a),
+          'text': Colors.white,
+        };
+    }
+  }
+
   Widget positionCard(String firstValue, String secondValue, bool isDark) {
     // Determine titles based on values
     String firstTitle = firstValue.contains('-') ? "Total Loss" : "Total Gain";
@@ -181,90 +212,91 @@ class _positionScreenState extends State<positionScreen> {
               SizedBox(
                 height: 15.h,
               ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6.r),
-                    color: isDark
-                        ? const Color(0xFF121413)
-                        : const Color(0xFFF4F4F9)),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 6.h),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      positionCard('+₹15,11,750', "-₹45,096", isDark),
-                    ],
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6.r),
+                      color: isDark
+                          ? const Color(0xFF121413)
+                          : const Color(0xFFF4F4F9)),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 6.h),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        positionCard('+₹15,11,750', "-₹45,096", isDark),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 15.h,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: constWidgets.searchField(
-                  context, "Search Everything...", "positions", isDark),
-            ),
-            SizedBox(
-              height: 15.h,
-            ),
-            if (positionData.isEmpty)
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                        height: 150.h,
-                        width: 150.w,
-                        child: Image.asset(
-                            "assets/emptyPng/holdingsPosition.png")),
-                    Text(
-                      "No Open Positions",
-                      style: TextStyle(
-                          fontSize: 24.sp, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      width: 250.w,
-                      child: Text(
-                        "Your active trades will be listed here. Start trading today!",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 18.sp, color: Colors.grey),
+              SizedBox(
+                height: 15.h,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: constWidgets.searchField(
+                    context, "Search Everything...", "positions", isDark),
+              ),
+              SizedBox(
+                height: 15.h,
+              ),
+              if (positionData.isEmpty)
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                          height: 150.h,
+                          width: 150.w,
+                          child: Image.asset(
+                              "assets/emptyPng/holdingsPosition.png")),
+                      Text(
+                        "No Open Positions",
+                        style: TextStyle(
+                            fontSize: 24.sp, fontWeight: FontWeight.bold),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            else
-              ListView(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  children: [
-                    ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: positionData.length,
-                      itemBuilder: (context, index) {
-                        var data = positionData[index];
-                        return positionScreenTiles(
-                          data['title'],
-                          data['midtitle'],
-                          data['subtitle'],
-                          data['trail1'],
-                          data['trail2'],
-                          data['trail3'],
-                          data['isBuy'],
-                          isDark,
-                        );
-                        })
-                  ])
-          ],
+                      SizedBox(
+                        width: 250.w,
+                        child: Text(
+                          "Your active trades will be listed here. Start trading today!",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 18.sp, color: Colors.grey),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              else
+                ListView(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    children: [
+                      ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: positionData.length,
+                          itemBuilder: (context, index) {
+                            var data = positionData[index];
+                            return positionScreenTiles(
+                              data['title'],
+                              data['midtitle'],
+                              data['subtitle'],
+                              data['trail1'],
+                              data['trail2'],
+                              data['trail3'],
+                              data['isBuy'],
+                              isDark,
+                            );
+                          })
+                    ])
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 
   Widget positionScreenTiles(
@@ -277,6 +309,9 @@ class _positionScreenState extends State<positionScreen> {
     bool isBuy,
     bool isDark,
   ) {
+    // Get chip colors for trail3
+    final chipColors = _getChipColors(trail3);
+
     return Column(
       children: [
         Padding(
@@ -344,16 +379,16 @@ class _positionScreenState extends State<positionScreen> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 6.w, vertical: 2.h),
                           decoration: BoxDecoration(
-                            color:
-                                isDark ? Color(0xff333333) : Color(0xffE3E6EB),
+                            color: chipColors['background'],
                             borderRadius: BorderRadius.circular(4.r),
                           ),
                           child: Text(
                             trail3,
                             style: TextStyle(
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w500,
-                                color: isDark ? Colors.white : Colors.black),
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w500,
+                              color: chipColors['text'],
+                            ),
                           ),
                         ),
                       ],
@@ -381,7 +416,7 @@ class _positionScreenState extends State<positionScreen> {
                         Text(
                           "LTP :",
                           style: TextStyle(
-                              fontSize: 11.sp,
+                              fontSize: 12.sp,
                               color: isDark ? Colors.grey : Colors.black),
                         ),
                         SizedBox(
@@ -390,7 +425,7 @@ class _positionScreenState extends State<positionScreen> {
                         Text(
                           subtitle,
                           style: TextStyle(
-                              fontSize: 11.sp,
+                              fontSize: 12.sp,
                               color: isDark ? Colors.white : Colors.black),
                         ),
                       ],
@@ -403,7 +438,7 @@ class _positionScreenState extends State<positionScreen> {
                         Text(
                           "Quantity :",
                           style: TextStyle(
-                              fontSize: 11.sp,
+                              fontSize: 12.sp,
                               color: isDark ? Colors.grey : Colors.black),
                         ),
                         SizedBox(
@@ -412,7 +447,7 @@ class _positionScreenState extends State<positionScreen> {
                         Text(
                           "365",
                           style: TextStyle(
-                              fontSize: 11.sp,
+                              fontSize: 12.sp,
                               color: isDark ? Colors.white : Colors.black),
                         ),
                       ],

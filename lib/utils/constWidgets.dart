@@ -247,11 +247,11 @@ class constWidgets {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Container(
-            height: 64.h,
+            height: 70.h,
             child: Row(
               children: [
                 Container(
-                    height: 56.h,
+                    height: 60.h,
                     width: 2.w,
                     color: trail1.startsWith("-") ? Colors.red : Colors.green),
                 SizedBox(
@@ -268,7 +268,7 @@ class constWidgets {
                           color: isDark ? Colors.white : Colors.black),
                     ),
                     SizedBox(
-                      height: 5.h,
+                      height: 6.h,
                     ),
                     Row(
                       children: [
@@ -276,7 +276,7 @@ class constWidgets {
                           // subtitle,
                           "Avg.  :",
                           style: TextStyle(
-                              fontSize: 11.sp,
+                              fontSize: 12.sp,
                               color: isDark ? Colors.grey : Colors.black),
                         ),
                         SizedBox(
@@ -286,21 +286,19 @@ class constWidgets {
                           // subtitle,
                           "1,250",
                           style: TextStyle(
-                              fontSize: 11.sp,
+                              fontSize: 12.sp,
                               color: isDark ? Colors.white : Colors.black),
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 1.h,
-                    ),
+                    
                     Row(
                       children: [
                         Text(
                           // subtitle,
                           "Invt.  :",
                           style: TextStyle(
-                              fontSize: 11.sp,
+                              fontSize: 12.sp,
                               color: isDark ? Colors.grey : Colors.black),
                         ),
                         SizedBox(
@@ -310,7 +308,7 @@ class constWidgets {
                           // subtitle,
                           "1,05,832",
                           style: TextStyle(
-                              fontSize: 11.sp,
+                              fontSize: 12.sp,
                               color: isDark ? Colors.white : Colors.black),
                         ),
                       ],
@@ -331,7 +329,7 @@ class constWidgets {
                               : Colors.green),
                     ),
                     SizedBox(
-                      height: 5.h,
+                      height: 6.h,
                     ),
                     Row(
                       children: [
@@ -339,13 +337,13 @@ class constWidgets {
                           // trail2
                           "LTP : ",
                           style: TextStyle(
-                              fontSize: 11.sp,
+                              fontSize: 12.sp,
                               color: isDark ? Colors.grey : Colors.black),
                         ),
                         Text(
                           "1,731.05 (-1.63%)",
                           style: TextStyle(
-                              fontSize: 11.sp,
+                              fontSize: 12.sp,
                               color: isDark ? Colors.white : Colors.black),
                         ),
                       ],
@@ -358,13 +356,13 @@ class constWidgets {
                         Text(
                           "Quantity : ",
                           style: TextStyle(
-                              fontSize: 11.sp,
+                              fontSize: 12.sp,
                               color: isDark ? Colors.grey : Colors.black),
                         ),
                         Text(
                           "365",
                           style: TextStyle(
-                              fontSize: 11.sp,
+                              fontSize: 12.sp,
                               color: isDark ? Colors.white : Colors.black),
                         ),
                       ],
