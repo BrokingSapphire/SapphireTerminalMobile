@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/accountSection/ChangePinScreen.dart';
 import 'package:sapphire/screens/accountSection/SettingsScreen.dart';
+import 'package:sapphire/screens/accountSection/accountScreen.dart';
 import 'package:sapphire/screens/accountSection/fundsScreen.dart';
 import 'package:sapphire/screens/accountSection/ledgerScreen.dart';
 import 'package:sapphire/screens/accountSection/profitAndLoss.dart';
@@ -106,7 +107,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   ];
 
   List generalSvg = [
-    "assets/svgs/funds.svg",
     "assets/svgs/knowYourPartner.svg",
     "assets/svgs/settings.svg",
     "assets/svgs/changePin.svg",
@@ -165,6 +165,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     "assets/svgs/corporateDetails.svg"
   ];
   void onTapSwitchAccount() {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
@@ -183,13 +184,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Text(
                 "Switch Account",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: isDark ? Colors.white : Colors.black,
                   fontSize: 17.sp,
                   fontWeight: FontWeight.w600,
                 ),
               ),
               SizedBox(height: 7.h),
-              Divider(color: Color(0xff2F2F2F)),
+              Divider(color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB)),
               SizedBox(height: 11.h),
 
               // Scrollable Account List
@@ -201,13 +202,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Column(
                     children: [
                       _buildAccountTile(
-                          "NK", "Nakul Pratap Thakur", "AA0000", true),
+                          "NK", "Nakul Pratap Thakur", "AA0000", true, isDark),
                       SizedBox(height: 16.h),
-                      _buildAccountTile(
-                          "PT", "Pratap Chandrakant Thakur", "CJ8292", false),
+                      _buildAccountTile("PT", "Pratap Chandrakant Thakur",
+                          "CJ8292", false, isDark),
                       SizedBox(height: 16.h),
-                      _buildAccountTile(
-                          "NC", "Nirankar Cotttex Pvt. Ltd.", "JQ8749", false),
+                      _buildAccountTile("NC", "Nirankar Cotttex Pvt. Ltd.",
+                          "JQ8749", false, isDark),
                     ],
                   ),
                 ),
@@ -220,13 +221,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.r),
-                  border: Border.all(color: Color(0xff2F2F2F)),
+                  border: Border.all(
+                      color: isDark
+                          ? const Color(0xff2F2F2F)
+                          : const Color(0xffD1D5DB)),
                 ),
                 height: 70.h,
                 child: Center(
                   child: Text(
                     "+ Add account",
-                    style: TextStyle(fontSize: 17.sp),
+                    style: TextStyle(
+                        fontSize: 17.sp,
+                        color: isDark ? Colors.white : Colors.black),
                   ),
                 ),
               ),
@@ -238,6 +244,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _showLogoutDialog(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -245,7 +252,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          backgroundColor: Color(0xff121413),
+          backgroundColor: isDark ? Color(0xff121413) : Color(0xffF4F4F9),
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 20.h),
             child: Column(
@@ -254,16 +261,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Text(
                   "Log out",
                   style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 21.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
+                      color: isDark ? Colors.white : Colors.black,
+                      fontSize: 21.sp,
+                      fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 11.h),
                 Text(
                   "Do you really want to log out?",
                   style: TextStyle(
-                    color: Colors.white70,
+                    color: isDark ? Colors.white70 : Color(0xff6B7280),
                     fontSize: 15.sp,
                   ),
                   textAlign: TextAlign.center,
@@ -284,9 +290,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(height: 12.h),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xff121413),
+                    backgroundColor: isDark
+                        ? const Color(0xff121413)
+                        : const Color(0xffF4F4F9),
                     shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Color(0xff2F2F2F)),
+                      side: BorderSide(
+                          color: isDark
+                              ? const Color(0xff2F2F2F)
+                              : const Color(0xffD1D5DB)),
                       borderRadius: BorderRadius.circular(30.r),
                     ),
                     minimumSize: Size(double.infinity, 45.h), // Increased width
@@ -294,7 +305,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text("Cancel", style: TextStyle(color: Colors.white)),
+                  child: Text("Cancel",
+                      style: TextStyle(
+                          color: isDark ? Colors.white : Colors.black)),
                 )
               ],
             ),
@@ -305,19 +318,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildAccountTile(
-      String initials, String name, String id, bool isSelected) {
+      String initials, String name, String id, bool isSelected, bool isDark) {
     return Container(
       height: 90.h,
       width: double.infinity,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.r),
-          border: Border.all(color: Color(0xff2F2F2F))),
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(
+            color: isSelected
+                ? Colors.green
+                : isDark
+                    ? const Color(0xff2F2F2F)
+                    : const Color(0xffD1D5DB)),
+        color: isSelected
+            ? (isDark ? const Color(0xff121413) : Colors.green.withOpacity(0.2))
+            : Colors.transparent,
+      ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),
         child: Row(
           children: [
             CircleAvatar(
-              backgroundColor: Color(0xff021814),
+              backgroundColor: isDark
+                  ? const Color(0xff021814)
+                  : Colors.green.withOpacity(0.2),
               radius: 30.r,
               child: Text(
                 initials,
@@ -339,7 +363,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.w500,
-                    color: Colors.white,
+                    color: isDark ? Colors.white : Colors.black,
                   ),
                 ),
                 SizedBox(
@@ -348,7 +372,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Text(
                   id,
                   style: TextStyle(
-                    color: Color(0xffC9CACC),
+                    color: isDark ? Color(0xffC9CACC) : Color(0xff6B7280),
                     fontSize: 13.sp,
                     fontWeight: FontWeight.w600,
                   ),
@@ -371,12 +395,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget cardWithTitle(
-      String title, List list, List<VoidCallback> OnTap, List logos) {
+  Widget cardWithTitle(String title, List list, List<VoidCallback> OnTap,
+      List logos, bool isDark) {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-          color: Color(0xff121413), borderRadius: BorderRadius.circular(8.r)),
+          color: isDark ? Color(0xff121413) : Color(0xffF4F4F9),
+          borderRadius: BorderRadius.circular(8.r)),
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 8.w),
         child: Column(
@@ -393,8 +418,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 Text(
                   title,
-                  style:
-                      TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                      fontSize: 17.sp,
+                      fontWeight: FontWeight.w500,
+                      color: isDark ? Colors.white : Colors.black),
                 )
               ],
             ),
@@ -416,7 +443,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 SvgPicture.asset(
                                   logos[index],
-                                  color: Colors.white,
+                                  color:
+                                      isDark ? Colors.white : Color(0xff6B7280),
                                   width: 24.w,
                                   height: 24.h,
                                 ),
@@ -428,7 +456,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   list[
                                       index], // Assuming list[index] is the list of text values
                                   style: TextStyle(
-                                      fontSize: 16.sp, color: Colors.white),
+                                      fontSize: 16.sp,
+                                      color:
+                                          isDark ? Colors.white : Colors.black),
                                 ),
                               ],
                             ),
@@ -464,51 +494,145 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SafeArea(
         child: Scaffold(
-            backgroundColor: const Color(0xff000000),
+            backgroundColor: isDark ? const Color(0xff000000) : Colors.white,
             body: NestedScrollView(
               headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                // AppBar title as scrollable
+                // Pinned AppBar
+                Theme(
+                  data: Theme.of(context).copyWith(
+                    appBarTheme: AppBarTheme(
+                      backgroundColor:
+                          isDark ? const Color(0xff000000) : Colors.white,
+                      foregroundColor: isDark ? Colors.white : Colors.black,
+                      elevation: 0,
+                      surfaceTintColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      scrolledUnderElevation: 0,
+                      iconTheme: IconThemeData(
+                          color: isDark ? Colors.white : Colors.black),
+                      titleTextStyle: TextStyle(
+                        fontSize: 22.sp,
+                        fontWeight: FontWeight.bold,
+                        color: isDark ? Colors.white : Colors.black,
+                      ),
+                    ),
+                  ),
+                  child: SliverAppBar(
+                    pinned: true,
+                    backgroundColor:
+                        isDark ? const Color(0xff000000) : Colors.white,
+                    elevation: 0,
+                    scrolledUnderElevation: 0,
+                    surfaceTintColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                    automaticallyImplyLeading: false,
+                    toolbarHeight: 60.h,
+                    leading: IconButton(
+                      icon: Icon(Icons.arrow_back,
+                          color: isDark ? Colors.white : Colors.black),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                    title: Text(
+                      "Account",
+                      style: TextStyle(
+                        fontSize: 22.sp,
+                        fontWeight: FontWeight.bold,
+                        color: isDark ? Colors.white : Colors.black,
+                      ),
+                    ),
+                    actions: [
+                      Padding(
+                        padding: EdgeInsets.only(right: 16.w),
+                        child: CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          radius: 22.r,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                // Pinned Divider
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: _PinnedDividerDelegate(isDark: isDark),
+                  floating: false,
+                ),
+
+                // Profile card as scrollable
                 SliverToBoxAdapter(
                   child: Padding(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                    child: GestureDetector(
+                      onTap: () {
+                        navi(AccountScreen(), context);
+                      },
+                      behavior: HitTestBehavior.opaque,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.r),
+                          color: isDark
+                              ? const Color(0xff121413)
+                              : const Color(0xFFF4F4F9),
+                        ),
+                        padding: EdgeInsets.all(16.w),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 28.r,
+                              backgroundColor: isDark
+                                  ? const Color(0xff021814)
+                                  : Colors.green.withOpacity(0.2),
+                              child: Text(
+                                "NK",
+                                style: TextStyle(
+                                  fontSize: 22.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: const Color(0xff22A06B),
+                                ),
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          Text(
-                            "Account",
-                            style: TextStyle(
-                              fontSize: 22.sp,
-                              fontWeight: FontWeight.bold,
-                              color: const Color(0xffEBEEF5),
+                            SizedBox(width: 16.w),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Nakul Pratap Thakur",
+                                  style: TextStyle(
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: isDark ? Colors.white : Colors.black,
+                                  ),
+                                ),
+                                SizedBox(height: 4.h),
+                                Text(
+                                  "AA0000",
+                                  style: TextStyle(
+                                    color: isDark
+                                        ? Color(0xffC9CACC)
+                                        : Color(0xff6B7280),
+                                    fontSize: 13.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          Spacer(),
-                          CircleAvatar(
-                            backgroundColor: Colors.transparent,
-                            radius: 22.r,
-                          ),
-                        ]),
+                            Spacer(),
+                            Icon(
+                              Icons.arrow_forward_ios_outlined,
+                              color: isDark ? Color(0xffC9CACC) : Colors.black,
+                              size: 20.sp,
+                            ),
+                            SizedBox(width: 12.w),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-
-                SliverPersistentHeader(
-                  pinned: true,
-                  delegate: _ProfileHeaderDelegate(),
                 )
               ],
               body: SingleChildScrollView(
@@ -520,20 +644,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           SizedBox(height: 10.h),
                           SizedBox(height: 10.h),
-                          cardWithTitle(
-                              'General', general, generalOnTap, generalSvg),
+                          cardWithTitle('General', general, generalOnTap,
+                              generalSvg, isDark),
                           SizedBox(height: 10.h),
                           cardWithTitle(
-                              "Manage", manage, manageOnTap, manageSvg),
+                              "Manage", manage, manageOnTap, manageSvg, isDark),
+                          SizedBox(height: 10.h),
+                          cardWithTitle("Reports", reports, reportsOnTap,
+                              reportsSvg, isDark),
+                          SizedBox(height: 10.h),
+                          cardWithTitle("Support", support, supportOnTap,
+                              supportSvg, isDark),
                           SizedBox(height: 10.h),
                           cardWithTitle(
-                              "Reports", reports, reportsOnTap, reportsSvg),
-                          SizedBox(height: 10.h),
-                          cardWithTitle(
-                              "Support", support, supportOnTap, supportSvg),
-                          SizedBox(height: 10.h),
-                          cardWithTitle(
-                              "Others", others, othersOnTap, othersSvg),
+                              "Others", others, othersOnTap, othersSvg, isDark),
                           SizedBox(height: 20.h),
                           Text(
                             "© 2025 Sapphire Broking. All rights reserved. SEBI Registered Stock Broker | Member: NSE, BSE, MCX, NCDEX Registered Office: [Address], Nagpur, Maharashtra, India Email: support@sapphirebroking.com | Phone: +91 XXXXXXXXXX. Investments in securities markets are subject to market risks. Read all scheme-related documents carefully before investing. All disputes subject to Nagpur jurisdiction.",
@@ -630,6 +754,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
+// Pinned Divider Delegate for AppBar
+class _PinnedDividerDelegate extends SliverPersistentHeaderDelegate {
+  final bool isDark;
+  _PinnedDividerDelegate({required this.isDark});
+
+  @override
+  double get minExtent => 1.0;
+  @override
+  double get maxExtent => 1.0;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      color: isDark ? const Color(0xff2F2F2F) : const Color(0xffD1D5DB),
+      height: 1.0,
+      width: double.infinity,
+    );
+  }
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
+      false;
+}
+
 // Profile Header Delegate for Pinned Profile Card
 class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
@@ -640,61 +789,69 @@ class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.r),
-          color: const Color(0xff121413),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-        // Background color for the card
-        child: Row(
-          children: [
-            CircleAvatar(
-              backgroundColor: Color(0xff021814),
-              radius: 35.r,
-              child: Text(
-                "NK",
-                style: TextStyle(
-                  fontSize: 22.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xff22A06B),
+      child: GestureDetector(
+        onTap: () {
+          navi(AccountScreen(), context);
+        },
+        behavior: HitTestBehavior.opaque,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12.r),
+            color: isDark ? const Color(0xff121413) : const Color(0xFFF4F4F9),
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+          // Background color for the card
+          child: Row(
+            children: [
+              CircleAvatar(
+                backgroundColor:
+                    isDark ? Color(0xff021814) : Colors.green.withOpacity(0.2),
+                radius: 35.r,
+                child: Text(
+                  "NK",
+                  style: TextStyle(
+                    fontSize: 22.sp,
+                    fontWeight: FontWeight.bold,
+                    color: isDark ? Color(0xff22A06B) : Color(0xff22A06B),
+                  ),
                 ),
               ),
-            ),
-            SizedBox(width: 12.w), // Spacing between avatar and text
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Nakul Pratap Thakur",
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
+              SizedBox(width: 12.w), // Spacing between avatar and text
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Nakul Pratap Thakur",
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w500,
+                      color: isDark ? Colors.white : Colors.black,
+                    ),
                   ),
-                ),
-                SizedBox(height: 4.h),
-                Text(
-                  "J098WE",
-                  style: TextStyle(
-                    color: Color(0xffC9CACC),
-                    fontSize: 13.sp,
-                    fontWeight: FontWeight.w500,
+                  SizedBox(height: 4.h),
+                  Text(
+                    "J098WE",
+                    style: TextStyle(
+                      color: isDark ? Color(0xffC9CACC) : Color(0xff6B7280),
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            Spacer(), // Pushes the icon to the right
-            Icon(
-              Icons.arrow_forward_ios_outlined,
-              color: Color(0xffC9CACC),
-              size: 20.sp,
-            ),
-            SizedBox(width: 12.w), // Padding on the right side
-          ],
+                ],
+              ),
+              Spacer(), // Pushes the icon to the right
+              Icon(
+                Icons.arrow_forward_ios_outlined,
+                color: isDark ? Color(0xffC9CACC) : Colors.black,
+                size: 20.sp,
+              ),
+              SizedBox(width: 12.w), // Padding on the right side
+            ],
+          ),
         ),
       ),
     );
