@@ -198,42 +198,52 @@ class CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       color: const Color(0xff000000),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: List.generate(tabNames.length, (index) {
-          final isSelected = index == selectedIndex;
-          return Expanded(
-            child: GestureDetector(
-              onTap: () => onTabTapped(index),
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: isSelected
-                          ? const Color(0xff1DB954)
-                          : Colors.transparent,
-                      width: 2,
+      child: Stack(
+        children:[  Positioned.fill(
+      child: Container(
+      alignment: Alignment.bottomCenter,
+        child: Container(
+          height: 1,
+          color: const Color(0xff2f2f2f),
+        ),
+      ),
+    ),Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: List.generate(tabNames.length, (index) {
+            final isSelected = index == selectedIndex;
+            return Expanded(
+              child: GestureDetector(
+                onTap: () => onTabTapped(index),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: isSelected
+                            ? const Color(0xff1DB954)
+                            : Colors.transparent,
+                        width: 2,
+                      ),
                     ),
                   ),
-                ),
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: 8.h),
-                    child: Text(
-                      tabNames[index],
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: isSelected ? Colors.green : Colors.white,
-                        fontSize: 14.sp,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 8.h),
+                      child: Text(
+                        tabNames[index],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: isSelected ? Colors.green : Colors.white,
+                          fontSize: 14.sp,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),]
       ),
     );
   }

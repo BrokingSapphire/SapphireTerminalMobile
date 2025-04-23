@@ -184,104 +184,117 @@ class _TabBarHeaderDelegate extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       color: const Color(0xff000000),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Stack(
         children: [
-          Flexible(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: List.generate(tabNames.length, (index) {
-                final isSelected = index == selectedIndex;
-                return Expanded(
-                  child: GestureDetector(
-                    onTap: () => onTabTapped(index),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: isSelected
-                                ? Color(0xff1DB954)
-                                : Colors.transparent,
-                            width: 2,
+          Positioned.fill(
+            child: Container(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: 1,
+                color: const Color(0xff2f2f2f),
+              ),
+            ),
+          ),
+          // Green indicator
+
+          Row(
+            children: [
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: List.generate(tabNames.length, (index) {
+                    final isSelected = index == selectedIndex;
+                    return GestureDetector(
+                      onTap: () => onTabTapped(index),
+                      child: Container(
+                        width: 80.w,
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: isSelected
+                                  ? Color(0xff1DB954)
+                                  : Colors.transparent,
+                              width: 2,
+                            ),
                           ),
                         ),
-                      ),
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Padding(
-                          padding: EdgeInsets.only(bottom: 8.h),
-                          child: Text(
-                            tabNames[index],
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: isSelected ? Colors.green : Colors.white,
-                              fontSize: 14.sp,
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 8.h),
+                            child: Text(
+                              tabNames[index],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: isSelected ? Colors.green : Colors.white,
+                                fontSize: 14.sp,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                );
-              }),
-            ),
-          ),
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              final RenderBox renderBox = _menuButtonKey.currentContext!
-                  .findRenderObject() as RenderBox;
-              final offset = renderBox.localToGlobal(Offset.zero);
-              final size = renderBox.size;
-
-              showMenu<String>(
-                context: context,
-                position: RelativeRect.fromLTRB(
-                  offset.dx,
-                  offset.dy + size.height,
-                  offset.dx + size.width,
-                  offset.dy,
+                    );
+                  }),
                 ),
-                items: [
-                  PopupMenuItem<String>(
-                    enabled: false,
-                    child: Text(
-                      "Explore More Orders",
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white70,
-                      ),
-                    ),
-                  ),
-                  _menuItem(Icons.show_chart, "Stock SIP", () {
-                    print('Stock SIP selected');
-                  }),
-                  _menuItem(Icons.timeline, "GTT Order", () {
-                    navi(gtt1Screen(), context);
-                  }),
-                  _menuItem(Icons.shopping_basket, "Basket Order", () {
-                    navi(basketScreen(), context);
-                  }),
-                  _menuItem(Icons.notifications_active, "Stock Alerts", () {
-                    navi(alertScreen(), context);
-                  }),
-                ],
-              ).then((value) {
-                if (value != null) {
-                  print('Selected: $value');
-                }
-              });
-            },
-            child: Padding(
-              padding: EdgeInsets.only(right: 20.w, top: 16.h),
-              child: Icon(
-                Icons.more_vert,
-                key: _menuButtonKey,
-                color: Colors.white,
-                size: 24.sp,
               ),
-            ),
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  final RenderBox renderBox = _menuButtonKey.currentContext!
+                      .findRenderObject() as RenderBox;
+                  final offset = renderBox.localToGlobal(Offset.zero);
+                  final size = renderBox.size;
+
+                  showMenu<String>(
+                    context: context,
+                    position: RelativeRect.fromLTRB(
+                      offset.dx,
+                      offset.dy + size.height,
+                      offset.dx + size.width,
+                      offset.dy,
+                    ),
+                    items: [
+                      PopupMenuItem<String>(
+                        enabled: false,
+                        child: Text(
+                          "Explore More Orders",
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ),
+                      _menuItem(Icons.show_chart, "Stock SIP", () {
+                        print('Stock SIP selected');
+                      }),
+                      _menuItem(Icons.timeline, "GTT Order", () {
+                        navi(gtt1Screen(), context);
+                      }),
+                      _menuItem(Icons.shopping_basket, "Basket Order", () {
+                        navi(basketScreen(), context);
+                      }),
+                      _menuItem(Icons.notifications_active, "Stock Alerts", () {
+                        navi(alertScreen(), context);
+                      }),
+                    ],
+                  ).then((value) {
+                    if (value != null) {
+                      print('Selected: $value');
+                    }
+                  });
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(right: 20.w, top: 16.h),
+                  child: Icon(
+                    Icons.more_vert,
+                    key: _menuButtonKey,
+                    color: Colors.white,
+                    size: 24.sp,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

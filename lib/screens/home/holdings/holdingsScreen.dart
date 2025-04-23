@@ -58,7 +58,8 @@ class _HoldingsScreenState extends State<HoldingsScreen> {
             return [
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -77,7 +78,7 @@ class _HoldingsScreenState extends State<HoldingsScreen> {
                             onTap: () {
                               naviWithoutAnimation(context, FundsScreen());
                             },
-                            child:SvgPicture.asset("assets/svgs/wallet.svg",
+                            child: SvgPicture.asset("assets/svgs/wallet.svg",
                                 width: 20.w, height: 23.h, color: Colors.white),
                           ),
                         ),
@@ -109,13 +110,13 @@ class _HoldingsScreenState extends State<HoldingsScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      MarketDataCard("NIFTY 50", "23,018.20", "-218.20 (1.29%)"),
+                      MarketDataCard(
+                          "NIFTY 50", "23,018.20", "-218.20 (1.29%)"),
                       MarketDataCard("SENSEX", "73,018.20", "+218.20 (1.29%)"),
                     ],
                   ),
                 ),
               ),
-
               SliverPersistentHeader(
                 pinned: true,
                 delegate: CustomTabBarDelegate(
@@ -174,47 +175,58 @@ class CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       color: isDark ? Colors.black : Colors.white,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: List.generate(tabNames.length, (index) {
-          final isSelected = index == selectedIndex;
-          return Expanded(
-            child: GestureDetector(
-              onTap: () => onTabTapped(index),
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: isSelected
-                          ? const Color(0xff1DB954)
-                          : Colors.transparent,
-                      width: 2,
+      child: Stack(children: [
+        Positioned.fill(
+          child: Container(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              height: 1,
+              color: const Color(0xff2f2f2f),
+            ),
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: List.generate(tabNames.length, (index) {
+            final isSelected = index == selectedIndex;
+            return Expanded(
+              child: GestureDetector(
+                onTap: () => onTabTapped(index),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: isSelected
+                            ? const Color(0xff1DB954)
+                            : Colors.transparent,
+                        width: 2,
+                      ),
                     ),
                   ),
-                ),
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: 8.h),
-                    child: Text(
-                      tabNames[index],
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: isSelected
-                            ? Colors.green
-                            : isDark
-                                ? Colors.white
-                                : Colors.black,
-                        fontSize: 14.sp,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 8.h),
+                      child: Text(
+                        tabNames[index],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: isSelected
+                              ? Colors.green
+                              : isDark
+                                  ? Colors.white
+                                  : Colors.black,
+                          fontSize: 14.sp,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-          );
-        }),
-      ),
+            );
+          }),
+        ),
+      ]),
     );
   }
 
@@ -224,7 +236,6 @@ class CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
         selectedIndex != oldDelegate.selectedIndex;
   }
 }
-
 
 Widget MarketDataCard(String title, String price, String change) {
   final bool isPositive = change.startsWith('+');
@@ -262,7 +273,7 @@ Widget MarketDataCard(String title, String price, String change) {
               Text(
                 price,
                 style:
-                TextStyle(color: const Color(0xffEBEEF5), fontSize: 12.sp),
+                    TextStyle(color: const Color(0xffEBEEF5), fontSize: 12.sp),
               ),
               SizedBox(width: 6.w),
               Text(

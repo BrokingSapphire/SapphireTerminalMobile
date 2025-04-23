@@ -45,6 +45,7 @@ import 'package:sapphire/screens/signUp/yourInvestmentProfile.dart';
 import 'package:sapphire/screens/accountSection/verifiedP&L.dart';
 import 'package:sapphire/utils/appTheme.dart';
 import 'package:sapphire/themeProvider.dart';
+import 'package:sapphire/wat.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -118,7 +119,7 @@ class MyApp extends StatelessWidget {
           theme: AppThemes.lightTheme,
           darkTheme: AppThemes.darkTheme,
           themeMode: themeProvider.themeMode, // 👈 Dynamic theme mode
-          home: InitialScreen(),
+          home: LoginScreen(),
         );
       },
     );

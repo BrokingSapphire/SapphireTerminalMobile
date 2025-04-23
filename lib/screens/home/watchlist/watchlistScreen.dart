@@ -12,7 +12,8 @@ import 'package:sapphire/utils/constWidgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sapphire/utils/naviWithoutAnimation.dart';
 import 'package:sapphire/utils/watchlistTabBar.dart';
-import 'package:sapphire/utils/filters.dart'; // For showFilterBottomSheet
+import 'package:sapphire/utils/filters.dart';
+import 'package:sapphire/wat.dart'; // For showFilterBottomSheet
 
 class WatchlistScreen extends StatefulWidget {
   const WatchlistScreen({super.key});
@@ -147,8 +148,6 @@ class _WatchlistScreenState extends State<WatchlistScreen>
   }
 
   void _onTabTapped(int index) {
-    print(
-        'Tapped tab: Switching to Watchlist ${index + 1} (from Watchlist ${_selectedIndex + 1})');
     setState(() {
       _selectedIndex = index;
       _pageController.jumpToPage(index);
@@ -647,7 +646,6 @@ class _WatchlistScreenState extends State<WatchlistScreen>
           child: constWidgets.searchField(
               context, "Search Everything...", "orders", isDark),
         ),
-        
       ],
     );
   }
@@ -683,7 +681,8 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: GestureDetector(
-                        onTap: () => naviWithoutAnimation(context, FundsScreen()),
+                        onTap: () =>
+                            naviWithoutAnimation(context, FundsScreen()),
                         child: SvgPicture.asset("assets/svgs/wallet.svg",
                             width: 20.w, height: 23.h, color: Colors.white),
                       ),
@@ -708,7 +707,7 @@ class _WatchlistScreenState extends State<WatchlistScreen>
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 10.h),
+              padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 14.h),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -793,22 +792,28 @@ class _WatchlistTabBarDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
-    return WatchlistTabBar(
-      tabNames: tabNames,
-      selectedIndex: selectedIndex,
-      onTabTapped: onTabTapped,
-      onEditWatchlist: onEditWatchlist,
-      onCreateWatchlist: onCreateWatchlist,
-      onAddCategory: onAddCategory,
-      isDark: isDark,
+    return Container(
+      height: 38.0, // Explicitly set the height to match maxExtent
+      color: isDark
+          ? const Color(0xff000000)
+          : Colors.white, // Optional: Match background
+      child: WatchlistTabBar(
+        tabNames: tabNames,
+        selectedIndex: selectedIndex,
+        onTabTapped: onTabTapped,
+        onEditWatchlist: onEditWatchlist,
+        onCreateWatchlist: onCreateWatchlist,
+        onAddCategory: onAddCategory,
+        isDark: isDark,
+      ),
     );
   }
 
   @override
-  double get maxExtent => 55.0;
+  double get maxExtent => 38.0; // Ensure this matches the actual height
 
   @override
-  double get minExtent => 48.0;
+  double get minExtent => 38.0; // Ensure this matches the actual height
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {

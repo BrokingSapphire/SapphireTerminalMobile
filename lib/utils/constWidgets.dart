@@ -975,9 +975,9 @@ class _CustomTabBarState extends State<CustomTabBar> {
               return Stack(
                 children: [
                   Container(
-                    height: 2.h,
+                    height: 1.h,
                     width: double.infinity,
-                    color: Colors.transparent,
+                    color: Color(0xff2f2f2f),
                   ),
                   AnimatedPositioned(
                     duration: Duration(milliseconds: 300),

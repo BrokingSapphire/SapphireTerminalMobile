@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
-class WatchlistTabBar extends StatelessWidget {
+class WatchlistTabBar extends StatefulWidget {
   final List<String> tabNames;
   final int selectedIndex;
   final Function(int) onTabTapped;
@@ -23,6 +23,52 @@ class WatchlistTabBar extends StatelessWidget {
     required this.isDark,
   });
 
+  @override
+  _WatchlistTabBarState createState() => _WatchlistTabBarState();
+}
+
+class _WatchlistTabBarState extends State<WatchlistTabBar> {
+  late List<GlobalKey> tabKeys;
+  double indicatorLeft = 0;
+  double indicatorWidth = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _initTabKeys();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _updateIndicator());
+  }
+
+  @override
+  void didUpdateWidget(WatchlistTabBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.tabNames.length != widget.tabNames.length ||
+        oldWidget.selectedIndex != widget.selectedIndex) {
+      _initTabKeys();
+      WidgetsBinding.instance.addPostFrameCallback((_) => _updateIndicator());
+    }
+  }
+
+  void _initTabKeys() {
+    tabKeys = List.generate(widget.tabNames.length, (_) => GlobalKey());
+  }
+
+  void _updateIndicator() {
+    if (widget.selectedIndex >= tabKeys.length) return;
+
+    final keyContext = tabKeys[widget.selectedIndex].currentContext;
+    if (keyContext != null) {
+      final box = keyContext.findRenderObject() as RenderBox?;
+      if (box != null) {
+        final position = box.localToGlobal(Offset.zero);
+        setState(() {
+          indicatorLeft = position.dx;
+          indicatorWidth = box.size.width;
+        });
+      }
+    }
+  }
+
   void _showEditWatchlistModal(
       BuildContext context, int index, String currentName) {
     final controller = TextEditingController(text: currentName);
@@ -30,7 +76,7 @@ class WatchlistTabBar extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: isDark ? const Color(0xff121413) : Colors.white,
+      backgroundColor: widget.isDark ? const Color(0xff121413) : Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       builder: (context) => Padding(
         padding: EdgeInsets.only(
@@ -45,21 +91,27 @@ class WatchlistTabBar extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Rename Watchlist",
-                    style: TextStyle(
-                        fontSize: 21.sp,
-                        fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white : Colors.black)),
-                Spacer(),
+                Text(
+                  "Rename Watchlist",
+                  style: TextStyle(
+                    fontSize: 21.sp,
+                    fontWeight: FontWeight.bold,
+                    color: widget.isDark ? Colors.white : Colors.black,
+                  ),
+                ),
+                const Spacer(),
                 IconButton(
-                    onPressed: () {},
-                    icon: SvgPicture.asset(
-                      "assets/svgs/delete.svg",
-                      color: Colors.white,
-                    )),
+                  onPressed: () {},
+                  icon: SvgPicture.asset(
+                    "assets/svgs/delete.svg",
+                    color: Colors.white,
+                  ),
+                ),
                 IconButton(
-                  icon: Icon(Icons.close,
-                      color: isDark ? Colors.white : Colors.black),
+                  icon: Icon(
+                    Icons.close,
+                    color: widget.isDark ? Colors.white : Colors.black,
+                  ),
                   onPressed: () => Navigator.pop(context),
                 ),
               ],
@@ -70,8 +122,9 @@ class WatchlistTabBar extends StatelessWidget {
               child: Text(
                 "Enter New Name",
                 style: TextStyle(
-                    color: isDark ? const Color(0xffEBEEF5) : Colors.black,
-                    fontSize: 14.sp),
+                  color: widget.isDark ? const Color(0xffEBEEF5) : Colors.black,
+                  fontSize: 14.sp,
+                ),
               ),
             ),
             SizedBox(height: 12.h),
@@ -79,28 +132,28 @@ class WatchlistTabBar extends StatelessWidget {
               controller: controller,
               decoration: InputDecoration(
                 contentPadding:
-                EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 hintText: "Enter Watchlist Name",
-                labelStyle: TextStyle(color: Color(0xffC9CACC)),
+                labelStyle: const TextStyle(color: Color(0xffC9CACC)),
                 hintStyle:
-                TextStyle(color: Color(0xFFC9CACC), fontSize: 15.sp),
+                    TextStyle(color: const Color(0xFFC9CACC), fontSize: 15.sp),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30.r)),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30.r)),
-                  borderSide: BorderSide(color: Color(0XFF2F2F2F)),
+                  borderSide: const BorderSide(color: Color(0XFF2F2F2F)),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30.r)),
-                  borderSide: BorderSide(color: Colors.green, width: 2.0),
+                  borderSide: const BorderSide(color: Colors.green, width: 2.0),
                 ),
               ),
             ),
             SizedBox(height: 16.h),
             constWidgets.greenButton("Save", onTap: () {
               if (controller.text.trim().isNotEmpty) {
-                onEditWatchlist?.call(index, controller.text.trim());
+                widget.onEditWatchlist?.call(index, controller.text.trim());
                 Navigator.pop(context);
               }
             }),
@@ -117,7 +170,7 @@ class WatchlistTabBar extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: isDark ? const Color(0xff121413) : Colors.white,
+      backgroundColor: widget.isDark ? const Color(0xff121413) : Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
@@ -135,14 +188,19 @@ class WatchlistTabBar extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Create New Watchlist",
-                      style: TextStyle(
-                          fontSize: 21.sp,
-                          fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.white : Colors.black)),
+                  Text(
+                    "Create New Watchlist",
+                    style: TextStyle(
+                      fontSize: 21.sp,
+                      fontWeight: FontWeight.bold,
+                      color: widget.isDark ? Colors.white : Colors.black,
+                    ),
+                  ),
                   IconButton(
-                    icon: Icon(Icons.close,
-                        color: isDark ? Colors.white : Colors.black),
+                    icon: Icon(
+                      Icons.close,
+                      color: widget.isDark ? Colors.white : Colors.black,
+                    ),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ],
@@ -153,8 +211,10 @@ class WatchlistTabBar extends StatelessWidget {
                 child: Text(
                   "Enter Watchlist Name",
                   style: TextStyle(
-                      color: isDark ? Color(0xffEBEEF5) : Colors.black,
-                      fontSize: 14.sp),
+                    color:
+                        widget.isDark ? const Color(0xffEBEEF5) : Colors.black,
+                    fontSize: 14.sp,
+                  ),
                 ),
               ),
               SizedBox(height: 12.h),
@@ -162,28 +222,29 @@ class WatchlistTabBar extends StatelessWidget {
                 controller: controller,
                 decoration: InputDecoration(
                   contentPadding:
-                  EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                      EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   hintText: "Enter Watchlist Name",
-                  labelStyle: TextStyle(color: Color(0xffC9CACC)),
-                  hintStyle:
-                  TextStyle(color: Color(0xFFC9CACC), fontSize: 15.sp),
+                  labelStyle: const TextStyle(color: Color(0xffC9CACC)),
+                  hintStyle: TextStyle(
+                      color: const Color(0xFFC9CACC), fontSize: 15.sp),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30.r)),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30.r)),
-                    borderSide: BorderSide(color: Color(0XFF2F2F2F)),
+                    borderSide: const BorderSide(color: Color(0XFF2F2F2F)),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30.r)),
-                    borderSide: BorderSide(color: Colors.green, width: 2.0),
+                    borderSide:
+                        const BorderSide(color: Colors.green, width: 2.0),
                   ),
                 ),
               ),
               SizedBox(height: 16.h),
               constWidgets.greenButton("Create", onTap: () {
                 if (controller.text.trim().isNotEmpty) {
-                  onCreateWatchlist?.call(controller.text.trim());
+                  widget.onCreateWatchlist?.call(controller.text.trim());
                   Navigator.pop(context);
                 }
               }),
@@ -221,7 +282,7 @@ class WatchlistTabBar extends StatelessWidget {
                 Text(
                   "Add Category",
                   style:
-                  TextStyle(fontSize: 21.sp, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 21.sp, fontWeight: FontWeight.bold),
                 ),
                 IconButton(
                   icon: const Icon(Icons.close, color: Colors.white),
@@ -245,32 +306,31 @@ class WatchlistTabBar extends StatelessWidget {
               controller: controller,
               decoration: InputDecoration(
                 contentPadding:
-                EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 hintText: "Enter Category Name",
-                labelStyle: TextStyle(color: Color(0xffC9CACC)),
+                labelStyle: const TextStyle(color: Color(0xffC9CACC)),
                 hintStyle:
-                TextStyle(color: Color(0xFFC9CACC), fontSize: 15.sp),
+                    TextStyle(color: const Color(0xFFC9CACC), fontSize: 15.sp),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30.r)),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30.r)),
-                  borderSide: BorderSide(color: Color(0XFF2F2F2F)),
+                  borderSide: const BorderSide(color: Color(0XFF2F2F2F)),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30.r)),
-                  borderSide: BorderSide(color: Colors.green, width: 2.0),
+                  borderSide: const BorderSide(color: Colors.green, width: 2.0),
                 ),
               ),
-            ),            SizedBox(height: 8.h),
+            ),
+            SizedBox(height: 8.h),
             constWidgets.greenButton("Add", onTap: () {
               if (controller.text.trim().isNotEmpty) {
                 String input = controller.text.trim();
-                String capitalized =
-                input.toUpperCase(); // Convert to uppercase
-                onAddCategory
-                    ?.call([capitalized]); // Call callback with single category
-                Navigator.pop(context); // Close the modal
+                String capitalized = input.toUpperCase();
+                widget.onAddCategory?.call([capitalized]);
+                Navigator.pop(context);
               }
             }),
             SizedBox(height: 15.h),
@@ -283,17 +343,21 @@ class WatchlistTabBar extends StatelessWidget {
   void _showOptionsBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: isDark ? const Color(0xff121413) : Colors.white,
+      backgroundColor: widget.isDark ? const Color(0xff121413) : Colors.white,
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       builder: (context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
             leading: Icon(Icons.playlist_add,
-                color: isDark ? Colors.white : Colors.black),
-            title: Text("Create Watchlist",
-                style: TextStyle(color: isDark ? Colors.white : Colors.black)),
+                color: widget.isDark ? Colors.white : Colors.black),
+            title: Text(
+              "Create Watchlist",
+              style:
+                  TextStyle(color: widget.isDark ? Colors.white : Colors.black),
+            ),
             onTap: () {
               Navigator.pop(context);
               _showCreateWatchlistModal(context);
@@ -301,9 +365,12 @@ class WatchlistTabBar extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.category,
-                color: isDark ? Colors.white : Colors.black),
-            title: Text("Add Category",
-                style: TextStyle(color: isDark ? Colors.white : Colors.black)),
+                color: widget.isDark ? Colors.white : Colors.black),
+            title: Text(
+              "Add Category",
+              style:
+                  TextStyle(color: widget.isDark ? Colors.white : Colors.black),
+            ),
             onTap: () {
               Navigator.pop(context);
               _showAddCategoryModal(context);
@@ -317,45 +384,64 @@ class WatchlistTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: isDark ? Colors.black : Colors.white,
-      padding: EdgeInsets.symmetric(horizontal: 8.w),
-      child: Column(
+      height: 50.h,
+      color: widget.isDark ? Colors.black : Colors.white,
+      child: Stack(
         children: [
+          // Grey divider
+          Positioned.fill(
+            child: Container(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: 1,
+                color: const Color(0xff2f2f2f),
+              ),
+            ),
+          ),
+          // Green indicator
+          Positioned(
+            bottom: 0,
+            left: indicatorLeft,
+            child: Container(
+              height: 2,
+              width: indicatorWidth,
+              color: Colors.green,
+            ),
+          ),
+          // Tabs and add button
           Row(
             children: [
               Expanded(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
-                    children: List.generate(tabNames.length, (index) {
-                      final isSelected = index == selectedIndex;
-                      return GestureDetector(
-                        onTap: () => onTabTapped(index),
-                        onLongPress: () => _showEditWatchlistModal(
-                            context, index, tabNames[index]),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 16.w, vertical: 12.h),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: isSelected
-                                    ? const Color(0xff1DB954)
-                                    : Colors.transparent,
-                                // color: isSelected ? (isDark ? Colo : const Color(0xff1DB954)) : (isDark ? Colors.transparent : Colors.transparent),
-                                width: 2,
-                              ),
-                            ),
-                          ),
+                    children: List.generate(widget.tabNames.length, (index) {
+                      final isSelected = widget.selectedIndex == index;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: GestureDetector(
+                          key: tabKeys[index],
+                          onTap: () {
+                            widget.onTabTapped(index);
+                            _updateIndicator();
+                          },
+                          onLongPress: () => _showEditWatchlistModal(
+                              context, index, widget.tabNames[index]),
                           child: Align(
                             alignment: Alignment.bottomCenter,
-                            child: Text(
-                              tabNames[index],
-                              style: TextStyle(
-                                color: isSelected
-                                    ? Colors.green
-                                    : (isDark ? Colors.white : Colors.black),
-                                fontSize: 14.sp,
+                            child: Padding(
+                              padding: EdgeInsets.only(bottom: 8.h),
+                              child: Text(
+                                widget.tabNames[index],
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: isSelected
+                                      ? Colors.green
+                                      : (widget.isDark
+                                          ? Colors.white
+                                          : Colors.black),
+                                  fontSize: 14.sp,
+                                ),
                               ),
                             ),
                           ),
@@ -366,18 +452,14 @@ class WatchlistTabBar extends StatelessWidget {
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.add,
-                    color: isDark ? Colors.white : Colors.black),
+                icon: Icon(
+                  Icons.add,
+                  color: widget.isDark ? Colors.white : Colors.black,
+                ),
                 onPressed: () => _showOptionsBottomSheet(context),
               ),
             ],
           ),
-          // Add a thin divider
-          // Divider(
-          //   height: 1.h, // Thin height
-          //   thickness: 0.5, // Thin thickness
-          //   color: const Color(0xff2F2F2F), // Matching the dark theme
-          // ),
         ],
       ),
     );
