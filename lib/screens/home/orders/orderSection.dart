@@ -865,13 +865,6 @@ Widget contentCard(String title, String quantity, String time, String price,
                 "•",
                 style: TextStyle(color: Colors.grey),
               ),
-
-              Padding(
-                padding: const EdgeInsets.all(0.0),
-                child: SvgPicture.asset("assets/svgs/dot.svg",
-                    height: 5.h, color: Colors.white),
-              ),
-              // _infoChip("NSE-EQ"),
               _infoChip("NSE-EQ"),
             ],
           ),
