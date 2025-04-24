@@ -110,9 +110,10 @@ class _HoldingsScreenState extends State<HoldingsScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      MarketDataCard(
-                          "NIFTY 50", "23,018.20", "-218.20 (1.29%)"),
-                      MarketDataCard("SENSEX", "73,018.20", "+218.20 (1.29%)"),
+                      marketDataCard(
+                          "NIFTY 50", "23,018.20", "-218.20 (1.29%)", isDark),
+                      marketDataCard(
+                          "SENSEX", "73,018.20", "+218.20 (1.29%)", isDark),
                     ],
                   ),
                 ),
@@ -237,18 +238,17 @@ class CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
   }
 }
 
-Widget MarketDataCard(String title, String price, String change) {
+Widget marketDataCard(String title, String price, String change, bool isDark) {
   final bool isPositive = change.startsWith('+');
-  final Color changeColor = isPositive ? Colors.green : Colors.red;
-
   return Container(
     height: 62.h,
-    width: 175.w,
     padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
     decoration: BoxDecoration(
-      color: const Color(0xff121413),
+      color: isDark ? const Color(0xff121413) : const Color(0xFFF4F4F9),
       borderRadius: BorderRadius.circular(10.r),
-      border: Border.all(color: const Color(0xff2F2F2F), width: 1.5.w),
+      border: Border.all(
+          color: isDark ? const Color(0xff2F2F2F) : const Color(0xFFF4F4F9),
+          width: 1.5.w),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -256,7 +256,7 @@ Widget MarketDataCard(String title, String price, String change) {
         Text(
           title,
           style: TextStyle(
-              color: const Color(0xffEBEEF5),
+              color: isDark ? const Color(0xffEBEEF5) : Colors.black,
               fontSize: 14.sp,
               fontWeight: FontWeight.bold),
         ),
@@ -264,7 +264,7 @@ Widget MarketDataCard(String title, String price, String change) {
         Container(
           padding: EdgeInsets.all(2.w),
           decoration: BoxDecoration(
-            color: const Color(0xff121413),
+            color: isDark ? const Color(0xff121413) : Color(0xFFF4F4F9),
             borderRadius: BorderRadius.circular(6.r),
           ),
           child: Row(
@@ -272,14 +272,11 @@ Widget MarketDataCard(String title, String price, String change) {
             children: [
               Text(
                 price,
-                style:
-                    TextStyle(color: const Color(0xffEBEEF5), fontSize: 12.sp),
+                style: TextStyle(
+                    color: isDark ? const Color(0xffEBEEF5) : Colors.black,
+                    fontSize: 12.sp),
               ),
               SizedBox(width: 6.w),
-              Text(
-                change,
-                style: TextStyle(color: changeColor, fontSize: 12.sp),
-              ),
             ],
           ),
         ),

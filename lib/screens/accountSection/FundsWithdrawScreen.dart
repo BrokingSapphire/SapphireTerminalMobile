@@ -3,14 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/constWidgets.dart';
 
-class FundsWithdrawScreen extends StatefulWidget {
-  const FundsWithdrawScreen({super.key});
+class fundsWithdrawScreen extends StatefulWidget {
+  const fundsWithdrawScreen({super.key});
 
   @override
-  State<FundsWithdrawScreen> createState() => _FundsWithdrawScreenState();
+  State<fundsWithdrawScreen> createState() => _fundsWithdrawScreenState();
 }
 
-class _FundsWithdrawScreenState extends State<FundsWithdrawScreen> {
+class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
   String? selectedBank = 'icici';
   String amountText = '0.00';
   late TextEditingController amountController;
@@ -146,6 +146,17 @@ class _FundsWithdrawScreenState extends State<FundsWithdrawScreen> {
   @override
   Widget build(BuildContext context) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final Shader linearGradient = LinearGradient(
+      begin: Alignment.centerLeft,
+      end: Alignment.centerRight,
+      colors: <Color>[
+        Color(0xffFF9E42), // Orange
+        Color(0xfffffd94), // Yellow
+      ],
+      stops: [0.0, 1.0],
+    ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
+    final textColor = isDark ? Colors.white : Colors.black;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: isDark ? Colors.black : Colors.white,
@@ -175,7 +186,7 @@ class _FundsWithdrawScreenState extends State<FundsWithdrawScreen> {
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(top: 15, right: 5),
+              padding: const EdgeInsets.only(top: 18, right: 5),
               child: Text(
                 'Wdl. amount :',
                 style: TextStyle(
@@ -184,13 +195,13 @@ class _FundsWithdrawScreenState extends State<FundsWithdrawScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 15, right: 10),
+              padding: const EdgeInsets.only(top: 18, right: 10),
               child: Text(
                 '  ₹ 12,532.00',
                 style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
-                    color: isDark ? Colors.white70 : Colors.black),
+                    color: isDark ? Colors.white : Colors.black),
               ),
             ),
           ],
@@ -222,63 +233,59 @@ class _FundsWithdrawScreenState extends State<FundsWithdrawScreen> {
                                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                                 child: Center(
                                   child: IntrinsicWidth(
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          '₹',
+                                      child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        '₹',
+                                        style: TextStyle(
+                                          fontSize: 32.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: textColor,
+                                        ),
+                                      ),
+                                      SizedBox(width: 4.w),
+                                      Flexible(
+                                        child: TextField(
+                                          controller: amountController,
+                                          readOnly: true,
+                                          enableInteractiveSelection: false,
+                                          showCursor: false,
                                           style: TextStyle(
-                                            fontSize: 40.sp,
-                                            fontWeight: FontWeight.bold,
-                                            color: isDark
-                                                ? Colors.white
-                                                : Colors.black,
+                                            fontSize: 32.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color:
+                                                (amountController.text == "0" ||
+                                                        amountController.text ==
+                                                            "0.00")
+                                                    ? Color(0xffC9CACC)
+                                                    : (_amountInvalid
+                                                        ? Colors.red
+                                                        : textColor),
+                                            overflow: TextOverflow.ellipsis,
                                           ),
-                                        ),
-                                        SizedBox(width: 4.w),
-                                        Flexible(
-                                          child: TextField(
-                                            controller: amountController,
-                                            readOnly: true,
-                                            enableInteractiveSelection: false,
-                                            showCursor: false,
-                                            style: TextStyle(
-                                              fontSize: 40.sp,
-                                              fontWeight: FontWeight.bold,
-                                              color: _amountInvalid
-                                                  ? Colors.red
-                                                  : isDark
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                              overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.center,
+                                          decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            enabledBorder: InputBorder.none,
+                                            focusedBorder: InputBorder.none,
+                                            errorBorder: InputBorder.none,
+                                            disabledBorder: InputBorder.none,
+                                            hintText: '0',
+                                            hintStyle: TextStyle(
+                                              color: textColor.withOpacity(0.5),
+                                              fontSize: 32.sp,
                                             ),
-                                            textAlign: TextAlign.center,
-                                            decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                              enabledBorder: InputBorder.none,
-                                              focusedBorder: InputBorder.none,
-                                              errorBorder: InputBorder.none,
-                                              disabledBorder: InputBorder.none,
-                                              hintText: '0.00',
-                                              hintStyle: TextStyle(
-                                                color: isDark
-                                                    ? Colors.white
-                                                        .withOpacity(0.5)
-                                                    : Colors.black
-                                                        .withOpacity(0.5),
-                                                fontSize: 40.sp,
-                                              ),
-                                              isCollapsed: true,
-                                              contentPadding: EdgeInsets.zero,
-                                            ),
-                                            maxLines: 1,
+                                            isCollapsed: true,
+                                            contentPadding: EdgeInsets.zero,
                                           ),
+                                          maxLines: 1,
                                         ),
-                                      ],
-                                    ),
-                                  ),
+                                      ),
+                                    ],
+                                  )),
                                 ),
                               )),
                         ),
@@ -290,10 +297,10 @@ class _FundsWithdrawScreenState extends State<FundsWithdrawScreen> {
                         children: [
                           _buildAmountButton(
                               '+₹5,000', () => _addAmount(5000), isDark),
-                          SizedBox(width: 10.w),
+                          SizedBox(width: 16.w),
                           _buildAmountButton(
                               '+₹10,000', () => _addAmount(10000), isDark),
-                          SizedBox(width: 10.w),
+                          SizedBox(width: 16.w),
                           _buildAmountButton(
                               '+₹20,000', () => _addAmount(20000), isDark),
                         ],
@@ -326,19 +333,15 @@ class _FundsWithdrawScreenState extends State<FundsWithdrawScreen> {
                                     _isInstant
                                         ? Icons.radio_button_checked
                                         : Icons.radio_button_off,
-                                    color: _isInstant
-                                        ? Color(0xffFF9E42)
-                                        : Colors.grey,
+                                    color:
+                                        _isInstant ? Colors.green : Colors.grey,
                                   ),
                                   SizedBox(width: 6.w),
                                   Text(
                                     "Instant ⚡️", // Lightning emoji
                                     style: TextStyle(
-                                      color: _isInstant
-                                          ? Color(0xffFF9E42)
-                                          : isDark
-                                              ? Colors.white
-                                              : Colors.black,
+                                      foreground: Paint()
+                                        ..shader = linearGradient,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -359,7 +362,7 @@ class _FundsWithdrawScreenState extends State<FundsWithdrawScreen> {
                                         ? Icons.radio_button_checked
                                         : Icons.radio_button_off,
                                     color: !_isInstant
-                                        ? Color(0xffFF9E42)
+                                        ? Colors.green
                                         : isDark
                                             ? Colors.white
                                             : Colors.black,
@@ -368,11 +371,8 @@ class _FundsWithdrawScreenState extends State<FundsWithdrawScreen> {
                                   Text(
                                     "Regular",
                                     style: TextStyle(
-                                      color: !_isInstant
-                                          ? Color(0xffFF9E42)
-                                          : isDark
-                                              ? Colors.white
-                                              : Colors.black,
+                                      color:
+                                          isDark ? Colors.white : Colors.black,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -384,7 +384,8 @@ class _FundsWithdrawScreenState extends State<FundsWithdrawScreen> {
                       ),
                       SizedBox(height: 70.h),
                       Container(
-                        padding: EdgeInsets.all(8),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                         decoration: BoxDecoration(
                           color: isDark ? Color(0xFF2F2708) : Color(0xFFFEF8E5),
                           border: Border.all(
@@ -399,14 +400,10 @@ class _FundsWithdrawScreenState extends State<FundsWithdrawScreen> {
                           "Requests placed after 5:00 PM and before 5:00 AM are processed the next working day.",
                           style: TextStyle(
                               fontSize: 11.sp,
+                              fontWeight: FontWeight.w500,
                               color: isDark ? Colors.white : Colors.black),
                         ),
                       ),
-
-                      // Bank Selection
-
-                      // Transaction History (optional, keep or remove as needed)
-                      // ...
                       SizedBox(height: 15.h),
                       Container(
                         decoration: BoxDecoration(

@@ -75,7 +75,7 @@ class _FundsScreenState extends State<FundsScreen> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 10.h,
+                      height: 16.h,
                     ),
                     Container(
                       width: double.infinity,
@@ -177,41 +177,51 @@ class _FundsScreenState extends State<FundsScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: 12.h,
+                      height: 16.h,
                     ),
                     Row(
                       children: [
                         Expanded(
-                          child: Container(
-                            child: Center(
-                              child: Text('Withdraw'),
+                          child: GestureDetector(
+                            onTap: () {
+                              navi(fundsWithdrawScreen(), context);
+                            },
+                            child: Container(
+                              child: Center(
+                                child: Text('Withdraw'),
+                              ),
+                              height: 42.h,
+                              decoration: BoxDecoration(
+                                  color: Colors.green.withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(4.r),
+                                  border: Border.all(color: Color(0xff1DB954))),
                             ),
-                            height: 42.h,
-                            decoration: BoxDecoration(
-                                color: Colors.green.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(4.r),
-                                border: Border.all(color: Color(0xff1DB954))),
                           ),
                         ),
                         SizedBox(
                           width: 10.w,
                         ),
                         Expanded(
-                          child: Container(
-                            child: Center(
-                              child: Text('Deposit'),
+                          child: GestureDetector(
+                            onTap: () {
+                              navi(fundsAddScreen(), context);
+                            },
+                            child: Container(
+                              child: Center(
+                                child: Text('Deposit'),
+                              ),
+                              height: 42.h,
+                              decoration: BoxDecoration(
+                                  color: Color(0xff1DB954),
+                                  borderRadius: BorderRadius.circular(4.r),
+                                  border: Border.all(color: Color(0xff1DB954))),
                             ),
-                            height: 42.h,
-                            decoration: BoxDecoration(
-                                color: Color(0xff1DB954),
-                                borderRadius: BorderRadius.circular(4.r),
-                                border: Border.all(color: Color(0xff1DB954))),
                           ),
                         ),
                       ],
                     ),
                     SizedBox(
-                      height: 12.h,
+                      height: 16.h,
                     ),
                     Container(
                       width: double.infinity,
@@ -274,7 +284,7 @@ class _FundsScreenState extends State<FundsScreen> {
                               SizedBox(
                                 child: CustomGaugeChart(
                                   totalBalance: 112532,
-                                  marginUtilized: 12614,
+                                  marginUtilized: 45614,
                                 ),
                               ),
                               Column(
@@ -313,9 +323,9 @@ class _FundsScreenState extends State<FundsScreen> {
                                   context: context,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(16.r)),
+                                        top: Radius.circular(26.r)),
                                   ),
-                                  backgroundColor: Colors.black,
+                                  backgroundColor: Color(0xff121413),
                                   builder: (context) {
                                     return Padding(
                                       padding: EdgeInsets.symmetric(
@@ -362,7 +372,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 8.h),
+                                          SizedBox(height: 12.h),
                                           Row(
                                             children: [
                                               Text(
@@ -380,7 +390,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 8.h),
+                                          SizedBox(height: 12.h),
                                           Row(
                                             children: [
                                               Text(
@@ -439,9 +449,9 @@ class _FundsScreenState extends State<FundsScreen> {
                                   context: context,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(16.r)),
+                                        top: Radius.circular(26.r)),
                                   ),
-                                  backgroundColor: Colors.black,
+                                  backgroundColor: Color(0xff121413),
                                   builder: (context) {
                                     return Padding(
                                       padding: EdgeInsets.symmetric(
@@ -456,27 +466,27 @@ class _FundsScreenState extends State<FundsScreen> {
                                               Text(
                                                 "Margin Utilised",
                                                 style: TextStyle(
-                                                    fontSize: 17.sp,
-                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 15.sp,
+                                                    fontWeight: FontWeight.w500,
                                                     color: Color(0xffEBEEF5)),
                                               ),
                                               Spacer(),
                                               Text(
                                                 "₹5,00,000",
                                                 style: TextStyle(
-                                                    fontSize: 17.sp,
-                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 15.sp,
+                                                    fontWeight: FontWeight.w500,
                                                     color: Color(0xffEBEEF5)),
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 18.h),
+                                          SizedBox(height: 16.h),
                                           Text("Margin",
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
+                                                  fontWeight: FontWeight.w500,
                                                   color: Color(0xffEBEEF5),
-                                                  fontSize: 15.sp)),
-                                          SizedBox(height: 12.h),
+                                                  fontSize: 13.sp)),
+                                          SizedBox(height: 6.h),
                                           _marginRow(
                                               "Span Margin", "₹4,567.67"),
                                           _marginRow(
@@ -489,13 +499,13 @@ class _FundsScreenState extends State<FundsScreen> {
                                           _marginRow(
                                               "Cash Intraday / MTF Margin",
                                               "₹4,567.67"),
-                                          SizedBox(height: 18.h),
+                                          SizedBox(height: 16.h),
                                           Text("Premiums",
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
+                                                  fontWeight: FontWeight.w500,
                                                   color: Color(0xffEBEEF5),
-                                                  fontSize: 15.sp)),
-                                          SizedBox(height: 12.h),
+                                                  fontSize: 13.sp)),
+                                          SizedBox(height: 6.h),
                                           _marginRow(
                                               "FNO Premiums", "₹4,567.67"),
                                           _marginRow(
@@ -543,9 +553,9 @@ class _FundsScreenState extends State<FundsScreen> {
                                   context: context,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(16.r)),
+                                        top: Radius.circular(26.r)),
                                   ),
-                                  backgroundColor: Colors.black,
+                                  backgroundColor: Color(0xff121413),
                                   builder: (context) {
                                     return Padding(
                                       padding: EdgeInsets.symmetric(
@@ -640,7 +650,7 @@ class _FundsScreenState extends State<FundsScreen> {
 
   Widget _marginRow(String label, String value) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4.h),
+      padding: EdgeInsets.symmetric(vertical: 6.h),
       child: Row(
         children: [
           Expanded(
@@ -724,7 +734,7 @@ class GaugeChartPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 4, size.height);
-    final radius = size.width * 0.5; // Reduced radius
+    final radius = size.width * 0.4; // Reduced radius
 
     // Calculate the angle for margin utilized
     final double ratio = marginUtilized / totalBalance;
@@ -736,7 +746,7 @@ class GaugeChartPainter extends CustomPainter {
       ..color = Color(0xff38D055)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 30.0 // Slightly thinner stroke
-      ..strokeCap = StrokeCap.round;
+      ..strokeCap = StrokeCap.butt;
 
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
@@ -750,8 +760,8 @@ class GaugeChartPainter extends CustomPainter {
     final foregroundPaint = Paint()
       ..color = Color(0xffFFC42E)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 16.0 // Slightly thinner stroke
-      ..strokeCap = StrokeCap.round;
+      ..strokeWidth = 30.0 // Slightly thinner stroke
+      ..strokeCap = StrokeCap.butt;
 
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),

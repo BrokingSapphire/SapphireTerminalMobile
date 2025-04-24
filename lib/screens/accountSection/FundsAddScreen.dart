@@ -71,14 +71,14 @@ class FixedDecimalIndianFormatter extends TextInputFormatter {
   }
 }
 
-class FundsAddScreen extends StatefulWidget {
-  const FundsAddScreen({super.key});
+class fundsAddScreen extends StatefulWidget {
+  const fundsAddScreen({super.key});
 
   @override
-  State<FundsAddScreen> createState() => _FundsAddScreenState();
+  State<fundsAddScreen> createState() => _fundsAddScreenState();
 }
 
-class _FundsAddScreenState extends State<FundsAddScreen> {
+class _fundsAddScreenState extends State<fundsAddScreen> {
   String? selectedBank = 'icici'; // Default selected bank
   String amountText = '0.00';
   late TextEditingController amountController;
@@ -249,8 +249,8 @@ class _FundsAddScreenState extends State<FundsAddScreen> {
                             Text(
                               '₹',
                               style: TextStyle(
-                                fontSize: 40.sp,
-                                fontWeight: FontWeight.bold,
+                                fontSize: 32.sp,
+                                fontWeight: FontWeight.w600,
                                 color: textColor,
                               ),
                             ),
@@ -262,10 +262,14 @@ class _FundsAddScreenState extends State<FundsAddScreen> {
                                 enableInteractiveSelection: false,
                                 showCursor: false,
                                 style: TextStyle(
-                                  fontSize: 40.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      _amountInvalid ? Colors.red : textColor,
+                                  fontSize: 32.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: (amountController.text == "0" ||
+                                          amountController.text == "0.00")
+                                      ? Color(0xffC9CACC)
+                                      : (_amountInvalid
+                                          ? Colors.red
+                                          : textColor),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 textAlign: TextAlign.center,
@@ -278,7 +282,7 @@ class _FundsAddScreenState extends State<FundsAddScreen> {
                                   hintText: '0',
                                   hintStyle: TextStyle(
                                     color: textColor.withOpacity(0.5),
-                                    fontSize: 40.sp,
+                                    fontSize: 32.sp,
                                   ),
                                   isCollapsed: true,
                                   contentPadding: EdgeInsets.zero,
@@ -300,9 +304,9 @@ class _FundsAddScreenState extends State<FundsAddScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _buildAmountButton('+₹5,000', isDark, () => _addAmount(5000)),
-              SizedBox(width: 10.w),
+              SizedBox(width: 16.w),
               _buildAmountButton('+₹10,000', isDark, () => _addAmount(10000)),
-              SizedBox(width: 10.w),
+              SizedBox(width: 16.w),
               _buildAmountButton('+₹20,000', isDark, () => _addAmount(20000)),
             ],
           ),
@@ -625,7 +629,7 @@ class _FundsAddScreenState extends State<FundsAddScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 12.h),
+              SizedBox(height: 28.h),
               // Adding the three payment options
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -637,12 +641,13 @@ class _FundsAddScreenState extends State<FundsAddScreen> {
                         children: [
                           Image.asset(
                             'assets/images/phonepe.png',
-                            height: 48.h,
-                            width: 48.w,
+                            height: 42.h,
+                            width: 42.w,
                           ),
-                          SizedBox(height: 1.h),
+                          SizedBox(height: 5.h),
                           Text("PhonePe",
                               style: TextStyle(
+                                  fontSize: 11.sp,
                                   color: isDark ? Colors.white : Colors.black))
                         ],
                       )),
@@ -653,12 +658,13 @@ class _FundsAddScreenState extends State<FundsAddScreen> {
                       children: [
                         Image.asset(
                           'assets/images/gpay.png', // Replace with your Google Pay logo asset
-                          height: 48.h,
-                          width: 48.w,
+                          height: 42.h,
+                          width: 42.w,
                         ),
-                        SizedBox(height: 1.h),
+                        SizedBox(height: 5.h),
                         Text("GPay",
                             style: TextStyle(
+                                fontSize: 11.sp,
                                 color: isDark ? Colors.white : Colors.black))
                       ],
                     ),
@@ -670,20 +676,21 @@ class _FundsAddScreenState extends State<FundsAddScreen> {
                       children: [
                         Image.asset(
                           'assets/images/paytm.png', // Replace with your PayTM logo asset
-                          height: 48.h,
-                          width: 48.w,
+                          height: 42.h,
+                          width: 42.w,
                           fit: BoxFit.fill,
                         ),
-                        SizedBox(height: 1.h),
+                        SizedBox(height: 5.h),
                         Text("PayTM",
                             style: TextStyle(
+                                fontSize: 11.sp,
                                 color: isDark ? Colors.white : Colors.black))
                       ],
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 12.h),
+              SizedBox(height: 24.h),
               Row(
                 children: [
                   Expanded(
@@ -711,9 +718,9 @@ class _FundsAddScreenState extends State<FundsAddScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 12.h),
+              SizedBox(height: 24.h),
               constWidgets.textField("UPI ID", upiId, isDark: isDark),
-              SizedBox(height: 20.h),
+              SizedBox(height: 24.h),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 2.w),
                 decoration: BoxDecoration(
@@ -741,7 +748,7 @@ class _FundsAddScreenState extends State<FundsAddScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 16.h),
+              SizedBox(height: 24.h),
 
               constWidgets.greenButton("Add ${amountController.text}",
                   onTap: () {}),
