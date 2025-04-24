@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sapphire/utils/toogle.dart';
 
 class ActiveSegments extends StatefulWidget {
@@ -149,9 +150,19 @@ class _ActiveSegmentsState extends State<ActiveSegments> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.r),
         ),
-        title: Text(
-          title,
-          style: TextStyle(color: Colors.white, fontSize: 13.sp),
+        title: Row(
+          children: [
+            Text(
+              title,
+              style: TextStyle(color: Colors.white, fontSize: 13.sp),
+            ),
+            SizedBox(
+              width: 2.w,
+            ),
+            Visibility(
+                visible: value,
+                child: SvgPicture.asset('assets/svgs/verified.svg'))
+          ],
         ),
         subtitle: Text(
           subtitle,

@@ -44,9 +44,9 @@ class _FreezeAccountState extends State<FreezeAccount> {
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Column(
               children: [
-                SizedBox(height: 80.h),
+                SizedBox(height: 36.h),
                 SvgPicture.asset("assets/svgs/freeze.svg"),
-                SizedBox(height: 38.h),
+                SizedBox(height: 24.h),
                 Text(
                   "You can freeze your account if you detect any suspicious activities",
                   textAlign: TextAlign.center,
@@ -73,7 +73,7 @@ class _FreezeAccountState extends State<FreezeAccount> {
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.check, color: Colors.white, size: 14.sp),
+                            SvgPicture.asset('assets/svgs/image57.svg'),
                             SizedBox(width: 8.w),
                             Expanded(
                               child: Text(
@@ -89,7 +89,7 @@ class _FreezeAccountState extends State<FreezeAccount> {
                         SizedBox(height: 5.h),
                         Row(
                           children: [
-                            Icon(Icons.check, color: Colors.white, size: 14.sp),
+                            SvgPicture.asset('assets/svgs/image58.svg'),
                             SizedBox(width: 8.w),
                             Expanded(
                               child: Text(
@@ -105,7 +105,7 @@ class _FreezeAccountState extends State<FreezeAccount> {
                         SizedBox(height: 5.h),
                         Row(
                           children: [
-                            Icon(Icons.check, color: Colors.white, size: 14.sp),
+                            SvgPicture.asset('assets/svgs/image59.svg'),
                             SizedBox(width: 8.w),
                             Expanded(
                               child: Text(
@@ -122,14 +122,14 @@ class _FreezeAccountState extends State<FreezeAccount> {
                     ),
                   ),
                 ),
-                SizedBox(height: 135.h),
+                SizedBox(height: 180.h),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.grey.shade900,
                     borderRadius: BorderRadius.circular(6.r),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(8.w),
+                    padding: EdgeInsets.all(10.w),
                     child: Row(
                       children: [
                         SvgPicture.asset(
@@ -144,7 +144,7 @@ class _FreezeAccountState extends State<FreezeAccount> {
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 12.sp,
+                              fontSize: 13.sp,
                             ),
                           ),
                         ),
@@ -152,7 +152,7 @@ class _FreezeAccountState extends State<FreezeAccount> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16.h),
+                SizedBox(height: 28.h),
                 constWidgets.greenButton("Yes, freeze", onTap: () {
                   // Add freeze account functionality here
                   print("Freeze account tapped");

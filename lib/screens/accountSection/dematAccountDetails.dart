@@ -40,34 +40,33 @@ class _DematAccountDetailsState extends State<DematAccountDetails> {
             height: 1,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 15),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 15.h),
             child: Container(
               // height: 250.h,
-              width: 370.w,
               decoration: BoxDecoration(
                 color: Color(0xff121413),
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 12.0),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       "Demat Account Number / BO ID",
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w400,
+                        color: Color(0xffc9cacc),
+                        fontSize: 11.sp,
                       ),
                     ),
+                    SizedBox(height: 2.h),
                     Row(
                       children: [
                         Text(
                           "12883772888983882",
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.sp,
+                            color: const Color(0xffEBEEF5),
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -83,26 +82,27 @@ class _DematAccountDetailsState extends State<DematAccountDetails> {
                             );
                           },
                           child: SvgPicture.asset("assets/svgs/copy.svg",
-                              width: 18.w, height: 18.h),
+                              width: 14.w, height: 14.h),
                         )
                       ],
                     ),
-                    SizedBox(height: 20.h),
+                    SizedBox(height: 12.h),
                     Text(
                       "DP ID",
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.sp,
+                        color: const Color(0xffc9cacc),
+                        fontSize: 11.sp,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
+                    SizedBox(height: 2.h),
                     Row(
                       children: [
                         Text(
                           "8377176737782",
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.sp,
+                            color: const Color(0xffEBEEF5),
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -116,26 +116,27 @@ class _DematAccountDetailsState extends State<DematAccountDetails> {
                             );
                           },
                           child: SvgPicture.asset("assets/svgs/copy.svg",
-                              width: 18.w, height: 18.h),
+                              width: 14.w, height: 14.h),
                         )
                       ],
                     ),
-                    SizedBox(height: 20.h),
+                    SizedBox(height: 12.h),
                     Text(
                       "Depository Participant (DP)",
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.sp,
+                        color: const Color(0xffEBEEF5),
+                        fontSize: 11.sp,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
+                    SizedBox(height: 2.h),
                     Row(
                       children: [
                         Text(
                           "Sapphire Broking",
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.sp,
+                            color: const Color(0xffEBEEF5),
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -151,26 +152,27 @@ class _DematAccountDetailsState extends State<DematAccountDetails> {
                             );
                           },
                           child: SvgPicture.asset("assets/svgs/copy.svg",
-                              width: 18.w, height: 18.h),
+                              width: 14.w, height: 14.h),
                         )
                       ],
                     ),
-                    SizedBox(height: 20.h),
+                    SizedBox(height: 12.h),
                     Text(
                       "Depository",
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.sp,
+                        color: const Color(0xffEBEEF5),
+                        fontSize: 11.sp,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
+                    SizedBox(height: 2.h),
                     Row(
                       children: [
                         Text(
                           "CDSL",
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.sp,
+                            color: const Color(0xffEBEEF5),
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -183,7 +185,7 @@ class _DematAccountDetailsState extends State<DematAccountDetails> {
                             );
                           },
                           child: SvgPicture.asset("assets/svgs/copy.svg",
-                              width: 18.w, height: 18.h),
+                              width: 14.w, height: 14.h),
                         )
                       ],
                     ),

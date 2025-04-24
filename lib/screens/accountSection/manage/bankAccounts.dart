@@ -29,7 +29,7 @@ class _BankAccountsState extends State<BankAccounts> {
 
   Widget bankDetails(Map<String, dynamic> account) {
     return Container(
-      margin: EdgeInsets.only(bottom: 12.h),
+      margin: EdgeInsets.only(bottom: 16.h),
       decoration: BoxDecoration(
         border: Border.all(color: const Color(0xff2f2f2f)),
         borderRadius: BorderRadius.circular(12.r),
@@ -51,31 +51,33 @@ class _BankAccountsState extends State<BankAccounts> {
                 children: [
                   Row(
                     children: [
-                      Expanded(
-                        child: Text(
-                          account['bankName'],
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
+                      Text(
+                        account['bankName'],
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 13.sp),
+                      ),
+                      SizedBox(
+                        width: 20.w,
                       ),
                       if (account['isPrimary'])
                         Container(
                           padding: EdgeInsets.symmetric(
                               horizontal: 8.w, vertical: 2.h),
                           decoration: BoxDecoration(
-                            color: const Color(0xff35332e),
+                            color: const Color(0xffbaa461).withOpacity(0.4),
                             borderRadius: BorderRadius.circular(4.r),
                           ),
                           child: Text(
                             "Primary",
                             style: TextStyle(
-                              color: const Color(0xffffd761),
+                              color: const Color(0xffE9A256),
                               fontSize: 10.sp,
                             ),
                           ),
                         ),
                     ],
                   ),
-                  SizedBox(height: 4.h),
+                  SizedBox(height: 8.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -91,6 +93,7 @@ class _BankAccountsState extends State<BankAccounts> {
                       ),
                     ],
                   ),
+                  SizedBox(height: 4.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -106,6 +109,7 @@ class _BankAccountsState extends State<BankAccounts> {
                       ),
                     ],
                   ),
+                  SizedBox(height: 4.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -191,6 +195,7 @@ class _BankAccountsState extends State<BankAccounts> {
             color: Color(0xff2f2f2f),
             height: 1,
           ),
+          SizedBox(height: 8.h),
           Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),

@@ -6,9 +6,16 @@ import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/accountSection/ChangePinScreen.dart';
 import 'package:sapphire/screens/accountSection/SettingsScreen.dart';
 import 'package:sapphire/screens/accountSection/accountScreen.dart';
+import 'package:sapphire/screens/accountSection/dematAccountDetails.dart';
 import 'package:sapphire/screens/accountSection/fundsScreen.dart';
 import 'package:sapphire/screens/accountSection/ledgerScreen.dart';
+import 'package:sapphire/screens/accountSection/manage/activeSegments.dart';
+import 'package:sapphire/screens/accountSection/manage/bankAccounts.dart';
+import 'package:sapphire/screens/accountSection/manage/freezeAccount.dart';
+import 'package:sapphire/screens/accountSection/manage/giftStocks.dart';
 import 'package:sapphire/screens/accountSection/profitAndLoss.dart';
+import 'package:sapphire/screens/accountSection/reports/orderBook.dart';
+import 'package:sapphire/screens/accountSection/reports/tradeBook.dart';
 import 'package:sapphire/screens/accountSection/tradesAndCharges.dart';
 
 import '../../utils/constWidgets.dart';
@@ -51,25 +58,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
     ];
     manageOnTap = [
       () {
-        // navi(SegmentActivation(), context);
+        navi(GiftStocks(), context);
       },
       () {
-        // navi(BankAccounts(), context);
+        navi(ActiveSegments(), context);
       },
       () {
-        // navi(FundSettlementFrequency(), context);
+        navi(BankAccounts(), context);
       },
       () {
+        navi(DematAccountDetails(), context);
+
         // navi(GiftStocks(), context);
       },
-      () {
-        // navi(DematAccount(), context);
-      },
+      () {},
       () {
         // navi(MTF(), context);
       },
       () {
-        // navi(FreezeDematAccount(), context);
+        navi(FreezeAccount(), context);
       }
     ];
     reportsOnTap = [
@@ -77,11 +84,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         navi(LedgerScreen(), context);
       },
       () {
-        // navi(Tradebook(), context);
+        navi(Orderbook(), context);
       },
       () {},
       () {
-        navi(ProfitAndLoss(), context);
+        navi(Tradebook(), context);
       },
       () {
         navi(Tradesandcharges(), context);
