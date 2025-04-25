@@ -14,6 +14,7 @@ import 'package:sapphire/utils/naviWithoutAnimation.dart';
 import 'package:sapphire/utils/watchlistTabBar.dart';
 import 'package:sapphire/utils/filters.dart';
 import 'package:sapphire/wat.dart'; // For showFilterBottomSheet
+import 'package:sapphire/widgets/stock_detail_bottom_sheet.dart';
 
 class WatchlistScreen extends StatefulWidget {
   const WatchlistScreen({super.key});
@@ -605,13 +606,37 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                                           ]),
                                     ),
                                   ]),
-                              child: constWidgets.watchListDataView(
-                                "https://companieslogo.com/img/orig/${item['symbol']}.png?t=1720244493",
-                                item['symbol']!,
-                                item['company']!,
-                                item['price']!,
-                                item['change']!,
-                                isDark,
+                              child: GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    backgroundColor: Colors.transparent,
+                                    isScrollControlled: true,
+                                    isDismissible: true,
+                                    enableDrag: true,
+                                    builder: (_) => StockDetailBottomSheet(
+                                      stockName: item['symbol'] ?? '',
+                                      stockCode: item['company'] ?? '',
+                                      price: item['price'] ?? '',
+                                      change: item['change'] ?? '',
+                                      onBuy: () {
+                                        // Handle buy action
+                                      },
+                                      onSell: () {
+                                        // Handle sell action
+                                      },
+                                    ),
+                                  );
+                                },
+                                child: constWidgets.watchListDataView(
+                                  "https://companieslogo.com/img/orig/${item['symbol']}.png?t=1720244493",
+                                  item['symbol']!,
+                                  item['company']!,
+                                  item['price']!,
+                                  item['change']!,
+                                  isDark,
+                                ),
                               ),
                             ),
                           );
@@ -693,7 +718,7 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                       child: CircleAvatar(
                         backgroundColor: isDark
                             ? const Color(0xff021814)
-                            : Colors.grey.shade200,
+                            : const Color(0xff22A06B).withOpacity(0.2),
                         radius: 22.r,
                         child: Text("NK",
                             style: TextStyle(
@@ -711,8 +736,10 @@ class _WatchlistScreenState extends State<WatchlistScreen>
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    MarketDataCard("NIFTY 50", "23,018.20", "-218.20 (1.29%)"),
-                    MarketDataCard("SENSEX", "73,018.20", "+218.20 (1.29%)"),
+                    marketDataCard(context, "NIFTY 50", "23,018.20",
+                        "-218.20 (1.29%)", isDark),
+                    marketDataCard(context, "SENSEX", "73,018.20",
+                        "+218.20 (1.29%)", isDark),
                   ]),
             ),
           ),
@@ -821,7 +848,9 @@ class _WatchlistTabBarDelegate extends SliverPersistentHeaderDelegate {
   }
 }
 
-Widget MarketDataCard(String title, String price, String change) {
+/// MarketDataCard: A card displaying market data, now fully theme-aware
+Widget marketDataCard(BuildContext context, String title, String price,
+    String change, bool isDark) {
   final bool isPositive = change.startsWith('+');
   final Color changeColor = isPositive ? Colors.green : Colors.red;
 
@@ -830,9 +859,12 @@ Widget MarketDataCard(String title, String price, String change) {
     width: 175.w,
     padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
     decoration: BoxDecoration(
-      color: const Color(0xff121413),
+      // Card background adapts to theme
+      color: isDark ? Color(0xff121413) : const Color(0xFFF4F4F9),
       borderRadius: BorderRadius.circular(10.r),
-      border: Border.all(color: const Color(0xff2F2F2F), width: 1.5.w),
+      // Card border adapts to theme divider
+      border: Border.all(
+          color: isDark ? Color(0xff2F2F2F) : Color(0xFFF4F4F9), width: 1.5.w),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -840,7 +872,7 @@ Widget MarketDataCard(String title, String price, String change) {
         Text(
           title,
           style: TextStyle(
-              color: const Color(0xffEBEEF5),
+              color: isDark ? const Color(0xffEBEEF5) : Colors.black,
               fontSize: 14.sp,
               fontWeight: FontWeight.bold),
         ),
@@ -848,24 +880,18 @@ Widget MarketDataCard(String title, String price, String change) {
         Container(
           padding: EdgeInsets.all(2.w),
           decoration: BoxDecoration(
-            color: const Color(0xff121413),
-            borderRadius: BorderRadius.circular(6.r),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                price,
-                style:
-                    TextStyle(color: const Color(0xffEBEEF5), fontSize: 12.sp),
-              ),
-              SizedBox(width: 6.w),
-              Text(
-                change,
-                style: TextStyle(color: changeColor, fontSize: 12.sp),
-              ),
-            ],
-          ),
+              color: isDark ? Color(0xff121413) : Colors.grey.shade200,
+              borderRadius: BorderRadius.circular(6.r)),
+          child: Row(mainAxisSize: MainAxisSize.min, children: [
+            // Price text adapts to theme
+            Text(price,
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.onBackground,
+                    fontSize: 12.sp)),
+            SizedBox(width: 6.w),
+            // Change text uses theme primary/error
+            Text(change, style: TextStyle(color: changeColor, fontSize: 12.sp)),
+          ]),
         ),
       ],
     ),
