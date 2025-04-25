@@ -72,7 +72,7 @@ class _WatchlistTabBarState extends State<WatchlistTabBar> {
   void _showEditWatchlistModal(
       BuildContext context, int index, String currentName) {
     final controller = TextEditingController(text: currentName);
-
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -104,7 +104,7 @@ class _WatchlistTabBarState extends State<WatchlistTabBar> {
                   onPressed: () {},
                   icon: SvgPicture.asset(
                     "assets/svgs/delete.svg",
-                    color: Colors.white,
+                    color: widget.isDark ? Colors.white : Colors.black,
                   ),
                 ),
                 IconButton(
@@ -134,9 +134,11 @@ class _WatchlistTabBarState extends State<WatchlistTabBar> {
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 hintText: "Enter Watchlist Name",
-                labelStyle: const TextStyle(color: Color(0xffC9CACC)),
-                hintStyle:
-                    TextStyle(color: const Color(0xFFC9CACC), fontSize: 15.sp),
+                labelStyle:
+                    TextStyle(color: isDark ? Color(0xffC9CACC) : Colors.black),
+                hintStyle: TextStyle(
+                    color: isDark ? const Color(0xFFC9CACC) : Colors.black,
+                    fontSize: 15.sp),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30.r)),
                 ),
@@ -166,7 +168,7 @@ class _WatchlistTabBarState extends State<WatchlistTabBar> {
 
   void _showCreateWatchlistModal(BuildContext context) {
     final TextEditingController controller = TextEditingController();
-
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -224,9 +226,11 @@ class _WatchlistTabBarState extends State<WatchlistTabBar> {
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   hintText: "Enter Watchlist Name",
-                  labelStyle: const TextStyle(color: Color(0xffC9CACC)),
+                  labelStyle: TextStyle(
+                      color: isDark ? Color(0xffC9CACC) : Colors.black),
                   hintStyle: TextStyle(
-                      color: const Color(0xFFC9CACC), fontSize: 15.sp),
+                      color: isDark ? const Color(0xFFC9CACC) : Colors.black,
+                      fontSize: 15.sp),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30.r)),
                   ),
@@ -258,11 +262,11 @@ class _WatchlistTabBarState extends State<WatchlistTabBar> {
 
   void _showAddCategoryModal(BuildContext context) {
     final controller = TextEditingController();
-
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: const Color(0xff121413),
+      backgroundColor: isDark ? const Color(0xff121413) : Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -281,11 +285,14 @@ class _WatchlistTabBarState extends State<WatchlistTabBar> {
               children: [
                 Text(
                   "Add Category",
-                  style:
-                      TextStyle(fontSize: 21.sp, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 21.sp,
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? Colors.white : Colors.black),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.close, color: Colors.white),
+                  icon: Icon(Icons.close,
+                      color: isDark ? Colors.white : Colors.black),
                   onPressed: () => Navigator.pop(context),
                 ),
               ],
@@ -296,7 +303,7 @@ class _WatchlistTabBarState extends State<WatchlistTabBar> {
               child: Text(
                 "Enter Category Name",
                 style: TextStyle(
-                  color: const Color(0xffEBEEF5),
+                  color: isDark ? const Color(0xffEBEEF5) : Colors.black,
                   fontSize: 14.sp,
                 ),
               ),
@@ -308,9 +315,11 @@ class _WatchlistTabBarState extends State<WatchlistTabBar> {
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 hintText: "Enter Category Name",
-                labelStyle: const TextStyle(color: Color(0xffC9CACC)),
-                hintStyle:
-                    TextStyle(color: const Color(0xFFC9CACC), fontSize: 15.sp),
+                labelStyle:
+                    TextStyle(color: isDark ? Color(0xffC9CACC) : Colors.black),
+                hintStyle: TextStyle(
+                    color: isDark ? const Color(0xFFC9CACC) : Colors.black,
+                    fontSize: 15.sp),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30.r)),
                 ),

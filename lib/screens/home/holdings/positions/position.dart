@@ -139,6 +139,9 @@ class _positionScreenState extends State<positionScreen> {
                       fontSize: 13.sp,
                       color: isDark ? Colors.white : Colors.black),
                 ),
+                SizedBox(
+                  height: 5.h,
+                ),
                 Text(
                   firstValue,
                   style: TextStyle(
@@ -158,6 +161,9 @@ class _positionScreenState extends State<positionScreen> {
                   style: TextStyle(
                       fontSize: 13.sp,
                       color: isDark ? Colors.white : Colors.black),
+                ),
+                SizedBox(
+                  height: 5.h,
                 ),
                 RichText(
                   text: TextSpan(
@@ -226,8 +232,7 @@ class _positionScreenState extends State<positionScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        constWidgets.singleCard("Total Gain", '₹15,11,750',
-                            "Today's Loss", "-₹45,096", isDark),
+                        positionCard('₹15,11,750', "-₹45,096", isDark),
                       ],
                     ),
                   ),

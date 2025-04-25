@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/accountSection/2FAScreen.dart';
 import 'package:sapphire/screens/accountSection/Permission.dart';
 import 'package:sapphire/screens/accountSection/sessionManagement.dart';
 import 'package:sapphire/screens/accountSection/settingsOrderPreference.dart';
+import 'package:sapphire/themeProvider.dart';
 import 'package:sapphire/utils/toogle.dart';
 
 import '../../utils/constWidgets.dart';
@@ -27,11 +29,12 @@ class _settingsScreenState extends State<settingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.black, // or your desired color
+          backgroundColor:
+              isDark ? Colors.black : Colors.white, // or your desired color
           elevation: 0,
           scrolledUnderElevation: 0, // prevent shadow when scrolling
           leadingWidth: 32.w,
@@ -39,7 +42,10 @@ class _settingsScreenState extends State<settingsScreen> {
             padding: const EdgeInsets.only(top: 15),
             child: Text(
               "Settings",
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15.sp,
+                  color: isDark ? Colors.white : Colors.black),
             ),
           ),
           leading: Padding(
@@ -48,13 +54,16 @@ class _settingsScreenState extends State<settingsScreen> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Icon(Icons.arrow_back),
+              icon: Icon(Icons.arrow_back,
+                  color: isDark ? Colors.white : Colors.black),
             ),
           ),
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(15.h), // Height of the divider
             child: Divider(
-              color: Color(0xff2F2F2F), // Color for the divider
+              color: isDark
+                  ? const Color(0xff2F2F2F)
+                  : const Color(0xffD1D5DB), // Color for the divider
               // thickness: 1, // Divider thickness
             ),
           ),
@@ -71,7 +80,9 @@ class _settingsScreenState extends State<settingsScreen> {
                       Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: const Color(0xff121413),
+                          color: isDark
+                              ? const Color(0xff121413)
+                              : const Color(0xffF4F4F9),
                           borderRadius: BorderRadius.circular(8.r),
                         ),
                         child: Padding(
@@ -91,6 +102,8 @@ class _settingsScreenState extends State<settingsScreen> {
                                     style: TextStyle(
                                       fontSize: 18.sp,
                                       fontWeight: FontWeight.w500,
+                                      color:
+                                          isDark ? Colors.white : Colors.black,
                                     ),
                                   )
                                 ],
@@ -104,9 +117,9 @@ class _settingsScreenState extends State<settingsScreen> {
                                   /// Light button wrapped with GestureDetector
                                   GestureDetector(
                                     onTap: () {
-                                      setState(() {
-                                        isDarkTheme = false;
-                                      });
+                                      // Provider.of<ThemeProvider>(context,
+                                      //         listen: false)
+                                      //     .setTheme(ThemeMode.light);
                                     },
                                     child: constWidgets.choiceChip(
                                       "Light",
@@ -122,9 +135,9 @@ class _settingsScreenState extends State<settingsScreen> {
                                   /// Dark button wrapped with GestureDetector
                                   GestureDetector(
                                     onTap: () {
-                                      setState(() {
-                                        isDarkTheme = true;
-                                      });
+                                      // Provider.of<ThemeProvider>(context,
+                                      //         listen: false)
+                                      //     .setTheme(ThemeMode.dark);
                                     },
                                     child: constWidgets.choiceChip(
                                       "Dark",
@@ -152,6 +165,7 @@ class _settingsScreenState extends State<settingsScreen> {
                             biometricAuth = value;
                           });
                         },
+                        isDark: isDark,
                       ),
                       SizedBox(height: 12.h),
 
@@ -159,32 +173,34 @@ class _settingsScreenState extends State<settingsScreen> {
                       _buildListTile("Order preference",
                           "Set default order types and trading settings", () {
                         navi(SettingsOrderPreference(), context);
-                      }),
+                      }, isDark),
                       SizedBox(height: 12.h),
 
                       _buildListTile("Two Factor Authentication (2FA)",
                           "Add extra security to your account", () {
                         navi(twoFAScreen(), context);
-                      }),
+                      }, isDark),
                       SizedBox(height: 12.h),
 
                       _buildListTile("Session Management",
                           "View and manage active sessions", () {
                         navi(SessionManagement(), context);
-                      }),
+                      }, isDark),
                       SizedBox(height: 12.h),
 
                       _buildListTile("Permissions",
                           "Control access and authorization settings", () {
                         navi(permissionScreen(), context);
-                      }),
+                      }, isDark),
                       SizedBox(height: 12.h),
 
                       /// Charts Selection
                       Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
-                            color: Color(0xff121413),
+                            color: isDark
+                                ? const Color(0xff121413)
+                                : const Color(0xffF4F4F9),
                             borderRadius: BorderRadius.circular(8.r)),
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 8.w),
@@ -204,7 +220,10 @@ class _settingsScreenState extends State<settingsScreen> {
                                     "Charts",
                                     style: TextStyle(
                                         fontSize: 18.sp,
-                                        fontWeight: FontWeight.w500),
+                                        fontWeight: FontWeight.w500,
+                                        color: isDark
+                                            ? Colors.white
+                                            : Colors.black),
                                   )
                                 ],
                               ),
@@ -213,10 +232,10 @@ class _settingsScreenState extends State<settingsScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   _buildOptionCard("TradingView",
-                                      "assets/images/tradingview.png"),
+                                      "assets/images/tradingview.png", isDark),
                                   SizedBox(width: 16.w),
-                                  _buildOptionCard(
-                                      "ChartIQ", "assets/images/ChartIQ.png"),
+                                  _buildOptionCard("ChartIQ",
+                                      "assets/images/ChartIQ.png", isDark),
                                 ],
                               ),
                             ],
@@ -229,7 +248,9 @@ class _settingsScreenState extends State<settingsScreen> {
                       Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
-                            color: Color(0xff121413),
+                            color: isDark
+                                ? const Color(0xff121413)
+                                : const Color(0xffF4F4F9),
                             borderRadius: BorderRadius.circular(8.r)),
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 8.w),
@@ -249,7 +270,10 @@ class _settingsScreenState extends State<settingsScreen> {
                                     "Notification",
                                     style: TextStyle(
                                         fontSize: 18.sp,
-                                        fontWeight: FontWeight.w500),
+                                        fontWeight: FontWeight.w500,
+                                        color: isDark
+                                            ? Colors.white
+                                            : Colors.black),
                                   )
                                 ],
                               ),
@@ -262,6 +286,7 @@ class _settingsScreenState extends State<settingsScreen> {
                                     orderNotification = value;
                                   });
                                 },
+                                isDark: isDark,
                               ),
                               _buildSwitchTile(
                                 title: "Trade Notifications",
@@ -272,6 +297,7 @@ class _settingsScreenState extends State<settingsScreen> {
                                     tradeNotification = value;
                                   });
                                 },
+                                isDark: isDark,
                               ),
                               _buildSwitchTile(
                                 title: "Trade Recommendations",
@@ -282,17 +308,19 @@ class _settingsScreenState extends State<settingsScreen> {
                                     tradeRecommendation = value;
                                   });
                                 },
+                                isDark: isDark,
                               ),
                               _buildSwitchTile(
-                                title: "Promotion",
-                                subtitle: "Stay updated on offers and features",
-                                value: promotion,
-                                onChanged: (value) {
-                                  setState(() {
-                                    promotion = value;
-                                  });
-                                },
-                              ),
+                                  title: "Promotion",
+                                  subtitle:
+                                      "Stay updated on offers and features",
+                                  value: promotion,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      promotion = value;
+                                    });
+                                  },
+                                  isDark: isDark),
                             ],
                           ),
                         ),
@@ -305,7 +333,7 @@ class _settingsScreenState extends State<settingsScreen> {
                         padding:
                             EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                         decoration: BoxDecoration(
-                          color: Color(0xff121413),
+                          color: isDark ? Colors.black : Color(0xffF4F4F9),
                           borderRadius: BorderRadius.circular(8.r),
                         ),
                         width: double.infinity,
@@ -315,10 +343,12 @@ class _settingsScreenState extends State<settingsScreen> {
                             Text(
                               "Delete Account",
                               style: TextStyle(
-                                  color: Colors.white, fontSize: 15.sp),
+                                  color: isDark ? Colors.white : Colors.black,
+                                  fontSize: 15.sp),
                             ),
                             Icon(Icons.arrow_forward_ios_rounded,
-                                color: Colors.white, size: 18),
+                                color: isDark ? Colors.white : Colors.black,
+                                size: 18),
                           ],
                         ),
                       ),
@@ -339,18 +369,23 @@ class _settingsScreenState extends State<settingsScreen> {
     String? subtitle,
     required bool value,
     required Function(bool) onChanged,
+    required bool isDark,
   }) {
     return SizedBox(
       height: 60.h,
       child: ListTile(
-          tileColor: Color(0xff121413),
+          tileColor: isDark ? Colors.black : Color(0xffF4F4F9),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
           title: Text(title,
-              style: TextStyle(color: Colors.white, fontSize: 13.sp)),
+              style: TextStyle(
+                  color: isDark ? Colors.white : Colors.black,
+                  fontSize: 13.sp)),
           subtitle: subtitle != null
               ? Text(subtitle,
-                  style: TextStyle(color: Colors.white70, fontSize: 11.sp))
+                  style: TextStyle(
+                      color: isDark ? Colors.white70 : Colors.black,
+                      fontSize: 11.sp))
               : null,
           trailing: CustomToggleSwitch(
             initialValue: false,
@@ -362,27 +397,34 @@ class _settingsScreenState extends State<settingsScreen> {
   }
 
   /// Helper Method for List Tiles
-  Widget _buildListTile(String title, String subtitle, VoidCallback onTap) {
+  Widget _buildListTile(
+      String title, String subtitle, VoidCallback onTap, bool isDark) {
     return ListTile(
-      tileColor: Color(0xff121413),
+      tileColor: isDark ? Color(0xff121413) : Color(0xffF4F4F9),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min, // Ensures no extra spacing
         children: [
-          Text(title, style: TextStyle(color: Colors.white, fontSize: 13.sp)),
+          Text(title,
+              style: TextStyle(
+                  color: isDark ? Colors.white : Colors.black,
+                  fontSize: 13.sp)),
           SizedBox(height: 2.h), // Ensures they stick together
           Text(subtitle,
-              style: TextStyle(color: Colors.white70, fontSize: 11.sp)),
+              style: TextStyle(
+                  color: isDark ? Colors.white70 : Colors.black,
+                  fontSize: 11.sp)),
         ],
       ),
-      trailing: Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18),
+      trailing: Icon(Icons.arrow_forward_ios,
+          color: isDark ? Colors.white : Colors.black, size: 18),
       onTap: onTap,
     );
   }
 
   /// Helper Method for Radio Buttons
-  Widget _buildOptionCard(String title, String logoPath) {
+  Widget _buildOptionCard(String title, String logoPath, bool isDark) {
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -395,11 +437,15 @@ class _settingsScreenState extends State<settingsScreen> {
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           border: Border.all(
-            color: selectedOption == title ? Colors.green : Colors.grey,
+            color: selectedOption == title
+                ? Colors.green
+                : isDark
+                    ? Colors.grey
+                    : const Color(0xFFD1D5DB),
             width: 2.w,
           ),
           borderRadius: BorderRadius.circular(8.r),
-          color: Color(0xff121413),
+          color: isDark ? const Color(0xff121413) : const Color(0xffF4F4F9),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -417,7 +463,9 @@ class _settingsScreenState extends State<settingsScreen> {
                 SizedBox(
                   height: 6.h,
                 ),
-                Text(title, style: TextStyle(color: Colors.white)),
+                Text(title,
+                    style:
+                        TextStyle(color: isDark ? Colors.white : Colors.black)),
               ],
             ),
             Column(
@@ -445,8 +493,10 @@ class _settingsScreenState extends State<settingsScreen> {
                             height: 12.h,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Color(
-                                  0xff121413), // Inner filled circle when selected
+                              color: isDark
+                                  ? const Color(0xff121413)
+                                  : const Color(
+                                      0xffF4F4F9), // Inner filled circle when selected
                             ),
                           ),
                         )

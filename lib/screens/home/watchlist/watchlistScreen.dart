@@ -194,11 +194,11 @@ class _WatchlistScreenState extends State<WatchlistScreen>
       BuildContext context, String currentName, int itemIndex) {
     final TextEditingController controller =
         TextEditingController(text: currentName);
-
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: const Color(0xff121413),
+      backgroundColor: isDark ? const Color(0xff121413) : Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       builder: (context) => Padding(
         padding: EdgeInsets.only(
@@ -218,16 +218,17 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                   style: TextStyle(
                     fontSize: 21.sp,
                     fontWeight: FontWeight.bold,
-                    color: const Color(0xffEBEEF5),
+                    color: isDark ? const Color(0xffEBEEF5) : Colors.black,
                   ),
                 ),
                 Spacer(),
                 IconButton(
                     onPressed: () {},
                     icon: SvgPicture.asset("assets/svgs/delete.svg",
-                        color: Colors.white)),
+                        color: isDark ? Colors.white : Colors.black)),
                 IconButton(
-                  icon: const Icon(Icons.close, color: Colors.white),
+                  icon: Icon(Icons.close,
+                      color: isDark ? Colors.white : Colors.black),
                   onPressed: () => Navigator.pop(context),
                 ),
               ],
@@ -238,7 +239,7 @@ class _WatchlistScreenState extends State<WatchlistScreen>
               child: Text(
                 "Enter New Category Name",
                 style: TextStyle(
-                  color: const Color(0xffEBEEF5),
+                  color: isDark ? Color(0xffEBEEF5) : Colors.black,
                   fontSize: 14.sp,
                 ),
               ),
@@ -250,8 +251,11 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 hintText: "Enter Category Name",
-                labelStyle: TextStyle(color: Color(0xffC9CACC)),
-                hintStyle: TextStyle(color: Color(0xFFC9CACC), fontSize: 15.sp),
+                labelStyle:
+                    TextStyle(color: isDark ? Color(0xffEBEEF5) : Colors.black),
+                hintStyle: TextStyle(
+                    color: isDark ? Color(0xffEBEEF5) : Colors.black,
+                    fontSize: 15.sp),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30.r)),
                 ),
@@ -709,7 +713,9 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                         onTap: () =>
                             naviWithoutAnimation(context, FundsScreen()),
                         child: SvgPicture.asset("assets/svgs/wallet.svg",
-                            width: 20.w, height: 23.h, color: Colors.white),
+                            width: 20.w,
+                            height: 23.h,
+                            color: isDark ? Colors.white : Colors.black),
                       ),
                     ),
                     InkWell(

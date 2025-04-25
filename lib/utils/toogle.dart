@@ -47,6 +47,7 @@ class _CustomToggleSwitchState extends State<CustomToggleSwitch>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: toggleSwitch,
       child: AnimatedBuilder(
@@ -57,7 +58,11 @@ class _CustomToggleSwitchState extends State<CustomToggleSwitch>
             height: 34,
             padding: const EdgeInsets.all(2),
             decoration: BoxDecoration(
-              color: isChecked ? Colors.green : const Color(0xFF2E2E2E),
+              color: isChecked
+                  ? Colors.green
+                  : isDark
+                      ? const Color(0xFF2E2E2E)
+                      : const Color(0xFFD1D5DB),
               borderRadius: BorderRadius.circular(34),
             ),
             child: Align(

@@ -75,7 +75,7 @@ class _DisclosureState extends State<Disclosure> {
           },
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.white,
+            color: isDark ? Colors.white : Colors.black,
           ),
         ),
       ),

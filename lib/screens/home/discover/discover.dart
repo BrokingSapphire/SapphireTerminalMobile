@@ -10,6 +10,7 @@ import 'package:sapphire/screens/accountSection/ledgerScreen.dart';
 import 'package:sapphire/screens/accountSection/profileScreen.dart';
 import 'package:sapphire/screens/accountSection/profitAndLoss.dart';
 import 'package:sapphire/screens/accountSection/tradesAndCharges.dart';
+import 'package:sapphire/screens/home/discover/auction.dart';
 import 'package:sapphire/screens/home/discover/governmentSecurities.dart';
 import 'package:sapphire/screens/home/discover/ipo.dart';
 import 'package:sapphire/screens/home/discover/pledge.dart';
@@ -232,6 +233,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                           trailing: Icon(Icons.arrow_forward_ios_outlined,
                               size: 15.sp),
                           onTap: () {
+                            navi(Auction(), context);
                             // navi(FundsScreen(), context);
                           },
                         ),

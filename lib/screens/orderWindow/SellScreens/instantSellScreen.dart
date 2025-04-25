@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sapphire/screens/orderWindow/SellScreens/sellScreenWrapper.dart';
 import 'package:sapphire/utils/animatedToggles.dart';
 
 class SellScreenTabContent extends StatefulWidget {
@@ -29,7 +30,7 @@ class _SellScreenTabContentState extends State<SellScreenTabContent> {
         behavior: HitTestBehavior.opaque,
         child: Column(
           children: [
-            AnimatedOptionToggle(
+            sellAnimatedToggle(
               options: _options,
               selectedIndex: _selectedIndex,
               onToggle: (index) {
@@ -47,58 +48,127 @@ class _SellScreenTabContentState extends State<SellScreenTabContent> {
               ),
             ),
             SizedBox(height: 6.h),
-            Row(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xff2f2f2f)),
-                    borderRadius: BorderRadius.circular(6.r),
-                  ),
-                  height: 50.h,
-                  width: 185.w,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.remove, color: Colors.white),
-                        onPressed: () {
-                          if (quantity > 1) {
-                            setState(() {
-                              quantity--;
-                            });
-                          }
-                        },
-                      ),
-                      Text(
-                        quantity.toString(),
-                        style: TextStyle(fontSize: 15.sp, color: Colors.white),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.add, color: Colors.white),
-                        onPressed: () {
-                          setState(() {
-                            quantity++;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
+            Row(children: [
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Color(0xff2f2f2f)),
+                  borderRadius: BorderRadius.circular(6.r),
                 ),
-                SizedBox(width: 20.w),
-                Expanded(
-                  child: AnimatedDualToggle(
-                    isFirstOptionSelected: isMarketSelected,
-                    onToggle: (value) {
-                      setState(() {
-                        isMarketSelected = value;
-                      });
-                    },
-                    firstOption: "Market",
-                    secondOption: "Limit",
-                  ),
-                )
-              ],
-            ),
+                height: 50.h,
+                width: 185.w,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.remove, color: Colors.white),
+                      onPressed: () {
+                        if (quantity > 1) {
+                          setState(() {
+                            quantity--;
+                          });
+                        }
+                      },
+                    ),
+                    Text(
+                      quantity.toString(),
+                      style: TextStyle(fontSize: 15.sp, color: Colors.white),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.add, color: Colors.white),
+                      onPressed: () {
+                        setState(() {
+                          quantity++;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 20.w),
+              Expanded(
+                child: Container(
+                  height: 50.h,
+                  child: Row(children: [
+                    // Market Button
+                    Expanded(
+                      child: Container(
+                        height: 50.h,
+                        decoration: BoxDecoration(
+                          color: Color(0xff2f2f2f),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Row(
+                          children: [
+                            // Market Button
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    isMarketSelected = true;
+                                  });
+                                },
+                                child: AnimatedContainer(
+                                  duration: Duration(milliseconds: 200),
+                                  curve: Curves.easeInOut,
+                                  decoration: BoxDecoration(
+                                    color: isMarketSelected
+                                        ? Color(0xffE53935)
+                                        : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(8.r),
+                                  ),
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.symmetric(vertical: 10.h),
+                                  child: Text(
+                                    "Market",
+                                    style: TextStyle(
+                                        color: !isMarketSelected
+                                            ? Colors.white
+                                            : Color(0xffebeef5),
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // Limit Button
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    isMarketSelected = false;
+                                  });
+                                },
+                                child: AnimatedContainer(
+                                  duration: Duration(milliseconds: 200),
+                                  curve: Curves.easeInOut,
+                                  decoration: BoxDecoration(
+                                    color: !isMarketSelected
+                                        ? Color(0xffE53935)
+                                        : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(8.r),
+                                  ),
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.symmetric(vertical: 10.h),
+                                  child: Text(
+                                    "Limit",
+                                    style: TextStyle(
+                                        color: !isMarketSelected
+                                            ? Colors.white
+                                            : Color(0xffebeef5),
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ]),
+                ),
+              )
+            ]),
             SizedBox(height: 16.h),
             Align(
               alignment: Alignment.topLeft,

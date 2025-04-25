@@ -145,7 +145,7 @@ class constWidgets {
                     "₹$trail1",
                     style: TextStyle(
                         fontSize: 15.sp,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w500,
                         color: isDark ? Colors.white : Colors.black),
                   ),
                   Text(

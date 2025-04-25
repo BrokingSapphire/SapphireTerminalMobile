@@ -240,6 +240,7 @@ class CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
 
 Widget marketDataCard(String title, String price, String change, bool isDark) {
   final bool isPositive = change.startsWith('+');
+  final Color changeColor = isPositive ? Colors.green : Colors.red;
   return Container(
     height: 62.h,
     padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
@@ -277,6 +278,10 @@ Widget marketDataCard(String title, String price, String change, bool isDark) {
                     fontSize: 12.sp),
               ),
               SizedBox(width: 6.w),
+              Text(
+                change,
+                style: TextStyle(color: changeColor, fontSize: 12.sp),
+              ),
             ],
           ),
         ),

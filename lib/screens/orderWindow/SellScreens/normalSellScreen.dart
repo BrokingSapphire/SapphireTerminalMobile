@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sapphire/screens/orderWindow/SellScreens/sellScreenWrapper.dart';
 import 'package:sapphire/utils/animatedToggles.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
@@ -34,7 +35,7 @@ class _NormalSellScreenState extends State<NormalSellScreen> {
         child: Column(
           children: [
             // Delivery / Intraday / MTF Tabs
-            AnimatedOptionToggle(
+            sellAnimatedToggle(
               options: _options,
               selectedIndex: _selectedIndex,
               onToggle: (index) {
@@ -129,7 +130,7 @@ class _NormalSellScreenState extends State<NormalSellScreen> {
                                       child: Text(
                                         "Market",
                                         style: TextStyle(
-                                            color: isMarketSelected
+                                            color: !isMarketSelected
                                                 ? Colors.white
                                                 : Color(0xffebeef5),
                                             fontSize: 15.sp,
@@ -281,19 +282,28 @@ class _NormalSellScreenState extends State<NormalSellScreen> {
             Row(
               children: [
                 GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: () {
                     setState(() {
                       _stopLoss = !_stopLoss;
                     });
                   },
-                  child: CustomCheckbox(
-                    size: 20,
-                    value: _stopLoss,
-                    onChanged: (_) {},
+                  child: Row(
+                    children: [
+                      sellScreenCheckbox(
+                        size: 20,
+                        value: _stopLoss,
+                        onChanged: (_) {
+                          setState(() {
+                            _stopLoss = !_stopLoss;
+                          });
+                        },
+                      ),
+                      SizedBox(width: 10.w),
+                      Text("StopLoss"),
+                    ],
                   ),
                 ),
-                SizedBox(width: 10.w),
-                Text("StopLoss"),
                 SizedBox(width: 5.w),
                 Icon(Icons.info_outline, size: 15, color: Color(0xffc9cacc)),
                 SizedBox(width: 35.w),
@@ -303,14 +313,22 @@ class _NormalSellScreenState extends State<NormalSellScreen> {
                       _gtt = !_gtt;
                     });
                   },
-                  child: CustomCheckbox(
-                    size: 20,
-                    value: _gtt,
-                    onChanged: (_) {},
+                  child: Row(
+                    children: [
+                      sellScreenCheckbox(
+                        size: 20,
+                        value: _gtt,
+                        onChanged: (_) {
+                          setState(() {
+                            _gtt = !_gtt;
+                          });
+                        },
+                      ),
+                      SizedBox(width: 10.w),
+                      Text("GTT"),
+                    ],
                   ),
                 ),
-                SizedBox(width: 10.w),
-                Text("GTT"),
                 SizedBox(width: 5.w),
                 Icon(Icons.info_outline, size: 15, color: Color(0xffc9cacc)),
               ],

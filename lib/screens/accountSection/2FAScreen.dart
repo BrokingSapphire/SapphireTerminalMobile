@@ -7,10 +7,12 @@ import 'package:sapphire/screens/accountSection/Otp2faScreen.dart';
 class twoFAScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: Colors.black,
-       appBar: AppBar(
-        backgroundColor: Colors.black, // or your desired color
+      backgroundColor: isDark ? Colors.black : Colors.white,
+      appBar: AppBar(
+        backgroundColor:
+            isDark ? Colors.black : Colors.white, // or your desired color
         elevation: 0,
         scrolledUnderElevation: 0, // prevent shadow when scrolling
         surfaceTintColor: Colors.transparent,
@@ -20,7 +22,10 @@ class twoFAScreen extends StatelessWidget {
           padding: const EdgeInsets.only(top: 15),
           child: Text(
             "Two Factor Authentication",
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 15.sp,
+                color: isDark ? Colors.white : Colors.black),
           ),
         ),
         leading: Padding(
@@ -29,13 +34,16 @@ class twoFAScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Icon(Icons.arrow_back)),
+              icon: Icon(
+                Icons.arrow_back,
+                color: isDark ? Colors.white : Colors.black,
+              )),
         ),
       ),
       body: Column(
         children: [
           Divider(
-            color: Color(0xff2F2F2F),
+            color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB),
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -49,21 +57,24 @@ class twoFAScreen extends StatelessWidget {
                     width: 70, // Adjust size as needed
                     height: 80,
                     fit: BoxFit.contain,
+                    color: isDark ? Color(0xffC9CACC) : Color(0xff6B7280),
                   ),
                 ),
                 SizedBox(height: 28.h),
                 Center(
                   child: Text("Protect your account",
                       style: TextStyle(
-                          color: Colors.white,
+                          color: isDark ? Colors.white : Colors.black,
                           fontSize: 18.sp,
-                          fontWeight: FontWeight.bold)),
+                          fontWeight: FontWeight.w400)),
                 ),
                 SizedBox(height: 12.h),
                 Center(
                   child: Text(
                     "In order to protect your account you’ll need a\nsecondary authenticator to continue with this action.",
-                    style: TextStyle(color: Colors.white, fontSize: 13.sp),
+                    style: TextStyle(
+                        color: isDark ? Colors.white : Colors.black,
+                        fontSize: 13.sp),
                     textAlign: TextAlign.center, // Aligns text to center
                   ),
                 ),
@@ -71,8 +82,9 @@ class twoFAScreen extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.black,
-                    border: Border.all(color: Color(0xff2F2F2F)),
+                    color: isDark ? Colors.black : Colors.white,
+                    border: Border.all(
+                        color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB)),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   child: Column(
@@ -80,7 +92,8 @@ class twoFAScreen extends StatelessWidget {
                     children: [
                       Text("Advantages of Two-Factor Authentication",
                           style: TextStyle(
-                              color: Color(0xFFEBEEF5), fontSize: 13.sp)),
+                              color: isDark ? Color(0xFFEBEEF5) : Colors.black,
+                              fontSize: 13.sp)),
                       SizedBox(height: 10.h),
                       Row(children: [
                         Icon(
@@ -91,7 +104,10 @@ class twoFAScreen extends StatelessWidget {
                         SizedBox(width: 5.w),
                         Text("Enhanced Security",
                             style: TextStyle(
-                                color: Color(0xFFC9CACC), fontSize: 13.sp))
+                                color: isDark
+                                    ? Color(0xFFC9CACC)
+                                    : Color(0xff6B7280),
+                                fontSize: 13.sp))
                       ]),
                       Row(children: [
                         Icon(
@@ -102,7 +118,10 @@ class twoFAScreen extends StatelessWidget {
                         SizedBox(width: 5.w),
                         Text("Reduces Fraud & Identity Theft",
                             style: TextStyle(
-                                color: Color(0xFFC9CACC), fontSize: 13.sp))
+                                color: isDark
+                                    ? Color(0xFFC9CACC)
+                                    : Color(0xff6B7280),
+                                fontSize: 13.sp))
                       ]),
                       Row(children: [
                         Icon(
@@ -113,7 +132,10 @@ class twoFAScreen extends StatelessWidget {
                         SizedBox(width: 5),
                         Text("Prevents Unauthorized Access",
                             style: TextStyle(
-                                color: Color(0xFFC9CACC), fontSize: 13.sp))
+                                color: isDark
+                                    ? Color(0xFFC9CACC)
+                                    : Color(0xff6B7280),
+                                fontSize: 13.sp))
                       ]),
                     ],
                   ),
@@ -122,7 +144,7 @@ class twoFAScreen extends StatelessWidget {
                   height: 24.h,
                 ),
                 Divider(
-                  color: Color(0xff2F2F2F),
+                  color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB),
                 ),
                 SizedBox(height: 24.h),
                 Text("Pick Your Verification Method",
@@ -133,7 +155,7 @@ class twoFAScreen extends StatelessWidget {
                 SizedBox(height: 15.h),
                 Container(
                   decoration: BoxDecoration(
-                    color: Color(0xff121413), // Card background color
+                    color: isDark ? Color(0xff121413) : Color(0xffF4F4F9),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Column(
@@ -156,7 +178,9 @@ class twoFAScreen extends StatelessWidget {
                                     Text(
                                       "Text",
                                       style: TextStyle(
-                                          color: Color(0xFFEBEEF5),
+                                          color: isDark
+                                              ? Color(0xFFEBEEF5)
+                                              : Colors.black,
                                           fontSize: 16.sp),
                                     ),
                                     SizedBox(
@@ -165,21 +189,29 @@ class twoFAScreen extends StatelessWidget {
                                     Text(
                                       "A code will be sent to your phone",
                                       style: TextStyle(
-                                          color: Color(0xFFC9CACC),
+                                          color: isDark
+                                              ? Color(0xFFC9CACC)
+                                              : Color(0xff6B7280),
                                           fontSize: 13.sp),
                                     ),
                                   ],
                                 ),
                               ),
+                              Icon(
+                                Icons.verified_sharp,
+                                color: Colors.green,
+                              ),
                               Icon(Icons.arrow_forward_ios,
-                                  color: Colors.white, size: 17),
+                                  color:
+                                      isDark ? Colors.white : Color(0xff6B7280),
+                                  size: 17),
                             ],
                           ),
                         ),
                       ),
                       Divider(
-                        color: Color(0xff2F2F2F),
-                      ),
+                          color:
+                              isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB)),
                       // Second Option (Authentication App)
                       InkWell(
                         onTap: () {
@@ -198,7 +230,9 @@ class twoFAScreen extends StatelessWidget {
                                     Text(
                                       "Authentication App",
                                       style: TextStyle(
-                                          color: Color(0xFFEBEEF5),
+                                          color: isDark
+                                              ? Colors.white
+                                              : Colors.black,
                                           fontSize: 16.sp),
                                     ),
                                     SizedBox(
@@ -207,14 +241,17 @@ class twoFAScreen extends StatelessWidget {
                                     Text(
                                       "Generate a code using an authentication app",
                                       style: TextStyle(
-                                          color: Color(0xFFC9CACC),
+                                          color: isDark
+                                              ? Color(0xFFC9CACC)
+                                              : Color(0xff6B7280),
                                           fontSize: 13.sp),
                                     ),
                                   ],
                                 ),
                               ),
                               Icon(Icons.arrow_forward_ios,
-                                  color: Colors.white, size: 17),
+                                  color: isDark ? Colors.white : Colors.black,
+                                  size: 18),
                             ],
                           ),
                         ),

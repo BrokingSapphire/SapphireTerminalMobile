@@ -16,32 +16,40 @@ class _changePinScreenState extends State<changePinScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.black,
-       appBar: AppBar(
-        backgroundColor: Colors.black, // or your desired color
-        elevation: 0,
-        scrolledUnderElevation: 0, // prevent shadow when scrolling
-        surfaceTintColor: Colors.transparent,
-        title: Padding(
-          padding: EdgeInsets.only(left: 0, top: 15.w),
-          child: Text(
-            "Change PIN",
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
+        backgroundColor: isDark ? Colors.black : Colors.white,
+        appBar: AppBar(
+          backgroundColor:
+              isDark ? Colors.black : Colors.white, // or your desired color
+          elevation: 0,
+          scrolledUnderElevation: 0, // prevent shadow when scrolling
+          surfaceTintColor: Colors.transparent,
+          title: Padding(
+            padding: EdgeInsets.only(left: 0, top: 15.w),
+            child: Text(
+              "Change PIN",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15.sp,
+                  color: isDark ? Colors.white : Colors.black),
+            ),
+          ),
+          leadingWidth: 32.w,
+          leading: Padding(
+            padding: EdgeInsets.only(left: 0, top: 15.w),
+            child: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: isDark ? Colors.white : Colors.black,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
           ),
         ),
-        leadingWidth: 32.w,
-        leading: Padding(
-          padding: EdgeInsets.only(left: 0, top: 15.w),
-          child: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-      ),
         body: GestureDetector(
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
@@ -49,7 +57,7 @@ class _changePinScreenState extends State<changePinScreen> {
           behavior: HitTestBehavior.opaque,
           child: Column(
             children: [
-              Divider(color: Color(0xff2F2F2F)),
+              Divider(color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB)),
               Expanded(
                 // ✅ Fix: Make column scrollable/flexible
                 child: Padding(
@@ -61,7 +69,7 @@ class _changePinScreenState extends State<changePinScreen> {
                       Text(
                         'Enter Old MPIN',
                         style: TextStyle(
-                            color: Colors.white,
+                            color: isDark ? Colors.white : Colors.black,
                             fontSize: 15.sp,
                             fontWeight: FontWeight.bold),
                       ),
@@ -72,7 +80,8 @@ class _changePinScreenState extends State<changePinScreen> {
                           keyboardType: TextInputType.number,
                           controller: oldmpin,
                           obscureText: _obscureText,
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: isDark ? Colors.white : Colors.black),
                           decoration: InputDecoration(
                             suffixIcon: GestureDetector(
                               onTap: () {
@@ -84,8 +93,10 @@ class _changePinScreenState extends State<changePinScreen> {
                                 _obscureText
                                     ? Icons.visibility_off
                                     : Icons.visibility,
-                                color: Color(0xffC9CACC),
-                                size: 18.sp,
+                                color: isDark
+                                    ? Color(0xffC9CACC)
+                                    : Color(0xffD1D5DB),
+                                size: 22.sp,
                               ),
                             ),
                             contentPadding: EdgeInsets.symmetric(
@@ -97,16 +108,24 @@ class _changePinScreenState extends State<changePinScreen> {
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30.r),
-                              borderSide: BorderSide(color: Colors.white54),
+                              borderSide: BorderSide(
+                                  color: isDark
+                                      ? Colors.white54
+                                      : Color(0xffD1D5DB)),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30.r),
-                              borderSide:
-                                  BorderSide(color: Colors.white, width: 2.w),
+                              borderSide: BorderSide(
+                                  color:
+                                      isDark ? Colors.white : Color(0xffD1D5DB),
+                                  width: 2.w),
                             ),
                             hintText: 'Enter MPIN',
                             hintStyle: TextStyle(
-                                color: Color(0xFFC9CACC), fontSize: 15.sp),
+                                color: isDark
+                                    ? Color(0xFFC9CACC)
+                                    : Color(0xff6B7280),
+                                fontSize: 15.sp),
                           ),
                         ),
                       ),
@@ -118,7 +137,8 @@ class _changePinScreenState extends State<changePinScreen> {
                           },
                           child: Text('Forget MPIN?',
                               style: TextStyle(
-                                  color: Color(0xFFEBEEF5),
+                                  color:
+                                      isDark ? Color(0xFFEBEEF5) : Colors.black,
                                   fontSize: 15.sp,
                                   decoration: TextDecoration.underline)),
                         ),

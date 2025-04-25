@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sapphire/utils/filters.dart';
 
 class LedgerScreen extends StatefulWidget {
   const LedgerScreen({super.key});
@@ -11,35 +12,41 @@ class LedgerScreen extends StatefulWidget {
 class _LedgerScreenState extends State<LedgerScreen> {
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SafeArea(
       child: Scaffold(
-       appBar: AppBar(
-        backgroundColor: Colors.black, // or your desired color
-        elevation: 0,
-        scrolledUnderElevation: 0, // prevent shadow when scrolling
-        surfaceTintColor: Colors.transparent,
-        leadingWidth: 32.w,
+        appBar: AppBar(
+          backgroundColor:
+              isDark ? Colors.black : Colors.white, // or your desired color
+          elevation: 0,
+          scrolledUnderElevation: 0, // prevent shadow when scrolling
+          surfaceTintColor: Colors.transparent,
+          leadingWidth: 32.w,
 
-        title: Padding(
-          padding: const EdgeInsets.only(top: 15),
-          child: Text(
-            "Two Factor Authentication",
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
+          title: Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: Text(
+              "Two Factor Authentication",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15.sp,
+                  color: isDark ? Colors.white : Colors.black),
+            ),
+          ),
+          leading: Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(Icons.arrow_back,
+                    color: isDark ? Colors.white : Colors.black)),
           ),
         ),
-        leading: Padding(
-          padding: const EdgeInsets.only(top: 15),
-          child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.arrow_back)),
-        ),
-      ),
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Divider(color: Color(0xff2F2F2F)), // Full-width divider
+              Divider(color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB)),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Column(
@@ -48,7 +55,7 @@ class _LedgerScreenState extends State<LedgerScreen> {
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(6.r),
-                        color: Color(0xff121413),
+                        color: isDark ? Color(0xff121413) : Color(0xffF4F4F9),
                       ),
                       child: Padding(
                         padding: EdgeInsets.all(12.w),
@@ -64,15 +71,19 @@ class _LedgerScreenState extends State<LedgerScreen> {
                                       "Opening Balance",
                                       style: TextStyle(
                                           fontSize: 13.sp,
-                                          color: Color(0xffc9cacc),
+                                          color: isDark
+                                              ? Color(0xffc9cacc)
+                                              : Color(0xff6B7280),
                                           fontWeight: FontWeight.w400),
                                     ),
                                     SizedBox(height: 4.h),
                                     Text(
                                       "₹0",
                                       style: TextStyle(
-                                        fontSize: 13.sp,
-                                      ),
+                                          fontSize: 13.sp,
+                                          color: isDark
+                                              ? Colors.white
+                                              : Colors.black),
                                     )
                                   ],
                                 ),
@@ -83,7 +94,9 @@ class _LedgerScreenState extends State<LedgerScreen> {
                                       "Closing Balance",
                                       style: TextStyle(
                                           fontSize: 13.sp,
-                                          color: Color(0xffc9cacc),
+                                          color: isDark
+                                              ? Color(0xffc9cacc)
+                                              : Color(0xff6B7280),
                                           fontWeight: FontWeight.w400),
                                     ),
                                     SizedBox(height: 4.h),
@@ -91,6 +104,9 @@ class _LedgerScreenState extends State<LedgerScreen> {
                                       "₹1,00,000",
                                       style: TextStyle(
                                         fontSize: 13.sp,
+                                        color: isDark
+                                            ? Colors.white
+                                            : Colors.black,
                                       ),
                                     )
                                   ],
@@ -108,15 +124,19 @@ class _LedgerScreenState extends State<LedgerScreen> {
                                       "Total Credit",
                                       style: TextStyle(
                                           fontSize: 13.sp,
-                                          color: Color(0xffc9cacc),
+                                          color: isDark
+                                              ? Color(0xffc9cacc)
+                                              : Color(0xff6B7280),
                                           fontWeight: FontWeight.w400),
                                     ),
                                     SizedBox(height: 4.h),
                                     Text(
                                       "₹192,32,234",
                                       style: TextStyle(
-                                        fontSize: 13.sp,
-                                      ),
+                                          fontSize: 13.sp,
+                                          color: isDark
+                                              ? Colors.white
+                                              : Colors.black),
                                     )
                                   ],
                                 ),
@@ -127,15 +147,19 @@ class _LedgerScreenState extends State<LedgerScreen> {
                                       "Closing Debit",
                                       style: TextStyle(
                                           fontSize: 13.sp,
-                                          color: Color(0xffc9cacc),
+                                          color: isDark
+                                              ? Color(0xffc9cacc)
+                                              : Color(0xff6B7280),
                                           fontWeight: FontWeight.w400),
                                     ),
                                     SizedBox(height: 4.h),
                                     Text(
                                       "₹1,00,000",
                                       style: TextStyle(
-                                        fontSize: 13.sp,
-                                      ),
+                                          fontSize: 13.sp,
+                                          color: isDark
+                                              ? Colors.white
+                                              : Colors.black),
                                     )
                                   ],
                                 )
@@ -154,7 +178,12 @@ class _LedgerScreenState extends State<LedgerScreen> {
                           children: [
                             Text(
                               "Statement for",
-                              style: TextStyle(fontSize: 13.sp),
+                              style: TextStyle(
+                                fontSize: 13.sp,
+                                color: isDark
+                                    ? Color(0xffc9cacc)
+                                    : Color(0xff6B7280),
+                              ),
                             ),
                             SizedBox(height: 4.h),
                             Text(
@@ -178,7 +207,10 @@ class _LedgerScreenState extends State<LedgerScreen> {
                   ],
                 ),
               ),
-              Divider(color: Color(0xff2F2F2F)), // Full-width divider
+              Divider(
+                  color: isDark
+                      ? Color(0xff2F2F2F)
+                      : Color(0xffD1D5DB)), // Full-width divider
               SizedBox(height: 10.h),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -188,18 +220,29 @@ class _LedgerScreenState extends State<LedgerScreen> {
                     Text(
                       "Transactions",
                       style: TextStyle(
-                          fontWeight: FontWeight.w400, fontSize: 17.sp),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 17.sp,
+                          color: isDark ? Colors.white : Colors.black),
                     ),
-                    Container(
-                      height: 48.h,
-                      width: 48.w,
-                      decoration: BoxDecoration(
-                        color: Color(0xFF121413),
-                        borderRadius: BorderRadius.circular(6.r),
-                      ),
-                      child: Image.asset(
-                        'assets/icons/filter.png',
-                        scale: 2,
+                    GestureDetector(
+                      onTap: () {
+                        showFilterBottomSheet(
+                            context: context,
+                            pageKey: 'ledger',
+                            onApply: (filters) {},
+                            isDark: isDark);
+                      },
+                      child: Container(
+                        height: 48.h,
+                        width: 48.w,
+                        decoration: BoxDecoration(
+                          color: isDark ? Color(0xFF121413) : Color(0xFFF4F4F9),
+                          borderRadius: BorderRadius.circular(6.r),
+                        ),
+                        child: Image.asset(
+                          'assets/icons/filter.png',
+                          scale: 2,
+                        ),
                       ),
                     ),
                   ],
@@ -217,7 +260,11 @@ class _LedgerScreenState extends State<LedgerScreen> {
                           children: [
                             CircleAvatar(
                               radius: 20.r,
-                              backgroundColor: Color(0xFF26382F),
+                              backgroundColor: isDark
+                                  ? Color(0xFF26382F)
+                                  : Colors.green.withOpacity(0.5),
+                              child: Icon(Icons.cached_outlined,
+                                  color: Color(0xFF1DB954)),
                             ),
                             SizedBox(width: 12.w),
                             Expanded(

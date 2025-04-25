@@ -44,12 +44,17 @@ class _SettingsOrderPreferenceState extends State<SettingsOrderPreference> {
       children: [
         Text(
           sectionTitle,
-          style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
+          style: TextStyle(
+              fontSize: 15.sp,
+              fontWeight: FontWeight.w600,
+              color: isDark ? Colors.white : Colors.black),
         ),
         SizedBox(height: 16.h),
         Text(
           "Product Type",
-          style: TextStyle(color: Color(0xffC9CACC), fontSize: 13.sp),
+          style: TextStyle(
+              color: isDark ? Color(0xffC9CACC) : Color(0xff6B7280),
+              fontSize: 13.sp),
         ),
         SizedBox(height: 14.h),
         Row(
@@ -102,7 +107,9 @@ class _SettingsOrderPreferenceState extends State<SettingsOrderPreference> {
         SizedBox(height: 18.h),
         Text(
           "Order Type",
-          style: TextStyle(color: Color(0xffC9CACC), fontSize: 13.sp),
+          style: TextStyle(
+              color: isDark ? Color(0xffC9CACC) : Color(0xff6B7280),
+              fontSize: 13.sp),
         ),
         SizedBox(height: 14.h),
         Row(
@@ -154,7 +161,7 @@ class _SettingsOrderPreferenceState extends State<SettingsOrderPreference> {
         ),
         SizedBox(height: 16.h),
         Divider(
-          color: Color(0xff2F2F2F),
+          color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB),
         ),
       ],
     );
@@ -163,11 +170,12 @@ class _SettingsOrderPreferenceState extends State<SettingsOrderPreference> {
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width / 3 - 20;
-    final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.black, // or your desired color
+          backgroundColor:
+              isDark ? Colors.black : Colors.white, // or your desired color
           elevation: 0,
           scrolledUnderElevation: 0, // prevent shadow when scrolling
           surfaceTintColor: Colors.transparent,
@@ -177,7 +185,10 @@ class _SettingsOrderPreferenceState extends State<SettingsOrderPreference> {
             padding: const EdgeInsets.only(top: 15),
             child: Text(
               "Order Preference",
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15.sp,
+                  color: isDark ? Colors.white : Colors.black),
             ),
           ),
           leading: Padding(
@@ -186,14 +197,15 @@ class _SettingsOrderPreferenceState extends State<SettingsOrderPreference> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: Icon(Icons.arrow_back)),
+                icon: Icon(Icons.arrow_back,
+                    color: isDark ? Colors.white : Colors.black)),
           ),
         ),
         body: Column(
           children: [
             // Fixed Divider
             Divider(
-              color: Color(0xff2F2F2F),
+              color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB),
             ),
             Expanded(
               child: SingleChildScrollView(
@@ -222,7 +234,9 @@ class _SettingsOrderPreferenceState extends State<SettingsOrderPreference> {
                           child: Text(
                             "SAVE",
                             style: TextStyle(
-                                fontSize: 15.sp, fontWeight: FontWeight.w600),
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.w600,
+                                color: isDark ? Colors.white : Colors.white),
                           ),
                         ),
                       )

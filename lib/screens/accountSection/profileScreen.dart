@@ -14,9 +14,11 @@ import 'package:sapphire/screens/accountSection/manage/bankAccounts.dart';
 import 'package:sapphire/screens/accountSection/manage/freezeAccount.dart';
 import 'package:sapphire/screens/accountSection/manage/giftStocks.dart';
 import 'package:sapphire/screens/accountSection/profitAndLoss.dart';
+import 'package:sapphire/screens/accountSection/referAFriend.dart';
 import 'package:sapphire/screens/accountSection/reports/orderBook.dart';
 import 'package:sapphire/screens/accountSection/reports/tradeBook.dart';
 import 'package:sapphire/screens/accountSection/tradesAndCharges.dart';
+import 'package:sapphire/screens/accountSection/verifiedP&L.dart';
 
 import '../../utils/constWidgets.dart';
 
@@ -73,7 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       },
       () {},
       () {
-        // navi(MTF(), context);
+        // navi(Mtf(), context);
       },
       () {
         navi(FreezeAccount(), context);
@@ -86,9 +88,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       () {
         navi(Orderbook(), context);
       },
-      () {},
       () {
         navi(Tradebook(), context);
+      },
+      () {
+        // navi(Tradebook(), context);
       },
       () {
         navi(Tradesandcharges(), context);
@@ -96,13 +100,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
       () {
         // navi(TaxPnl(), context);
       },
-      () {},
+      () {
+        navi(VerifiedPnL(), context);
+      },
       () {
         // navi(Downloads(), context);
       }
     ];
     supportOnTap = [() {}, () {}, () {}, () {}];
-    othersOnTap = [() {}, () {}];
+    othersOnTap = [
+      () {
+        navi(ReferAFriend(), context);
+      },
+      () {}
+    ];
   }
 
   List general = [
