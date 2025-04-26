@@ -49,6 +49,7 @@ class _SellScreenWrapperState extends State<SellScreenWrapper>
   @override
   Widget build(BuildContext context) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       backgroundColor: isDark ? Colors.black : Colors.white,
       body: Column(
@@ -91,7 +92,7 @@ class _SellScreenWrapperState extends State<SellScreenWrapper>
                   borderRadius: BorderRadius.circular(6.r),
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
-                child: Column(
+                child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     GestureDetector(
@@ -160,6 +161,83 @@ class _SellScreenWrapperState extends State<SellScreenWrapper>
                   ],
                 ),
               ),
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            backgroundColor:
+                                isDark ? Color(0xff2F2F2F) : Colors.white,
+                            title: Text(
+                              "Order Type",
+                              style: TextStyle(
+                                  color: isDark ? Colors.white : Colors.black),
+                            ),
+                            content: Container(
+                              height: 80.h,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  GestureDetector(
+                                    behavior: HitTestBehavior.opaque,
+                                    onTap: () {},
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 2,
+                                          height: 30.h,
+                                          // color: Colors.green,
+                                        ),
+                                        SizedBox(
+                                          width: 20.w,
+                                        ),
+                                        Text(
+                                          "Buy",
+                                          style: TextStyle(
+                                              fontSize: 20.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: isDark
+                                                  ? Colors.white
+                                                  : Colors.black),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {},
+                                    behavior: HitTestBehavior.opaque,
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 2,
+                                          height: 30.h,
+                                          color: Color(0xffE53935),
+                                        ),
+                                        SizedBox(
+                                          width: 20.w,
+                                        ),
+                                        Text(
+                                          "Sell",
+                                          style: TextStyle(
+                                              fontSize: 20.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: isDark
+                                                  ? Colors.white
+                                                  : Colors.black),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ));
+                },
+                child: Icon(Icons.more_vert_rounded,
+                    color: isDark ? Colors.white : Colors.black),
+              )
             ],
           ),
           SizedBox(height: 10.h),
@@ -592,7 +670,7 @@ class _sellAnimatedToggleState extends State<sellAnimatedToggle> {
 
     final Color actualSelectedBackgroundColor =
         widget.selectedBackgroundColor ??
-            (isDark ? const Color(0xff2f2f2f) : const Color(0xffE8E8E8));
+            (isDark ? const Color(0xff2f2f2f) : Colors.white);
 
     final Color actualSelectedTextColor = widget.selectedTextColor ??
         (isDark ? const Color(0xffE53935) : const Color(0xffE53935));

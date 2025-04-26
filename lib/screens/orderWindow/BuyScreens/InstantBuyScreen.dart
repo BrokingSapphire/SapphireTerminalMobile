@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sapphire/screens/orderWindow/BuyScreens/buyScreenWrapper.dart';
 import 'package:sapphire/utils/animatedToggles.dart';
 
 class BuyScreenTabContent extends StatefulWidget {
   final String tabName;
-  
+
   BuyScreenTabContent(this.tabName);
 
   @override
@@ -21,6 +22,7 @@ class _BuyScreenTabContentState extends State<BuyScreenTabContent> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: GestureDetector(
@@ -30,7 +32,7 @@ class _BuyScreenTabContentState extends State<BuyScreenTabContent> {
         behavior: HitTestBehavior.opaque,
         child: Column(
           children: [
-            AnimatedOptionToggle(
+            buyAnimatedToggle(
               options: _options,
               selectedIndex: _selectedIndex,
               onToggle: (index) {
@@ -44,7 +46,10 @@ class _BuyScreenTabContentState extends State<BuyScreenTabContent> {
               alignment: Alignment.topLeft,
               child: Text(
                 "Quantity",
-                style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w400),
+                style: TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w400,
+                    color: isDark ? Colors.white : Colors.black),
               ),
             ),
             SizedBox(height: 6.h),
@@ -52,7 +57,10 @@ class _BuyScreenTabContentState extends State<BuyScreenTabContent> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xff2f2f2f)),
+                    border: Border.all(
+                        color: isDark
+                            ? Color(0xff2f2f2f)
+                            : Color(0xff2f2f2f).withOpacity(0.5)),
                     borderRadius: BorderRadius.circular(6.r),
                   ),
                   height: 50.h,
@@ -61,7 +69,8 @@ class _BuyScreenTabContentState extends State<BuyScreenTabContent> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.remove, color: Colors.white),
+                        icon: Icon(Icons.remove,
+                            color: isDark ? Colors.white : Colors.black),
                         onPressed: () {
                           if (quantity > 1) {
                             setState(() {
@@ -72,10 +81,13 @@ class _BuyScreenTabContentState extends State<BuyScreenTabContent> {
                       ),
                       Text(
                         quantity.toString(),
-                        style: TextStyle(fontSize: 15.sp, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 15.sp,
+                            color: isDark ? Colors.white : Colors.black),
                       ),
                       IconButton(
-                        icon: Icon(Icons.add, color: Colors.white),
+                        icon: Icon(Icons.add,
+                            color: isDark ? Colors.white : Colors.black),
                         onPressed: () {
                           setState(() {
                             quantity++;
@@ -87,7 +99,7 @@ class _BuyScreenTabContentState extends State<BuyScreenTabContent> {
                 ),
                 SizedBox(width: 20.w),
                 Expanded(
-                  child: AnimatedDualToggle(
+                  child: buyScreenToggle(
                     isFirstOptionSelected: isMarketSelected,
                     onToggle: (value) {
                       setState(() {
@@ -105,14 +117,18 @@ class _BuyScreenTabContentState extends State<BuyScreenTabContent> {
               alignment: Alignment.topLeft,
               child: Text(
                 "Price",
-                style: TextStyle(fontSize: 15.sp, color: Colors.white),
+                style: TextStyle(
+                    fontSize: 15.sp,
+                    color: isDark ? Colors.white : Colors.black),
               ),
             ),
             SizedBox(height: 5.h),
             TextField(
               controller: priceController,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
-              style: TextStyle(fontSize: 15.sp, color: Color(0xffc9cacc)),
+              style: TextStyle(
+                  fontSize: 15.sp,
+                  color: isDark ? Color(0xffc9cacc) : Colors.black),
               decoration: InputDecoration(
                 prefixIcon: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -121,16 +137,10 @@ class _BuyScreenTabContentState extends State<BuyScreenTabContent> {
                     children: [
                       Text(
                         "₹",
-                        style: TextStyle(fontSize: 18.sp, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 18.sp,
+                            color: isDark ? Colors.white : Colors.black),
                       ),
-                      SizedBox(
-                        width: 15.w,
-                      ),
-                      Container(
-                        height: 26.h,
-                        width: 2.w,
-                        color: Color(0xff2f2f2f),
-                      )
                     ],
                   ),
                 ),
@@ -142,11 +152,15 @@ class _BuyScreenTabContentState extends State<BuyScreenTabContent> {
                 fillColor: Colors.transparent,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
-                  borderSide: BorderSide(color: Color(0xff2f2f2f)),
+                  borderSide: BorderSide(
+                      color: isDark
+                          ? Color(0xff2f2f2f)
+                          : Color(0xff2f2f2f).withOpacity(0.5)),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide:
+                      BorderSide(color: isDark ? Colors.white : Colors.black),
                 ),
                 hintText: "Enter Price",
                 hintStyle:

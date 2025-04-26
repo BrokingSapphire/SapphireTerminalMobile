@@ -978,7 +978,7 @@ class _CustomTabBarState extends State<CustomTabBar> {
                   Container(
                     height: 1.h,
                     width: double.infinity,
-                    color: Color(0xff2f2f2f),
+                    color: isDark ? Color(0xff2f2f2f) : Color(0xffD1D5DB),
                   ),
                   AnimatedPositioned(
                     duration: Duration(milliseconds: 300),

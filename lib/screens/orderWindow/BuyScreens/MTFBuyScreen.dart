@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sapphire/screens/orderWindow/BuyScreens/buyScreenWrapper.dart';
 import 'package:sapphire/utils/animatedToggles.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -30,13 +31,14 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: SingleChildScrollView(
         child: Column(
           children: [
             // Delivery / Intraday / MTF Tabs
-            AnimatedOptionToggle(
+            buyAnimatedToggle(
               options: _options,
               selectedIndex: _selectedIndex,
               onToggle: (index) {
@@ -52,7 +54,10 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
               alignment: Alignment.topLeft,
               child: Text(
                 "Quantity",
-                style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w400),
+                style: TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w400,
+                    color: isDark ? Colors.white : Colors.black),
               ),
             ),
             SizedBox(height: 6.h),
@@ -60,7 +65,10 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xff2f2f2f)),
+                    border: Border.all(
+                        color: isDark
+                            ? Color(0xff2f2f2f)
+                            : Color(0xff2f2f2f).withOpacity(0.5)),
                     borderRadius: BorderRadius.circular(6.r),
                   ),
                   height: 50.h,
@@ -69,7 +77,8 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.remove, color: Colors.white),
+                        icon: Icon(Icons.remove,
+                            color: isDark ? Colors.white : Colors.black),
                         onPressed: () {
                           setState(() {
                             if (quantity > 1) quantity--;
@@ -78,10 +87,13 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                       ),
                       Text(
                         quantity.toString(),
-                        style: TextStyle(fontSize: 15.sp, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 15.sp,
+                            color: isDark ? Colors.white : Colors.black),
                       ),
                       IconButton(
-                        icon: Icon(Icons.add, color: Colors.white),
+                        icon: Icon(Icons.add,
+                            color: isDark ? Colors.white : Colors.black),
                         onPressed: () {
                           setState(() {
                             quantity++;
@@ -95,7 +107,7 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
 
                 // Market / Limit Toggle
                 Expanded(
-                  child: AnimatedDualToggle(
+                  child: buyScreenToggle(
                     isFirstOptionSelected: isMarketSelected,
                     onToggle: (value) {
                       setState(() {
@@ -116,7 +128,10 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
               alignment: Alignment.topLeft,
               child: Text(
                 "Market",
-                style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w400),
+                style: TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w400,
+                    color: isDark ? Colors.white : Colors.black),
               ),
             ),
             SizedBox(height: 5.h),
@@ -125,13 +140,17 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
             TextField(
               controller: priceController,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
-              style: TextStyle(fontSize: 15.sp, color: Color(0xffc9cacc)),
+              style: TextStyle(
+                  fontSize: 15.sp,
+                  color: isDark ? Color(0xffc9cacc) : Colors.black),
               decoration: InputDecoration(
                 prefixIcon: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10.w),
                   child: Text(
                     "₹",
-                    style: TextStyle(fontSize: 18.sp, color: Colors.white),
+                    style: TextStyle(
+                        fontSize: 18.sp,
+                        color: isDark ? Colors.white : Colors.black),
                   ),
                 ),
                 prefixIconConstraints:
@@ -142,7 +161,10 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                 fillColor: Colors.transparent,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
-                  borderSide: BorderSide(color: Color(0xff2f2f2f)),
+                  borderSide: BorderSide(
+                      color: isDark
+                          ? Color(0xff2f2f2f)
+                          : Color(0xff2f2f2f).withOpacity(0.5)),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
@@ -162,25 +184,32 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
               children: [
                 Text(
                   "Trigger Price",
-                  style:
-                      TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w400),
+                  style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w400,
+                      color: isDark ? Colors.white : Colors.black),
                 ),
                 Text(
                   "Qty 1 per leg",
-                  style: TextStyle(fontSize: 11.sp, color: Color(0xffc9cacc)),
+                  style: TextStyle(
+                      fontSize: 11.sp,
+                      color: isDark ? Color(0xffc9cacc) : Colors.black),
                 ),
               ],
             ),
             SizedBox(height: 5.h),
             TextField(
               keyboardType: TextInputType.numberWithOptions(decimal: true),
-              style: TextStyle(fontSize: 16.sp, color: Colors.white),
+              style: TextStyle(
+                  fontSize: 16.sp, color: isDark ? Colors.white : Colors.black),
               decoration: InputDecoration(
                 prefixIcon: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10.w),
                   child: Text(
                     "₹",
-                    style: TextStyle(fontSize: 18.sp, color: Colors.white),
+                    style: TextStyle(
+                        fontSize: 18.sp,
+                        color: isDark ? Colors.white : Colors.black),
                   ),
                 ),
                 prefixIconConstraints:
@@ -189,11 +218,15 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                     EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
-                  borderSide: BorderSide(color: Color(0xff2f2f2f)),
+                  borderSide: BorderSide(
+                      color: isDark
+                          ? Color(0xff2f2f2f)
+                          : Color(0xff2f2f2f).withOpacity(0.5)),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide:
+                      BorderSide(color: isDark ? Colors.white : Colors.black),
                 ),
                 hintStyle: TextStyle(
                   fontSize: 15.sp,
@@ -201,45 +234,77 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                 ),
               ),
             ),
-
-            SizedBox(height: 15.h),
+            SizedBox(
+              height: 16.h,
+            ),
 
             // Stoploss and GTT
             Row(
               children: [
                 GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: () {
                     setState(() {
                       _stopLoss = !_stopLoss;
                     });
                   },
-                  child: CustomCheckbox(
-                    size: 20,
-                    value: _stopLoss,
-                    onChanged: (_) {},
+                  child: Row(
+                    children: [
+                      CustomCheckbox(
+                        size: 20,
+                        value: _stopLoss,
+                        onChanged: (_) {
+                          setState(() {
+                            _stopLoss = !_stopLoss;
+                          });
+                        },
+                      ),
+                      SizedBox(width: 10.w),
+                      Text(
+                        "StopLoss",
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            color: isDark ? Colors.white : Colors.black),
+                      ),
+                      SizedBox(width: 5.w),
+                      Icon(Icons.info_outline,
+                          size: 15,
+                          color: isDark ? Color(0xffc9cacc) : Colors.black),
+                      SizedBox(width: 35.w),
+                    ],
                   ),
                 ),
-                SizedBox(width: 10.w),
-                Text("StopLoss"),
-                SizedBox(width: 5.w),
-                Icon(Icons.info_outline, size: 15, color: Color(0xffc9cacc)),
-                SizedBox(width: 35.w),
                 GestureDetector(
                   onTap: () {
                     setState(() {
                       _gtt = !_gtt;
                     });
                   },
-                  child: CustomCheckbox(
-                    size: 20,
-                    value: _gtt,
-                    onChanged: (_) {},
+                  child: Row(
+                    children: [
+                      CustomCheckbox(
+                        size: 20,
+                        value: _gtt,
+                        onChanged: (_) {
+                          setState(() {
+                            _gtt = !_gtt;
+                          });
+                        },
+                      ),
+                      SizedBox(width: 10.w),
+                      Text(
+                        "GTT",
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            color: isDark ? Colors.white : Colors.black),
+                      ),
+                      SizedBox(width: 5.w),
+                      Icon(Icons.info_outline,
+                          size: 15,
+                          color: isDark ? Color(0xffc9cacc) : Colors.black),
+                    ],
                   ),
                 ),
-                SizedBox(width: 10.w),
-                Text("GTT"),
-                SizedBox(width: 5.w),
-                Icon(Icons.info_outline, size: 15, color: Color(0xffc9cacc)),
               ],
             ),
 
@@ -258,7 +323,9 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                   children: [
                     Text(
                       "Show Validity/Disclose Qty",
-                      style: TextStyle(fontSize: 15.sp),
+                      style: TextStyle(
+                          fontSize: 15.sp,
+                          color: isDark ? Colors.white : Colors.black),
                     ),
                     Icon(isExpanded
                         ? Icons.keyboard_arrow_up
@@ -285,7 +352,10 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                             });
                           }),
                       SizedBox(width: 14.w),
-                      Text("Day", style: TextStyle(fontSize: 14.sp)),
+                      Text("Day",
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: isDark ? Colors.white : Colors.black)),
                       SizedBox(width: 14.w),
                       CustomRadioButton(
                           isSelected: _validityOptionIndex == 1,
@@ -295,7 +365,10 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                             });
                           }),
                       SizedBox(width: 14.w),
-                      Text("IOC", style: TextStyle(fontSize: 14.sp)),
+                      Text("IOC",
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: isDark ? Colors.white : Colors.black)),
                       SizedBox(width: 14.w),
                       CustomRadioButton(
                           isSelected: _validityOptionIndex == 2,
@@ -305,7 +378,10 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                             });
                           }),
                       SizedBox(width: 14.w),
-                      Text("Minutes", style: TextStyle(fontSize: 14.sp)),
+                      Text("Minutes",
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: isDark ? Colors.white : Colors.black)),
                     ],
                   ),
                   SizedBox(height: 24.h),
@@ -315,7 +391,9 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Disclose Quantity",
-                              style: TextStyle(fontSize: 15.sp)),
+                              style: TextStyle(
+                                  fontSize: 15.sp,
+                                  color: isDark ? Colors.white : Colors.black)),
                           SizedBox(height: 6.h),
                           Container(
                             height: 50.h,
@@ -324,7 +402,8 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                               controller: TextEditingController(text: "0"),
                               keyboardType: TextInputType.number,
                               style: TextStyle(
-                                  fontSize: 17.sp, color: Colors.white),
+                                  fontSize: 17.sp,
+                                  color: isDark ? Colors.white : Colors.black),
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.symmetric(
                                     horizontal: 10.w, vertical: 15.h),
@@ -335,7 +414,9 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(6.r),
-                                  borderSide: BorderSide(color: Colors.white),
+                                  borderSide: BorderSide(
+                                      color:
+                                          isDark ? Colors.white : Colors.black),
                                 ),
                                 hintText: "Enter value",
                                 hintStyle: TextStyle(
@@ -351,13 +432,18 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Minutes", style: TextStyle(fontSize: 15.sp)),
+                          Text("Minutes",
+                              style: TextStyle(
+                                  fontSize: 15.sp,
+                                  color: isDark ? Colors.white : Colors.black)),
                           SizedBox(height: 6.h),
                           Container(
                             height: 50.h,
                             width: 160.w,
                             decoration: BoxDecoration(
-                              color: Color(0xff2f2f2f),
+                              color: isDark
+                                  ? Color(0xff2f2f2f)
+                                  : Color(0xffF4F4F9),
                               borderRadius: BorderRadius.circular(6.r),
                             ),
                             padding: EdgeInsets.only(left: 8.0),
