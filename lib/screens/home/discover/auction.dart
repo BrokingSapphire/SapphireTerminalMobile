@@ -115,14 +115,14 @@ Widget auctionTileScreens(
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Container(
-          height: 95.h,
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CircleAvatar(
                 radius: 20.r,
                 child: Image.asset(
                   img,
-                  fit: BoxFit.fill,
+                  fit: BoxFit.cover,
                 ),
               ),
               SizedBox(

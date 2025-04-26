@@ -65,7 +65,7 @@ class _ReferAFriendState extends State<ReferAFriend> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 18.sp,
+                        fontSize: 15.sp,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -108,11 +108,11 @@ class _ReferAFriendState extends State<ReferAFriend> {
                     child: DottedBorder(
                       borderType: BorderType.RRect,
                       radius: Radius.circular(3.r),
-                      color: Colors.white,
+                      color: Color(0xffB8DBD94D).withOpacity(0.3),
                       dashPattern: [12, 4],
-                      strokeWidth: 1.5,
+                      strokeWidth: 1,
                       child: Container(
-                        height: 53.h,
+                        height: 48.h,
                         decoration: BoxDecoration(
                           color: Color(0xff121413),
                         ),
@@ -135,8 +135,7 @@ class _ReferAFriendState extends State<ReferAFriend> {
                                 Clipboard.setData(
                                     ClipboardData(text: 'JH04-HBJ6-WL2A-YJ7F'));
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text('Invite code copied!')),
+                                  SnackBar(content: Text('COPIED!')),
                                 );
                               },
                               child: Text(

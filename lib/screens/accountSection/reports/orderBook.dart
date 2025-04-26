@@ -1,8 +1,12 @@
+import 'dart:math';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:sapphire/screens/accountSection/reports/customCalender.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class Orderbook extends StatefulWidget {
@@ -58,22 +62,24 @@ class _OrderbookState extends State<Orderbook> {
                   SizedBox(
                     height: 40.h,
                     child: DropdownButtonFormField<String>(
-                      
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.r),
+                          borderRadius: BorderRadius.circular(6.r),
                         ),
                         hintText: 'Equity',
                         hintStyle: TextStyle(
                           color: Colors.white70,
                           fontSize: 10.sp,
                         ),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 12.w), // Remove default padding
                       ),
-                      dropdownColor: Colors.grey.shade800, // Improved visibility
+                      dropdownColor: Colors.grey.shade800,
                       style: TextStyle(color: Colors.white, fontSize: 10.sp),
-                      value: selectedSegment, // Ensure value is set
+                      value: selectedSegment,
                       selectedItemBuilder: (BuildContext context) {
-                        return <String>['Equity', 'Futures', 'Options'].map<Widget>(
+                        return <String>['Equity', 'Futures', 'Options']
+                            .map<Widget>(
                           (String value) {
                             return Align(
                               alignment: Alignment.centerLeft,
@@ -81,7 +87,7 @@ class _OrderbookState extends State<Orderbook> {
                                 value,
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 10.sp,
+                                  fontSize: 13.sp,
                                 ),
                                 softWrap: true,
                               ),
@@ -95,7 +101,8 @@ class _OrderbookState extends State<Orderbook> {
                           value: value,
                           child: Text(
                             value,
-                            style: TextStyle(color: Colors.white),
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 13.sp),
                             softWrap: true,
                           ),
                         );
@@ -113,15 +120,15 @@ class _OrderbookState extends State<Orderbook> {
                   SizedBox(
                     height: 40.h,
                     child: TextField(
-                      style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                      style: TextStyle(color: Colors.white, fontSize: 13.sp),
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.r),
+                          borderRadius: BorderRadius.circular(6.r),
                         ),
                         hintText: 'e.g., NIFTY',
                         hintStyle: TextStyle(
                           color: Colors.white70,
-                          fontSize: 14.sp,
+                          fontSize: 13.sp,
                         ),
                       ),
                       onChanged: (value) {
@@ -136,21 +143,36 @@ class _OrderbookState extends State<Orderbook> {
                   SizedBox(height: 2.h),
                   GestureDetector(
                     onTap: () async {
-                      final pickedDateRange = await showDateRangePicker(
+                      final pickedDateRange = await showDialog<DateTimeRange>(
                         context: context,
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2100),
-                        initialDateRange: dateRange,
-                        builder: (BuildContext context, Widget? child) {
-                          return Theme(
-                            data: ThemeData.dark().copyWith(
-                              colorScheme: ColorScheme.dark(
-                                primary: Colors.green,
-                                onPrimary: Colors.white,
-                                surface: Colors.grey.shade900,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                            backgroundColor: Colors.transparent,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12.r),
+                              child: BackdropFilter(
+                                filter:
+                                    ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                child: Container(
+                                  width: min(
+                                      0.9 * MediaQuery.of(context).size.width,
+                                      800.w),
+                                  padding: EdgeInsets.all(16.w),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        Colors.grey.shade900.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    border: Border.all(
+                                        color: Colors.white.withOpacity(0.2)),
+                                  ),
+                                  child: CustomDateRangePicker(
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime(2100),
+                                    initialDateRange: dateRange,
+                                  ),
+                                ),
                               ),
                             ),
-                            child: child!,
                           );
                         },
                       );
@@ -177,7 +199,7 @@ class _OrderbookState extends State<Orderbook> {
                             : '${DateFormat('dd-MM-yyyy').format(dateRange!.start)} - ${DateFormat('dd-MM-yyyy').format(dateRange!.end)}',
                         style: TextStyle(
                           color: Colors.white70,
-                          fontSize: 14.sp,
+                          fontSize: 13.sp,
                         ),
                         softWrap: true,
                       ),
@@ -258,10 +280,9 @@ class _OrderbookState extends State<Orderbook> {
                         Text(
                           "10 Feb 2025 - 17 Feb 2025",
                           style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
+                              color: Colors.green,
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w500),
                           softWrap: true,
                         ),
                       ],
@@ -270,10 +291,10 @@ class _OrderbookState extends State<Orderbook> {
                       onTap: () {
                         showDownloadSheet(context);
                       },
-                      child: Icon(
-                        size: 24.sp,
-                        Icons.calendar_today_outlined,
-                        color: Colors.green,
+                      child: SvgPicture.asset(
+                        'assets/svgs/calender.svg',
+                        height: 20.h,
+                        width: 20.w,
                       ),
                     ),
                   ],

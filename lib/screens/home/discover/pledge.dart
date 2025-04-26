@@ -171,14 +171,14 @@ class PledgeContent extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           child: constWidgets.searchField(
-              context, 'Search......', 'pledge', isDark),
+              context, 'Search.....', 'pledge', isDark),
         ),
         SizedBox(height: 10.h),
         Expanded(
           child: ListView(
-            children: [
+            children:const [
               _PledgeListItem(
                 checked: false,
                 stockName: 'BAJAJ-AUTO',
@@ -269,36 +269,18 @@ class _PledgeListItemState extends State<_PledgeListItem> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
             child: Row(
               children: [
                 // Custom checkbox design instead of the default one
-                Container(
-                  width: 18, // Checkbox size
-                  height: 18,
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.circular(4), // Rounded rectangle corners
-                    border: Border.all(
-                      color: checked
-                          ? Color(0xFF1DB954) // Green border when selected
-                          : Color(0xFF434343), // Grey border when not selected
-                    ),
-                    color: checked
-                        ? Color(
-                            0xFF2A3C2E) // Slight green background if selected
-                        : Colors.transparent, // No background if not selected
-                  ),
-                  child: checked
-                      ? Center(
-                          child: Icon(
-                            Icons.check, // Minimal checkmark icon
-                            color: Color(0xFF1DB954), // Green check
-                            size: 12, // Balanced size for the checkmark icon
-                          ),
-                        )
-                      : null, // No icon if not selected
-                ),
+                CustomCheckbox(
+                    size: 18.sp,
+                    value: checked,
+                    onChanged: (value) {
+                      setState(() {
+                        checked = value!;
+                      });
+                    }),
                 SizedBox(width: 8.w),
                 Expanded(
                   child: Column(
@@ -310,7 +292,7 @@ class _PledgeListItemState extends State<_PledgeListItem> {
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w400,
-                                  fontSize: 17)),
+                                  fontSize: 15.sp)),
                           SizedBox(width: 8),
                           if (widget.avatarUrl != null)
                             CircleAvatar(
@@ -319,14 +301,14 @@ class _PledgeListItemState extends State<_PledgeListItem> {
                             )
                           else
                             CircleAvatar(
-                              radius: 14,
+                              radius: 14.r,
                               backgroundColor: Colors.grey.shade800,
                               child: Icon(Icons.person,
-                                  color: Colors.white, size: 18),
+                                  color: Colors.white, size: 18.sp),
                             ),
                         ],
                       ),
-                      SizedBox(height: 4),
+                      SizedBox(height: 4.h),
                       Text('Haircut  ${widget.haircut}',
                           style: TextStyle(color: Colors.grey, fontSize: 13)),
                     ],
@@ -338,27 +320,31 @@ class _PledgeListItemState extends State<_PledgeListItem> {
                     Row(
                       children: [
                         Text('Qty : ',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 13)),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w500)),
                         Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 7.w, vertical: 2.h),
                           decoration: BoxDecoration(
                             color: Color(0xff23262B),
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(6.r),
                           ),
                           child: Text('${widget.qty} / ${widget.totalQty}',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 13)),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w500)),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 10.h),
                     Text('Margin ${widget.margin}',
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
-                            fontSize: 14)),
+                            fontSize: 14.sp)),
                   ],
                 ),
               ],

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
@@ -12,7 +14,7 @@ class Tradebook extends StatefulWidget {
 
 class _TradebookState extends State<Tradebook> {
   void showDownloadSheet(BuildContext context) {
-    String? selectedSegment;
+    String? selectedSegment = 'Equity'; // Default selected value
     String symbol = '';
     DateTimeRange? dateRange = DateTimeRange(
       start: DateTime.now().subtract(const Duration(days: 30)),
@@ -46,31 +48,58 @@ class _TradebookState extends State<Tradebook> {
                       fontSize: 17.sp,
                       fontWeight: FontWeight.w600,
                     ),
+                    softWrap: true,
                   ),
                   SizedBox(height: 4.h),
                   Divider(color: Color(0xff2F2F2F)),
                   SizedBox(height: 8.h),
-                  Text("Segment"),
+                  Text("Segment", softWrap: true),
                   SizedBox(height: 2.h),
                   SizedBox(
-                    height: 50.h,
+                    height: 40.h,
                     child: DropdownButtonFormField<String>(
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.r),
+                          borderRadius: BorderRadius.circular(6.r),
                         ),
                         hintText: 'Equity',
-                        hintStyle:
-                            TextStyle(color: Colors.white70, fontSize: 14.sp),
+                        hintStyle: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 10.sp,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 12.w), // Remove default padding
                       ),
-                      dropdownColor: Colors.grey.shade900,
-                      style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                      dropdownColor: Colors.grey.shade800,
+                      style: TextStyle(color: Colors.white, fontSize: 10.sp),
                       value: selectedSegment,
+                      selectedItemBuilder: (BuildContext context) {
+                        return <String>['Equity', 'Futures', 'Options']
+                            .map<Widget>(
+                          (String value) {
+                            return Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 13.sp,
+                                ),
+                                softWrap: true,
+                              ),
+                            );
+                          },
+                        ).toList();
+                      },
                       items: <String>['Equity', 'Futures', 'Options']
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Text(value),
+                          child: Text(
+                            value,
+                            style: TextStyle(color: Colors.white, fontSize: 13.sp),
+                            softWrap: true,
+                          ),
                         );
                       }).toList(),
                       onChanged: (String? newValue) {
@@ -81,19 +110,21 @@ class _TradebookState extends State<Tradebook> {
                     ),
                   ),
                   SizedBox(height: 6.h),
-                  Text('Symbol'),
+                  Text('Symbol', softWrap: true),
                   SizedBox(height: 2.h),
                   SizedBox(
-                    height: 50.h,
+                    height: 40.h,
                     child: TextField(
-                      style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                      style: TextStyle(color: Colors.white, fontSize: 13.sp),
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.r),
+                          borderRadius: BorderRadius.circular(6.r),
                         ),
                         hintText: 'e.g., NIFTY',
-                        hintStyle:
-                            TextStyle(color: Colors.white70, fontSize: 14.sp),
+                        hintStyle: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 13.sp,
+                        ),
                       ),
                       onChanged: (value) {
                         setState(() {
@@ -103,7 +134,7 @@ class _TradebookState extends State<Tradebook> {
                     ),
                   ),
                   SizedBox(height: 6.h),
-                  Text('Date range'),
+                  Text('Date range', softWrap: true),
                   SizedBox(height: 2.h),
                   GestureDetector(
                     onTap: () async {
@@ -132,10 +163,12 @@ class _TradebookState extends State<Tradebook> {
                       }
                     },
                     child: Container(
-                      height: 50.h,
+                      height: 40.h,
                       width: double.infinity,
                       padding: EdgeInsets.symmetric(
-                          horizontal: 12.w, vertical: 10.h),
+                        horizontal: 12.w,
+                        vertical: 10.h,
+                      ),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(8.r),
@@ -144,8 +177,11 @@ class _TradebookState extends State<Tradebook> {
                         dateRange == null
                             ? 'Select date range'
                             : '${DateFormat('dd-MM-yyyy').format(dateRange!.start)} - ${DateFormat('dd-MM-yyyy').format(dateRange!.end)}',
-                        style:
-                            TextStyle(color: Colors.white70, fontSize: 14.sp),
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 13.sp,
+                        ),
+                        softWrap: true,
                       ),
                     ),
                   ),
@@ -172,73 +208,90 @@ class _TradebookState extends State<Tradebook> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            leadingWidth: 32.w,
-            backgroundColor: Colors.black,
-            title: Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Text(
-                'Tradebook',
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
-              ),
-            ),
-            leading: Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(Icons.arrow_back)),
-            )),
-        body: Column(
-          children: [
-            const Divider(color: Color(0xff2F2F2F)),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Statement for",
-                            style: TextStyle(
-                                fontSize: 13.sp, color: Color(0xffc9cacc)),
+      appBar: AppBar(
+        leadingWidth: 32.w,
+        backgroundColor: Colors.black,
+        title: Padding(
+          padding: const EdgeInsets.only(top: 15),
+          child: Text(
+            'Tradebook',
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
+            softWrap: true,
+          ),
+        ),
+        leading: Padding(
+          padding: const EdgeInsets.only(top: 15),
+          child: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back),
+          ),
+        ),
+      ),
+      body: Column(
+        children: [
+          Divider(
+            color: Color(0xff2F2F2F),
+            height: 1.h,
+          ),
+          SizedBox(
+            height: 20.h,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Statement for",
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            color: Color(0xffc9cacc),
                           ),
-                          SizedBox(height: 4.h),
-                          Text(
-                            "10 Feb 2025 - 17 Feb 2025",
-                            style: TextStyle(
+                          softWrap: true,
+                        ),
+                        SizedBox(height: 4.h),
+                        Text(
+                          "10 Feb 2025 - 17 Feb 2025",
+                          style: TextStyle(
                               color: Colors.green,
                               fontSize: 15.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                      InkWell(
-                        onTap: () {
-                          showDownloadSheet(context);
-                        },
-                        child: Icon(
-                          size: 24.sp,
-                          Icons.calendar_today_outlined,
-                          color: Colors.green,
+                              fontWeight: FontWeight.w500),
+                          softWrap: true,
                         ),
+                      ],
+                    ),
+                    InkWell(
+                      onTap: () {
+                        showDownloadSheet(context);
+                      },
+                      child: SvgPicture.asset(
+                        'assets/svgs/calender.svg',
+                        height: 20.h,
+                        width: 20.w,
                       ),
-                    ],
-                  ),
-                  Divider()
-                ],
-              ),
-            )
-          ],
-        ),
-        bottomNavigationBar: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-            child: constWidgets.greenButton('Download')));
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: Color(0xff2f2f2f),
+                  thickness: 1,
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+        child: constWidgets.greenButton('Download'),
+      ),
+    );
   }
 }

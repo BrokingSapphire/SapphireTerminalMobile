@@ -18,8 +18,7 @@ Widget ipoTile({
   VoidCallback? onApply,
 }) {
   return Container(
-    margin: EdgeInsets.only(bottom: 12.h),
-    padding: EdgeInsets.all(18.w),
+    padding: EdgeInsets.all(16.0),
     decoration: BoxDecoration(
       color: Color(0xFF181A1B),
       borderRadius: BorderRadius.circular(16.r),
@@ -47,23 +46,35 @@ Widget ipoTile({
                   Text(title,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16.sp,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
                       )),
                   SizedBox(height: 2.h),
                   Row(
                     children: [
-                      Text(
-                        "Closes on : $closeDate",
-                        style:
-                            TextStyle(color: Colors.white70, fontSize: 12.sp),
-                      ),
+                      RichText(
+                          text: TextSpan(
+                              text: "Closes on : ",
+                              style: TextStyle(
+                                  color: Color(0xffc9cacc), fontSize: 12.sp),
+                              children: [
+                            TextSpan(
+                                text: closeDate,
+                                style: TextStyle(
+                                    color: Color(0xFFEBEEF5), fontSize: 12.sp))
+                          ])),
                       Spacer(),
-                      Text(
-                        "Min Investment : $minInvestment",
-                        style:
-                            TextStyle(color: Colors.white70, fontSize: 12.sp),
-                      ),
+                      RichText(
+                          text: TextSpan(
+                              text: "Min Investment : ",
+                              style: TextStyle(
+                                  color: Color(0xffc9cacc), fontSize: 12.sp),
+                              children: [
+                            TextSpan(
+                                text: minInvestment,
+                                style: TextStyle(
+                                    color: Color(0xFFEBEEF5), fontSize: 12.sp))
+                          ])),
                     ],
                   ),
                   SizedBox(height: 8.h),
@@ -74,12 +85,12 @@ Widget ipoTile({
                         padding:
                             EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(
-                          color: Color(0xFF6C3EB6),
+                          color: Color(0xFF6C3EB6).withOpacity(0.6),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(badge1,
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 12)),
+                            style: TextStyle(
+                                color: Color(0xffCBA0FF), fontSize: 12)),
                       ),
                       SizedBox(width: 8),
                       Container(
@@ -131,11 +142,11 @@ Widget ipoTile({
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFD9C544),
+                  color: const Color(0xFFD9C544).withOpacity(0.5),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(statusDay,
-                    style: TextStyle(color: Colors.black, fontSize: 12)),
+                    style: TextStyle(color: Color(0xffD9C544), fontSize: 12)),
               ),
               SizedBox(width: 8),
               Text("Subscription status",
@@ -184,7 +195,7 @@ Widget ipoTile({
         SizedBox(height: 14.h),
         SizedBox(
           width: 150.w,
-          height: 44.h,
+          height: 35.h,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF1DB954),
@@ -197,8 +208,8 @@ Widget ipoTile({
               "Apply now",
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600),
+                  fontSize: 16.sp,
+                  ),
             ),
           ),
         ),

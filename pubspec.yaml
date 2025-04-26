@@ -37,6 +37,7 @@ dependencies:
   intl:
   provider: ^6.0.5
   pull_to_refresh: ^2.0.0
+  fl_chart: ^0.71.0
 
 dev_dependencies:
   flutter_lints: ^4.0.0
@@ -102,6 +103,7 @@ flutter:
     - assets/svgs/image57.svg
     - assets/svgs/image58.svg
     - assets/svgs/image59.svg
+    - assets/svgs/calender.svg
     
 
   fonts:
