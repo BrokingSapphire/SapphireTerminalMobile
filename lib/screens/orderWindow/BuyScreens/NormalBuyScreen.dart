@@ -28,12 +28,12 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: SingleChildScrollView(
         child: Column(
           children: [
-           
             // Delivery / Intraday / MTF Tabs
             AnimatedOptionToggle(
               options: _options,

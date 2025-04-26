@@ -46,25 +46,32 @@ class _BuyScreenWrapperState extends State<BuyScreenWrapper>
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SafeArea(
       child: Scaffold(
+        backgroundColor: isDark ? Colors.black : Colors.white,
         body: Column(
           children: [
             AppBar(
+              backgroundColor: isDark ? Colors.white : Colors.black,
               leadingWidth: 28.w,
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "RELIANCE",
-                    style:
-                        TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w700),
+                    style: TextStyle(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w700,
+                        color: isDark ? Colors.white : Colors.black),
                   ),
                   SizedBox(height: 4.h),
                   Text(
                     "₹1,256.89 (+1.67%)",
-                    style:
-                        TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w500,
+                        color: isDark ? Colors.white : Color(0xff6B7280)),
                   ),
                 ],
               ),
@@ -135,7 +142,7 @@ class _BuyScreenWrapperState extends State<BuyScreenWrapper>
               ],
             ),
             SizedBox(height: 10.h),
-            Divider(color: Color(0xff2f2f2f)),
+            Divider(color: isDark ? Color(0xff2f2f2f) : Color(0xffD1D5DB)),
             SizedBox(height: 16.h),
             Padding(
               padding: const EdgeInsets.symmetric(

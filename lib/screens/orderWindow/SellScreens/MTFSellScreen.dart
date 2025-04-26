@@ -31,6 +31,7 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: SingleChildScrollView(
@@ -53,7 +54,10 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
               alignment: Alignment.topLeft,
               child: Text(
                 "Quantity",
-                style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w400),
+                style: TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w400,
+                    color: isDark ? Colors.white : Colors.black),
               ),
             ),
             SizedBox(height: 6.h),
@@ -61,7 +65,10 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xff2f2f2f)),
+                    border: Border.all(
+                        color: isDark
+                            ? Color(0xff2f2f2f)
+                            : Color(0xff2f2f2f).withOpacity(0.5)),
                     borderRadius: BorderRadius.circular(6.r),
                   ),
                   height: 50.h,
@@ -70,7 +77,8 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.remove, color: Colors.white),
+                        icon: Icon(Icons.remove,
+                            color: isDark ? Colors.white : Colors.black),
                         onPressed: () {
                           setState(() {
                             if (quantity > 1) quantity--;
@@ -79,10 +87,13 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                       ),
                       Text(
                         quantity.toString(),
-                        style: TextStyle(fontSize: 15.sp, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 15.sp,
+                            color: isDark ? Colors.white : Colors.black),
                       ),
                       IconButton(
-                        icon: Icon(Icons.add, color: Colors.white),
+                        icon: Icon(Icons.add,
+                            color: isDark ? Colors.white : Colors.black),
                         onPressed: () {
                           setState(() {
                             quantity++;
@@ -96,94 +107,17 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
 
                 // Market / Limit Toggle
                 Expanded(
-                  child: Container(
-                    height: 50.h,
-                    child: Row(
-                      children: [
-                        // Market Button
-                        Expanded(
-                          child: Container(
-                            height: 50.h,
-                            decoration: BoxDecoration(
-                              color: Color(0xff2f2f2f),
-                              borderRadius: BorderRadius.circular(8.r),
-                            ),
-                            child: Row(
-                              children: [
-                                // Market Button
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        isMarketSelected = true;
-                                      });
-                                    },
-                                    child: AnimatedContainer(
-                                      duration: Duration(milliseconds: 200),
-                                      curve: Curves.easeInOut,
-                                      decoration: BoxDecoration(
-                                        color: isMarketSelected
-                                            ? Color(0xffE53935)
-                                            : Colors.transparent,
-                                        borderRadius:
-                                            BorderRadius.circular(8.r),
-                                      ),
-                                      alignment: Alignment.center,
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 10.h),
-                                      child: Text(
-                                        "Market",
-                                        style: TextStyle(
-                                            color: !isMarketSelected
-                                                ? Colors.white
-                                                : Color(0xffebeef5),
-                                            fontSize: 15.sp,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                // Limit Button
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        isMarketSelected = false;
-                                      });
-                                    },
-                                    child: AnimatedContainer(
-                                      duration: Duration(milliseconds: 200),
-                                      curve: Curves.easeInOut,
-                                      decoration: BoxDecoration(
-                                        color: !isMarketSelected
-                                            ? Color(0xffE53935)
-                                            : Colors.transparent,
-                                        borderRadius:
-                                            BorderRadius.circular(8.r),
-                                      ),
-                                      alignment: Alignment.center,
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 10.h),
-                                      child: Text(
-                                        "Limit",
-                                        style: TextStyle(
-                                            color: !isMarketSelected
-                                                ? Colors.white
-                                                : Color(0xffebeef5),
-                                            fontSize: 15.sp,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  child: sellScreenToggle(
+                    isFirstOptionSelected: isMarketSelected,
+                    onToggle: (value) {
+                      setState(() {
+                        isMarketSelected = value;
+                      });
+                    },
+                    firstOption: "Market",
+                    secondOption: "Limit",
                   ),
-                )
+                ),
               ],
             ),
 
@@ -194,7 +128,10 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
               alignment: Alignment.topLeft,
               child: Text(
                 "Market",
-                style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w400),
+                style: TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w400,
+                    color: isDark ? Colors.white : Colors.black),
               ),
             ),
             SizedBox(height: 5.h),
@@ -203,13 +140,17 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
             TextField(
               controller: priceController,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
-              style: TextStyle(fontSize: 15.sp, color: Color(0xffc9cacc)),
+              style: TextStyle(
+                  fontSize: 15.sp,
+                  color: isDark ? Color(0xffc9cacc) : Colors.black),
               decoration: InputDecoration(
                 prefixIcon: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10.w),
                   child: Text(
                     "₹",
-                    style: TextStyle(fontSize: 18.sp, color: Colors.white),
+                    style: TextStyle(
+                        fontSize: 18.sp,
+                        color: isDark ? Colors.white : Colors.black),
                   ),
                 ),
                 prefixIconConstraints:
@@ -220,11 +161,15 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                 fillColor: Colors.transparent,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
-                  borderSide: BorderSide(color: Color(0xff2f2f2f)),
+                  borderSide: BorderSide(
+                      color: isDark
+                          ? Color(0xff2f2f2f)
+                          : Color(0xff2f2f2f).withOpacity(0.5)),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide:
+                      BorderSide(color: isDark ? Colors.white : Colors.black),
                 ),
                 hintText: "Enter Price",
                 hintStyle:
@@ -240,25 +185,32 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
               children: [
                 Text(
                   "Trigger Price",
-                  style:
-                      TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w400),
+                  style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w400,
+                      color: isDark ? Colors.white : Colors.black),
                 ),
                 Text(
                   "Qty 1 per leg",
-                  style: TextStyle(fontSize: 11.sp, color: Color(0xffc9cacc)),
+                  style: TextStyle(
+                      fontSize: 11.sp,
+                      color: isDark ? Color(0xffc9cacc) : Colors.black),
                 ),
               ],
             ),
             SizedBox(height: 5.h),
             TextField(
               keyboardType: TextInputType.numberWithOptions(decimal: true),
-              style: TextStyle(fontSize: 16.sp, color: Colors.white),
+              style: TextStyle(
+                  fontSize: 16.sp, color: isDark ? Colors.white : Colors.black),
               decoration: InputDecoration(
                 prefixIcon: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10.w),
                   child: Text(
                     "₹",
-                    style: TextStyle(fontSize: 18.sp, color: Colors.white),
+                    style: TextStyle(
+                        fontSize: 18.sp,
+                        color: isDark ? Colors.white : Colors.black),
                   ),
                 ),
                 prefixIconConstraints:
@@ -267,11 +219,15 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                     EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
-                  borderSide: BorderSide(color: Color(0xff2f2f2f)),
+                  borderSide: BorderSide(
+                      color: isDark
+                          ? Color(0xff2f2f2f)
+                          : Color(0xff2f2f2f).withOpacity(0.5)),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide:
+                      BorderSide(color: isDark ? Colors.white : Colors.black),
                 ),
                 hintStyle: TextStyle(
                   fontSize: 15.sp,
@@ -304,12 +260,17 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                         },
                       ),
                       SizedBox(width: 10.w),
-                      Text("StopLoss"),
+                      Text("StopLoss",
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: isDark ? Colors.white : Colors.black)),
                     ],
                   ),
                 ),
                 SizedBox(width: 5.w),
-                Icon(Icons.info_outline, size: 15, color: Color(0xffc9cacc)),
+                Icon(Icons.info_outline,
+                    size: 15.sp,
+                    color: isDark ? Color(0xffc9cacc) : Colors.black),
                 SizedBox(width: 35.w),
                 GestureDetector(
                   onTap: () {
@@ -329,12 +290,17 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                         },
                       ),
                       SizedBox(width: 10.w),
-                      Text("GTT"),
+                      Text("GTT",
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: isDark ? Colors.white : Colors.black)),
                     ],
                   ),
                 ),
                 SizedBox(width: 5.w),
-                Icon(Icons.info_outline, size: 15, color: Color(0xffc9cacc)),
+                Icon(Icons.info_outline,
+                    size: 15.sp,
+                    color: isDark ? Color(0xffc9cacc) : Colors.black),
               ],
             ),
 
@@ -353,7 +319,9 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                   children: [
                     Text(
                       "Show Validity/Disclose Qty",
-                      style: TextStyle(fontSize: 15.sp),
+                      style: TextStyle(
+                          fontSize: 15.sp,
+                          color: isDark ? Colors.white : Colors.black),
                     ),
                     Icon(isExpanded
                         ? Icons.keyboard_arrow_up
@@ -372,7 +340,7 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                   SizedBox(height: 24.h),
                   Row(
                     children: [
-                      CustomRadioButton(
+                      sellRadioButton(
                           isSelected: _validityOptionIndex == 0,
                           onTap: () {
                             setState(() {
@@ -380,9 +348,12 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                             });
                           }),
                       SizedBox(width: 14.w),
-                      Text("Day", style: TextStyle(fontSize: 14.sp)),
+                      Text("Day",
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: isDark ? Colors.white : Colors.black)),
                       SizedBox(width: 14.w),
-                      CustomRadioButton(
+                      sellRadioButton(
                           isSelected: _validityOptionIndex == 1,
                           onTap: () {
                             setState(() {
@@ -390,9 +361,12 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                             });
                           }),
                       SizedBox(width: 14.w),
-                      Text("IOC", style: TextStyle(fontSize: 14.sp)),
+                      Text("IOC",
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: isDark ? Colors.white : Colors.black)),
                       SizedBox(width: 14.w),
-                      CustomRadioButton(
+                      sellRadioButton(
                           isSelected: _validityOptionIndex == 2,
                           onTap: () {
                             setState(() {
@@ -400,7 +374,10 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                             });
                           }),
                       SizedBox(width: 14.w),
-                      Text("Minutes", style: TextStyle(fontSize: 14.sp)),
+                      Text("Minutes",
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: isDark ? Colors.white : Colors.black)),
                     ],
                   ),
                   SizedBox(height: 24.h),
@@ -410,7 +387,9 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Disclose Quantity",
-                              style: TextStyle(fontSize: 15.sp)),
+                              style: TextStyle(
+                                  fontSize: 15.sp,
+                                  color: isDark ? Colors.white : Colors.black)),
                           SizedBox(height: 6.h),
                           Container(
                             height: 50.h,
@@ -419,7 +398,8 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                               controller: TextEditingController(text: "0"),
                               keyboardType: TextInputType.number,
                               style: TextStyle(
-                                  fontSize: 17.sp, color: Colors.white),
+                                  fontSize: 17.sp,
+                                  color: isDark ? Colors.white : Colors.black),
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.symmetric(
                                     horizontal: 10.w, vertical: 15.h),
@@ -430,7 +410,9 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(6.r),
-                                  borderSide: BorderSide(color: Colors.white),
+                                  borderSide: BorderSide(
+                                      color:
+                                          isDark ? Colors.white : Colors.black),
                                 ),
                                 hintText: "Enter value",
                                 hintStyle: TextStyle(
@@ -446,13 +428,18 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Minutes", style: TextStyle(fontSize: 15.sp)),
+                          Text("Minutes",
+                              style: TextStyle(
+                                  fontSize: 15.sp,
+                                  color: isDark ? Colors.white : Colors.black)),
                           SizedBox(height: 6.h),
                           Container(
                             height: 50.h,
                             width: 160.w,
                             decoration: BoxDecoration(
-                              color: Color(0xff2f2f2f),
+                              color: isDark
+                                  ? Color(0xff2f2f2f)
+                                  : Color(0xFFF4F4F9),
                               borderRadius: BorderRadius.circular(6.r),
                             ),
                             padding: EdgeInsets.only(left: 8.0),

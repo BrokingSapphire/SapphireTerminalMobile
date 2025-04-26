@@ -53,7 +53,7 @@ flutter:
     - assets/bottomBarIcons/
     - assets/icons/
     - assets/svgs/
-
+    - assets/images/
     - lib/screens/home/watchlist/
     - assets/icons/chat.png
     - assets/images/aadharcard.png

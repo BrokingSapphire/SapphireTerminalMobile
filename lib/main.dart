@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:sapphire/screens/accountSection/sessionManagement.dart';
-import 'package:sapphire/screens/accountSection/settingsOrderPreference.dart';
-import 'package:sapphire/screens/accountSection/tradesAndCharges.dart';
-import 'package:sapphire/screens/home/homeWarpper.dart';
 import 'package:sapphire/screens/home/orders/Gtt1Screen.dart';
 import 'package:sapphire/screens/home/orders/Gtt2Screen.dart';
 import 'package:sapphire/screens/home/orders/alertScreen.dart';
@@ -119,7 +115,8 @@ class MyApp extends StatelessWidget {
           theme: AppThemes.lightTheme,
           darkTheme: AppThemes.darkTheme,
           themeMode: themeProvider.themeMode, // 👈 Dynamic theme mode
-          home: LoginScreen(),
+          home: InitialScreen(),
+          // home: BuyScreenWrapper(),
         );
       },
     );

@@ -8,6 +8,7 @@ import 'package:sapphire/screens/accountSection/fundsScreen.dart';
 import 'package:sapphire/screens/accountSection/profileScreen.dart';
 import 'package:sapphire/screens/home/searchPage.dart';
 import 'package:sapphire/screens/orderWindow/BuyScreens/buyScreenWrapper.dart';
+import 'package:sapphire/screens/orderWindow/SellScreens/sellScreenWrapper.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sapphire/utils/naviWithoutAnimation.dart';
@@ -596,8 +597,7 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            BuyScreenWrapper(
-                                                                isbuy: false))),
+                                                            SellScreenWrapper())),
                                                 child: Center(
                                                     child: Text("S",
                                                         style: TextStyle(

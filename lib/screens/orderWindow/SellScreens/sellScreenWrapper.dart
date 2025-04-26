@@ -48,239 +48,276 @@ class _SellScreenWrapperState extends State<SellScreenWrapper>
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
-          children: [
-            AppBar(
-              leadingWidth: 28.w,
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "RELIANCE",
-                    style:
-                        TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w700),
-                  ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    "₹1,256.89 (+1.67%)",
-                    style:
-                        TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w500),
-                  ),
-                ],
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    return Scaffold(
+      backgroundColor: isDark ? Colors.black : Colors.white,
+      body: Column(
+        children: [
+          AppBar(
+            backgroundColor: isDark ? Colors.black : Colors.white,
+            leadingWidth: 28.w,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: isDark ? Colors.white : Colors.black,
               ),
-              actions: [
-                Container(
-                  margin: EdgeInsets.only(right: 16.w),
-                  decoration: BoxDecoration(
-                    color: Color(0xff2F2F2F),
-                    borderRadius: BorderRadius.circular(6.r),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      GestureDetector(
-                        onTap: () => setState(() => isNSE = true),
-                        child: AnimatedContainer(
-                          duration: Duration(milliseconds: 200),
-                          curve: Curves.easeInOut,
-                          height: 22.h,
-                          width: 40.w,
-                          decoration: BoxDecoration(
-                            color:
-                                isNSE ? Color(0xff1db954) : Colors.transparent,
-                            borderRadius: BorderRadius.circular(4.r),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'NSE',
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400,
-                                color: isNSE ? Colors.white : Color(0xffC9CACC),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 2.h),
-                      GestureDetector(
-                        onTap: () => setState(() => isNSE = false),
-                        child: AnimatedContainer(
-                          duration: Duration(milliseconds: 200),
-                          curve: Curves.easeInOut,
-                          height: 22.h,
-                          width: 40.w,
-                          decoration: BoxDecoration(
-                            color:
-                                !isNSE ? Color(0xff1db954) : Colors.transparent,
-                            borderRadius: BorderRadius.circular(4.r),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'BSE',
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400,
-                                color:
-                                    !isNSE ? Colors.white : Color(0xffC9CACC),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+              onPressed: () => Navigator.pop(context),
+            ),
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "RELIANCE",
+                  style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w700,
+                      color: isDark ? Colors.white : Colors.black),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  "₹1,256.89 (+1.67%)",
+                  style: TextStyle(
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
+                      color: isDark ? Colors.white : Color(0xff6B7280)),
                 ),
               ],
             ),
-            SizedBox(height: 10.h),
-            Divider(color: Color(0xff2f2f2f)),
-            // Container(
-            //   color: Colors.black,
-            //   child: TabBar(
-            //     controller: _tabController,
-            //     labelColor: Colors.green,
-            //     unselectedLabelColor: Colors.grey,
-            //     indicatorColor: Colors.green,
-            //     tabs: [
-            //       Tab(text: "Instant"),
-            //       Tab(text: "Normal"),
-            //       Tab(text: "Iceberg"),
-            //       Tab(text: "Cover"),
-            //     ],
-            //   ),
-            // ),
-            SizedBox(height: 16.h),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15,
-              ),
-              child: SellTabBar(tabController: _tabController, options: list),
-            ),
-
-            SizedBox(
-              height: 14.h,
-            ),
-            Expanded(
-              child: GestureDetector(
-                onHorizontalDragEnd: (details) {
-                  if (details.primaryVelocity! < 0) {
-                    _onSwipe(true);
-                  } else if (details.primaryVelocity! > 0) {
-                    _onSwipe(false);
-                  }
-                },
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    SellScreenTabContent("Instant"),
-                    NormalSellScreen("Normal"),
-                    IcebergSellScreen("Iceberg"),
-                    MTFSellScreen("Cover"),
-                  ],
+            actions: [
+              Container(
+                margin: EdgeInsets.only(right: 16.w),
+                decoration: BoxDecoration(
+                  color: isDark ? Color(0xff2F2F2F) : Color(0xFFF4F4F9),
+                  borderRadius: BorderRadius.circular(6.r),
                 ),
-              ),
-            ),
-          ],
-        ),
-        bottomNavigationBar: Container(
-          color: Colors.black,
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Margin Required",
-                        style: TextStyle(
-                            fontSize: 11.sp, color: Color(0xffC9CACC)),
-                      ),
-                      Text(
-                        "₹75.68",
-                        style: TextStyle(fontSize: 13.sp, color: Colors.white),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Total Charges",
-                        style: TextStyle(
-                            fontSize: 11.sp, color: Color(0xffC9CACC)),
-                      ),
-                      Text(
-                        "₹75.68",
-                        style: TextStyle(fontSize: 13.sp, color: Colors.white),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Available Margin",
-                        style: TextStyle(
-                            fontSize: 11.sp, color: Color(0xffC9CACC)),
-                      ),
-                      Text(
-                        "₹2,56,897.89",
-                        style: TextStyle(fontSize: 13.sp, color: Colors.white),
-                      ),
-                    ],
-                  ),
-                  Icon(
-                    Icons.refresh,
-                    color: Color(0xffE53935),
-                    size: 22,
-                  ),
-                ],
-              ),
-              SizedBox(height: 10.h),
-              HoldableButton(
-                width: double.infinity,
-                height: 54.h,
-                loadingType: LoadingType.fillingLoading,
-                buttonColor: Color(0xffE53935),
-                loadingColor: Colors.white,
-                radius: 30.r,
-                duration: 1,
-                onConfirm: () {
-                  print("Buy action confirmed!");
-                },
-                strokeWidth: 2,
-                beginFillingPoint: Alignment.centerLeft,
-                endFillingPoint: Alignment.centerRight,
-                edgeLoadingStartPoint: 0.0,
-                hasVibrate: true,
-                child: Container(
-                  height: 40.h,
-                  decoration: BoxDecoration(
-                    color: Color(0xffE53935),
-                    borderRadius: BorderRadius.circular(30.r),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Hold to Sell",
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    GestureDetector(
+                      onTap: () => setState(() => isNSE = true),
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 200),
+                        curve: Curves.easeInOut,
+                        height: 22.h,
+                        width: 40.w,
+                        decoration: BoxDecoration(
+                          color: isNSE
+                              ? Color(0xff1db954)
+                              : isDark
+                                  ? Colors.transparent
+                                  : Color(0xFFF4F4F9),
+                          borderRadius: BorderRadius.circular(4.r),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'NSE',
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400,
+                              color: isNSE
+                                  ? Colors.white
+                                  : isDark
+                                      ? Color(0xffC9CACC)
+                                      : Colors.black,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    SizedBox(height: 2.h),
+                    GestureDetector(
+                      onTap: () => setState(() => isNSE = false),
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 200),
+                        curve: Curves.easeInOut,
+                        height: 22.h,
+                        width: 40.w,
+                        decoration: BoxDecoration(
+                          color: !isNSE
+                              ? Color(0xff1db954)
+                              : isDark
+                                  ? Colors.transparent
+                                  : Color(0xffF4F4F9),
+                          borderRadius: BorderRadius.circular(4.r),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'BSE',
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400,
+                              color: !isNSE
+                                  ? Colors.white
+                                  : isDark
+                                      ? Color(0xffC9CACC)
+                                      : Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
+          SizedBox(height: 10.h),
+          Divider(color: isDark ? Color(0xff2f2f2f) : Color(0xffD1D5DB)),
+          // Container(
+          //   color: Colors.black,
+          //   child: TabBar(
+          //     controller: _tabController,
+          //     labelColor: Colors.green,
+          //     unselectedLabelColor: Colors.grey,
+          //     indicatorColor: Colors.green,
+          //     tabs: [
+          //       Tab(text: "Instant"),
+          //       Tab(text: "Normal"),
+          //       Tab(text: "Iceberg"),
+          //       Tab(text: "Cover"),
+          //     ],
+          //   ),
+          // ),
+          SizedBox(height: 16.h),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 15,
+            ),
+            child: SellTabBar(tabController: _tabController, options: list),
+          ),
+
+          SizedBox(
+            height: 14.h,
+          ),
+          Expanded(
+            child: GestureDetector(
+              onHorizontalDragEnd: (details) {
+                if (details.primaryVelocity! < 0) {
+                  _onSwipe(true);
+                } else if (details.primaryVelocity! > 0) {
+                  _onSwipe(false);
+                }
+              },
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  SellScreenTabContent("Instant"),
+                  NormalSellScreen("Normal"),
+                  IcebergSellScreen("Iceberg"),
+                  MTFSellScreen("Cover"),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: Container(
+        color: isDark ? Colors.black : Colors.white,
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Margin Required",
+                      style: TextStyle(
+                          fontSize: 11.sp,
+                          color:
+                              isDark ? Color(0xffC9CACC) : Color(0xff6B7280)),
+                    ),
+                    Text(
+                      "₹75.68",
+                      style: TextStyle(
+                          fontSize: 13.sp,
+                          color: isDark ? Colors.white : Colors.black),
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Total Charges",
+                      style: TextStyle(
+                          fontSize: 11.sp,
+                          color:
+                              isDark ? Color(0xffC9CACC) : Color(0xff6B7280)),
+                    ),
+                    Text(
+                      "₹75.68",
+                      style: TextStyle(
+                          fontSize: 13.sp,
+                          color: isDark ? Colors.white : Colors.black),
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Available Margin",
+                      style: TextStyle(
+                          fontSize: 11.sp,
+                          color:
+                              isDark ? Color(0xffC9CACC) : Color(0xff6B7280)),
+                    ),
+                    Text(
+                      "₹2,56,897.89",
+                      style: TextStyle(
+                          fontSize: 13.sp,
+                          color: isDark ? Colors.white : Colors.black),
+                    ),
+                  ],
+                ),
+                Icon(
+                  Icons.refresh,
+                  color: Color(0xffE53935),
+                  size: 22,
+                ),
+              ],
+            ),
+            SizedBox(height: 10.h),
+            HoldableButton(
+              width: double.infinity,
+              height: 54.h,
+              loadingType: LoadingType.fillingLoading,
+              buttonColor: Color(0xffE53935),
+              loadingColor: Colors.white,
+              radius: 30.r,
+              duration: 1,
+              onConfirm: () {
+                print("Buy action confirmed!");
+              },
+              strokeWidth: 2,
+              beginFillingPoint: Alignment.centerLeft,
+              endFillingPoint: Alignment.centerRight,
+              edgeLoadingStartPoint: 0.0,
+              hasVibrate: true,
+              child: Container(
+                height: 40.h,
+                decoration: BoxDecoration(
+                  color: Color(0xffE53935),
+                  borderRadius: BorderRadius.circular(30.r),
+                ),
+                child: Center(
+                  child: Text(
+                    "Hold to Sell",
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -310,8 +347,9 @@ class _SellTabBarState extends State<SellTabBar> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      color: Colors.black,
+      color: isDark ? Colors.black : Colors.white,
       padding: EdgeInsets.symmetric(vertical: 2.h),
       child: Column(
         children: [
@@ -334,7 +372,9 @@ class _SellTabBarState extends State<SellTabBar> {
                           fontWeight: FontWeight.w500,
                           color: isSelected
                               ? Color(0xffE53935)
-                              : Color(0xffEBEEF5),
+                              : isDark
+                                  ? Color(0xffEBEEF5)
+                                  : Color(0xff1A1A1A),
                         ),
                       ),
                       SizedBox(height: 5.h),
@@ -354,7 +394,7 @@ class _SellTabBarState extends State<SellTabBar> {
                   Container(
                     height: 2.h,
                     width: double.infinity,
-                    color: Colors.transparent,
+                    color: isDark ? Colors.transparent : Color(0xffD1D5DB),
                   ),
                   AnimatedPositioned(
                     duration: Duration(milliseconds: 300),
@@ -376,41 +416,61 @@ class _SellTabBarState extends State<SellTabBar> {
 }
 
 class sellScreenToggle extends StatelessWidget {
+  // Required parameters
   final bool isFirstOptionSelected;
   final Function(bool) onToggle;
   final String firstOption;
   final String secondOption;
-  final Color backgroundColor;
-  final Color selectedColor;
-  final Color textColor;
-  final Color unselectedTextColor;
-  final double height;
-  final double borderRadius;
 
-  const sellScreenToggle({
+  // Optional customization parameters
+  final Color? backgroundColor; // Background color of the toggle
+  final Color? selectedColor; // Color of the selected tab
+  final Color? textColor; // Text color for selected option
+  final Color? unselectedTextColor; // Text color for unselected option
+  final double height; // Height of the toggle
+  final double borderRadius; // Border radius of the toggle corners
+
+  sellScreenToggle({
     Key? key,
     required this.isFirstOptionSelected,
     required this.onToggle,
     required this.firstOption,
     required this.secondOption,
-    this.backgroundColor = const Color(0xff2f2f2f),
-    this.selectedColor = const Color(0xffE53935),
-    this.textColor = Colors.white,
-    this.unselectedTextColor = const Color(0xffebeef5),
+    this.backgroundColor, // Remove default values to allow theme-based colors
+    this.selectedColor,
+    this.textColor,
+    this.unselectedTextColor,
     this.height = 50,
     this.borderRadius = 8,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Check if we're in dark mode
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // Define theme-specific colors
+    final Color actualBackgroundColor = backgroundColor ??
+        (isDark ? const Color(0xff2f2f2f) : const Color(0xfff5f5f5));
+
+    final Color actualSelectedColor = selectedColor ??
+        (isDark ? const Color(0xffE53935) : const Color(0xffE53935));
+
+    final Color actualTextColor = textColor ?? Colors.white;
+
+    final Color actualUnselectedTextColor = unselectedTextColor ??
+        (isDark ? const Color(0xffebeef5) : const Color(0xff6B7280));
+
     return Container(
       height: height.h,
+      // Apply theme-specific background color
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: actualBackgroundColor,
         borderRadius: BorderRadius.circular(borderRadius.r),
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
+          // Calculate width for each segment
           final segmentWidth = constraints.maxWidth / 2;
 
           return Stack(
@@ -424,8 +484,9 @@ class sellScreenToggle extends StatelessWidget {
                 child: Container(
                   height: height.h,
                   width: segmentWidth,
+                  // Apply theme-specific selected color
                   decoration: BoxDecoration(
-                    color: selectedColor,
+                    color: actualSelectedColor,
                     borderRadius: BorderRadius.circular(borderRadius.r),
                   ),
                 ),
@@ -437,6 +498,7 @@ class sellScreenToggle extends StatelessWidget {
                   // First option (e.g., Market)
                   Expanded(
                     child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
                       onTap: () => onToggle(true),
                       child: Container(
                         alignment: Alignment.center,
@@ -444,9 +506,10 @@ class sellScreenToggle extends StatelessWidget {
                         child: Text(
                           firstOption,
                           style: TextStyle(
+                            // Apply appropriate text color based on selection state
                             color: isFirstOptionSelected
-                                ? textColor
-                                : unselectedTextColor,
+                                ? actualTextColor
+                                : actualUnselectedTextColor,
                             fontSize: 15.sp,
                             fontWeight: FontWeight.w600,
                           ),
@@ -457,6 +520,7 @@ class sellScreenToggle extends StatelessWidget {
                   // Second option (e.g., Limit)
                   Expanded(
                     child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
                       onTap: () => onToggle(false),
                       child: Container(
                         alignment: Alignment.center,
@@ -464,9 +528,10 @@ class sellScreenToggle extends StatelessWidget {
                         child: Text(
                           secondOption,
                           style: TextStyle(
+                            // Use consistent text color logic for second option
                             color: !isFirstOptionSelected
-                                ? textColor
-                                : unselectedTextColor,
+                                ? actualTextColor
+                                : actualUnselectedTextColor,
                             fontSize: 15.sp,
                             fontWeight: FontWeight.w600,
                           ),
@@ -485,25 +550,28 @@ class sellScreenToggle extends StatelessWidget {
 }
 
 class sellAnimatedToggle extends StatefulWidget {
+  // Required parameters
   final List<String> options;
   final int selectedIndex;
   final Function(int) onToggle;
-  final Color backgroundColor;
-  final Color selectedBackgroundColor;
-  final Color selectedTextColor;
-  final Color unselectedTextColor;
-  final double height;
-  final double borderRadius;
+
+  // Optional customization parameters that can be theme-aware
+  final Color? backgroundColor; // Background color of the entire toggle
+  final Color? selectedBackgroundColor; // Background color of the selected tab
+  final Color? selectedTextColor; // Text color for the selected option
+  final Color? unselectedTextColor; // Text color for unselected options
+  final double height; // Height of the toggle
+  final double borderRadius; // Border radius of the toggle corners
 
   const sellAnimatedToggle({
     Key? key,
     required this.options,
     required this.selectedIndex,
     required this.onToggle,
-    this.backgroundColor = const Color(0xff121413),
-    this.selectedBackgroundColor = const Color(0xff2f2f2f),
-    this.selectedTextColor = const Color(0xffE53935),
-    this.unselectedTextColor = Colors.grey,
+    this.backgroundColor, // Remove default values to be theme-aware
+    this.selectedBackgroundColor,
+    this.selectedTextColor,
+    this.unselectedTextColor,
     this.height = 40,
     this.borderRadius = 20,
   }) : super(key: key);
@@ -515,15 +583,34 @@ class sellAnimatedToggle extends StatefulWidget {
 class _sellAnimatedToggleState extends State<sellAnimatedToggle> {
   @override
   Widget build(BuildContext context) {
+    // Check if we're in dark mode
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // Define theme-specific colors
+    final Color actualBackgroundColor = widget.backgroundColor ??
+        (isDark ? const Color(0xff121413) : const Color(0xffF0F0F0));
+
+    final Color actualSelectedBackgroundColor =
+        widget.selectedBackgroundColor ??
+            (isDark ? const Color(0xff2f2f2f) : const Color(0xffE8E8E8));
+
+    final Color actualSelectedTextColor = widget.selectedTextColor ??
+        (isDark ? const Color(0xffE53935) : const Color(0xffE53935));
+
+    final Color actualUnselectedTextColor = widget.unselectedTextColor ??
+        (isDark ? Colors.grey : const Color(0xff6B7280));
+
     return Container(
       height: widget.height.h,
       width: double.infinity,
+      // Apply theme-specific background color
       decoration: BoxDecoration(
-        color: widget.backgroundColor,
+        color: actualBackgroundColor,
         borderRadius: BorderRadius.circular(widget.borderRadius),
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
+          // Calculate width for each segment based on number of options
           final segmentWidth = constraints.maxWidth / widget.options.length;
 
           return Stack(
@@ -537,8 +624,9 @@ class _sellAnimatedToggleState extends State<sellAnimatedToggle> {
                 child: Container(
                   height: widget.height.h - 8,
                   width: segmentWidth - 8,
+                  // Apply theme-specific selected background color
                   decoration: BoxDecoration(
-                    color: widget.selectedBackgroundColor,
+                    color: actualSelectedBackgroundColor,
                     borderRadius:
                         BorderRadius.circular(widget.borderRadius - 4),
                   ),
@@ -556,9 +644,10 @@ class _sellAnimatedToggleState extends State<sellAnimatedToggle> {
                         child: Text(
                           widget.options[index],
                           style: TextStyle(
+                            // Apply appropriate text color based on selection state
                             color: widget.selectedIndex == index
-                                ? widget.selectedTextColor
-                                : widget.unselectedTextColor,
+                                ? actualSelectedTextColor
+                                : actualUnselectedTextColor,
                             fontWeight: FontWeight.w600,
                             fontSize: 11.sp,
                           ),
@@ -597,6 +686,7 @@ class sellScreenCheckbox extends StatefulWidget {
 class _sellScreenCheckboxState extends State<sellScreenCheckbox> {
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: () => widget.onChanged(!widget.value),
       child: Container(
@@ -629,6 +719,38 @@ class _sellScreenCheckboxState extends State<sellScreenCheckbox> {
                 ),
               )
             : null,
+      ),
+    );
+  }
+}
+
+class sellRadioButton extends StatelessWidget {
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const sellRadioButton({
+    super.key,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 14.w,
+        height: 14.h,
+        decoration: isSelected
+            ? BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Color(0xffE53935), width: 3),
+              )
+            : BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Color(0xff2F2F2F), width: 2),
+              ), // Blank when not selected
       ),
     );
   }

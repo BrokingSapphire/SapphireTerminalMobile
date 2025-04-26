@@ -21,6 +21,7 @@ class _SellScreenTabContentState extends State<SellScreenTabContent> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: GestureDetector(
@@ -44,14 +45,20 @@ class _SellScreenTabContentState extends State<SellScreenTabContent> {
               alignment: Alignment.topLeft,
               child: Text(
                 "Quantity",
-                style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w400),
+                style: TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w400,
+                    color: isDark ? Colors.white : Colors.black),
               ),
             ),
             SizedBox(height: 6.h),
             Row(children: [
               Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Color(0xff2f2f2f)),
+                  border: Border.all(
+                      color: isDark
+                          ? Color(0xff2f2f2f)
+                          : Color(0xff2f2f2f).withOpacity(0.5)),
                   borderRadius: BorderRadius.circular(6.r),
                 ),
                 height: 50.h,
@@ -60,7 +67,8 @@ class _SellScreenTabContentState extends State<SellScreenTabContent> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      icon: Icon(Icons.remove, color: Colors.white),
+                      icon: Icon(Icons.remove,
+                          color: isDark ? Colors.white : Colors.black),
                       onPressed: () {
                         if (quantity > 1) {
                           setState(() {
@@ -71,10 +79,13 @@ class _SellScreenTabContentState extends State<SellScreenTabContent> {
                     ),
                     Text(
                       quantity.toString(),
-                      style: TextStyle(fontSize: 15.sp, color: Colors.white),
+                      style: TextStyle(
+                          fontSize: 15.sp,
+                          color: isDark ? Colors.white : Colors.black),
                     ),
                     IconButton(
-                      icon: Icon(Icons.add, color: Colors.white),
+                      icon: Icon(Icons.add,
+                          color: isDark ? Colors.white : Colors.black),
                       onPressed: () {
                         setState(() {
                           quantity++;
@@ -84,85 +95,21 @@ class _SellScreenTabContentState extends State<SellScreenTabContent> {
                   ],
                 ),
               ),
-              SizedBox(width: 20.w),
+              SizedBox(width: 10.w),
               Expanded(
                 child: Container(
                   height: 50.h,
                   child: Row(children: [
-                    // Market Button
                     Expanded(
-                      child: Container(
-                        height: 50.h,
-                        decoration: BoxDecoration(
-                          color: Color(0xff2f2f2f),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        child: Row(
-                          children: [
-                            // Market Button
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    isMarketSelected = true;
-                                  });
-                                },
-                                child: AnimatedContainer(
-                                  duration: Duration(milliseconds: 200),
-                                  curve: Curves.easeInOut,
-                                  decoration: BoxDecoration(
-                                    color: isMarketSelected
-                                        ? Color(0xffE53935)
-                                        : Colors.transparent,
-                                    borderRadius: BorderRadius.circular(8.r),
-                                  ),
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.symmetric(vertical: 10.h),
-                                  child: Text(
-                                    "Market",
-                                    style: TextStyle(
-                                        color: !isMarketSelected
-                                            ? Colors.white
-                                            : Color(0xffebeef5),
-                                        fontSize: 15.sp,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            // Limit Button
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    isMarketSelected = false;
-                                  });
-                                },
-                                child: AnimatedContainer(
-                                  duration: Duration(milliseconds: 200),
-                                  curve: Curves.easeInOut,
-                                  decoration: BoxDecoration(
-                                    color: !isMarketSelected
-                                        ? Color(0xffE53935)
-                                        : Colors.transparent,
-                                    borderRadius: BorderRadius.circular(8.r),
-                                  ),
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.symmetric(vertical: 10.h),
-                                  child: Text(
-                                    "Limit",
-                                    style: TextStyle(
-                                        color: !isMarketSelected
-                                            ? Colors.white
-                                            : Color(0xffebeef5),
-                                        fontSize: 15.sp,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                      child: sellScreenToggle(
+                        isFirstOptionSelected: isMarketSelected,
+                        onToggle: (value) {
+                          setState(() {
+                            isMarketSelected = value;
+                          });
+                        },
+                        firstOption: "Market",
+                        secondOption: "Limit",
                       ),
                     ),
                   ]),
@@ -174,14 +121,18 @@ class _SellScreenTabContentState extends State<SellScreenTabContent> {
               alignment: Alignment.topLeft,
               child: Text(
                 "Price",
-                style: TextStyle(fontSize: 15.sp, color: Colors.white),
+                style: TextStyle(
+                    fontSize: 15.sp,
+                    color: isDark ? Colors.white : Colors.black),
               ),
             ),
             SizedBox(height: 5.h),
             TextField(
               controller: priceController,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
-              style: TextStyle(fontSize: 15.sp, color: Color(0xffc9cacc)),
+              style: TextStyle(
+                  fontSize: 15.sp,
+                  color: isDark ? Color(0xffc9cacc) : Colors.black),
               decoration: InputDecoration(
                 prefixIcon: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -190,16 +141,18 @@ class _SellScreenTabContentState extends State<SellScreenTabContent> {
                     children: [
                       Text(
                         "₹",
-                        style: TextStyle(fontSize: 18.sp, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 18.sp,
+                            color: isDark ? Colors.white : Colors.black),
                       ),
                       SizedBox(
-                        width: 15.w,
-                      ),
-                      Container(
-                        height: 26.h,
                         width: 2.w,
-                        color: Color(0xff2f2f2f),
-                      )
+                      ),
+                      // Container(
+                      //   height: 26.h,
+                      //   width: 2.w,
+                      //   color: Color(0xff2f2f2f),
+                      // )
                     ],
                   ),
                 ),
@@ -211,11 +164,15 @@ class _SellScreenTabContentState extends State<SellScreenTabContent> {
                 fillColor: Colors.transparent,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
-                  borderSide: BorderSide(color: Color(0xff2f2f2f)),
+                  borderSide: BorderSide(
+                      color: isDark
+                          ? Color(0xff2f2f2f)
+                          : Color(0xff2f2f2f).withOpacity(0.5)),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide:
+                      BorderSide(color: isDark ? Colors.white : Colors.black),
                 ),
                 hintText: "Enter Price",
                 hintStyle:
