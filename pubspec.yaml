@@ -38,6 +38,7 @@ dependencies:
   provider: ^6.0.5
   pull_to_refresh: ^2.0.0
   fl_chart: ^0.71.0
+  local_auth: ^2.3.0
 
 dev_dependencies:
   flutter_lints: ^4.0.0
@@ -104,6 +105,10 @@ flutter:
     - assets/svgs/image58.svg
     - assets/svgs/image59.svg
     - assets/svgs/calender.svg
+    - assets/svgs/fingerprint.svg
+    - assets/svgs/face.svg
+    - assets/svgs/instant.svg
+
     
 
   fonts:

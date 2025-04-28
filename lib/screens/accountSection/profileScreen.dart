@@ -548,6 +548,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     shadowColor: Colors.transparent,
                     automaticallyImplyLeading: false,
                     toolbarHeight: 60.h,
+                    leadingWidth: 32.w,
                     leading: IconButton(
                       icon: Icon(Icons.arrow_back,
                           color: isDark ? Colors.white : Colors.black),
@@ -556,7 +557,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     title: Text(
                       "Account",
                       style: TextStyle(
-                        fontSize: 22.sp,
+                        fontSize: 15.sp,
                         fontWeight: FontWeight.bold,
                         color: isDark ? Colors.white : Colors.black,
                       ),

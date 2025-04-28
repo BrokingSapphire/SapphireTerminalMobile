@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/signUp/ManualLinkingScreen.dart';
+import 'package:sapphire/screens/signUp/manualLinkingScreen.dart';
 import 'package:sapphire/screens/signUp/linkWithUpiScreen.dart';
 import '../../utils/constWidgets.dart';
 
@@ -13,15 +13,15 @@ class linkBankScreen extends StatelessWidget {
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
   Future<void> initiateValidation(String type, BuildContext context) async {
-    final token = await secureStorage.read(key: 'auth_token');
+    // final token = await secureStorage.read(key: 'auth_token');
 
-    final url = Uri.parse(
-        "https://api.backend.sapphirebroking.com:8443/api/v1/auth/signup/checkpoint");
+    // final url = Uri.parse(
+    //     "https://api.backend.sapphirebroking.com:8443/api/v1/auth/signup/checkpoint");
 
-    final body = {
-      "step": "bank_validation_start",
-      "validation_type": type, // "upi" or "bank"
-    };
+    // final body = {
+    //   "step": "bank_validation_start",
+    //   "validation_type": type, // "upi" or "bank"
+    // };
 
     showDialog(
       context: context,
@@ -32,30 +32,32 @@ class linkBankScreen extends StatelessWidget {
     );
 
     try {
-      final response = await http.post(
-        url,
-        headers: {
-          "accept": "application/json",
-          "Content-Type": "application/json",
-          "Authorization": "Bearer $token",
-        },
-        body: jsonEncode(body),
-      );
+      // final response = await http.post(
+      //   url,
+      //   headers: {
+      //     "accept": "application/json",
+      //     "Content-Type": "application/json",
+      //     "Authorization": "Bearer $token",
+      //   },
+      //   body: jsonEncode(body),
+      // );
+
+      Future.delayed(Duration(seconds: 2));
 
       Navigator.of(context).pop(); // Close loader
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        constWidgets.snackbar("Validation started", Colors.green, context);
-        if (type == "upi") {
-          navi(linkWithUpiScreen(), context);
-        } else {
-          navi(ManualLinkingScreen(), context);
-        }
-      } else {
-        final msg = jsonDecode(response.body)['error']?['message'] ??
-            'Validation failed';
-        constWidgets.snackbar(msg, Colors.red, context);
-      }
+      // if (response.statusCode == 200 || response.statusCode == 201) {
+      //   constWidgets.snackbar("Validation started", Colors.green, context);
+      //   if (type == "upi") {
+      navi(linkWithUpiScreen(), context);
+      //   } else {
+      //     navi(ManualLinkingScreen(), context);
+      //   }
+      // } else {
+      //   final msg = jsonDecode(response.body)['error']?['message'] ??
+      //       'Validation failed';
+      //   constWidgets.snackbar(msg, Colors.red, context);
+      // }
     } catch (e) {
       Navigator.of(context).pop();
       constWidgets.snackbar("Error: $e", Colors.red, context);
@@ -89,7 +91,7 @@ class linkBankScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold)),
             SizedBox(height: 16.h),
             Text(
-              "To finish opening your account, you'll need to link your bank account, which will be used for your investments. Once linked, we'll verify it to ensure it belongs to you.",
+              "To finish opening your account,  you'll need to link your bank account, which will be used for your investments. Once linked, we'll verify it to ensure it belongs to you.",
               style: TextStyle(fontSize: 15.sp, color: Color(0xffEBEEF5)),
             ),
             SizedBox(height: 16.h),

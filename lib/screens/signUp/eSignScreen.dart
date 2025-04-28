@@ -54,17 +54,13 @@ class _eSignScreenState extends State<eSignScreen> {
             // Checkbox with text
             Row(
               children: [
-                CustomCheckbox(
-                    size: 17,
+                Checkbox(
                     value: isChecked,
                     onChanged: (val) {
                       setState(() {
                         isChecked = !isChecked;
                       });
                     }),
-                SizedBox(
-                  width: 7.w,
-                ),
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
@@ -74,7 +70,7 @@ class _eSignScreenState extends State<eSignScreen> {
                     },
                     child: Text(
                       "I would like to receive ECN and other communications via email.",
-                      style: TextStyle(color: Colors.white, fontSize: 12.sp),
+                      style: TextStyle(color: Colors.white, fontSize: 11.sp),
                     ),
                   ),
                 ),
@@ -82,7 +78,7 @@ class _eSignScreenState extends State<eSignScreen> {
             ),
 
             SizedBox(
-              height: 16.h,
+              height: 12.h,
             ),
             // Proceed Button
             constWidgets.greenButton("Proceed to Aadhar E-sign", onTap: () {

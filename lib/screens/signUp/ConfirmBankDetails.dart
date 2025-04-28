@@ -65,7 +65,7 @@ class _confirmBankDetailsState extends State<confirmBankDetails> {
             Container(
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.grey[900],
+                color: Color(0xff121413),
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Column(

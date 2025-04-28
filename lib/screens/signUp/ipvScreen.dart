@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sapphire/screens/signUp/SelfieCameraScreen.dart';
+import 'package:sapphire/screens/signUp/selfieCameraScreen.dart';
 import 'package:sapphire/screens/signUp/segmentSelectionScreen.dart';
 
 import '../../main.dart';

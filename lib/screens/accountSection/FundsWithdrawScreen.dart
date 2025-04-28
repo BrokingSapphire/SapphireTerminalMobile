@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../utils/constWidgets.dart';
 
@@ -152,337 +153,350 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
       colors: <Color>[
         Color(0xffFF9E42), // Orange
         Color(0xfffffd94), // Yellow
+        Color(0xffFF5722), // Red-Orange for contrast
       ],
-      stops: [0.0, 1.0],
-    ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
+      stops: [
+        0.0,
+        0.5,
+        1.0
+      ], // Adding a stop in the middle for a smoother gradient
+    ).createShader(Rect.fromLTWH(
+        0.0, 0.0, 300.0, 70.0)); // Increased size for better visibility
+
     final textColor = isDark ? Colors.white : Colors.black;
 
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: isDark ? Colors.black : Colors.white,
+      appBar: AppBar(
+        leadingWidth: 32.w,
         backgroundColor: isDark ? Colors.black : Colors.white,
-        appBar: AppBar(
-          leadingWidth: 32.w,
-          backgroundColor: isDark ? Colors.black : Colors.white,
-          title: Padding(
-            padding: const EdgeInsets.only(top: 15),
+        title: Padding(
+          padding: const EdgeInsets.only(top: 15),
+          child: Text(
+            'Withdraw',
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 15.sp,
+                color: isDark ? Colors.white : Colors.black),
+          ),
+        ),
+        leading: Padding(
+          padding: const EdgeInsets.only(
+            top: 15,
+          ),
+          child: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back,
+                  color: isDark ? Colors.white : Colors.black)),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(top: 18, right: 5),
             child: Text(
-              'Withdraw',
+              'Wdl. amount :',
               style: TextStyle(
+                  fontSize: 14.sp,
+                  color: isDark ? Colors.white70 : Colors.black),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 18, right: 10),
+            child: Text(
+              '  ₹ 12,532.00',
+              style: TextStyle(
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
-                  fontSize: 15.sp,
                   color: isDark ? Colors.white : Colors.black),
             ),
           ),
-          leading: Padding(
-            padding: const EdgeInsets.only(
-              top: 15,
-            ),
-            child: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(Icons.arrow_back,
-                    color: isDark ? Colors.white : Colors.black)),
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(top: 18, right: 5),
-              child: Text(
-                'Wdl. amount :',
-                style: TextStyle(
-                    fontSize: 14.sp,
-                    color: isDark ? Colors.white70 : Colors.black),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 18, right: 10),
-              child: Text(
-                '  ₹ 12,532.00',
-                style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    color: isDark ? Colors.white : Colors.black),
-              ),
-            ),
-          ],
-        ),
-        body: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          behavior: HitTestBehavior.opaque,
+        ],
+      ),
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        behavior: HitTestBehavior.opaque,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Column(
             children: [
               Divider(color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB)),
               Expanded(
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 7.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 7.h),
 
-                      // Withdrawable Amount
+                    // Withdrawable Amount
 
-                      // Amount Display: Rupee sign and amount are visually centered
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.w),
-                        child: Center(
-                          child: Padding(
+                    // Amount Display: Rupee sign and amount are visually centered
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Center(
+                        child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16.w),
+                            child: Container(
+                              width: double.infinity,
                               padding: EdgeInsets.symmetric(horizontal: 16.w),
-                              child: Container(
-                                width: double.infinity,
-                                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                                child: Center(
-                                  child: IntrinsicWidth(
-                                      child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        '₹',
+                              child: Center(
+                                child: IntrinsicWidth(
+                                    child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '₹',
+                                      style: TextStyle(
+                                        fontSize: 32.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: textColor,
+                                      ),
+                                    ),
+                                    SizedBox(width: 4.w),
+                                    Flexible(
+                                      child: TextField(
+                                        controller: amountController,
+                                        readOnly: true,
+                                        enableInteractiveSelection: false,
+                                        showCursor: false,
                                         style: TextStyle(
                                           fontSize: 32.sp,
                                           fontWeight: FontWeight.w600,
-                                          color: textColor,
+                                          color:
+                                              (amountController.text == "0" ||
+                                                      amountController.text ==
+                                                          "0.00")
+                                                  ? Color(0xffC9CACC)
+                                                  : (_amountInvalid
+                                                      ? Colors.red
+                                                      : textColor),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
-                                      ),
-                                      SizedBox(width: 4.w),
-                                      Flexible(
-                                        child: TextField(
-                                          controller: amountController,
-                                          readOnly: true,
-                                          enableInteractiveSelection: false,
-                                          showCursor: false,
-                                          style: TextStyle(
+                                        textAlign: TextAlign.center,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          enabledBorder: InputBorder.none,
+                                          focusedBorder: InputBorder.none,
+                                          errorBorder: InputBorder.none,
+                                          disabledBorder: InputBorder.none,
+                                          hintText: '0',
+                                          hintStyle: TextStyle(
+                                            color: textColor.withOpacity(0.5),
                                             fontSize: 32.sp,
-                                            fontWeight: FontWeight.w600,
-                                            color:
-                                                (amountController.text == "0" ||
-                                                        amountController.text ==
-                                                            "0.00")
-                                                    ? Color(0xffC9CACC)
-                                                    : (_amountInvalid
-                                                        ? Colors.red
-                                                        : textColor),
-                                            overflow: TextOverflow.ellipsis,
                                           ),
-                                          textAlign: TextAlign.center,
-                                          decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            enabledBorder: InputBorder.none,
-                                            focusedBorder: InputBorder.none,
-                                            errorBorder: InputBorder.none,
-                                            disabledBorder: InputBorder.none,
-                                            hintText: '0',
-                                            hintStyle: TextStyle(
-                                              color: textColor.withOpacity(0.5),
-                                              fontSize: 32.sp,
-                                            ),
-                                            isCollapsed: true,
-                                            contentPadding: EdgeInsets.zero,
-                                          ),
-                                          maxLines: 1,
+                                          isCollapsed: true,
+                                          contentPadding: EdgeInsets.zero,
                                         ),
+                                        maxLines: 1,
                                       ),
-                                    ],
-                                  )),
-                                ),
-                              )),
-                        ),
+                                    ),
+                                  ],
+                                )),
+                              ),
+                            )),
                       ),
-                      SizedBox(height: 20.h),
-                      // Quick Amount Buttons
-                      Row(
+                    ),
+                    SizedBox(height: 20.h),
+                    // Quick Amount Buttons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildAmountButton(
+                            '+₹5,000', () => _addAmount(5000), isDark),
+                        SizedBox(width: 16.w),
+                        _buildAmountButton(
+                            '+₹10,000', () => _addAmount(10000), isDark),
+                        SizedBox(width: 16.w),
+                        _buildAmountButton(
+                            '+₹20,000', () => _addAmount(20000), isDark),
+                      ],
+                    ),
+                    SizedBox(height: 20.h),
+
+                    // Instant / Regular
+                    Container(
+                      height: 60.h,
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color:
+                                isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB)),
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _buildAmountButton(
-                              '+₹5,000', () => _addAmount(5000), isDark),
-                          SizedBox(width: 16.w),
-                          _buildAmountButton(
-                              '+₹10,000', () => _addAmount(10000), isDark),
-                          SizedBox(width: 16.w),
-                          _buildAmountButton(
-                              '+₹20,000', () => _addAmount(20000), isDark),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _isInstant = true;
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  _isInstant
+                                      ? Icons.radio_button_checked
+                                      : Icons.radio_button_off,
+                                  color:
+                                      _isInstant ? Colors.green : Colors.grey,
+                                ),
+                                SizedBox(width: 6.w),
+                                SvgPicture.asset('assets/svgs/instant.svg')
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: 30.w),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _isInstant = false;
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  !_isInstant
+                                      ? Icons.radio_button_checked
+                                      : Icons.radio_button_off,
+                                  color: !_isInstant
+                                      ? Colors.green
+                                      : isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                ),
+                                SizedBox(width: 6.w),
+                                Text(
+                                  "Regular",
+                                  style: TextStyle(
+                                    color: isDark ? Colors.white : Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
-                      SizedBox(height: 20.h),
-
-                      // Instant / Regular
-                      Container(
-                        height: 60.h,
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              color: isDark
-                                  ? Color(0xff2F2F2F)
-                                  : Color(0xffD1D5DB)),
-                          borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    SizedBox(height: 34.h),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 15.w, vertical: 10.h),
+                      decoration: BoxDecoration(
+                        color: isDark ? Color(0xFF2F2708) : Color(0xFFFEF8E5),
+                        border: Border.all(
+                            color:
+                                isDark ? Color(0xFFB58E00) : Color(0xFFD1D5DB),
+                            width: 1.w),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: Text(
+                        "Withdrawal requests between 5:00 AM and 5:00 PM are credited the same day. "
+                        "Requests placed after 5:00 PM and before 5:00 AM are processed the next working day.",
+                        style: TextStyle(
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.w500,
+                            color: isDark ? Colors.white : Colors.black),
+                      ),
+                    ),
+                    SizedBox(height: 15.h),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: isDark
+                            ? const Color(0xff121413)
+                            : const Color(0xFFF5F5F5),
+                        borderRadius: BorderRadius.circular(8.r),
+                        border: Border.all(
+                          color: isDark
+                              ? const Color(0xff2F2F2F)
+                              : Colors.grey.shade300,
+                          width: 1,
                         ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 10.h),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _isInstant = true;
-                                });
-                              },
-                              child: Row(
+                            Image.asset(
+                              "assets/images/icici.png",
+                              width: 24.w,
+                              height: 24.h,
+                            ),
+                            SizedBox(width: 8.w),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
-                                    _isInstant
-                                        ? Icons.radio_button_checked
-                                        : Icons.radio_button_off,
-                                    color:
-                                        _isInstant ? Colors.green : Colors.grey,
-                                  ),
-                                  SizedBox(width: 6.w),
                                   Text(
-                                    "Instant ⚡️", // Lightning emoji
+                                    'ICICI Bank',
                                     style: TextStyle(
-                                      foreground: Paint()
-                                        ..shader = linearGradient,
-                                      fontWeight: FontWeight.w500,
+                                      color: textColor,
+                                      fontSize: 13.sp,
+                                    ),
+                                  ),
+                                  Text(
+                                    'XXXX XXXX 6485',
+                                    style: TextStyle(
+                                      color: isDark
+                                          ? Colors.grey
+                                          : Colors.grey.shade700,
+                                      fontSize: 10.sp,
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            SizedBox(width: 30.w),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _isInstant = false;
-                                });
-                              },
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    !_isInstant
-                                        ? Icons.radio_button_checked
-                                        : Icons.radio_button_off,
-                                    color: !_isInstant
-                                        ? Colors.green
-                                        : isDark
-                                            ? Colors.white
-                                            : Colors.black,
-                                  ),
-                                  SizedBox(width: 6.w),
-                                  Text(
-                                    "Regular",
-                                    style: TextStyle(
-                                      color:
-                                          isDark ? Colors.white : Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              color: textColor,
+                              size: 16.sp,
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(height: 70.h),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                        decoration: BoxDecoration(
-                          color: isDark ? Color(0xFF2F2708) : Color(0xFFFEF8E5),
-                          border: Border.all(
-                              color: isDark
-                                  ? Color(0xFFB58E00)
-                                  : Color(0xFFD1D5DB),
-                              width: 1.w),
-                          borderRadius: BorderRadius.circular(12.r),
+                    ),
+
+                    // Custom Keypad
+                    _buildNumberKeypad(),
+
+                    // Withdraw Button
+                    ElevatedButton(
+                      onPressed: () {
+                        _addDecimalPart();
+                        if (_validateAmount()) {
+                          // TODO: Add your withdraw logic here
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF00C853),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.r),
                         ),
-                        child: Text(
-                          "Withdrawal requests between 5:00 AM and 5:00 PM are credited the same day. "
-                          "Requests placed after 5:00 PM and before 5:00 AM are processed the next working day.",
-                          style: TextStyle(
-                              fontSize: 11.sp,
-                              fontWeight: FontWeight.w500,
-                              color: isDark ? Colors.white : Colors.black),
+                        minimumSize: Size(double.infinity, 50.h),
+                      ),
+                      child: Text(
+                        'Withdraw',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                      SizedBox(height: 15.h),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: isDark ? Color(0xff121413) : Color(0xFFF5F5F5),
-                          borderRadius: BorderRadius.circular(8.r),
-                          border: Border.all(
-                            color:
-                                isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB),
-                            width: 1,
-                          ),
-                        ),
-                        child: ListTile(
-                          leading: Image.asset("assets/images/icici.png",
-                              width: 24.w, height: 24.h),
-                          title: Text(
-                            'ICICI Bank',
-                            style: TextStyle(
-                              color: isDark ? Colors.white : Colors.black,
-                              fontSize: 14.sp,
-                            ),
-                          ),
-                          subtitle: Text(
-                            'XXXX XXXX 6485',
-                            style: TextStyle(
-                              color:
-                                  isDark ? Colors.grey : Colors.grey.shade700,
-                              fontSize: 12.sp,
-                            ),
-                          ),
-                          trailing: Icon(
-                            Icons.arrow_forward_ios,
-                            color: isDark ? Colors.white : Colors.black,
-                            size: 16.sp,
-                          ),
-                        ),
-                      ),
+                    ),
 
-                      // Custom Keypad
-                      _buildNumberKeypad(),
+                    // Info box
 
-                      // Withdraw Button
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
-                        ),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            _addDecimalPart();
-                            if (_validateAmount()) {
-                              // TODO: Add your withdraw logic here
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF00C853),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25.r),
-                            ),
-                            minimumSize: Size(double.infinity, 50.h),
-                          ),
-                          child: Text(
-                            'Withdraw',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
+                    SizedBox(height: 15.h),
 
-                      // Info box
-
-                      SizedBox(height: 15.h),
-
-                      // Proceed button
-                      // constWidgets.greenButton("Proceed"),
-                      // SizedBox(height: 20.h),
-                    ],
-                  ),
+                    // Proceed button
+                    // constWidgets.greenButton("Proceed"),
+                    // SizedBox(height: 20.h),
+                  ],
                 ),
               ),
             ],

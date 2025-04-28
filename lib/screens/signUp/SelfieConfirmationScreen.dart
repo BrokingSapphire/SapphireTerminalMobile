@@ -14,7 +14,7 @@ class SelfieConfirmationScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Selfie Verification",
+          title: Text("Click Continue to Confirm",
               style: TextStyle(color: Colors.white, fontSize: 20.sp)),
         ),
         body: Center(
@@ -28,18 +28,14 @@ class SelfieConfirmationScreen extends StatelessWidget {
                   height: 50.h,
                 ),
                 // Instruction Text
-                Text(
-                  "Click Continue to Confirm",
-                  style: TextStyle(color: Colors.white, fontSize: 24.sp),
-                ),
 
                 SizedBox(height: 20.h),
 
                 // Display Captured Image
                 Center(
                   child: Container(
-                    width: 320.w,
-                    height: 320.h, // Square shape
+                    width: 350.w,
+                    height: 350.h, // Square shape
                     decoration: BoxDecoration(
                       border: Border.all(
                           color: Colors.white, width: 3.w), // White border

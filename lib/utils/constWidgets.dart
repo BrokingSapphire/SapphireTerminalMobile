@@ -8,6 +8,53 @@ import 'package:sapphire/utils/filters.dart';
 import '../main.dart';
 
 class constWidgets {
+  static segmentChoiceChipiWithCheckbox(
+      String text, bool val, BuildContext context) {
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 2.w,
+          ),
+          Transform.scale(
+              scale: 0.9,
+              child: Checkbox(
+                value: val,
+                onChanged: (val) {
+                  // You can add logic here if needed
+                },
+
+                // Adjust padding around the checkmark (e.g., 2.0, 4.0, or 6.0)
+              )),
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: 12.sp, // Increased font size to match image
+              fontWeight: FontWeight.w400,
+              color: Colors.white, // White text to match black background
+            ),
+          ),
+        ],
+      ),
+      height: 45.h,
+      width: 170.w, // Maintain half-screen width minus padding
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: val
+              ? Colors.green
+              : Colors.grey.shade800, // Gray border to match image
+          width: 1.5, // Slightly thicker border for visibility
+        ),
+        borderRadius:
+            BorderRadius.circular(8.r), // Larger rounded corners to match image
+        color: val
+            ? Color(0xFF26382F)
+            : Color(0xff121413), // Black background to match image
+      ),
+    );
+  }
+
   static Widget searchField(
       BuildContext context, String hintText, String pageKey, bool isDark) {
     return Row(
@@ -804,14 +851,16 @@ class constWidgets {
         border: Border.all(
           color: val
               ? Colors.green
-              : Color(0xffD1D5DB), // Gray border to match image
+              : isDark
+                  ? Color(0xff2F2F2F)
+                  : Color(0xffD1D5DB), // Gray border to match image
           width: 1.5, // Slightly thicker border for visibility
         ),
         borderRadius:
             BorderRadius.circular(3.r), // Larger rounded corners to match image
         color: val
             ? (isDark ? Colors.green.withOpacity(0.2) : Colors.green.shade100)
-            : (isDark ? const Color(0xFF26382F) : Colors.grey.shade100),
+            : (isDark ? const Color(0xFF121413) : Colors.grey.shade100),
         // Black background to match image
       ),
     );

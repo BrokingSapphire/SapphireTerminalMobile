@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/signUp/SignCanvaScreen.dart';
+import 'package:sapphire/screens/signUp/signCanvaScreen.dart';
 
 import '../../utils/constWidgets.dart';
 
@@ -70,7 +70,7 @@ class signVerificationScreen extends StatelessWidget {
             ),
             Spacer(),
             constWidgets.greenButton("Continue", onTap: () {
-              navi(SignCanvaScreen(), context);
+              navi(SignCanvasScreen(), context);
             }),
             SizedBox(height: 10.h),
             Center(

@@ -12,10 +12,12 @@ import 'package:sapphire/screens/home/watchlist/disclosure.dart';
 import 'package:sapphire/screens/orderWindow/BuyScreens/buyScreenWrapper.dart';
 import 'package:sapphire/screens/orderWindow/SellScreens/sellScreenWrapper.dart';
 import 'package:sapphire/screens/signUp/ConfirmBankDetails.dart';
-import 'package:sapphire/screens/signUp/ManualLinkingScreen.dart';
+import 'package:sapphire/screens/signUp/SelfieConfirmationScreen.dart';
+import 'package:sapphire/screens/signUp/manualLinkingScreen.dart';
 import 'package:sapphire/screens/signUp/NomineeScreen.dart';
-import 'package:sapphire/screens/signUp/SelfieCameraScreen.dart';
-import 'package:sapphire/screens/signUp/SignCanvaScreen.dart';
+import 'package:sapphire/screens/signUp/segmentSelectionScreen.dart';
+import 'package:sapphire/screens/signUp/selfieCameraScreen.dart';
+import 'package:sapphire/screens/signUp/signCanvaScreen.dart';
 import 'package:sapphire/screens/signUp/congratulationsScreen.dart';
 import 'package:sapphire/screens/signUp/eSignScreen.dart';
 import 'package:sapphire/screens/signUp/emailScreen.dart';
@@ -31,17 +33,16 @@ import 'package:sapphire/screens/signUp/mobileOtpVerification.dart';
 import 'package:sapphire/screens/signUp/nomineeDetailsScreen.dart';
 import 'package:sapphire/screens/signUp/panDetails.dart';
 import 'package:sapphire/screens/signUp/personalDetails.dart';
-import 'package:sapphire/screens/signUp/rasScreen.dart';
-import 'package:sapphire/screens/signUp/segmentSelectionScreen.dart';
 import 'package:sapphire/screens/signUp/signUpPaymentScreen.dart';
 import 'package:sapphire/screens/signUp/signatureVerificationScreen.dart';
-import 'package:sapphire/screens/signUp/tradingExperienceScreen.dart';
+import 'package:sapphire/screens/signUp/otherDetails.dart';
 import 'package:sapphire/screens/signUp/verifyAadharScreen.dart';
 import 'package:sapphire/screens/signUp/yourInvestmentProfile.dart';
 import 'package:sapphire/screens/accountSection/verifiedP&L.dart';
 import 'package:sapphire/utils/appTheme.dart';
 import 'package:sapphire/themeProvider.dart';
 import 'package:sapphire/wat.dart';
+import 'package:signature/signature.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -115,7 +116,7 @@ class MyApp extends StatelessWidget {
           theme: AppThemes.lightTheme,
           darkTheme: AppThemes.darkTheme,
           themeMode: themeProvider.themeMode, // 👈 Dynamic theme mode
-          home: InitialScreen(),
+          home: CongratulationsScreen(),
           // home: BuyScreenWrapper(),
         );
       },

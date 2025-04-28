@@ -7,20 +7,21 @@ import 'package:sapphire/screens/signUp/linkBankScreen.dart';
 import '../../utils/constWidgets.dart';
 import '../../main.dart';
 
-class tradingExperinceScreen extends StatefulWidget {
-  const tradingExperinceScreen({super.key});
+class Otherdetails extends StatefulWidget {
+  const Otherdetails({super.key});
 
   @override
-  State<tradingExperinceScreen> createState() => _tradingExperinceScreenState();
+  State<Otherdetails> createState() => _OtherdetailsScreenState();
 }
 
-class _tradingExperinceScreenState extends State<tradingExperinceScreen> {
+class _OtherdetailsScreenState extends State<Otherdetails> {
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
   String? selectedExperience;
   String? selectedIncome;
   String? selectedSettlement;
 
+  String? selectedPEP;
   final Map<String, String> incomeMap = {
     "<1 Lakh": "le_1_Lakh",
     "1 Lakh - 5 Lakh": "1_5_Lakh",
@@ -94,6 +95,12 @@ class _tradingExperinceScreenState extends State<tradingExperinceScreen> {
     }
   }
 
+  String? selectedOccupation;
+
+  void _selectOccupation(String value) {
+    setState(() => selectedOccupation = value);
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
@@ -110,61 +117,54 @@ class _tradingExperinceScreenState extends State<tradingExperinceScreen> {
             constWidgets.topProgressBar(1, 4, context),
             SizedBox(height: 24.h),
             Text(
-              "Your Investment Profile",
-              style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w600),
+              "Other Details",
+              style: TextStyle(fontSize: 21.sp, fontWeight: FontWeight.w600),
             ),
             SizedBox(height: 16.h),
 
             /// Trading Experience
-            Text(
-              "Trading Experience",
-              style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
-            ),
-            SizedBox(height: 12.h),
-            Wrap(
-              spacing: 12.w,
-              runSpacing: 12.h,
-              children: [
-                _buildChip("experience", "No experience", chipWidth, isDark),
-                _buildChip("experience", "< 1 year", chipWidth, isDark),
-                _buildChip("experience", "1-5 years", chipWidth, isDark),
-                _buildChip("experience", "5-10 years", chipWidth, isDark),
-                _buildChip("experience", "10+ years", chipWidth, isDark),
-              ],
-            ),
-            SizedBox(height: 24.h),
 
-            /// Income
-            Text(
-              "Annual Income",
-              style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
-            ),
-            SizedBox(height: 12.h),
+            Text("Occupation",
+                style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500)),
+            SizedBox(height: 16.h),
             Wrap(
-              spacing: 12.w,
-              runSpacing: 12.h,
+              spacing: 12,
+              runSpacing: 12,
               children: [
-                _buildChip("income", "<1 Lakh", chipWidth, isDark),
-                _buildChip("income", "1 Lakh - 5 Lakh", chipWidth, isDark),
-                _buildChip("income", "5 Lakh - 10 Lakh", chipWidth, isDark),
-                _buildChip("income", "10 Lakh - 25 Lakh", chipWidth, isDark),
-                _buildChip("income", "25 Lakh - 1 Crore", chipWidth, isDark),
-                _buildChip("income", "> 1 Crore", chipWidth, isDark),
-              ],
+                "Student",
+                "Govt. Servant",
+                "Retired",
+                "Private Sector",
+                "Agriculturist",
+                "Self Employed",
+                "Housewife",
+                "Other"
+              ]
+                  .map((item) => InkWell(
+                        onTap: () => _selectOccupation(item),
+                        child: constWidgets.choiceChip(
+                            item,
+                            selectedOccupation == item,
+                            context,
+                            chipWidth,
+                            isDark),
+                      ))
+                  .toList(),
             ),
             SizedBox(height: 24.h),
 
             /// Settlement Preference
             Text(
-              "Running Settlement Preference",
-              style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
+              "Are you a Politically Exposed Person (PEP)?",
+              style: TextStyle(fontSize: 17.sp, color: Color(0xffEBEEF5)),
             ),
             SizedBox(height: 12.h),
-            Wrap(
-              spacing: 12.w,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                _buildChip("settlement", "Monthly", chipWidth, isDark),
-                _buildChip("settlement", "Quarterly", chipWidth, isDark),
+                _buildSelectableChip("PEP", "Yes", 106.w),
+                SizedBox(width: 20.w),
+                _buildSelectableChip("PEP", "No", 106.w),
               ],
             ),
             const Spacer(),
@@ -174,23 +174,7 @@ class _tradingExperinceScreenState extends State<tradingExperinceScreen> {
             //   "Continue",
             //   onTap: isFormComplete ? submitDetails : null,
             // ),
-            Container(
-              height: 52.h,
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: Text(
-                  "Continue",
-                  style:
-                      TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w600),
-                ),
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor:
-                      isFormComplete ? Color(0xFF1DB954) : Color(0xff2f2f2f),
-                ),
-              ),
-            ),
+            constWidgets.greenButton('Continue'),
             SizedBox(height: 10.h),
 
             /// Need Help Button
@@ -216,6 +200,17 @@ class _tradingExperinceScreenState extends State<tradingExperinceScreen> {
         width,
         isDark,
       ),
+    );
+  }
+
+  Widget _buildSelectableChip(String category, String value, double width) {
+    bool isSelected =
+        (category == "Settlement" && selectedSettlement == value) ||
+            (category == "PEP" && selectedPEP == value);
+
+    return InkWell(
+      onTap: () => _selectOption(category, value),
+      child: constWidgets.choiceChip(value, isSelected, context, width, true),
     );
   }
 }

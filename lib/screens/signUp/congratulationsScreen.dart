@@ -85,6 +85,11 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
                     child: Column(
                       children: [
                         Container(
+                          decoration: BoxDecoration(
+                              color: Color(0xff121413),
+                              borderRadius: BorderRadius.circular(12.r)),
+                          height: 271.h,
+                          width: double.infinity,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -116,11 +121,6 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
                               ),
                             ],
                           ),
-                          decoration: BoxDecoration(
-                              color: Color(0xff121413),
-                              borderRadius: BorderRadius.circular(12.r)),
-                          height: 271.h,
-                          width: double.infinity,
                         ),
                       ],
                     ),
@@ -145,7 +145,7 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
                 gravity: 0.2, // Light gravity for slow fall
                 maxBlastForce: 11, // Adjust for explosion strength
                 minBlastForce: 10,
-                colors: [
+                colors: const [
                   Colors.green,
                   Colors.blue,
                   Colors.pink,

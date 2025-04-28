@@ -7,12 +7,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'SignConfirmationScreen.dart';
 
-class SignCanvaScreen extends StatefulWidget {
+class SignCanvasScreen extends StatefulWidget {
   @override
-  _SignCanvaScreenState createState() => _SignCanvaScreenState();
+  _SignCanvasScreenState createState() => _SignCanvasScreenState();
 }
 
-class _SignCanvaScreenState extends State<SignCanvaScreen> {
+class _SignCanvasScreenState extends State<SignCanvasScreen> {
   late ScribbleNotifier _scribbleNotifier;
 
   @override
@@ -26,13 +26,12 @@ class _SignCanvaScreenState extends State<SignCanvaScreen> {
       ByteData? byteData = await _scribbleNotifier.renderImage();
       if (byteData != null) {
         Uint8List signatureBytes = byteData.buffer.asUint8List();
-       navi(SignConfirmationScreen(signatureBytes: signatureBytes), context);
+        navi(SignConfirmationScreen(signatureBytes: signatureBytes), context);
       }
     } catch (e) {
       print("Error saving signature: $e");
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -67,46 +66,58 @@ class _SignCanvaScreenState extends State<SignCanvaScreen> {
                 drawPen: true,
               ),
             ),
-            SizedBox(height: 40.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () {
-                      _scribbleNotifier.clear();
-                    },
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: Color(0xFF26382F),
-                      side: BorderSide(color: Colors.green),
-                      foregroundColor: Colors.white,
-                      padding:
-                      EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
+            SizedBox(height: 20.h),
+            ValueListenableBuilder(
+              valueListenable: _scribbleNotifier,
+              builder: (context, state, _) {
+                final isCanvasEmpty = state.lines.isEmpty;
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed:
+                            isCanvasEmpty ? null : _scribbleNotifier.clear,
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: Color(0xFF26382F),
+                          side: BorderSide(color: Colors.green),
+                          foregroundColor: Colors.white,
+                          disabledForegroundColor: Colors.grey,
+                          disabledBackgroundColor:
+                              Color(0xFF26382F).withOpacity(0.5),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20.w, vertical: 12.h),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4.r),
+                          ),
+                          textStyle: TextStyle(fontSize: 16.sp),
+                        ),
+                        child: Text("Clear"),
                       ),
                     ),
-                    child: Text("Clear"),
-                  ),
-                ),
-                SizedBox(width: 30.w),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: _saveSignature,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      foregroundColor: Colors.white,
-                      padding:
-                      EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4.sp),
+                    SizedBox(width: 30.w),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: isCanvasEmpty ? null : _saveSignature,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          disabledBackgroundColor: Color(0xff2f2f2f),
+                          disabledForegroundColor: Color(0xffc9cacc),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20.w, vertical: 12.h),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4.r),
+                          ),
+                          textStyle: TextStyle(fontSize: 16.sp),
+                        ),
+                        child: Text("Save & Continue"),
                       ),
                     ),
-                    child: Text("Save & Continue"),
-                  ),
-                ),
-              ],
-            )
+                  ],
+                );
+              },
+            ),
           ],
         ),
       ),

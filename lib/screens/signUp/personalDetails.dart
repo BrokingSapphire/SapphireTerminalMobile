@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/signUp/tradingExperienceScreen.dart';
+import 'package:sapphire/screens/signUp/otherDetails.dart';
 import 'package:sapphire/screens/signUp/yourInvestmentProfile.dart';
 import '../../utils/constWidgets.dart';
 
@@ -71,7 +71,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         constWidgets.snackbar(
             "Occupation details saved", Colors.green, context);
-        navi(tradingExperinceScreen(), context);
+        navi(Otherdetails(), context);
       } else {
         final msg = jsonDecode(response.body)?["error"]?["message"] ??
             "Something went wrong";
@@ -122,52 +122,81 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                   _buildSelectableChip("Divorced", isDark),
                 ],
               ),
-              SizedBox(height: 18.h),
-              Text("Occupation",
-                  style:
-                      TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500)),
-              SizedBox(height: 16.h),
-              Wrap(
-                spacing: 12,
-                runSpacing: 12,
-                children: [
-                  "Student",
-                  "Govt. Servant",
-                  "Retired",
-                  "Private Sector",
-                  "Agriculturist",
-                  "Self Employed",
-                  "Housewife",
-                  "Other"
-                ]
-                    .map((item) => InkWell(
-                          onTap: () => _selectOccupation(item),
-                          child: constWidgets.choiceChip(
-                              item,
-                              selectedOccupation == item,
-                              context,
-                              width,
-                              isDark),
-                        ))
-                    .toList(),
+              SizedBox(height: 24.h),
+              // Text("Occupation",
+              //     style:
+              //         TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500)),
+              // SizedBox(height: 16.h),
+              // Wrap(
+              //   spacing: 12,
+              //   runSpacing: 12,
+              //   children: [
+              //     "Student",
+              //     "Govt. Servant",
+              //     "Retired",
+              //     "Private Sector",
+              //     "Agriculturist",
+              //     "Self Employed",
+              //     "Housewife",
+              //     "Other"
+              //   ]
+              //       .map((item) => InkWell(
+              //             onTap: () => _selectOccupation(item),
+              //             child: constWidgets.choiceChip(
+              //                 item,
+              //                 selectedOccupation == item,
+              //                 context,
+              //                 width,
+              //                 isDark),
+              //           ))
+              //       .toList(),
+              // ),
+              Text(
+                "Annual Income",
+                style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
               ),
-              SizedBox(height: 18.h),
-              Text("Are you a Politically Exposed Person (PEP)?",
-                  style: TextStyle(fontSize: 17.sp)),
-              SizedBox(height: 16.h),
-              Row(
+              SizedBox(height: 12.h),
+              Wrap(
+                spacing: 12.w,
+                runSpacing: 12.h,
                 children: [
-                  InkWell(
-                    onTap: () => setState(() => isPoliticallyExposed = true),
-                    child: constWidgets.choiceChip(
-                        "Yes", isPoliticallyExposed, context, 112.w, isDark),
-                  ),
+                  _buildSelectableChip("<1 Lakh", isDark),
+                  _buildSelectableChip("1 Lakh - 5 Lakh", isDark),
+                  _buildSelectableChip("5 Lakh - 10 Lakh", isDark),
+                  _buildSelectableChip("10 Lakh - 25 Lakh", isDark),
+                  _buildSelectableChip("25 Lakh - 1 Crore", isDark),
+                  _buildSelectableChip("> 1 Crore", isDark),
+                ],
+              ),
+              SizedBox(height: 24.h),
+              Text(
+                "Trading Experience",
+                style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
+              ),
+              SizedBox(height: 12.h),
+              Wrap(
+                spacing: 12.w,
+                runSpacing: 12.h,
+                children: [
+                  _buildSelectableChip("No experience", isDark),
+                  _buildSelectableChip("< 1 year", isDark),
+                  _buildSelectableChip("1-5 years", isDark),
+                  _buildSelectableChip("5-10 years", isDark),
+                  _buildSelectableChip("10+ years", isDark),
+                ],
+              ),
+              SizedBox(height: 24.h),
+              Text(
+                "Preference for running account settlement",
+                style: TextStyle(fontSize: 17.sp, color: Color(0xffEBEEF5)),
+              ),
+              SizedBox(height: 12.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  _buildSelectableChip("Quarterly", isDark),
                   SizedBox(width: 12.w),
-                  InkWell(
-                    onTap: () => setState(() => isPoliticallyExposed = false),
-                    child: constWidgets.choiceChip(
-                        "No", !isPoliticallyExposed, context, 112.w, isDark),
-                  ),
+                  _buildSelectableChip("Monthly", isDark),
                 ],
               ),
             ],

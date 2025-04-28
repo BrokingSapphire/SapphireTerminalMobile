@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/signUp/ManualLinkingScreen.dart';
+import 'package:sapphire/screens/signUp/manualLinkingScreen.dart';
 
 import '../../utils/constWidgets.dart';
 
@@ -13,12 +13,12 @@ class linkWithUpiScreen extends StatelessWidget {
       backgroundColor: Colors.black, // Dark background
       appBar: AppBar(),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [ SizedBox(
-            height: 25.h,
-          ),
+          children: [
+            SizedBox(height: 8.h),
+
             constWidgets.topProgressBar(1, 5, context),
             SizedBox(
               height: 30.h,
@@ -27,32 +27,32 @@ class linkWithUpiScreen extends StatelessWidget {
               "Link your bank account",
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: 22.sp,
+                  fontSize: 20.sp,
                   fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20.h),
             Text(
               "By making a transaction of 1 INR",
-              style: TextStyle(color: Colors.white70, fontSize: 17.sp),
+              style: TextStyle(color: Colors.white70, fontSize: 15.sp),
             ),
             SizedBox(height: 20.h),
 
             Text(
                 "• We'll automatically fetch your account name and number, so you don’t have to enter them manually saving you time and effort!",
-                style: TextStyle(color: Colors.white70, fontSize: 17.sp)),
+                style: TextStyle(color: Colors.white70, fontSize: 15.sp)),
             SizedBox(height: 10.h),
 
             Text(
                 "• Kindly make the payment from the bank account you’d like to link to your Sapphire account.",
-                style: TextStyle(color: Colors.white70, fontSize: 17.sp)),
+                style: TextStyle(color: Colors.white70, fontSize: 15.sp)),
             SizedBox(height: 30.h),
             // UPI Options
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildUPIButton("assets/images/phonepay.svg", "Phone Pe"),
+                _buildUPIButton("assets/images/phonepay.svg", "PhonePe"),
                 _buildUPIButton("assets/images/gpay.svg", "GPay"),
-                _buildUPIButton("assets/images/paytm.svg", "Paytm UPI"),
+                _buildUPIButton("assets/images/paytm.svg", "PayTM"),
               ],
             ),
             SizedBox(height: 30.h),
@@ -99,8 +99,8 @@ class linkWithUpiScreen extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 60.w,
-          height: 60.h,
+          width: 48.w,
+          height: 48.h,
           decoration: BoxDecoration(
             color: Colors.white10,
             borderRadius: BorderRadius.circular(12),

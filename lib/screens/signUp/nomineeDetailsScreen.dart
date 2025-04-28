@@ -112,18 +112,25 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
               Expanded(
                 child: ListView.separated(
                   itemCount: relations.length,
-                  separatorBuilder: (context, i) => Divider(height: 1.h),
+                  separatorBuilder: (context, i) => Divider(
+                    height: 1.h,
+                    color: Color(0xff2f2f2f),
+                  ),
                   itemBuilder: (context, i) {
-                    return ListTile(
-                      title: Text(relations[i],
-                          style:
-                              TextStyle(fontSize: 18.sp, color: Colors.white)),
+                    return GestureDetector(
                       onTap: () {
                         setState(() {
                           nominees[index]["relation"] = relations[i];
                         });
                         Navigator.pop(context);
                       },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 8.w, vertical: 15.h),
+                        child: Text(relations[i],
+                            style: TextStyle(
+                                fontSize: 18.sp, color: Colors.white)),
+                      ),
                     );
                   },
                 ),
@@ -266,8 +273,8 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
 
   Widget _buildNomineeCard(int index, bool isDark) {
     return Container(
-      margin: EdgeInsets.only(bottom: 15.h),
-      padding: EdgeInsets.all(15.w),
+      // margin: EdgeInsets.only(bottom: 15.h),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
       ),

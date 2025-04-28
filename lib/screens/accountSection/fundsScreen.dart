@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/accountSection/FundsAddScreen.dart';
 import 'package:sapphire/screens/accountSection/FundsWithdrawScreen.dart';
-import 'package:sapphire/utils/constWidgets.dart';
 
 class FundsScreen extends StatefulWidget {
   const FundsScreen({super.key});
@@ -75,7 +74,7 @@ class _FundsScreenState extends State<FundsScreen> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 16.h,
+                      height: 12.h,
                     ),
                     Container(
                       width: double.infinity,
@@ -135,6 +134,7 @@ class _FundsScreenState extends State<FundsScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       "Cash Balance",
@@ -154,6 +154,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                   child: Text("+"),
                                 ),
                                 Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       "Pledge Balance",
@@ -260,7 +261,7 @@ class _FundsScreenState extends State<FundsScreen> {
                             alignment: Alignment.centerLeft,
                             child: Padding(
                               padding: EdgeInsets.symmetric(
-                                  vertical: 20.h, horizontal: 16.w),
+                                  vertical: 16.h, horizontal: 16.w),
                               child: Text(
                                 "Total Balance Breakup",
                                 style: TextStyle(
@@ -276,7 +277,7 @@ class _FundsScreenState extends State<FundsScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: 25.h,
+                            height: 16.h,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -301,7 +302,7 @@ class _FundsScreenState extends State<FundsScreen> {
                             ],
                           ),
                           SizedBox(
-                            height: 20.h,
+                            height: 16.h,
                           ),
                         ],
                       ),
@@ -687,14 +688,17 @@ class CustomGaugeChart extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         // Gauge Chart
-        CustomPaint(
-          size: Size(148.w, 80.h), // Reduced width and height
-          painter: GaugeChartPainter(
-            totalBalance: totalBalance,
-            marginUtilized: marginUtilized,
+        Padding(
+          padding: EdgeInsets.only(left: 10.w),
+          child: CustomPaint(
+            size: Size(148.w, 80.h), // Reduced width and height
+            painter: GaugeChartPainter(
+              totalBalance: totalBalance,
+              marginUtilized: marginUtilized,
+            ),
           ),
         ),
-        SizedBox(height: 20.h), // Space between chart and text
+        SizedBox(height: 8.h), // Space between chart and text
         // Margin Utilised Text
         Column(
           children: [
@@ -734,7 +738,7 @@ class GaugeChartPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 4, size.height);
-    final radius = size.width * 0.4; // Reduced radius
+    final radius = size.width * 0.4;
 
     // Calculate the angle for margin utilized
     final double ratio = marginUtilized / totalBalance;

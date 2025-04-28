@@ -136,7 +136,7 @@ class _SelfieVerificationScreenState extends State<SelfieVerificationScreen> {
       _isCapturing = false;
     });
 
-    navi(SelfieConfirmationScreen(imagePath: imagePath.path), context);
+    // navi(SelfieConfirmationScreen(imagePath: imagePath.path), context);
   }
 
   @override
@@ -153,7 +153,10 @@ class _SelfieVerificationScreenState extends State<SelfieVerificationScreen> {
           Colors.grey[500], // FIX: Keep background as earlier (Grey)
       appBar: AppBar(
         backgroundColor: Colors.grey[500], // FIX: Grey AppBar as earlier
-        title: Text("Take a Quick Photo"),
+        title: Text(
+          "Take a Quick Photo",
+          style: TextStyle(fontSize: 16.sp),
+        ),
         centerTitle: true,
       ),
       body: Column(
@@ -205,9 +208,8 @@ class _SelfieVerificationScreenState extends State<SelfieVerificationScreen> {
 
           // Instruction Text
           Container(
-            height: 90.h,
             width: 260.w,
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
             decoration: BoxDecoration(
               color: Colors.grey[400],
               borderRadius: BorderRadius.circular(8.r),
