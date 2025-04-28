@@ -1,14 +1,20 @@
-import 'dart:math';
+// File: congratulationScreen.dart
+// Description: Celebration screen shown after successful account creation in the Sapphire Trading application.
+// This screen displays confetti animation, account details, and provides the option to proceed to login.
+
+import 'dart:math'; // For mathematical operations (used by confetti package)
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:confetti/confetti.dart'; // Import the confetti package
-import 'package:sapphire/screens/home/homeWarpper.dart';
-import 'package:sapphire/utils/constWidgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
+import 'package:confetti/confetti.dart'; // For celebration animation effects
+import 'package:sapphire/screens/home/homeWarpper.dart'; // Home screen (not used directly)
+import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
 
-import '../../main.dart';
-import 'mPinScreen.dart';
+import '../../main.dart'; // App-wide navigation utilities
+import 'mPinScreen.dart'; // Next screen for MPIN setup/login
 
+/// CongratulationsScreen - Celebratory screen shown after successful account setup
+/// Features animated confetti, displays the user's client code, and guides them to login
 class CongratulationsScreen extends StatefulWidget {
   const CongratulationsScreen({super.key});
 
@@ -16,20 +22,25 @@ class CongratulationsScreen extends StatefulWidget {
   State<CongratulationsScreen> createState() => _CongratulationsScreenState();
 }
 
+/// State class for the CongratulationsScreen widget
+/// Manages confetti animation controller and UI rendering
 class _CongratulationsScreenState extends State<CongratulationsScreen> {
+  // Controller for the confetti animation
   late ConfettiController _confettiController;
 
   @override
   void initState() {
     super.initState();
+    // Initialize confetti controller with 2-second duration
     _confettiController =
         ConfettiController(duration: const Duration(seconds: 2));
-    _confettiController
-        .play(); // Automatically play confetti animation on screen load
+    // Automatically play confetti animation when screen loads
+    _confettiController.play();
   }
 
   @override
   void dispose() {
+    // Clean up resources when screen is removed
     _confettiController.dispose();
     super.dispose();
   }
@@ -37,6 +48,7 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // App bar with back button (rarely used on this screen but provides safety net)
       appBar: AppBar(
         leadingWidth: 46,
         leading: Padding(
@@ -49,9 +61,11 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
           ),
         ),
       ),
+      // Stack to overlay confetti animation on top of content
       body: Stack(
         alignment: Alignment.topCenter,
         children: [
+          // Main content container
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 15.w),
             child: Center(
@@ -60,12 +74,15 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
                   SizedBox(
                     height: 8.h,
                   ),
+                  // Congratulations heading with user's name
+                  // Note: {user.Name} appears to be a placeholder that should be replaced with actual user name
                   Text(
                     "Congratulations {user.Name} 🎉 !",
                     style:
-                        TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600),
+                    TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600),
                   ),
                   SizedBox(height: 12.h),
+                  // Success message explaining account setup completion
                   Text(
                     "Your Sapphire account is now set up and ready to go. Time to start your investment journey!",
                     style: TextStyle(
@@ -75,15 +92,19 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 10.h),
+                  // Decorative line separator
                   SizedBox(
                       width: 130.w,
                       height: 15.h,
                       child: Image.asset("assets/images/line.png")),
                   SizedBox(height: 32.h),
+
+                  // Account information card
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 25.w),
                     child: Column(
                       children: [
+                        // Container for client code display
                         Container(
                           decoration: BoxDecoration(
                               color: Color(0xff121413),
@@ -93,18 +114,20 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              // User profile icon/avatar
                               SizedBox(
                                 height: 65.h,
                                 width: 65.w,
                                 child: Image.asset("assets/images/profile.png"),
                               ),
                               SizedBox(height: 30.h),
+                              // Client code display with emphasized styling
                               RichText(
                                 text: TextSpan(
                                     children: [
                                       TextSpan(text: "Your Client Code is"),
                                       TextSpan(
-                                          text: " J08596",
+                                          text: " J08596", // Client ID - should be dynamic in production
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold)),
                                     ],
@@ -112,6 +135,7 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
                                         fontSize: 16.sp,
                                         fontWeight: FontWeight.w400)),
                               ),
+                              // Motivational message for new users
                               Text(
                                 "Get started and make your money\nwork for you!",
                                 textAlign: TextAlign.center,
@@ -125,7 +149,9 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
                       ],
                     ),
                   ),
+                  // Push content above and action button to bottom
                   Spacer(),
+                  // Login button - navigates to MPIN screen for authentication
                   constWidgets.greenButton("Login to Terminal", onTap: () {
                     navi(MpinScreen(), context);
                   }),
@@ -134,17 +160,20 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
               ),
             ),
           ),
+
+          // Confetti animation overlay positioned at the top of the screen
           Align(
               alignment: Alignment.topCenter,
               child: ConfettiWidget(
                 confettiController: _confettiController,
                 blastDirectionality:
-                    BlastDirectionality.explosive, // Ensures uniform spread
-                emissionFrequency: 0.0001, // Set very low to fire all at once
+                BlastDirectionality.explosive, // Ensures uniform spread in all directions
+                emissionFrequency: 0.0001, // Very low frequency to fire all confetti at once
                 numberOfParticles: 100, // Fixed number of confetti pieces
-                gravity: 0.2, // Light gravity for slow fall
-                maxBlastForce: 11, // Adjust for explosion strength
-                minBlastForce: 10,
+                gravity: 0.2, // Light gravity for slower falling confetti
+                maxBlastForce: 11, // Upper limit for explosion strength
+                minBlastForce: 10, // Lower limit for explosion strength (close to max for consistency)
+                // Colorful confetti pieces
                 colors: const [
                   Colors.green,
                   Colors.blue,

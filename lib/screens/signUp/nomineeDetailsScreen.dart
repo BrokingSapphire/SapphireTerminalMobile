@@ -1,27 +1,38 @@
-import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:http/http.dart' as http;
-import '../../main.dart';
-import '../../utils/constWidgets.dart';
-import 'eSignScreen.dart';
+// File: nomineeDetailsScreen.dart
+// Description: Nominee information collection screen in the Sapphire Trading application.
+// This screen allows users to add, edit and allocate percentage shares to nominees for their
+// trading account as per SEBI regulations for securities inheritance.
 
+import 'dart:convert'; // For JSON encoding/decoding
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
+import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // For secure token storage
+import 'package:http/http.dart' as http; // For API requests
+import '../../main.dart'; // App-wide navigation utilities
+import '../../utils/constWidgets.dart'; // Reusable UI components
+import 'eSignScreen.dart'; // Next screen in registration flow
+
+/// NomineeDetailsScreen - Screen for adding account nominees and their share percentages
+/// Allows users to add multiple nominees and specify inheritance distribution percentages
 class NomineeDetailsScreen extends StatefulWidget {
   @override
   _NomineeDetailsScreenState createState() => _NomineeDetailsScreenState();
 }
 
+/// State class for the NomineeDetailsScreen widget
+/// Manages nominee details, share allocation, and submission to backend
 class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
+  // List to store nominees with their details
   List<Map<String, dynamic>> nominees = [
     {
-      "nameController": TextEditingController(),
-      "panController": TextEditingController(),
-      "relation": null,
-      "share": 100.0,
+      "nameController": TextEditingController(), // For nominee name
+      "panController": TextEditingController(), // For nominee PAN
+      "relation": null, // Relationship to account holder
+      "share": 100.0, // Percentage share (default 100% for single nominee)
     }
   ];
 
+  // List of available relationship options for nominees
   final List<String> relations = [
     "Father",
     "Mother",
@@ -33,15 +44,19 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
     "Other"
   ];
 
+  /// Adds a new nominee and recalculates percentage shares
+  /// Divides shares equally among all nominees
   void _addNominee() {
     setState(() {
       int totalNominees = nominees.length + 1;
-      double newShare = 100 / totalNominees;
+      double newShare = 100 / totalNominees; // Equal distribution
 
+      // Update existing nominees' shares
       for (var nominee in nominees) {
         nominee["share"] = newShare;
       }
 
+      // Add new nominee with equal share
       nominees.add({
         "nameController": TextEditingController(),
         "panController": TextEditingController(),
@@ -51,12 +66,16 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
     });
   }
 
+  /// Removes a nominee and redistributes their share to remaining nominees
+  /// @param index Index of the nominee to remove
   void _deleteNominee(int index) {
     if (nominees.length > 1) {
       setState(() {
+        // Get the share of the nominee being removed
         double removedShare = nominees[index]["share"];
         nominees.removeAt(index);
 
+        // Redistribute the removed share among remaining nominees
         if (nominees.isNotEmpty) {
           double additionalShare = removedShare / nominees.length;
           for (var nominee in nominees) {
@@ -67,17 +86,22 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
     }
   }
 
+  /// Adjusts share percentage for a specific nominee and recalculates others proportionally
+  /// @param index Index of the nominee whose share is being adjusted
+  /// @param newValue New share percentage value
   void _adjustShare(int index, double newValue) {
     setState(() {
-      double totalShare = 100.0;
+      double totalShare = 100.0; // Total must always be 100%
       double remainingShare = totalShare - newValue;
-      nominees[index]["share"] = newValue;
+      nominees[index]["share"] = newValue; // Set new value for selected nominee
 
+      // Calculate sum of other nominees' current shares
       double sumOtherShares = 0;
       for (int i = 0; i < nominees.length; i++) {
         if (i != index) sumOtherShares += nominees[i]["share"];
       }
 
+      // Redistribute remaining share proportionally among other nominees
       for (int i = 0; i < nominees.length; i++) {
         if (i != index) {
           double proportionalShare =
@@ -88,11 +112,13 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
     });
   }
 
+  /// Shows a bottom sheet to select relationship for a nominee
+  /// @param index Index of the nominee to set relationship for
   void _selectRelation(int index) {
     showModalBottomSheet(
       backgroundColor: Colors.black,
       context: context,
-      isScrollControlled: true,
+      isScrollControlled: true, // Allow flexible sizing of bottom sheet
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(15.r)),
       ),
@@ -103,12 +129,15 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Bottom sheet title
               Text("Nominee is my",
                   style: TextStyle(
                       fontSize: 20.sp,
                       color: Colors.white,
                       fontWeight: FontWeight.bold)),
               SizedBox(height: 10.h),
+
+              // List of relationship options
               Expanded(
                 child: ListView.separated(
                   itemCount: relations.length,
@@ -120,6 +149,7 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
                     return GestureDetector(
                       onTap: () {
                         setState(() {
+                          // Set selected relation and close bottom sheet
                           nominees[index]["relation"] = relations[i];
                         });
                         Navigator.pop(context);
@@ -142,27 +172,35 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
     );
   }
 
+  /// Submits nominee details to the backend API
+  /// Collects all nominee information and sends to server
   Future<void> _submitNominees() async {
+    // Retrieve authentication token from secure storage
     final FlutterSecureStorage secureStorage = FlutterSecureStorage();
     final token = await secureStorage.read(key: 'auth_token');
 
+    // Prepare nominee data for API submission
     final List<Map<String, dynamic>> nomineePayload = nominees.map((nominee) {
       return {
         "name": nominee["nameController"].text.trim(),
-        "gov_id": nominee["panController"].text.trim(),
+        "gov_id": nominee["panController"].text.trim(), // PAN as government ID
         "relation": nominee["relation"] ?? "",
-        "share": nominee["share"].toInt()
+        "share": nominee["share"].toInt() // Convert to integer percentage
       };
     }).toList();
 
+    // Create complete request payload
     final body = {"step": "add_nominees", "nominees": nomineePayload};
 
+    // API endpoint for nominee submission
     final url = Uri.parse(
       "https://api.backend.sapphirebroking.com:8443/api/v1/auth/signup/checkpoint",
     );
 
+    // Debug log of request payload
     print("[DEBUG] Payload: ${jsonEncode(body)}");
 
+    // Show loading indicator during API call
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -172,6 +210,7 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
     );
 
     try {
+      // Send API request
       final response = await http.post(
         url,
         headers: {
@@ -182,22 +221,28 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
         body: jsonEncode(body),
       );
 
+      // Dismiss loading indicator
       Navigator.of(context).pop();
 
+      // Debug logs for response
       print("[DEBUG] Status: ${response.statusCode}");
       print("[DEBUG] Body: ${response.body}");
 
+      // Handle API response
       if (response.statusCode == 200 || response.statusCode == 201) {
+        // Success case
         constWidgets.snackbar(
             "Nominees added successfully!", Colors.green, context);
-        navi(eSignScreen(), context);
+        navi(eSignScreen(), context); // Navigate to E-Sign screen
       } else {
+        // Error case - extract error message from response if available
         final msg = jsonDecode(response.body)['error']?['message'] ??
             'Something went wrong.';
         constWidgets.snackbar(msg, Colors.red, context);
       }
     } catch (e) {
-      Navigator.of(context).pop();
+      // Handle exceptions during API call
+      Navigator.of(context).pop(); // Dismiss loading indicator
       print("[EXCEPTION] $e");
       constWidgets.snackbar("Error: $e", Colors.red, context);
     }
@@ -207,6 +252,7 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
   Widget build(BuildContext context) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
+      // App bar with back button
       appBar: AppBar(
         leadingWidth: 46,
         leading: Padding(
@@ -219,13 +265,17 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
       ),
       body: Column(
         children: [
+          // Header section with title and progress bar
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 15.w),
             child: Column(
               children: [
                 SizedBox(height: 8.h),
+                // Progress indicator showing current step (1 of 8)
                 constWidgets.topProgressBar(1, 8, context),
                 SizedBox(height: 24.h),
+
+                // Title row with skip option
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -234,17 +284,20 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
                             color: Colors.white,
                             fontSize: 18.sp,
                             fontWeight: FontWeight.bold)),
+                    // Skip button - allows bypassing nominee addition
                     GestureDetector(
                       onTap: () => navi(eSignScreen(), context),
                       child: Text("Skip",
                           style:
-                              TextStyle(color: Colors.green, fontSize: 16.sp)),
+                          TextStyle(color: Colors.green, fontSize: 16.sp)),
                     ),
                   ],
                 ),
               ],
             ),
           ),
+
+          // Scrollable list of nominee cards
           Expanded(
             child: ListView.builder(
               itemCount: nominees.length,
@@ -253,17 +306,23 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
               },
             ),
           ),
+
+          // Add nominee button at bottom of list
           _buildAddNomineeButton(),
           SizedBox(height: 20.h),
         ],
       ),
+
+      // Bottom navigation area with continue button and help option
       bottomNavigationBar: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.w),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Continue button - submits nominee details
             constWidgets.greenButton("Continue", onTap: _submitNominees),
             SizedBox(height: 10.h),
+            // Help button
             Center(child: constWidgets.needHelpButton(context)),
           ],
         ),
@@ -271,6 +330,10 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
     );
   }
 
+  /// Builds a nominee card with input fields and share slider
+  /// @param index Index of the nominee in the list
+  /// @param isDark Whether the app is in dark mode
+  /// @return A container widget with all nominee details inputs
   Widget _buildNomineeCard(int index, bool isDark) {
     return Container(
       // margin: EdgeInsets.only(bottom: 15.h),
@@ -280,11 +343,13 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
       ),
       child: Column(
         children: [
+          // Header with nominee number and delete button
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Nominee ${index + 1}",
                   style: TextStyle(color: Colors.white, fontSize: 17.sp)),
+              // Show delete button only if there's more than one nominee
               if (nominees.length > 1)
                 IconButton(
                   icon: Icon(Icons.close, color: Colors.green, size: 22.sp),
@@ -293,13 +358,19 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
             ],
           ),
           SizedBox(height: 16.h),
+
+          // Nominee name input field
           constWidgets.textField("Name", nominees[index]["nameController"],
               isDark: isDark),
           SizedBox(height: 12.h),
+
+          // Nominee PAN input field
           constWidgets.textField(
               "Nominee PAN", nominees[index]["panController"],
               isDark: isDark),
           SizedBox(height: 12.h),
+
+          // Relationship selector dropdown
           GestureDetector(
             onTap: () => _selectRelation(index),
             child: Container(
@@ -312,7 +383,7 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    nominees[index]["relation"] ?? "Relation",
+                    nominees[index]["relation"] ?? "Relation", // Show selected relation or placeholder
                     style: TextStyle(color: Colors.white, fontSize: 16.sp),
                   ),
                   Icon(Icons.arrow_drop_down, color: Colors.white),
@@ -321,6 +392,8 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
             ),
           ),
           SizedBox(height: 16.h),
+
+          // Share percentage display and adjustment
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -329,6 +402,7 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
                       color: Colors.white,
                       fontSize: 16.sp,
                       fontWeight: FontWeight.bold)),
+              // Display current share percentage in badge
               Container(
                 width: 40.w,
                 padding: EdgeInsets.symmetric(vertical: 8.h),
@@ -337,20 +411,24 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: Center(
-                  child: Text("${nominees[index]["share"].toInt()}%",
+                  child: Text("${nominees[index]["share"].toInt()}%", // Integer percentage
                       style: TextStyle(color: Colors.white, fontSize: 14.sp)),
                 ),
               ),
             ],
           ),
+          // Slider for adjusting nominee's share percentage
           _buildShareSlider(index),
           SizedBox(height: 24.h),
-          Divider(),
+          Divider(), // Separator between nominees
         ],
       ),
     );
   }
 
+  /// Builds a slider for adjusting nominee's share percentage
+  /// @param index Index of the nominee to adjust share for
+  /// @return A slider widget with appropriate styling and behavior
   Widget _buildShareSlider(int index) {
     return Slider(
       value: nominees[index]["share"],
@@ -362,6 +440,8 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
     );
   }
 
+  /// Builds the add nominee button
+  /// @return A gesture detector with icon and text for adding nominees
   Widget _buildAddNomineeButton() {
     return GestureDetector(
       onTap: _addNominee,

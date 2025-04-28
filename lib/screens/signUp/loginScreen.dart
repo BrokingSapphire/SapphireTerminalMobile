@@ -1,33 +1,49 @@
+// File: loginScreen.dart
+// Description: Implements the login screen for the Sapphire Trading application.
+// This screen handles user authentication by collecting client ID and password.
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/home/watchlist/disclosure.dart';
-import 'package:sapphire/utils/constWidgets.dart';
-import 'package:sapphire/utils/naviWithoutAnimation.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
+import 'package:flutter_svg/svg.dart'; // For SVG rendering support
+import 'package:sapphire/main.dart'; // Contains app-wide utilities
+import 'package:sapphire/screens/home/watchlist/disclosure.dart'; // Next screen after successful login
+import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
+import 'package:sapphire/utils/naviWithoutAnimation.dart'; // Custom navigation utility
 
+/// LoginScreen - Authentication screen that collects user credentials
+/// Allows users to enter their client ID and password to access the application
 class LoginScreen extends StatefulWidget {
+  /// Standard constructor with optional key parameter
   const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
+/// State class for the LoginScreen widget
+/// Manages the form state and UI interactions
 class _LoginScreenState extends State<LoginScreen> {
+  // Form controllers for user input fields
   TextEditingController clientId = TextEditingController();
   TextEditingController password = TextEditingController();
-  bool rememberMe = false;
-  bool isPasswordVisible = false;
+
+  // State variables for UI toggles
+  bool rememberMe = false; // Checkbox state for remembering credentials
+  bool isPasswordVisible = false; // Toggle for password visibility
 
   @override
   Widget build(BuildContext context) {
+    // Detect if the app is running in dark mode to adjust UI elements accordingly
     final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return SafeArea(
       child: Scaffold(
+        // Allow UI to resize when keyboard appears
         resizeToAvoidBottomInset: true,
         body: Center(
           child: GestureDetector(
+            // Dismiss keyboard when tapping outside input fields
             onTap: () {
               FocusScope.of(context).unfocus();
             },
@@ -35,37 +51,45 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0.w),
               child: Column(
-                // mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Expanded(
                     child: SingleChildScrollView(
+                      // Use bouncing scroll physics for a better user experience
                       physics: BouncingScrollPhysics(),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          // Top spacing
                           SizedBox(height: 40.h),
+
+                          // App logo
                           Image.asset("assets/images/whiteLogo.png",
                               scale: 0.7),
                           SizedBox(height: 30.h),
+
+                          // Welcome header section
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                // Main welcome title
                                 Text(
                                   "Welcome",
                                   style: TextStyle(
                                       color:
-                                          isDark ? Colors.white : Colors.black,
+                                      isDark ? Colors.white : Colors.black,
                                       fontSize: 34.sp,
                                       fontWeight: FontWeight.w600),
                                 ),
                                 SizedBox(height: 17.h),
+
+                                // Subtitle
                                 Text(
                                   "Login to your account",
                                   style: TextStyle(
                                       color:
-                                          isDark ? Colors.white : Colors.black,
+                                      isDark ? Colors.white : Colors.black,
                                       fontSize: 21.sp,
                                       fontWeight: FontWeight.w400),
                                 ),
@@ -74,7 +98,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           SizedBox(height: 42.h),
 
-                          /// Client ID Field
+                          /// Client ID input field
+                          /// Collects the user's unique client identifier
                           TextFormField(
                             controller: clientId,
                             keyboardType: TextInputType.text,
@@ -91,25 +116,29 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ? const Color(0xFFC9CACC)
                                       : const Color(0xFF6B7280),
                                   fontSize: 15.sp),
+                              // Apply rounded corner style to text field
                               border: OutlineInputBorder(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(30.r)),
+                                BorderRadius.all(Radius.circular(30.r)),
                               ),
+                              // Style for the field when not focused
                               enabledBorder: OutlineInputBorder(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(30.r)),
+                                BorderRadius.all(Radius.circular(30.r)),
                                 borderSide:
-                                    BorderSide(color: Color(0XFF2F2F2F)),
+                                BorderSide(color: Color(0XFF2F2F2F)),
                               ),
+                              // Style for the field when focused
                               focusedBorder: OutlineInputBorder(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(30.r)),
+                                BorderRadius.all(Radius.circular(30.r)),
                                 borderSide:
-                                    BorderSide(color: Colors.green, width: 2.0),
+                                BorderSide(color: Colors.green, width: 2.0),
                               ),
+                              // User icon at start of input field
                               prefixIcon: Padding(
                                 padding:
-                                    EdgeInsets.only(left: 16.w, right: 12.w),
+                                EdgeInsets.only(left: 16.w, right: 12.w),
                                 child: SvgPicture.asset(
                                   'assets/svgs/user.svg',
                                   height: 20.h,
@@ -120,11 +149,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                               prefixIconConstraints:
-                                  BoxConstraints(minWidth: 40.w),
+                              BoxConstraints(minWidth: 40.w),
                             ),
                             style: TextStyle(
                                 color: isDark ? Colors.white : Colors.black,
                                 fontSize: 16.sp),
+                            // Input validation
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your Client ID';
@@ -134,10 +164,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           SizedBox(height: 24.h),
 
-                          /// Password Field
-                          // constWidgets.textField("Password", password),
+                          /// Password input field with visibility toggle
+                          /// Securely collects the user's password with option to show/hide
                           TextFormField(
                             controller: password,
+                            // Toggle between visible and obscured text
                             obscureText: !isPasswordVisible,
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
@@ -154,25 +185,29 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ? const Color(0xFFC9CACC)
                                       : const Color(0xFF6B7280),
                                   fontSize: 15.sp),
+                              // Apply rounded corner style to text field
                               border: OutlineInputBorder(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(30.r)),
+                                BorderRadius.all(Radius.circular(30.r)),
                               ),
+                              // Style for the field when not focused
                               enabledBorder: OutlineInputBorder(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(30.r)),
+                                BorderRadius.all(Radius.circular(30.r)),
                                 borderSide:
-                                    BorderSide(color: Color(0XFF2F2F2F)),
+                                BorderSide(color: Color(0XFF2F2F2F)),
                               ),
+                              // Style for the field when focused
                               focusedBorder: OutlineInputBorder(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(30.r)),
+                                BorderRadius.all(Radius.circular(30.r)),
                                 borderSide:
-                                    BorderSide(color: Colors.green, width: 2.0),
+                                BorderSide(color: Colors.green, width: 2.0),
                               ),
+                              // Key icon at start of input field
                               prefixIcon: Padding(
                                 padding:
-                                    EdgeInsets.only(left: 16.w, right: 12.w),
+                                EdgeInsets.only(left: 16.w, right: 12.w),
                                 child: SvgPicture.asset(
                                   'assets/svgs/key.svg',
                                   height: 20.h,
@@ -183,12 +218,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                               prefixIconConstraints:
-                                  BoxConstraints(minWidth: 40.w),
+                              BoxConstraints(minWidth: 40.w),
 
-                              /// 👁️ Eye Toggle Button
+                              /// Eye icon toggle button for password visibility
                               suffixIcon: GestureDetector(
                                 onTap: () {
                                   setState(() {
+                                    // Toggle password visibility state
                                     isPasswordVisible = !isPasswordVisible;
                                   });
                                 },
@@ -196,8 +232,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   padding: EdgeInsets.only(right: 16.w),
                                   child: SvgPicture.asset(
                                     isPasswordVisible
-                                        ? 'assets/svgs/eye-off.svg' // 👁️ closed
-                                        : 'assets/svgs/eye.svg', // 👁️ open
+                                        ? 'assets/svgs/eye-off.svg' // Eye closed when password is visible
+                                        : 'assets/svgs/eye.svg', // Eye open when password is hidden
                                     height: 20.h,
                                     width: 20.w,
                                     color: isDark
@@ -207,10 +243,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                               suffixIconConstraints:
-                                  BoxConstraints(minWidth: 40.w),
+                              BoxConstraints(minWidth: 40.w),
                             ),
                             style:
-                                TextStyle(color: Colors.white, fontSize: 16.sp),
+                            TextStyle(color: Colors.white, fontSize: 16.sp),
+                            // Input validation
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your password';
@@ -219,12 +256,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                           ),
 
-                          /// Remember Me
+                          /// Remember Me checkbox with label
+                          /// Allows users to save their credentials for future logins
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 5.w),
                             child: Align(
                               child: Row(
                                 children: [
+                                  // Clickable row that toggles the checkbox
                                   GestureDetector(
                                     behavior: HitTestBehavior.opaque,
                                     onTap: () {
@@ -235,10 +274,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
+                                        // Checkbox component with rounded corners
                                         Checkbox(
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(2.r),
+                                            BorderRadius.circular(2.r),
                                           ),
                                           value: rememberMe,
                                           onChanged: (val) {
@@ -248,6 +288,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           },
                                         ),
                                         SizedBox(width: 2.w),
+                                        // "Remember me" text label
                                         Padding(
                                           padding: EdgeInsets.symmetric(
                                               vertical: 15.h),
@@ -264,6 +305,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ],
                                     ),
                                   ),
+                                  // Flexible space to push elements to the left
                                   Expanded(child: SizedBox()),
                                 ],
                               ),
@@ -271,17 +313,22 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           SizedBox(height: 10.h),
 
-                          /// Continue Button
+                          /// Login button
+                          /// Processes the login attempt and navigates to next screen on success
                           constWidgets.greenButton("Continue", onTap: () {
+                            // Navigate to the Disclosure screen without animation
                             naviWithoutAnimation(context, Disclosure());
                           }),
                           SizedBox(height: 24.h),
 
-                          /// Trouble logging in
+                          /// Password recovery / Help option
+                          /// Provides assistance for users who can't access their accounts
                           Align(
                             alignment: Alignment.centerRight,
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                // TODO: Implement account recovery flow
+                              },
                               child: Text(
                                 "Trouble logging in?",
                                 style: TextStyle(
@@ -296,6 +343,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(
                             height: 110.h,
                           ),
+
+                          /// Footer with legal disclaimer
                           Padding(
                             padding: const EdgeInsets.only(bottom: 25.0),
                             child: Text(
@@ -309,9 +358,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-
-                  /// Bottom Spacer & Disclaimer (unchanged)
-                  // Spacer(),
                 ],
               ),
             ),

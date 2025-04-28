@@ -1,18 +1,31 @@
-import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:http/http.dart' as http;
-import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/signUp/manualLinkingScreen.dart';
-import 'package:sapphire/screens/signUp/linkWithUpiScreen.dart';
-import '../../utils/constWidgets.dart';
+// File: linkBankScreen.dart
+// Description: Bank account linking options screen in the Sapphire Trading application.
+// This screen provides users with different methods to link their bank account,
+// either via UPI or by entering bank details manually.
 
+import 'dart:convert'; // For JSON encoding/decoding
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
+import 'package:flutter_svg/svg.dart'; // For SVG rendering support
+import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // For secure token storage
+import 'package:http/http.dart' as http; // For API requests
+import 'package:sapphire/main.dart'; // App-wide navigation utilities
+import 'package:sapphire/screens/signUp/manualLinkingScreen.dart'; // Screen for manual bank linking
+import 'package:sapphire/screens/signUp/linkWithUpiScreen.dart'; // Screen for UPI linking
+import '../../utils/constWidgets.dart'; // Reusable UI components
+
+/// linkBankScreen - Screen that presents bank account linking options
+/// Allows users to choose between linking their bank via UPI or manual entry
+/// Note: Class name should be capitalized as per Dart conventions (LinkBankScreen)
 class linkBankScreen extends StatelessWidget {
+  // Secure storage for authentication tokens
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
+  /// Initiates the bank validation process based on selected method
+  /// @param type The validation type ("upi" or "bank")
+  /// @param context The current build context
   Future<void> initiateValidation(String type, BuildContext context) async {
+    // API implementation is commented out in original code
     // final token = await secureStorage.read(key: 'auth_token');
 
     // final url = Uri.parse(
@@ -23,6 +36,7 @@ class linkBankScreen extends StatelessWidget {
     //   "validation_type": type, // "upi" or "bank"
     // };
 
+    // Show loading indicator while processing
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -32,6 +46,7 @@ class linkBankScreen extends StatelessWidget {
     );
 
     try {
+      // Commented out actual API call implementation
       // final response = await http.post(
       //   url,
       //   headers: {
@@ -42,14 +57,20 @@ class linkBankScreen extends StatelessWidget {
       //   body: jsonEncode(body),
       // );
 
+      // Simulated delay (for development/testing)
       Future.delayed(Duration(seconds: 2));
 
-      Navigator.of(context).pop(); // Close loader
+      // Dismiss loading indicator
+      Navigator.of(context).pop();
 
+      // Commented out conditional response handling
       // if (response.statusCode == 200 || response.statusCode == 201) {
       //   constWidgets.snackbar("Validation started", Colors.green, context);
       //   if (type == "upi") {
+
+      // Currently hardcoded to navigate to UPI screen regardless of selection
       navi(linkWithUpiScreen(), context);
+
       //   } else {
       //     navi(ManualLinkingScreen(), context);
       //   }
@@ -59,6 +80,7 @@ class linkBankScreen extends StatelessWidget {
       //   constWidgets.snackbar(msg, Colors.red, context);
       // }
     } catch (e) {
+      // Handle and display any errors
       Navigator.of(context).pop();
       constWidgets.snackbar("Error: $e", Colors.red, context);
     }
@@ -67,6 +89,7 @@ class linkBankScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // App bar with back button
       appBar: AppBar(
         leadingWidth: 46,
         leading: Padding(
@@ -74,7 +97,7 @@ class linkBankScreen extends StatelessWidget {
           child: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(context); // Navigate back to previous screen
             },
           ),
         ),
@@ -85,16 +108,23 @@ class linkBankScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 8.h),
+            // Progress indicator showing current step in registration flow (step 1 of 5)
             constWidgets.topProgressBar(1, 5, context),
             SizedBox(height: 24.h),
+
+            // Screen title
             Text("Link your bank account",
                 style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold)),
             SizedBox(height: 16.h),
+
+            // Explanatory text about bank account linking purpose
             Text(
               "To finish opening your account,  you'll need to link your bank account, which will be used for your investments. Once linked, we'll verify it to ensure it belongs to you.",
               style: TextStyle(fontSize: 15.sp, color: Color(0xffEBEEF5)),
             ),
             SizedBox(height: 16.h),
+
+            // UPI linking option (recommended method)
             _buildBankOption(
               title2: "(recommended)",
               svgAssetPath: "assets/images/upi.svg",
@@ -102,13 +132,19 @@ class linkBankScreen extends StatelessWidget {
               onTap: () => initiateValidation("upi", context),
             ),
             SizedBox(height: 12.h),
+
+            // Manual bank details entry option
             _buildBankOption(
               title2: "",
               svgAssetPath: "assets/images/bank.svg",
               title: "Enter Bank details manually",
               onTap: () => initiateValidation("bank", context),
             ),
+
+            // Push help button to bottom
             Spacer(),
+
+            // Help button for user assistance
             Center(child: constWidgets.needHelpButton(context)),
           ],
         ),
@@ -116,6 +152,13 @@ class linkBankScreen extends StatelessWidget {
     );
   }
 
+  /// Creates a selectable bank linking option card
+  /// @param svgAssetPath Path to the SVG icon for the option
+  /// @param title Main title text for the option
+  /// @param title2 Secondary title text (e.g., "recommended")
+  /// @param subtitle Optional subtitle text (not used in current implementation)
+  /// @param onTap Callback function when option is selected
+  /// @return A styled, tappable container widget representing the linking option
   Widget _buildBankOption({
     required String svgAssetPath,
     required String title,
@@ -133,16 +176,20 @@ class linkBankScreen extends StatelessWidget {
         ),
         child: Row(
           children: [
+            // Option icon (UPI or bank)
             SvgPicture.asset(
               svgAssetPath,
               width: 20.w,
               height: 20.h,
             ),
             SizedBox(width: 16.w),
+
+            // Option text content
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Title with optional secondary text (different styling)
                   RichText(
                     text: TextSpan(
                       children: [
@@ -165,12 +212,14 @@ class linkBankScreen extends StatelessWidget {
                       ],
                     ),
                   ),
+                  // Optional subtitle (currently not used)
                   if (subtitle != null)
                     Text(subtitle,
                         style: TextStyle(fontSize: 14.sp, color: Colors.green)),
                 ],
               ),
             ),
+            // Right arrow indicator
             Icon(Icons.arrow_forward_ios, color: Colors.white, size: 20),
           ],
         ),

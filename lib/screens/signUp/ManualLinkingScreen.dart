@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:sapphire/screens/signUp/ConfirmBankDetails.dart';
+import 'package:sapphire/screens/signUp/confirmBankDetails.dart';
 import 'package:sapphire/screens/signUp/linkWithUpiScreen.dart';
 import '../../main.dart';
 import '../../utils/constWidgets.dart';

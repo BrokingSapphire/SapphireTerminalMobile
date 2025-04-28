@@ -1,16 +1,25 @@
+// File: ipvScreen.dart
+// Description: In-Person Verification (IPV) screen in the Sapphire Trading application.
+// This screen introduces users to the IPV process where they need to take a selfie
+// for identity verification as required by SEBI regulations.
+
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sapphire/screens/signUp/selfieCameraScreen.dart';
-import 'package:sapphire/screens/signUp/segmentSelectionScreen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
+import 'package:flutter_svg/flutter_svg.dart'; // For SVG rendering support
+import 'package:sapphire/screens/signUp/selfieCameraScreen.dart'; // Next screen for taking selfie
+import 'package:sapphire/screens/signUp/segmentSelectionScreen.dart'; // Not used directly
 
-import '../../main.dart';
-import '../../utils/constWidgets.dart';
+import '../../main.dart'; // App-wide navigation utilities
+import '../../utils/constWidgets.dart'; // Reusable UI components
 
+/// ipvScreen - Introduction screen for In-Person Verification process
+/// Explains the IPV requirement and prepares users for selfie verification
+/// Note: Class name should be capitalized as per Dart conventions (IpvScreen)
 class ipvScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // App bar with back button
       appBar: AppBar(
         leadingWidth: 46,
         leading: Padding(
@@ -18,7 +27,7 @@ class ipvScreen extends StatelessWidget {
           child: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(context); // Navigate back to previous screen
             },
           ),
         ),
@@ -31,17 +40,25 @@ class ipvScreen extends StatelessWidget {
             SizedBox(
               height: 8.h,
             ),
+            // Progress indicator showing current step in registration flow (step 1 of 6)
             constWidgets.topProgressBar(1, 6, context),
             SizedBox(
               height: 24.h,
             ),
+            // Screen title - explains the purpose of this verification step
             Text("In-Person Verification (IPV)",
                 style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold)),
             SizedBox(height: 12.h),
+
+            // Visual representation of IPV process (illustration)
             Center(
                 child:
-                    Image.asset("assets/images/ipvscreen.png", height: 200.h)),
+                Image.asset("assets/images/ipvscreen.png", height: 200.h)),
+
+            // Push content to top and instructions/button to bottom
             Spacer(),
+
+            // Instruction container with important selfie guidelines
             Container(
               decoration: BoxDecoration(
                 color: Colors.grey.shade900,
@@ -51,6 +68,7 @@ class ipvScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
+                    // Information icon
                     SvgPicture.asset(
                       "assets/images/Info.svg",
                       height: 24.h,
@@ -59,6 +77,7 @@ class ipvScreen extends StatelessWidget {
                     SizedBox(
                       width: 15.w,
                     ),
+                    // Instruction text
                     Flexible(
                       child: Text(
                         "Please take a photo where your face is clearly visible",
@@ -71,10 +90,14 @@ class ipvScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 16.h),
+
+            // Continue button - navigates to selfie capture screen
             constWidgets.greenButton("Continue", onTap: () {
               navi(SelfieVerificationScreen(), context);
             }),
             SizedBox(height: 10.h),
+
+            // Help button for user assistance
             Center(
               child: Center(child: constWidgets.needHelpButton(context)),
             ),

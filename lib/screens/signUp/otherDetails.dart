@@ -1,12 +1,20 @@
-import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:http/http.dart' as http;
-import 'package:sapphire/screens/signUp/linkBankScreen.dart';
-import '../../utils/constWidgets.dart';
-import '../../main.dart';
+// File: otherDetails.dart
+// Description: Other details collection screen in the Sapphire Trading application.
+// This screen collects additional regulatory information including occupation, income range,
+// and politically exposed person (PEP) status as required by SEBI and AML regulations.
 
+import 'dart:convert'; // For JSON encoding/decoding
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
+import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // For secure token storage
+import 'package:http/http.dart' as http; // For API requests
+import 'package:sapphire/screens/signUp/linkBankScreen.dart'; // Next screen in registration flow
+import '../../utils/constWidgets.dart'; // Reusable UI components
+import '../../main.dart'; // App-wide navigation utilities
+
+/// Otherdetails - Screen for collecting additional regulatory information
+/// Gathers occupation, income level, and politically exposed person status data
+/// Note: Class name should follow Dart conventions (OtherDetails)
 class Otherdetails extends StatefulWidget {
   const Otherdetails({super.key});
 
@@ -14,14 +22,20 @@ class Otherdetails extends StatefulWidget {
   State<Otherdetails> createState() => _OtherdetailsScreenState();
 }
 
+/// State class for the Otherdetails widget
+/// Manages user selections and API submission
 class _OtherdetailsScreenState extends State<Otherdetails> {
+  // Secure storage for authentication token
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
+  // Selection state variables
   String? selectedExperience;
   String? selectedIncome;
   String? selectedSettlement;
-
   String? selectedPEP;
+  String? selectedOccupation;
+
+  // Mapping of display income ranges to API values
   final Map<String, String> incomeMap = {
     "<1 Lakh": "le_1_Lakh",
     "1 Lakh - 5 Lakh": "1_5_Lakh",
@@ -31,11 +45,16 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
     "> 1 Crore": "Ge_1_Cr",
   };
 
+  /// Computed property to check if all required selections are made
+  /// Used to enable/disable the continue button
   bool get isFormComplete =>
       selectedExperience != null &&
-      selectedIncome != null &&
-      selectedSettlement != null;
+          selectedIncome != null &&
+          selectedSettlement != null;
 
+  /// Updates selection state for a given category
+  /// @param category The field category being updated ('experience', 'income', 'settlement', or 'PEP')
+  /// @param value The selected value for the category
   void _selectOption(String category, String value) {
     setState(() {
       if (category == "experience") {
@@ -44,22 +63,30 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
         selectedIncome = value;
       } else if (category == "settlement") {
         selectedSettlement = value;
+      } else if (category == "PEP") {
+        selectedPEP = value;
       }
     });
   }
 
+  /// Submits the collected details to the backend API
+  /// Sends occupation, income, and settlement preference to server
   Future<void> submitDetails() async {
+    // Retrieve authentication token from secure storage
     final token = await secureStorage.read(key: 'auth_token');
 
+    // API endpoint for submitting account details
     final url = Uri.parse(
         "https://api.backend.sapphirebroking.com:8443/api/v1/auth/signup/checkpoint");
 
+    // Prepare request payload
     final body = {
       "step": "account_detail",
-      "annual_income": incomeMap[selectedIncome] ?? selectedIncome,
+      "annual_income": incomeMap[selectedIncome] ?? selectedIncome, // Map display value to API value
       "settlement": selectedSettlement,
     };
 
+    // Show loading indicator during API call
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -69,6 +96,7 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
     );
 
     try {
+      // Send API request
       final response = await http.post(
         url,
         headers: {
@@ -79,31 +107,39 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
         body: jsonEncode(body),
       );
 
-      Navigator.of(context).pop(); // Close loading
+      // Dismiss loading indicator
+      Navigator.of(context).pop();
 
+      // Handle API response
       if (response.statusCode == 200 || response.statusCode == 201) {
+        // Success case
         constWidgets.snackbar("Account details saved!", Colors.green, context);
-        navi(linkBankScreen(), context);
+        navi(linkBankScreen(), context); // Navigate to bank linking screen
       } else {
+        // Error case - extract error message if available
         final msg = jsonDecode(response.body)['error']?['message'] ??
             'Failed to save details';
         constWidgets.snackbar(msg, Colors.red, context);
       }
     } catch (e) {
+      // Handle exceptions during API call
       Navigator.of(context).pop();
       constWidgets.snackbar("Error: $e", Colors.red, context);
     }
   }
 
-  String? selectedOccupation;
-
+  /// Updates the selected occupation
+  /// @param value The selected occupation
   void _selectOccupation(String value) {
     setState(() => selectedOccupation = value);
   }
 
   @override
   Widget build(BuildContext context) {
+    // Determine if app is in dark mode
     final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+
+    // Calculate width for choice chips based on screen size
     double chipWidth = MediaQuery.of(context).size.width / 3 - 20;
 
     return Scaffold(
@@ -114,19 +150,23 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 8.h),
+            // Progress indicator showing current step (1 of 4)
             constWidgets.topProgressBar(1, 4, context),
             SizedBox(height: 24.h),
+
+            // Screen title
             Text(
               "Other Details",
               style: TextStyle(fontSize: 21.sp, fontWeight: FontWeight.w600),
             ),
             SizedBox(height: 16.h),
 
-            /// Trading Experience
-
+            /// Occupation selection section
             Text("Occupation",
                 style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500)),
             SizedBox(height: 16.h),
+
+            // Wrap widget creates a flowing grid of occupation options
             Wrap(
               spacing: 12,
               runSpacing: 12,
@@ -141,24 +181,26 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
                 "Other"
               ]
                   .map((item) => InkWell(
-                        onTap: () => _selectOccupation(item),
-                        child: constWidgets.choiceChip(
-                            item,
-                            selectedOccupation == item,
-                            context,
-                            chipWidth,
-                            isDark),
-                      ))
+                onTap: () => _selectOccupation(item),
+                child: constWidgets.choiceChip(
+                    item,
+                    selectedOccupation == item,
+                    context,
+                    chipWidth,
+                    isDark),
+              ))
                   .toList(),
             ),
             SizedBox(height: 24.h),
 
-            /// Settlement Preference
+            /// Politically Exposed Person (PEP) section
             Text(
               "Are you a Politically Exposed Person (PEP)?",
               style: TextStyle(fontSize: 17.sp, color: Color(0xffEBEEF5)),
             ),
             SizedBox(height: 12.h),
+
+            // Yes/No options for PEP status
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -167,17 +209,22 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
                 _buildSelectableChip("PEP", "No", 106.w),
               ],
             ),
+
+            // Push buttons to bottom of screen
             const Spacer(),
 
             /// Continue Button
+            // Original implementation with conditional onTap
             // constWidgets.greenButton(
             //   "Continue",
             //   onTap: isFormComplete ? submitDetails : null,
             // ),
+
+            // Current implementation (note: missing onTap parameter)
             constWidgets.greenButton('Continue'),
             SizedBox(height: 10.h),
 
-            /// Need Help Button
+            /// Help button for user assistance
             Center(child: constWidgets.needHelpButton(context)),
           ],
         ),
@@ -185,6 +232,12 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
     );
   }
 
+  /// Builds a selectable choice chip for a category option
+  /// @param category The field category ('experience', 'income', 'settlement')
+  /// @param value The display value for the chip
+  /// @param width The width for the chip
+  /// @param isDark Whether the app is in dark mode
+  /// @return A tappable choice chip widget
   Widget _buildChip(String category, String value, double width, bool isDark) {
     final bool isSelected =
         (category == "experience" && selectedExperience == value) ||
@@ -203,6 +256,11 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
     );
   }
 
+  /// Builds a selectable chip with fixed styling for Yes/No selections
+  /// @param category The field category ('Settlement' or 'PEP')
+  /// @param value The display value for the chip
+  /// @param width The width for the chip
+  /// @return A tappable choice chip widget
   Widget _buildSelectableChip(String category, String value, double width) {
     bool isSelected =
         (category == "Settlement" && selectedSettlement == value) ||
