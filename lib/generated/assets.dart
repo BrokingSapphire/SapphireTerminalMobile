@@ -201,8 +201,8 @@ class Assets {
   static const String signUpSegmentSelectionScreen = 'lib/screens/signUp/segmentSelectionScreen.dart';
   static const String signUpSelfieCameraScreen = 'lib/screens/signUp/selfieCameraScreen.dart';
   static const String signUpSelfieConfirmationScreen = 'lib/screens/signUp/SelfieConfirmationScreen.dart';
-  static const String signUpSignCanvaScreen = 'lib/screens/signUp/SignCanvaScreen.dart';
-  static const String signUpSignConfirmationScreen = 'lib/screens/signUp/SignConfirmationScreen.dart';
+  static const String signUpSignCanvaScreen = 'lib/screens/signUp/signCanvaScreen.dart';
+  static const String signUpSignConfirmationScreen = 'lib/screens/signUp/signConfirmationScreen.dart';
   static const String signUpSignUpPaymentScreen = 'lib/screens/signUp/signUpPaymentScreen.dart';
   static const String signUpSignatureVerificationScreen = 'lib/screens/signUp/signatureVerificationScreen.dart';
   static const String signUpTradingExperienceScreen = 'lib/screens/signUp/tradingExperienceScreen.dart';

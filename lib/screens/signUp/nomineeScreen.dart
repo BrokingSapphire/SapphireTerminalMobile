@@ -10,7 +10,7 @@ import 'package:sapphire/screens/signUp/nomineeDetailsScreen.dart'; // Screen fo
 
 import '../../main.dart'; // App-wide navigation utilities
 import '../../utils/constWidgets.dart'; // Reusable UI components
-import 'SignCanvaScreen.dart'; // Not used directly
+import 'signCanvaScreen.dart'; // Not used directly
 
 /// nomineeScreen - Introductory screen explaining the purpose of adding nominees
 /// Presents the concept and benefits of nominees before allowing users to add or skip

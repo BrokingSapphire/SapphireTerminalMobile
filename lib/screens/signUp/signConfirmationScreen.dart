@@ -1,20 +1,30 @@
-import 'dart:typed_data';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sapphire/main.dart';
-import '../../utils/constWidgets.dart';
-import 'NomineeScreen.dart';
+// File: signConfirmationScreen.dart
+// Description: Signature confirmation screen in the Sapphire Trading application.
+// This screen displays the user's captured signature for review and confirmation
+// before proceeding to the next step in the account opening process.
 
+import 'dart:typed_data'; // For handling binary data (signature image)
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
+import 'package:flutter_svg/flutter_svg.dart'; // For SVG rendering support
+import 'package:sapphire/main.dart'; // App-wide navigation utilities
+import '../../utils/constWidgets.dart'; // Reusable UI components
+import 'NomineeScreen.dart'; // Next screen in registration flow
+
+/// SignConfirmationScreen - Screen for reviewing and confirming the captured signature
+/// Displays the signature image and provides options to redo or proceed
 class SignConfirmationScreen extends StatelessWidget {
+  // Raw image data of the captured signature
   final Uint8List signatureBytes;
 
+  /// Constructor requiring the signature image data
   const SignConfirmationScreen({required this.signatureBytes});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+      // App bar with back button
       appBar: AppBar(
         leadingWidth: 46,
         leading: Padding(
@@ -22,7 +32,7 @@ class SignConfirmationScreen extends StatelessWidget {
           child: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(context); // Navigate back to signature capture screen
             },
           ),
         ),
@@ -35,8 +45,11 @@ class SignConfirmationScreen extends StatelessWidget {
             SizedBox(
               height: 8.h,
             ),
+            // Progress indicator showing current step (1 of 7)
             constWidgets.topProgressBar(1, 7, context),
             SizedBox(height: 24.h),
+
+            // Screen title
             Text(
               "Signature",
               style: TextStyle(
@@ -47,51 +60,54 @@ class SignConfirmationScreen extends StatelessWidget {
             ),
             SizedBox(height: 30.h),
 
-            // Display the Signature Image
+            // Container to display the captured signature
             Container(
               width: double.infinity,
               height: 350.h,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.white, // White background for signature visibility
                 borderRadius: BorderRadius.circular(10.r),
                 border: Border.all(color: Colors.white24),
               ),
+              // Conditionally display signature or error message
               child: signatureBytes.isNotEmpty
-                  ? Image.memory(signatureBytes, fit: BoxFit.contain)
+                  ? Image.memory(signatureBytes, fit: BoxFit.contain) // Display the signature
                   : Center(
-                      child: Text("No Signature Found",
-                          style: TextStyle(color: Colors.black))),
+                  child: Text("No Signature Found", // Fallback text if signature data is empty
+                      style: TextStyle(color: Colors.black))),
             ),
+
+            // Redo button for retaking signature
             Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black, // Background color
+                  backgroundColor: Colors.black, // Match background color
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4), // Rounded corners
+                    borderRadius: BorderRadius.circular(4), // Subtle rounded corners
                   ),
                 ),
                 onPressed: () {
-                  Navigator.pop(context);
-                  // Your action here
+                  Navigator.pop(context); // Return to signature capture screen
                 },
                 child: Row(
-                  mainAxisSize: MainAxisSize.min, // Fit content size
+                  mainAxisSize: MainAxisSize.min, // Compact button size
                   children: [
                     Text(
                       "Redo",
                       style: TextStyle(color: Colors.white),
                     ),
                     SizedBox(width: 8), // Space between text and icon
-                    SvgPicture.asset('assets/images/Redo.svg'),
+                    SvgPicture.asset('assets/images/Redo.svg'), // Redo icon
                   ],
                 ),
               ),
             ),
 
+            // Push content to top and buttons to bottom
             Spacer(),
 
-            // Continue Button
+            // Continue button - proceeds to nominee screen
             constWidgets.greenButton("Continue", onTap: () {
               navi(nomineeScreen(), context);
             }),
@@ -99,6 +115,7 @@ class SignConfirmationScreen extends StatelessWidget {
               height: 10.h,
             ),
 
+            // Help button for user assistance
             Center(
               child: constWidgets.needHelpButton(context),
             ),
