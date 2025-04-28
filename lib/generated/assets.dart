@@ -189,7 +189,7 @@ class Assets {
   static const String signUpLinkWithUpiScreen = 'lib/screens/signUp/linkWithUpiScreen.dart';
   static const String signUpLoginScreen = 'lib/screens/signUp/loginScreen.dart';
   static const String signUpMPinScreen = 'lib/screens/signUp/mPinScreen.dart';
-  static const String signUpManualLinkingScreen = 'lib/screens/signUp/ManualLinkingScreen.dart';
+  static const String signUpManualLinkingScreen = 'lib/screens/signUp/manualLinkingScreen.dart';
   static const String signUpMobileOtp = 'lib/screens/signUp/mobileOtp.dart';
   static const String signUpMobileOtpVerification = 'lib/screens/signUp/mobileOtpVerification.dart';
   static const String signUpNomineeDetailsScreen = 'lib/screens/signUp/nomineeDetailsScreen.dart';
@@ -200,7 +200,7 @@ class Assets {
   static const String signUpRasScreen = 'lib/screens/signUp/rasScreen.dart';
   static const String signUpSegmentSelectionScreen = 'lib/screens/signUp/segmentSelectionScreen.dart';
   static const String signUpSelfieCameraScreen = 'lib/screens/signUp/selfieCameraScreen.dart';
-  static const String signUpSelfieConfirmationScreen = 'lib/screens/signUp/SelfieConfirmationScreen.dart';
+  static const String signUpSelfieConfirmationScreen = 'lib/screens/signUp/selfieConfirmationScreen.dart';
   static const String signUpSignCanvaScreen = 'lib/screens/signUp/signCanvaScreen.dart';
   static const String signUpSignConfirmationScreen = 'lib/screens/signUp/signConfirmationScreen.dart';
   static const String signUpSignUpPaymentScreen = 'lib/screens/signUp/signUpPaymentScreen.dart';

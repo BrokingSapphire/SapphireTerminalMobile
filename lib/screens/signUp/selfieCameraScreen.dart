@@ -12,7 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive U
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart'; // ML Kit for face detection
 import 'package:sapphire/main.dart'; // App-wide navigation utilities
 
-import 'SelfieConfirmationScreen.dart'; // Next screen after selfie capture
+import 'selfieConfirmationScreen.dart'; // Next screen after selfie capture
 
 /// SelfieVerificationScreen - Camera screen with real-time face detection
 /// Uses the front camera and Google ML Kit to detect and validate a face

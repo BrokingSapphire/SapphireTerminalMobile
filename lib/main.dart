@@ -12,7 +12,7 @@ import 'package:sapphire/screens/home/watchlist/disclosure.dart';
 import 'package:sapphire/screens/orderWindow/BuyScreens/buyScreenWrapper.dart';
 import 'package:sapphire/screens/orderWindow/SellScreens/sellScreenWrapper.dart';
 import 'package:sapphire/screens/signUp/confirmBankDetails.dart';
-import 'package:sapphire/screens/signUp/SelfieConfirmationScreen.dart';
+import 'package:sapphire/screens/signUp/selfieConfirmationScreen.dart';
 import 'package:sapphire/screens/signUp/manualLinkingScreen.dart';
 import 'package:sapphire/screens/signUp/NomineeScreen.dart';
 import 'package:sapphire/screens/signUp/segmentSelectionScreen.dart';
