@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart';
 import 'package:pinput/pinput.dart';
 import 'package:sapphire/functions/authFunctions.dart';
+import 'package:sapphire/screens/signUp/panDetails.dart';
 import 'package:sapphire/screens/signUp/signUpPaymentScreen.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -31,10 +32,9 @@ class MobileOtpVerification extends StatefulWidget {
 
 class _MobileOtpVerificationState extends State<MobileOtpVerification> {
   TextEditingController otpController = TextEditingController();
-  int _timerSeconds = 600; // Set timer to 10 minutes (600 seconds)
+  int _timerSeconds = 59; // 59 seconds for resend cooldown
   late Timer _timer;
   bool _isOtpIncorrect = false;
-  bool isResendButtonDisabled = false; // Track resend button state
 
   @override
   void initState() {
@@ -78,7 +78,7 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
     if (isOtpVerified) {
       widget.isEmail
           ? navi(MobileOtp(email: widget.email), context)
-          : navi(SignupPaymentScreen(), context);
+          : navi(PanDetails(), context);
       constWidgets.snackbar("OTP verified successfully", Colors.green,
           navigatorKey.currentContext!);
     } else {
@@ -90,17 +90,13 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
 
   // Handle Resend OTP button click
   void resendOtp() {
-    if (!isResendButtonDisabled) {
+    if (_timerSeconds == 0) {
+      // Call your resend OTP API here
       setState(() {
-        isResendButtonDisabled = true;
+        _timerSeconds = 59;
+        _isOtpIncorrect = false;
       });
-      // You can implement the API call to resend OTP here.
-      // For now, we will simulate the 30-second cooldown.
-      Future.delayed(const Duration(seconds: 30), () {
-        setState(() {
-          isResendButtonDisabled = false;
-        });
-      });
+      startTimer();
     }
   }
 
@@ -151,6 +147,9 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
                         color: _isOtpIncorrect ? Colors.red : Colors.white54),
                   ),
                 ),
+                onChanged: (value) {
+                  setState(() {}); // Triggers rebuild for button enabled state
+                },
                 onCompleted: (otp) async {
                   await verifyOtp();
                 },
@@ -158,13 +157,16 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
               SizedBox(height: 16.h),
 
               InkWell(
-                onTap: resendOtp, // Call resendOtp function
+                onTap: _timerSeconds == 0
+                    ? resendOtp
+                    : null, // Only allow tap when timer is 0
                 child: Text(
                   "Resend OTP",
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
-                      color:
-                          isResendButtonDisabled ? Colors.grey : Colors.green),
+                      color: _timerSeconds == 0
+                          ? Colors.green
+                          : Color(0xffc9cacc)),
                 ),
               ),
               SizedBox(height: 24.h),
@@ -175,11 +177,11 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
                   text: TextSpan(
                     style: TextStyle(fontSize: 15.sp, color: Colors.white),
                     children: [
-                      const TextSpan(text: "Expires in "),
+                      const TextSpan(text: "Resend in "),
                       TextSpan(
                         text:
                             "${(_timerSeconds ~/ 60).toString().padLeft(2, '0')}:${(_timerSeconds % 60).toString().padLeft(2, '0')} ",
-                        style: const TextStyle(color: Colors.green),
+                        style: TextStyle(color: Colors.green),
                       ),
                       const TextSpan(text: "seconds"),
                     ],
@@ -238,7 +240,31 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
             SizedBox(height: 30.h),
 
             /// Verify Button
-            constWidgets.greenButton("Verify", onTap: verifyOtp),
+            Container(
+              height: 52.h,
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  otpController.text.length == 6 ? verifyOtp() : null;
+                },
+                child: Text(
+                  "Verify",
+                  style:
+                      TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w600),
+                ),
+
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: otpController.text.length == 6
+                      ? Color(0xFF1DB954)
+                      : Color(0xff2f2f2f),
+                  foregroundColor: Colors.white,
+                ),
+
+                // child: Text("Verify",
+                //     style: TextStyle(
+                //         fontSize: 17.sp, fontWeight: FontWeight.w600)),
+              ),
+            ),
             SizedBox(height: 10.h),
 
             /// Need Help Button

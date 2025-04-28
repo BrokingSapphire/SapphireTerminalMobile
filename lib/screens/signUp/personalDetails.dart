@@ -19,6 +19,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
   double width = 0;
   String? selectedOccupation;
   bool isPoliticallyExposed = false;
+  String? selectedMaritalStatus = "Single";
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
   bool get isFormComplete => selectedOccupation != null;
@@ -103,9 +104,28 @@ class _PersonalDetailsState extends State<PersonalDetails> {
               SizedBox(height: 8.h),
               constWidgets.topProgressBar(1, 4, context),
               SizedBox(height: 24.h),
-              Text("Occupation",
+              Text("Personal Details",
                   style:
                       TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold)),
+              SizedBox(
+                height: 24.h,
+              ),
+              Text("Marital Status",
+                  style:
+                      TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500)),
+              SizedBox(height: 16.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildSelectableChip("Single", isDark),
+                  _buildSelectableChip("Married", isDark),
+                  _buildSelectableChip("Divorced", isDark),
+                ],
+              ),
+              SizedBox(height: 18.h),
+              Text("Occupation",
+                  style:
+                      TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500)),
               SizedBox(height: 16.h),
               Wrap(
                 spacing: 12,
@@ -131,22 +151,22 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                         ))
                     .toList(),
               ),
-              SizedBox(height: 25.h),
+              SizedBox(height: 18.h),
               Text("Are you a Politically Exposed Person (PEP)?",
-                  style: TextStyle(fontSize: 16.sp)),
-              SizedBox(height: 12.h),
+                  style: TextStyle(fontSize: 17.sp)),
+              SizedBox(height: 16.h),
               Row(
                 children: [
                   InkWell(
                     onTap: () => setState(() => isPoliticallyExposed = true),
                     child: constWidgets.choiceChip(
-                        "Yes", isPoliticallyExposed, context, 82.w, isDark),
+                        "Yes", isPoliticallyExposed, context, 112.w, isDark),
                   ),
-                  SizedBox(width: 20.w),
+                  SizedBox(width: 12.w),
                   InkWell(
                     onTap: () => setState(() => isPoliticallyExposed = false),
                     child: constWidgets.choiceChip(
-                        "No", !isPoliticallyExposed, context, 82.w, isDark),
+                        "No", !isPoliticallyExposed, context, 112.w, isDark),
                   ),
                 ],
               ),
@@ -179,6 +199,14 @@ class _PersonalDetailsState extends State<PersonalDetails> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildSelectableChip(String value, bool isDark) {
+    final isSelected = selectedMaritalStatus == value;
+    return InkWell(
+      onTap: () => setState(() => selectedMaritalStatus = value),
+      child: constWidgets.choiceChip(value, isSelected, context, width, isDark),
     );
   }
 }

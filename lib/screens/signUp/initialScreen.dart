@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/signUp/emailScreen.dart';
 import 'package:sapphire/screens/signUp/loginScreen.dart';
@@ -25,8 +26,11 @@ class InitialScreen extends StatelessWidget {
               children: [
                 Image.asset(
                   'assets/images/whiteLogo.png',
+                  color: isDark ? Colors.white : Colors.black,
                   scale: 1,
                 ),
+                // SvgPicture.asset("assets/svgs/Logo.svg",
+                //     color: isDark ? Colors.white : Colors.black),
                 SizedBox(width: 10.w),
                 Text(
                   "Sapphire",

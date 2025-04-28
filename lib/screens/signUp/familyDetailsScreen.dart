@@ -132,18 +132,18 @@ class _FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
               constWidgets.textField("Mother's Name", mothersName,
                   isDark: isDark),
               SizedBox(height: 20.h),
-              Text("Marital Status",
-                  style:
-                      TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500)),
-              SizedBox(height: 12.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildSelectableChip("Single", isDark),
-                  _buildSelectableChip("Married", isDark),
-                  _buildSelectableChip("Divorced", isDark),
-                ],
-              ),
+              // Text("Marital Status",
+              //     style:
+              //         TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500)),
+              // SizedBox(height: 12.h),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     _buildSelectableChip("Single", isDark),
+              //     _buildSelectableChip("Married", isDark),
+              //     _buildSelectableChip("Divorced", isDark),
+              //   ],
+              // ),
             ],
           ),
         ),

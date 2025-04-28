@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/signUp/verifyAadharScreen.dart';
 import 'package:sapphire/utils/constWidgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PanDetails extends StatefulWidget {
   const PanDetails({super.key});
@@ -169,10 +170,10 @@ class _PanDetailsState extends State<PanDetails> {
                 child: Column(
                   children: [
                     Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xff2F2F2F)),
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
+                      // decoration: BoxDecoration(
+                      //   border: Border.all(color: Color(0xff2F2F2F)),
+                      //   borderRadius: BorderRadius.circular(8.r),
+                      // ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
@@ -239,7 +240,7 @@ class _PanDetailsState extends State<PanDetails> {
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 14.sp,
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.w600),
                       ),
                     ),
                   ),
@@ -261,7 +262,7 @@ class _PanDetailsState extends State<PanDetails> {
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 14.sp,
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.w600),
                       ),
                     ),
                   ),
@@ -329,17 +330,49 @@ class _PanDetailsState extends State<PanDetails> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            constWidgets.greenButton("Verify", onTap: () {
-              if (panNumber.text.isEmpty || !_isValidPAN(panNumber.text)) {
-                constWidgets.snackbar(
-                    "Enter a valid PAN number (e.g., ABCDE1234F)",
-                    Colors.red,
-                    context);
-                Future.delayed(Duration(seconds: 1), () => panNumber.clear());
-              } else {
-                verifyPanNumber(panNumber.text.toUpperCase());
-              }
-            }),
+            // constWidgets.greenButton("Verify", onTap: () {
+            // if (panNumber.text.isEmpty || !_isValidPAN(panNumber.text)) {
+            //   constWidgets.snackbar(
+            //       "Enter a valid PAN number (e.g., ABCDE1234F)",
+            //       Colors.red,
+            //       context);
+            //   Future.delayed(Duration(seconds: 1), () => panNumber.clear());
+            // } else {
+            //   verifyPanNumber(panNumber.text.toUpperCase());
+            // }
+            // }),
+            Container(
+              height: 52.h,
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: panNumber.text.length == 10
+                    ? () {
+                        if (panNumber.text.isEmpty ||
+                            !_isValidPAN(panNumber.text)) {
+                          constWidgets.snackbar(
+                              "Enter a valid PAN number (e.g., ABCDE1234F)",
+                              Colors.red,
+                              context);
+                          Future.delayed(
+                              Duration(seconds: 1), () => panNumber.clear());
+                        } else {
+                          verifyPanNumber(panNumber.text.toUpperCase());
+                        }
+                      }
+                    : null, // Disabled if not 10 chars
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: panNumber.text.length == 10
+                      ? Color(0xFF1DB954)
+                      : Color(0xff2f2f2f), // Green if enabled, grey if disabled
+                  foregroundColor: Colors.white,
+                ),
+                child: Text(
+                  "Verify",
+                  style:
+                      TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w600),
+                ),
+              ),
+            ),
             SizedBox(height: 10.h),
             Center(child: constWidgets.needHelpButton(context)),
           ],
@@ -355,11 +388,12 @@ class _PanDetailsState extends State<PanDetails> {
       builder: (context) {
         return Padding(
           padding: EdgeInsets.only(
-            left: 16,
-            right: 16,
+            left: 16.h,
+            right: 16.h,
             top: 20,
             bottom: MediaQuery.of(context).viewInsets.bottom + 20,
           ),
+          // padding: EdgeInsets.symmetric(horizontal: 16.h),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -373,12 +407,18 @@ class _PanDetailsState extends State<PanDetails> {
               Text("Your PAN number will be your PAN Card's shown below",
                   style: TextStyle(color: Colors.white54, fontSize: 13),
                   textAlign: TextAlign.center),
-              SizedBox(height: 15),
-              Image.asset("assets/images/pan.png"),
+              SizedBox(height: 15.h),
+              Image.asset(
+                "assets/images/pan.png",
+                width: 380.w,
+                // height: 280.h,
+              ),
               Padding(
-                padding: EdgeInsets.only(left: 160.w),
+                padding: EdgeInsets.only(
+                  left: 190.w,
+                ),
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(5),
@@ -391,20 +431,48 @@ class _PanDetailsState extends State<PanDetails> {
                 ),
               ),
               SizedBox(height: 15.h),
-              RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  text: "Don’t have a PAN? ",
-                  style: TextStyle(color: Colors.white54, fontSize: 12),
-                  children: [
-                    TextSpan(
-                      text: "Get ePAN in few minutes",
-                      style: TextStyle(
-                          color: Color(0xFF1DB954),
-                          fontWeight: FontWeight.bold),
+              // RichText(
+              //   textAlign: TextAlign.center,
+              //   text: const TextSpan(
+              //     text: "Don’t have a PAN? ",
+              //     style: TextStyle(color: Colors.white54, fontSize: 12),
+              //     children: [
+              //       TextSpan(
+              //         text: "Get ePAN in few minutes",
+              //         style: TextStyle(
+              //             color: Color(0xFF1DB954),
+              //             fontWeight: FontWeight.bold),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              Row(
+                children: [
+                  Text(
+                    "Don't have a PAN?",
+                    style: TextStyle(color: Colors.white54, fontSize: 12.sp),
+                  ),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      const url =
+                          'https://eportal.incometax.gov.in/iec/foservices/#/pre-login/instant-e-pan'; // Example official site
+                      if (await canLaunchUrl(Uri.parse(url))) {
+                        await launchUrl(Uri.parse(url),
+                            mode: LaunchMode.externalApplication);
+                      } else {
+                        throw 'Could not launch $url';
+                      }
+                    },
+                    child: Text(
+                      "Get ePAN in few minutes",
+                      style:
+                          TextStyle(color: Color(0xFF1DB954), fontSize: 12.sp),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               SizedBox(height: 15),
               Center(
@@ -419,7 +487,7 @@ class _PanDetailsState extends State<PanDetails> {
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                     ),
-                    child: Text("Got It!",
+                    child: Text("Got It",
                         style: TextStyle(
                             fontSize: 17.sp, fontWeight: FontWeight.w600)),
                   ),

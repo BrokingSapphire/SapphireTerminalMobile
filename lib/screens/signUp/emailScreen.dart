@@ -64,104 +64,108 @@ class _EmailScreenState extends State<EmailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        behavior: HitTestBehavior.opaque,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Column(
-            children: [
-              Center(
-                child: Image.asset(
-                  "assets/images/whiteLogo.png",
-                  scale: 0.7,
-                ),
-              ),
-              SizedBox(height: 40.h),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Welcome to\nSapphire",
-                  style: TextStyle(
-                    fontSize: 34.sp,
-                    fontWeight: FontWeight.w600,
+      body: SingleChildScrollView(
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          behavior: HitTestBehavior.opaque,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Column(
+              children: [
+                Center(
+                  child: Image.asset(
+                    "assets/images/whiteLogo.png",
+                    scale: 0.7,
                   ),
                 ),
-              ),
-              SizedBox(height: 10.h),
-              Align(
-                  alignment: Alignment.topLeft,
-                  child: Text("Get started in just a few easy steps!")),
-              SizedBox(height: 40.h),
-
-              /// Email Input Field
-              TextFormField(
-                controller: _email,
-                keyboardType: TextInputType.emailAddress,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9@._]')),
-                ],
-                decoration: InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  labelText: "Email",
-                  labelStyle: TextStyle(color: Colors.white),
-                  hintStyle: TextStyle(color: Color(0xFFC9CACC), fontSize: 15),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                    borderSide: BorderSide(
-                        color: _isEmailInvalid
-                            ? Colors.red
-                            : Colors.grey.shade700), // Turns red on error
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                    borderSide: BorderSide(
-                        color: _isEmailInvalid
-                            ? Colors.red
-                            : Colors.green, // Turns red on focus if invalid
-                        width: 2.0),
+                SizedBox(height: 40.h),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Welcome to\nSapphire",
+                    style: TextStyle(
+                      fontSize: 34.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
-                style: TextStyle(color: Colors.white, fontSize: 16.sp),
-              ),
-              SizedBox(height: 32.h),
+                SizedBox(height: 10.h),
+                Align(
+                    alignment: Alignment.topLeft,
+                    child: Text("Get started in just a few easy steps!")),
+                SizedBox(height: 40.h),
 
-              /// OR Divider
-              Row(
-                children: [
-                  Expanded(child: Divider(color: Colors.grey.shade800)),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text('OR'),
+                /// Email Input Field
+                TextFormField(
+                  controller: _email,
+                  keyboardType: TextInputType.emailAddress,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'[a-zA-Z0-9@._]')),
+                  ],
+                  decoration: InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    labelText: "Email",
+                    labelStyle: TextStyle(color: Colors.white),
+                    hintStyle:
+                        TextStyle(color: Color(0xFFC9CACC), fontSize: 15),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      borderSide: BorderSide(
+                          color: _isEmailInvalid
+                              ? Colors.red
+                              : Colors.grey.shade700), // Turns red on error
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      borderSide: BorderSide(
+                          color: _isEmailInvalid
+                              ? Colors.red
+                              : Colors.green, // Turns red on focus if invalid
+                          width: 2.0),
+                    ),
                   ),
-                  Expanded(child: Divider(color: Colors.grey.shade800)),
-                ],
-              ),
-              SizedBox(height: 32.h),
+                  style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                ),
+                SizedBox(height: 32.h),
 
-              /// Google & Apple Login Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                      height: 54.h,
-                      width: 54.w,
-                      child: Image.asset("assets/icons/google.png")),
-                  SizedBox(width: 50.w),
-                  SizedBox(
-                      height: 54.h,
-                      width: 54.w,
-                      child: Image.asset("assets/icons/apple.png"))
-                ],
-              ),
-              Expanded(child: SizedBox()),
-            ],
+                /// OR Divider
+                Row(
+                  children: [
+                    Expanded(child: Divider(color: Colors.grey.shade800)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text('OR'),
+                    ),
+                    Expanded(child: Divider(color: Colors.grey.shade800)),
+                  ],
+                ),
+                SizedBox(height: 32.h),
+
+                /// Google & Apple Login Buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                        height: 54.h,
+                        width: 54.w,
+                        child: Image.asset("assets/icons/google.png")),
+                    SizedBox(width: 50.w),
+                    SizedBox(
+                        height: 54.h,
+                        width: 54.w,
+                        child: Image.asset("assets/icons/apple.png"))
+                  ],
+                ),
+                // Expanded(child: SizedBox()),
+              ],
+            ),
           ),
         ),
       ),
@@ -178,7 +182,7 @@ class _EmailScreenState extends State<EmailScreen> {
                   padding: const EdgeInsets.only(bottom: 20.0),
                   child: Text(
                     "© 2025 Sapphire Broking. SEBI Registered Stock Broker | Member: NSE, BSE, MCX, NCDEX. Investments are subject to market risks. Read all documents carefully. Disputes subject to Nagpur jurisdiction.",
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.left,
                     style: TextStyle(fontSize: 11.sp, color: Color(0xFF9B9B9B)),
                   ),
                 ),
@@ -187,7 +191,27 @@ class _EmailScreenState extends State<EmailScreen> {
             ),
 
             /// Continue Button
-            constWidgets.greenButton("Continue", onTap: _validateAndProceed),
+            // constWidgets.greenButton("Continue", onTap: _validateAndProceed),
+            Container(
+              height: 52.h,
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: (_email.text.isNotEmpty && !_isEmailInvalid)
+                    ? _validateAndProceed
+                    : null,
+                child: Text(
+                  "Continue",
+                  style:
+                      TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w600),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: (_email.text.isNotEmpty && !_isEmailInvalid)
+                      ? Color(0xFF1DB954)
+                      : Color(0xff2f2f2f),
+                  foregroundColor: Colors.white,
+                ),
+              ),
+            ),
 
             SizedBox(height: 10.h),
 

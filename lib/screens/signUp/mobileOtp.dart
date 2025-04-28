@@ -20,6 +20,14 @@ class _MobileOtpState extends State<MobileOtp> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    super.initState();
+    _phoneNumber.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SafeArea(
@@ -41,47 +49,43 @@ class _MobileOtpState extends State<MobileOtp> {
             FocusScope.of(context).unfocus();
           },
           behavior: HitTestBehavior.opaque,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(
-                  child: Image.asset(
-                    "assets/images/whiteLogo.png",
-                    scale: 0.7,
-                  ),
-                ),
-                SizedBox(height: 40.h),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Welcome to\nSapphire",
-                    style: TextStyle(
-                      fontSize: 34.sp,
-                      fontWeight: FontWeight.w600,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text("Mobile Verification",
+                              style: TextStyle(
+                                  fontSize: 21.sp,
+                                  fontWeight: FontWeight.w600)),
+                        ),
+                        SizedBox(height: 24.h),
+
+                        Form(
+                          key: _formKey,
+                          child: constWidgets.textField(
+                            "Phone Number",
+                            _phoneNumber,
+                            isPhoneNumber: true,
+                            isDark: isDark,
+                          ),
+                        ),
+                        SizedBox(height: 20.h), // Extra spacing
+                      ],
                     ),
                   ),
                 ),
-                SizedBox(height: 10.h),
-                Align(
-                    alignment: Alignment.topLeft,
-                    child: Text("Get started in just a few easy steps!")),
-                SizedBox(height: 40.h),
-
-                // Form for validation
-                Form(
-                  key: _formKey,
-                  child: constWidgets.textField(
-                    "Phone Number",
-                    _phoneNumber,
-                    isPhoneNumber: true,
-                    isDark: isDark,
-                  ),
-                ),
-                SizedBox(height: 20.h), // Extra spacing
-              ],
-            ),
+              );
+            },
           ),
         ),
         bottomNavigationBar: Padding(
@@ -97,7 +101,7 @@ class _MobileOtpState extends State<MobileOtp> {
                     padding: const EdgeInsets.only(bottom: 20.0),
                     child: Text(
                       "© 2025 Sapphire Broking. SEBI Registered Stock Broker | Member: NSE, BSE, MCX, NCDEX. Investments are subject to market risks. Read all documents carefully. Disputes subject to Nagpur jurisdiction.",
-                      textAlign: TextAlign.center,
+                      textAlign: TextAlign.left,
                       style:
                           TextStyle(fontSize: 11.sp, color: Color(0xFF9B9B9B)),
                     ),
@@ -106,35 +110,56 @@ class _MobileOtpState extends State<MobileOtp> {
                 ],
               ),
 
-              /// Continue Button
-
-              constWidgets.greenButton("Continue", onTap: () {
-                if (_formKey.currentState!.validate()) {
-                  // Proceed if valid
-                  AuthFunctions()
-                      .mobileVerification(
-                          _phoneNumber.text.toString(), widget.email)
-                      .then(
-                        (value) => navi(
-                            MobileOtpVerification(
-                                isEmail: false,
-                                email: widget.email,
-                                mobileOrEmail: _phoneNumber.text.toString()),
-                            context),
-                      );
-                } else {
-                  // Show error snackbar
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        "Enter a valid phone number!",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-              }),
+              Container(
+                height: 52.h,
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: (_phoneNumber.text.isNotEmpty &&
+                          _formKey.currentState != null &&
+                          _formKey.currentState!.validate())
+                      ? () {
+                          AuthFunctions()
+                              .mobileVerification(
+                                  _phoneNumber.text.toString(), widget.email)
+                              .then((value) => navi(
+                                  MobileOtpVerification(
+                                      isEmail: false,
+                                      email: widget.email,
+                                      mobileOrEmail:
+                                          _phoneNumber.text.toString()),
+                                  context));
+                        }
+                      : () {
+                          // Show error snackbar
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                "Enter a valid phone number!",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: (_phoneNumber.text.isNotEmpty &&
+                            _formKey.currentState != null &&
+                            _formKey.currentState!.validate())
+                        ? Color(0xFF1DB954)
+                        : Color(0xff2f2f2f),
+                    foregroundColor: Colors.white,
+                  ),
+                  child: Text("Continue",
+                      style: TextStyle(
+                          fontSize: 17.sp,
+                          fontWeight: FontWeight.w600,
+                          color: (_phoneNumber.text.isNotEmpty &&
+                                  _formKey.currentState != null &&
+                                  _formKey.currentState!.validate())
+                              ? Colors.white
+                              : Color(0xffc9cacc))),
+                ),
+              ),
 
               SizedBox(height: 10.h),
 

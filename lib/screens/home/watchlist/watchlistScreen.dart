@@ -15,7 +15,7 @@ import 'package:sapphire/utils/naviWithoutAnimation.dart';
 import 'package:sapphire/utils/watchlistTabBar.dart';
 import 'package:sapphire/utils/filters.dart';
 import 'package:sapphire/wat.dart'; // For showFilterBottomSheet
-import 'package:sapphire/widgets/stock_detail_bottom_sheet.dart';
+import 'package:sapphire/screens/home/watchlist/stock_detail_bottom_sheet.dart';
 
 class WatchlistScreen extends StatefulWidget {
   const WatchlistScreen({super.key});

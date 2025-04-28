@@ -185,8 +185,9 @@ class _SegmentSelectionScreenState extends State<SegmentSelectionScreen> {
 
   Widget _buildSelectableChip(String segment) {
     return InkWell(
+      borderRadius: BorderRadius.circular(25.r),
       onTap: () => _toggleSegment(segment),
-      child: constWidgets.choiceChipiWithCheckbox(
+      child: constWidgets.segmentChoiceChipiWithCheckbox(
         segment,
         selectedSegments.contains(segment),
         context,

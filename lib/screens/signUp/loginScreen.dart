@@ -221,7 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           /// Remember Me
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10.w),
+                            padding: EdgeInsets.symmetric(horizontal: 5.w),
                             child: Align(
                               child: Row(
                                 children: [
@@ -235,8 +235,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        CustomCheckbox(
-                                          size: 17,
+                                        Checkbox(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(2.r),
+                                          ),
                                           value: rememberMe,
                                           onChanged: (val) {
                                             setState(() {
@@ -244,14 +247,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                             });
                                           },
                                         ),
-                                        SizedBox(width: 12.w),
+                                        SizedBox(width: 2.w),
                                         Padding(
                                           padding: EdgeInsets.symmetric(
                                               vertical: 15.h),
                                           child: Text(
-                                            "Remember Me",
+                                            "Remember me",
                                             style: TextStyle(
-                                              fontSize: 11.sp,
+                                              fontSize: 13.sp,
                                               color: isDark
                                                   ? const Color(0xFFC9CACC)
                                                   : const Color(0xFF6B7280),
@@ -280,7 +283,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: TextButton(
                               onPressed: () {},
                               child: Text(
-                                "Forgot Password?",
+                                "Trouble logging in?",
                                 style: TextStyle(
                                   fontSize: 13.sp,
                                   color: Colors.green,
@@ -299,7 +302,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               "© 2025 Sapphire Broking. SEBI Registered Stock Broker | Member: NSE, BSE, MCX, NCDEX. Investments are subject to market risks. Read all documents carefully. Disputes subject to Nagpur jurisdiction.",
                               textAlign: TextAlign.left,
                               style: TextStyle(
-                                  fontSize: 13.sp, color: Color(0xFF9B9B9B)),
+                                  fontSize: 11.sp, color: Color(0xFF9B9B9B)),
                             ),
                           ),
                         ],

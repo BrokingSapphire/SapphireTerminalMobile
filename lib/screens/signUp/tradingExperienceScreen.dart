@@ -21,18 +21,13 @@ class _tradingExperinceScreenState extends State<tradingExperinceScreen> {
   String? selectedIncome;
   String? selectedSettlement;
 
-  double width = 0;
-  double width3 = 0;
-  double width2 = 0;
-
-  /// Mapping for API income values
   final Map<String, String> incomeMap = {
-    "<1 lakh": "le_1_Lakh",
+    "<1 Lakh": "le_1_Lakh",
     "1 Lakh - 5 Lakh": "1_5_Lakh",
     "5 Lakh - 10 Lakh": "5_10_Lakh",
     "10 Lakh - 25 Lakh": "10_25_Lakh",
     "25 Lakh - 1 Crore": "25_1_Cr",
-    "More than 1 CR": "Ge_1_Cr",
+    "> 1 Crore": "Ge_1_Cr",
   };
 
   bool get isFormComplete =>
@@ -45,7 +40,7 @@ class _tradingExperinceScreenState extends State<tradingExperinceScreen> {
       if (category == "experience") {
         selectedExperience = value;
       } else if (category == "income") {
-        selectedIncome = incomeMap[value] ?? value;
+        selectedIncome = value;
       } else if (category == "settlement") {
         selectedSettlement = value;
       }
@@ -60,15 +55,14 @@ class _tradingExperinceScreenState extends State<tradingExperinceScreen> {
 
     final body = {
       "step": "account_detail",
-      "annual_income": selectedIncome,
-      // "trading_exp": selectedExperience,
+      "annual_income": incomeMap[selectedIncome] ?? selectedIncome,
       "settlement": selectedSettlement,
     };
 
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => Center(
+      builder: (_) => const Center(
         child: CircularProgressIndicator(color: Color(0xFF1DB954)),
       ),
     );
@@ -86,9 +80,6 @@ class _tradingExperinceScreenState extends State<tradingExperinceScreen> {
 
       Navigator.of(context).pop(); // Close loading
 
-      print("Status: ${response.statusCode}");
-      print("Body: ${response.body}");
-
       if (response.statusCode == 200 || response.statusCode == 201) {
         constWidgets.snackbar("Account details saved!", Colors.green, context);
         navi(linkBankScreen(), context);
@@ -105,10 +96,8 @@ class _tradingExperinceScreenState extends State<tradingExperinceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    width = MediaQuery.of(context).size.width / 2 - 20;
-    width2 = MediaQuery.of(context).size.width / 2 - 32;
-    width3 = MediaQuery.of(context).size.width / 3 - 15;
     final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    double chipWidth = MediaQuery.of(context).size.width / 3 - 20;
 
     return Scaffold(
       appBar: AppBar(),
@@ -126,85 +115,85 @@ class _tradingExperinceScreenState extends State<tradingExperinceScreen> {
             ),
             SizedBox(height: 16.h),
 
-            /// ✅ TRADING EXPERIENCE SELECTION
+            /// Trading Experience
             Text(
               "Trading Experience",
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),
+              style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
             ),
             SizedBox(height: 12.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Wrap(
+              spacing: 12.w,
+              runSpacing: 12.h,
               children: [
-                _buildSelectableChip(
-                    "experience", "No experience", width2, isDark),
-                _buildSelectableChip("experience", "<1 year", width2, isDark),
+                _buildChip("experience", "No experience", chipWidth, isDark),
+                _buildChip("experience", "< 1 year", chipWidth, isDark),
+                _buildChip("experience", "1-5 years", chipWidth, isDark),
+                _buildChip("experience", "5-10 years", chipWidth, isDark),
+                _buildChip("experience", "10+ years", chipWidth, isDark),
               ],
             ),
-            SizedBox(height: 16.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildSelectableChip("experience", "1-5 years", width2, isDark),
-                _buildSelectableChip(
-                    "experience", "5-10 years", width2, isDark),
-              ],
-            ),
-            SizedBox(height: 16.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                _buildSelectableChip("experience", "10+ years", width2, isDark),
-              ],
-            ),
-            SizedBox(height: 18.h),
+            SizedBox(height: 24.h),
 
-            /// ✅ INCOME SELECTION
+            /// Income
             Text(
-              "Income",
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),
+              "Annual Income",
+              style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
             ),
             SizedBox(height: 12.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Wrap(
+              spacing: 12.w,
+              runSpacing: 12.h,
               children: [
-                _buildSelectableChip("income", "<1 lakh", width3, isDark),
-                _buildSelectableChip(
-                    "income", "1 Lakh - 5 Lakh", width3, isDark),
-                _buildSelectableChip(
-                    "income", "5 Lakh - 10 Lakh", width3, isDark),
+                _buildChip("income", "<1 Lakh", chipWidth, isDark),
+                _buildChip("income", "1 Lakh - 5 Lakh", chipWidth, isDark),
+                _buildChip("income", "5 Lakh - 10 Lakh", chipWidth, isDark),
+                _buildChip("income", "10 Lakh - 25 Lakh", chipWidth, isDark),
+                _buildChip("income", "25 Lakh - 1 Crore", chipWidth, isDark),
+                _buildChip("income", "> 1 Crore", chipWidth, isDark),
               ],
             ),
-            SizedBox(height: 16.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildSelectableChip(
-                    "income", "10 Lakh - 25 Lakh", width3, isDark),
-                _buildSelectableChip(
-                    "income", "25 Lakh - 1 Crore", width3, isDark),
-                _buildSelectableChip(
-                    "income", "More than 1 CR", width3, isDark),
-              ],
+            SizedBox(height: 24.h),
+
+            /// Settlement Preference
+            Text(
+              "Running Settlement Preference",
+              style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
             ),
-            SizedBox(height: 10.h),
-            Text("Settlement Preference",
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500)),
             SizedBox(height: 12.h),
-            Row(
+            Wrap(
+              spacing: 12.w,
               children: [
-                _buildChip("settlement", "Monthly",
-                    width: 106.w, isDark: isDark),
-                SizedBox(width: 16.w),
-                _buildChip("settlement", "Quarterly",
-                    width: 106.w, isDark: isDark),
+                _buildChip("settlement", "Monthly", chipWidth, isDark),
+                _buildChip("settlement", "Quarterly", chipWidth, isDark),
               ],
             ),
             const Spacer(),
-            constWidgets.greenButton(
-              "Continue",
-              onTap: isFormComplete ? submitDetails : null,
+
+            /// Continue Button
+            // constWidgets.greenButton(
+            //   "Continue",
+            //   onTap: isFormComplete ? submitDetails : null,
+            // ),
+            Container(
+              height: 52.h,
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {},
+                child: Text(
+                  "Continue",
+                  style:
+                      TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w600),
+                ),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor:
+                      isFormComplete ? Color(0xFF1DB954) : Color(0xff2f2f2f),
+                ),
+              ),
             ),
             SizedBox(height: 10.h),
+
+            /// Need Help Button
             Center(child: constWidgets.needHelpButton(context)),
           ],
         ),
@@ -212,11 +201,10 @@ class _tradingExperinceScreenState extends State<tradingExperinceScreen> {
     );
   }
 
-  Widget _buildChip(String category, String value,
-      {double? width, required bool isDark}) {
-    final isSelected =
+  Widget _buildChip(String category, String value, double width, bool isDark) {
+    final bool isSelected =
         (category == "experience" && selectedExperience == value) ||
-            (category == "income" && selectedIncome == incomeMap[value]) ||
+            (category == "income" && selectedIncome == value) ||
             (category == "settlement" && selectedSettlement == value);
 
     return InkWell(
@@ -225,21 +213,9 @@ class _tradingExperinceScreenState extends State<tradingExperinceScreen> {
         value,
         isSelected,
         context,
-        width ?? 140.w,
+        width,
         isDark,
       ),
-    );
-  }
-
-  Widget _buildSelectableChip(
-      String category, String value, double width, bool isDark) {
-    final isSelected =
-        (category == "experience" && selectedExperience == value) ||
-            (category == "income" && selectedIncome == incomeMap[value]);
-
-    return InkWell(
-      onTap: () => _selectOption(category, value),
-      child: constWidgets.choiceChip(value, isSelected, context, width, isDark),
     );
   }
 }
