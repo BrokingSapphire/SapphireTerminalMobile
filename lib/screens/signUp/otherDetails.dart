@@ -49,8 +49,8 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
   /// Used to enable/disable the continue button
   bool get isFormComplete =>
       selectedExperience != null &&
-          selectedIncome != null &&
-          selectedSettlement != null;
+      selectedIncome != null &&
+      selectedSettlement != null;
 
   /// Updates selection state for a given category
   /// @param category The field category being updated ('experience', 'income', 'settlement', or 'PEP')
@@ -82,7 +82,8 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
     // Prepare request payload
     final body = {
       "step": "account_detail",
-      "annual_income": incomeMap[selectedIncome] ?? selectedIncome, // Map display value to API value
+      "annual_income": incomeMap[selectedIncome] ??
+          selectedIncome, // Map display value to API value
       "settlement": selectedSettlement,
     };
 
@@ -138,12 +139,31 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
   Widget build(BuildContext context) {
     // Determine if app is in dark mode
     final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    Widget _buildSelectableChip(String category, String value, double width) {
+      bool isSelected =
+          (category == "Settlement" && selectedSettlement == value) |
+              (category == "PEP" && selectedPEP == value);
+
+      return InkWell(
+        onTap: () => _selectOption(category, value),
+        child:
+            constWidgets.choiceChip(value, isSelected, context, width, isDark),
+      );
+    }
 
     // Calculate width for choice chips based on screen size
     double chipWidth = MediaQuery.of(context).size.width / 3 - 20;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back,
+              color: isDark ? Colors.white : Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.w),
         child: Column(
@@ -157,13 +177,19 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
             // Screen title
             Text(
               "Other Details",
-              style: TextStyle(fontSize: 21.sp, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                  fontSize: 21.sp,
+                  fontWeight: FontWeight.w600,
+                  color: isDark ? Colors.white : Colors.black),
             ),
             SizedBox(height: 16.h),
 
             /// Occupation selection section
             Text("Occupation",
-                style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500)),
+                style: TextStyle(
+                    fontSize: 17.sp,
+                    fontWeight: FontWeight.w500,
+                    color: isDark ? Colors.white : Colors.black)),
             SizedBox(height: 16.h),
 
             // Wrap widget creates a flowing grid of occupation options
@@ -181,14 +207,14 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
                 "Other"
               ]
                   .map((item) => InkWell(
-                onTap: () => _selectOccupation(item),
-                child: constWidgets.choiceChip(
-                    item,
-                    selectedOccupation == item,
-                    context,
-                    chipWidth,
-                    isDark),
-              ))
+                        onTap: () => _selectOccupation(item),
+                        child: constWidgets.choiceChip(
+                            item,
+                            selectedOccupation == item,
+                            context,
+                            chipWidth,
+                            isDark),
+                      ))
                   .toList(),
             ),
             SizedBox(height: 24.h),
@@ -196,7 +222,8 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
             /// Politically Exposed Person (PEP) section
             Text(
               "Are you a Politically Exposed Person (PEP)?",
-              style: TextStyle(fontSize: 17.sp, color: Color(0xffEBEEF5)),
+              style: TextStyle(
+                  fontSize: 17.sp, color: isDark ? Colors.white : Colors.black),
             ),
             SizedBox(height: 12.h),
 
@@ -221,7 +248,10 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
             // ),
 
             // Current implementation (note: missing onTap parameter)
-            constWidgets.greenButton('Continue'),
+            constWidgets.greenButton('Continue', onTap: () {
+              navi(
+                  linkBankScreen(), context); // Navigate to bank linking screen
+            }),
             SizedBox(height: 10.h),
 
             /// Help button for user assistance
@@ -229,46 +259,6 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
           ],
         ),
       ),
-    );
-  }
-
-  /// Builds a selectable choice chip for a category option
-  /// @param category The field category ('experience', 'income', 'settlement')
-  /// @param value The display value for the chip
-  /// @param width The width for the chip
-  /// @param isDark Whether the app is in dark mode
-  /// @return A tappable choice chip widget
-  Widget _buildChip(String category, String value, double width, bool isDark) {
-    final bool isSelected =
-        (category == "experience" && selectedExperience == value) ||
-            (category == "income" && selectedIncome == value) ||
-            (category == "settlement" && selectedSettlement == value);
-
-    return InkWell(
-      onTap: () => _selectOption(category, value),
-      child: constWidgets.choiceChip(
-        value,
-        isSelected,
-        context,
-        width,
-        isDark,
-      ),
-    );
-  }
-
-  /// Builds a selectable chip with fixed styling for Yes/No selections
-  /// @param category The field category ('Settlement' or 'PEP')
-  /// @param value The display value for the chip
-  /// @param width The width for the chip
-  /// @return A tappable choice chip widget
-  Widget _buildSelectableChip(String category, String value, double width) {
-    bool isSelected =
-        (category == "Settlement" && selectedSettlement == value) ||
-            (category == "PEP" && selectedPEP == value);
-
-    return InkWell(
-      onTap: () => _selectOption(category, value),
-      child: constWidgets.choiceChip(value, isSelected, context, width, true),
     );
   }
 }

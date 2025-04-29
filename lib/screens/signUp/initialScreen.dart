@@ -105,7 +105,7 @@ class InitialScreen extends StatelessWidget {
                     "OR",
                     style: TextStyle(
                       color:
-                      isDark ? Colors.grey[400] : const Color(0xFFC9CACC),
+                          isDark ? Colors.grey[400] : const Color(0xFFC9CACC),
                     ),
                   ),
                 ),

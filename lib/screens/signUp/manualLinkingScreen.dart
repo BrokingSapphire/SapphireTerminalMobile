@@ -157,11 +157,14 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
     return Scaffold(
       // App bar with back button
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         leadingWidth: 46,
         leading: Padding(
           padding: EdgeInsets.only(left: 0),
           child: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back,
+                color: isDark ? Colors.white : Colors.black),
             onPressed: () {
               Navigator.pop(context); // Navigate back to previous screen
             },
@@ -188,7 +191,7 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
               Text(
                 "Link your bank account",
                 style: TextStyle(
-                    color: Colors.white,
+                    color: isDark ? Colors.white : Colors.black,
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold),
               ),
@@ -197,7 +200,9 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
               // Instruction text
               Text(
                 "Make sure that you are linking a bank account that is in your name.",
-                style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black,
+                    fontSize: 14.sp),
               ),
               SizedBox(height: 16.h),
 
@@ -215,7 +220,7 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
               Text(
                 "Account Type",
                 style: TextStyle(
-                    color: Colors.white,
+                    color: isDark ? Colors.white : Colors.black,
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold),
               ),
@@ -238,7 +243,8 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
                   Expanded(child: Divider()),
                   Text(
                     "  OR  ",
-                    style: TextStyle(color: Color(0xFFC9CACC)),
+                    style: TextStyle(
+                        color: isDark ? Colors.white : Color(0xFFC9CACC)),
                   ),
                   Expanded(child: Divider())
                 ],
@@ -249,7 +255,8 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
               Center(
                 child: TextButton(
                   onPressed: () {
-                    navi(linkWithUpiScreen(), context); // Navigate to UPI linking screen
+                    navi(linkWithUpiScreen(),
+                        context); // Navigate to UPI linking screen
                   },
                   child: Text(
                     "Link bank account using UPI",
@@ -279,17 +286,24 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
               height: 52.h,
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: _isButtonDisabled ? null : submitBankDetails,
                 child: Text(
                   "Continue",
                   style:
-                  TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w600),
+                      TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w600),
                 ),
+                // onPressed: _isButtonDisabled ? null : submitBankDetails,
+                onPressed: () {
+                  navi(confirmBankDetails(),
+                      context); // Navigate to confirmation screen
+                },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                  _isButtonDisabled ? Color(0xff2f2f2f) : Color(0xFF1DB954), // Gray when disabled, green when enabled
+                  backgroundColor: _isButtonDisabled
+                      ? isDark
+                          ? Color(0xff2f2f2f)
+                          : Colors.grey[400]
+                      : Color(
+                          0xFF1DB954), // Gray when disabled, green when enabled
                   foregroundColor: Colors.white,
-                  disabledBackgroundColor: Color(0xff2f2f2f),
                 ),
               ),
             ),

@@ -17,9 +17,23 @@ import '../../utils/constWidgets.dart'; // Reusable UI components
 class linkWithUpiScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: Colors.black, // Dark background for better UPI app visibility
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leadingWidth: 46,
+        leading: Padding(
+          padding: EdgeInsets.only(left: 0),
+          child: IconButton(
+            icon: Icon(Icons.arrow_back,
+                color: isDark ? Colors.white : Colors.black),
+            onPressed: () {
+              Navigator.pop(context); // Navigate back to previous screen
+            },
+          ),
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Column(
@@ -37,7 +51,7 @@ class linkWithUpiScreen extends StatelessWidget {
             Text(
               "Link your bank account",
               style: TextStyle(
-                  color: Colors.white,
+                  color: isDark ? Colors.white : Colors.black87,
                   fontSize: 20.sp,
                   fontWeight: FontWeight.bold),
             ),
@@ -46,29 +60,36 @@ class linkWithUpiScreen extends StatelessWidget {
             // Subtitle explaining the verification method
             Text(
               "By making a transaction of 1 INR",
-              style: TextStyle(color: Colors.white70, fontSize: 15.sp),
+              style: TextStyle(
+                  color: isDark ? Colors.white70 : Colors.black,
+                  fontSize: 15.sp),
             ),
             SizedBox(height: 20.h),
 
             // First benefit bullet point - explains auto-fetching of account details
             Text(
                 "• We'll automatically fetch your account name and number, so you don't have to enter them manually saving you time and effort!",
-                style: TextStyle(color: Colors.white70, fontSize: 15.sp)),
+                style: TextStyle(
+                    color: isDark ? Colors.white70 : Color(0xff6B7280),
+                    fontSize: 15.sp)),
             SizedBox(height: 10.h),
 
             // Second bullet point - explains which bank account to use
             Text(
                 "• Kindly make the payment from the bank account you'd like to link to your Sapphire account.",
-                style: TextStyle(color: Colors.white70, fontSize: 15.sp)),
+                style: TextStyle(
+                    color: isDark ? Colors.white70 : Color(0xff6B7280),
+                    fontSize: 15.sp)),
             SizedBox(height: 30.h),
 
             // UPI app selection row with popular options
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildUPIButton("assets/images/phonepay.svg", "PhonePe"),
-                _buildUPIButton("assets/images/gpay.svg", "GPay"),
-                _buildUPIButton("assets/images/paytm.svg", "PayTM"),
+                _buildUPIButton(
+                    "assets/images/phonepay.svg", "PhonePe", isDark),
+                _buildUPIButton("assets/images/gpay.svg", "GPay", isDark),
+                _buildUPIButton("assets/images/paytm.svg", "PayTM", isDark),
               ],
             ),
             SizedBox(height: 30.h),
@@ -79,7 +100,7 @@ class linkWithUpiScreen extends StatelessWidget {
                 Expanded(child: Divider()),
                 Text(
                   "  OR  ",
-                  style: TextStyle(color: Color(0xFFC9CACC)),
+                  style: TextStyle(color: const Color(0xFFC9CACC)),
                 ),
                 Expanded(child: Divider())
               ],
@@ -90,7 +111,8 @@ class linkWithUpiScreen extends StatelessWidget {
             Center(
               child: TextButton(
                 onPressed: () {
-                  navi(ManualLinkingScreen(), context); // Navigate to manual linking screen
+                  navi(ManualLinkingScreen(),
+                      context); // Navigate to manual linking screen
                 },
                 child: Text(
                   "Link bank account manually",
@@ -119,7 +141,7 @@ class linkWithUpiScreen extends StatelessWidget {
   /// @param assetPath Path to the SVG icon of the UPI app
   /// @param label Name of the UPI app to display
   /// @return A styled column with UPI app icon and label
-  Widget _buildUPIButton(String assetPath, String label) {
+  Widget _buildUPIButton(String assetPath, String label, bool isDark) {
     return Column(
       children: [
         // UPI app icon container
@@ -127,17 +149,19 @@ class linkWithUpiScreen extends StatelessWidget {
           width: 48.w,
           height: 48.h,
           decoration: BoxDecoration(
-            color: Colors.white10,
+            color: isDark ? Colors.white10 : Colors.white10,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Center(
               child: SvgPicture.asset(
-                assetPath,
-              )), // UPI Logo
+            assetPath,
+          )), // UPI Logo
         ),
         SizedBox(height: 5.h),
         // UPI app name
-        Text(label, style: TextStyle(color: Colors.white, fontSize: 13.sp)),
+        Text(label,
+            style: TextStyle(
+                color: isDark ? Colors.white : Colors.black, fontSize: 13.sp)),
       ],
     );
   }

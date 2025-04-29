@@ -8,8 +8,12 @@ import 'package:sapphire/utils/filters.dart';
 import '../main.dart';
 
 class constWidgets {
+  static bool isDark(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark;
+  }
+
   static segmentChoiceChipiWithCheckbox(
-      String text, bool val, BuildContext context) {
+      String text, bool val, BuildContext context, bool isDark) {
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -32,7 +36,9 @@ class constWidgets {
             style: TextStyle(
               fontSize: 12.sp, // Increased font size to match image
               fontWeight: FontWeight.w400,
-              color: Colors.white, // White text to match black background
+              color: isDark
+                  ? Colors.white
+                  : Colors.black, // White text to match black background
             ),
           ),
         ],
@@ -43,14 +49,18 @@ class constWidgets {
         border: Border.all(
           color: val
               ? Colors.green
-              : Colors.grey.shade800, // Gray border to match image
+              : isDark
+                  ? Colors.grey.shade800
+                  : Color(0xffD1D5DB), // Gray border to match image
           width: 1.5, // Slightly thicker border for visibility
         ),
         borderRadius:
             BorderRadius.circular(8.r), // Larger rounded corners to match image
         color: val
-            ? Color(0xFF26382F)
-            : Color(0xff121413), // Black background to match image
+            ? isDark
+                ? Color(0xFF26382F)
+                : Colors.green.withOpacity(0.3)
+            : Colors.transparent, // Black background to match image
       ),
     );
   }
@@ -500,8 +510,8 @@ class constWidgets {
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         labelText: hintText,
-        labelStyle:
-            TextStyle(color: isDark ? const Color(0xffC9CACC) : Colors.black),
+        labelStyle: TextStyle(
+            color: isDark ? const Color(0xffC9CACC) : Color(0xff6B7280)),
         hintStyle: TextStyle(
             color: isDark ? const Color(0xFFC9CACC) : Colors.black,
             fontSize: 15.sp),
@@ -510,7 +520,9 @@ class constWidgets {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(30.r)),
-          borderSide: BorderSide(color: Color(0XFF2F2F2F)),
+          borderSide: BorderSide(
+              color:
+                  isDark ? const Color(0xff2F2F2F) : const Color(0xff6B7280)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(30.r)),
@@ -525,8 +537,9 @@ class constWidgets {
                     Text(
                       "+91",
                       style: TextStyle(
-                          color:
-                              isDark ? const Color(0xffC9CACC) : Colors.black,
+                          color: isDark
+                              ? const Color(0xffC9CACC)
+                              : Color(0xff6B7280),
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w500),
                     ),
@@ -534,7 +547,9 @@ class constWidgets {
                     Container(
                       width: 1, // Thin vertical line
                       height: 20, // Matches text height
-                      color: Color(0XFF2F2F2F),
+                      color: isDark
+                          ? const Color(0xff2F2F2F)
+                          : const Color(0xff6B7280),
                     ),
                     SizedBox(width: 8.w), // Adds spacing before text field
                   ],
@@ -698,7 +713,6 @@ class constWidgets {
                               "Support Portal",
                               style: TextStyle(
                                 fontSize: 16.sp,
-                                color: Colors.white, // White text
                               ),
                             ),
                             onTap: () {
@@ -708,7 +722,9 @@ class constWidgets {
                             },
                           ),
                           Divider(
-                              color: Colors.grey[800],
+                              color: isDark(context)
+                                  ? const Color(0xff2f2f2f)
+                                  : const Color(0xffD1D5DB),
                               thickness: 1), // Divider between items
                           ListTile(
                             leading: SizedBox(
@@ -719,7 +735,6 @@ class constWidgets {
                               "Contact Us",
                               style: TextStyle(
                                 fontSize: 16.sp,
-                                color: Colors.white, // White text
                               ),
                             ),
                             onTap: () {
@@ -729,7 +744,10 @@ class constWidgets {
                             },
                           ),
                           Divider(
-                              color: Colors.grey[800], thickness: 1), // Divider
+                              color: isDark(context)
+                                  ? const Color(0xff2f2f2f)
+                                  : const Color(0xffD1D5DB),
+                              thickness: 1), // Divider
                           ListTile(
                             leading: SizedBox(
                                 height: 25.h,
@@ -739,7 +757,6 @@ class constWidgets {
                               "Frequently Asked Questions",
                               style: TextStyle(
                                 fontSize: 16.sp,
-                                color: Colors.white, // White text
                               ),
                             ),
                             onTap: () {
@@ -757,7 +774,10 @@ class constWidgets {
           },
           child: Text(
             'Need Help?',
-            style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
+            style: TextStyle(
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w600,
+                color: isDark(context) ? Colors.white : Colors.black),
           )),
     );
   }

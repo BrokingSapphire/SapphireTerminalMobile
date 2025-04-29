@@ -52,15 +52,18 @@ class _SignCanvasScreenState extends State<SignCanvasScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: isDark ? Colors.black : Colors.white,
       // App bar with back button
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         leadingWidth: 46,
         leading: Padding(
           padding: EdgeInsets.only(left: 0),
           child: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back,
+                color: isDark ? Colors.white : Colors.black),
             onPressed: () {
               Navigator.pop(context); // Navigate back to previous screen
             },
@@ -76,7 +79,9 @@ class _SignCanvasScreenState extends State<SignCanvasScreen> {
               width: double.infinity,
               height: 620.h,
               decoration: BoxDecoration(
-                color: Colors.white, // White background for signature
+                color: isDark
+                    ? Colors.white
+                    : Color(0xFFE3E6EB), // #E3E6EB pad background in light mode
                 borderRadius: BorderRadius.circular(10.r),
                 border: Border.all(color: Colors.white24),
               ),
@@ -100,15 +105,19 @@ class _SignCanvasScreenState extends State<SignCanvasScreen> {
                     // Clear button - resets the canvas
                     Expanded(
                       child: OutlinedButton(
-                        onPressed:
-                        isCanvasEmpty ? null : _scribbleNotifier.clear, // Disabled if canvas is empty
+                        onPressed: isCanvasEmpty
+                            ? null
+                            : _scribbleNotifier
+                                .clear, // Disabled if canvas is empty
                         style: OutlinedButton.styleFrom(
-                          backgroundColor: Color(0xFF26382F),
-                          side: BorderSide(color: Colors.green),
-                          foregroundColor: Colors.white,
-                          disabledForegroundColor: Colors.grey,
+                          backgroundColor:
+                              isDark ? Color(0xFF26382F) : Color(0xFFF5F7FA),
+                          side: BorderSide(
+                              color: isDark ? Colors.green : Color(0xff6B7280)),
+                          foregroundColor: isDark ? Colors.white : Colors.black,
+                          disabledForegroundColor: Color(0xff6B7280),
                           disabledBackgroundColor:
-                          Color(0xFF26382F).withOpacity(0.5),
+                              isDark ? Color(0xFF26382F) : Color(0xFFF5F7FA),
                           padding: EdgeInsets.symmetric(
                               horizontal: 20.w, vertical: 12.h),
                           shape: RoundedRectangleBorder(
@@ -124,7 +133,9 @@ class _SignCanvasScreenState extends State<SignCanvasScreen> {
                     // Save & Continue button - processes the signature and navigates forward
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: isCanvasEmpty ? null : _saveSignature, // Disabled if canvas is empty
+                        onPressed: isCanvasEmpty
+                            ? null
+                            : _saveSignature, // Disabled if canvas is empty
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                           foregroundColor: Colors.white,

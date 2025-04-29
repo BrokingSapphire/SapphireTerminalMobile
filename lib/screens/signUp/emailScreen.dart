@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // For input formatting
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sapphire/functions/authFunctions.dart'; // Authentication utilities
 import 'package:sapphire/main.dart'; // App-wide utilities
 import 'package:sapphire/screens/signUp/mobileOtpVerification.dart'; // Next screen in registration flow
@@ -35,7 +36,7 @@ class _EmailScreenState extends State<EmailScreen> {
   /// @return True if the email format is valid, false otherwise
   bool isValidEmail(String email) {
     final emailRegex =
-    RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
     return emailRegex.hasMatch(email);
   }
 
@@ -82,9 +83,14 @@ class _EmailScreenState extends State<EmailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Detect if the app is running in dark mode to adjust UI elements accordingly
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       // Simple app bar with back button
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: isDark ? Colors.black : Colors.white,
+      ),
       body: SingleChildScrollView(
         child: GestureDetector(
           // Dismiss keyboard when tapping outside input field
@@ -112,6 +118,7 @@ class _EmailScreenState extends State<EmailScreen> {
                     "Welcome to\nSapphire",
                     style: TextStyle(
                       fontSize: 34.sp,
+                      color: isDark ? Colors.white : Colors.black,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -137,11 +144,12 @@ class _EmailScreenState extends State<EmailScreen> {
                   ],
                   decoration: InputDecoration(
                     contentPadding:
-                    EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                        EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                     labelText: "Email",
-                    labelStyle: TextStyle(color: Colors.white),
-                    hintStyle:
-                    TextStyle(color: Color(0xFFC9CACC), fontSize: 15),
+                    labelStyle: TextStyle(
+                      color: isDark ? Color(0xFFC9CACC) : Color(0xff6B7280),
+                    ),
+
                     // Apply rounded corner style to text field
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -152,31 +160,41 @@ class _EmailScreenState extends State<EmailScreen> {
                       borderSide: BorderSide(
                           color: _isEmailInvalid
                               ? Colors.red
-                              : Colors.grey.shade700),
+                              : isDark
+                                  ? Color(0xff2f2f2f)
+                                  : Color(0xff6B7280)),
                     ),
                     // Focus border color reflects validation state
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(30)),
                       borderSide: BorderSide(
-                          color: _isEmailInvalid
-                              ? Colors.red
-                              : Colors.green,
+                          color: _isEmailInvalid ? Colors.red : Colors.green,
                           width: 2.0),
                     ),
                   ),
-                  style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                  style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black,
+                      fontSize: 16.sp),
                 ),
                 SizedBox(height: 32.h),
 
                 /// Divider with "OR" text for alternative login options
                 Row(
                   children: [
-                    Expanded(child: Divider(color: Colors.grey.shade800)),
+                    Expanded(
+                        child: Divider(
+                            color: isDark
+                                ? Colors.grey.shade800
+                                : Colors.grey.shade300)),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text('OR'),
                     ),
-                    Expanded(child: Divider(color: Colors.grey.shade800)),
+                    Expanded(
+                        child: Divider(
+                            color: isDark
+                                ? Colors.grey.shade800
+                                : Colors.grey.shade300)),
                   ],
                 ),
                 SizedBox(height: 32.h),
@@ -189,13 +207,17 @@ class _EmailScreenState extends State<EmailScreen> {
                     SizedBox(
                         height: 54.h,
                         width: 54.w,
-                        child: Image.asset("assets/icons/google.png")),
+                        child: isDark
+                            ? Image.asset('assets/icons/google.png')
+                            : SvgPicture.asset('assets/svgs/google.svg')),
                     SizedBox(width: 50.w),
                     // Apple login option
                     SizedBox(
                         height: 54.h,
                         width: 54.w,
-                        child: Image.asset("assets/icons/apple.png"))
+                        child: isDark
+                            ? Image.asset('assets/icons/apple.png')
+                            : SvgPicture.asset('assets/svgs/apple.svg'))
                   ],
                 ),
                 // Expanded space (commented out)
@@ -220,8 +242,10 @@ class _EmailScreenState extends State<EmailScreen> {
                   padding: const EdgeInsets.only(bottom: 20.0),
                   child: Text(
                     "© 2025 Sapphire Broking. SEBI Registered Stock Broker | Member: NSE, BSE, MCX, NCDEX. Investments are subject to market risks. Read all documents carefully. Disputes subject to Nagpur jurisdiction.",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(fontSize: 11.sp, color: Color(0xFF9B9B9B)),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 11.sp,
+                        color: isDark ? Color(0xFF9B9B9B) : Color(0xFF6B7280)),
                   ),
                 ),
               ],
@@ -240,14 +264,14 @@ class _EmailScreenState extends State<EmailScreen> {
                 child: Text(
                   "Continue",
                   style:
-                  TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w600),
+                      TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w600),
                 ),
                 // Button color changes based on enabled state
                 style: ElevatedButton.styleFrom(
                   backgroundColor: (_email.text.isNotEmpty && !_isEmailInvalid)
                       ? Color(0xFF1DB954)
                       : Color(0xff2f2f2f),
-                  foregroundColor: Colors.white,
+                  foregroundColor:  Colors.white,
                 ),
               ),
             ),

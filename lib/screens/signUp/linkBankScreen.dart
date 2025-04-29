@@ -88,14 +88,18 @@ class linkBankScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       // App bar with back button
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         leadingWidth: 46,
         leading: Padding(
           padding: EdgeInsets.only(left: 0),
           child: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back,
+                color: isDark ? Colors.white : Colors.black),
             onPressed: () {
               Navigator.pop(context); // Navigate back to previous screen
             },
@@ -120,7 +124,9 @@ class linkBankScreen extends StatelessWidget {
             // Explanatory text about bank account linking purpose
             Text(
               "To finish opening your account,  you'll need to link your bank account, which will be used for your investments. Once linked, we'll verify it to ensure it belongs to you.",
-              style: TextStyle(fontSize: 15.sp, color: Color(0xffEBEEF5)),
+              style: TextStyle(
+                  fontSize: 15.sp,
+                  color: isDark ? Color(0xffEBEEF5) : Color(0xff1A1A1A)),
             ),
             SizedBox(height: 16.h),
 
@@ -130,6 +136,7 @@ class linkBankScreen extends StatelessWidget {
               svgAssetPath: "assets/images/upi.svg",
               title: "Link via UPI ",
               onTap: () => initiateValidation("upi", context),
+              isDark: isDark,
             ),
             SizedBox(height: 12.h),
 
@@ -139,6 +146,7 @@ class linkBankScreen extends StatelessWidget {
               svgAssetPath: "assets/images/bank.svg",
               title: "Enter Bank details manually",
               onTap: () => initiateValidation("bank", context),
+              isDark: isDark,
             ),
 
             // Push help button to bottom
@@ -165,13 +173,14 @@ class linkBankScreen extends StatelessWidget {
     required String title2,
     String? subtitle,
     required VoidCallback onTap,
+    required bool isDark,
   }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Color(0xFF121413),
+          color: isDark ? Color(0xFF121413) : Color(0xFFF5F7FA),
           borderRadius: BorderRadius.circular(10.r),
         ),
         child: Row(
@@ -181,6 +190,11 @@ class linkBankScreen extends StatelessWidget {
               svgAssetPath,
               width: 20.w,
               height: 20.h,
+              color: svgAssetPath == 'assets/images/bank.svg'
+                  ? isDark
+                      ? Colors.white
+                      : Colors.black
+                  : null,
             ),
             SizedBox(width: 16.w),
 
@@ -198,7 +212,7 @@ class linkBankScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w600,
-                            color: Colors.white,
+                            color: isDark ? Colors.white : Colors.black87,
                           ),
                         ),
                         TextSpan(
@@ -206,7 +220,7 @@ class linkBankScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w400,
-                            color: Colors.white70,
+                            color: isDark ? Colors.white70 : Colors.black87,
                           ),
                         ),
                       ],
@@ -220,7 +234,8 @@ class linkBankScreen extends StatelessWidget {
               ),
             ),
             // Right arrow indicator
-            Icon(Icons.arrow_forward_ios, color: Colors.white, size: 20),
+            Icon(Icons.arrow_forward_ios,
+                color: isDark ? Colors.white : Colors.black87, size: 20),
           ],
         ),
       ),

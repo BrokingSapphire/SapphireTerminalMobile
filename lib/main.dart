@@ -37,7 +37,6 @@ import 'package:sapphire/screens/signUp/signUpPaymentScreen.dart';
 import 'package:sapphire/screens/signUp/signatureVerificationScreen.dart';
 import 'package:sapphire/screens/signUp/otherDetails.dart';
 import 'package:sapphire/screens/signUp/verifyAadharScreen.dart';
-import 'package:sapphire/screens/signUp/yourInvestmentProfile.dart';
 import 'package:sapphire/screens/accountSection/verifiedP&L.dart';
 import 'package:sapphire/utils/appTheme.dart';
 import 'package:sapphire/themeProvider.dart';
@@ -116,7 +115,7 @@ class MyApp extends StatelessWidget {
           theme: AppThemes.lightTheme,
           darkTheme: AppThemes.darkTheme,
           themeMode: themeProvider.themeMode, // 👈 Dynamic theme mode
-          home: CongratulationsScreen(),
+          home: InitialScreen(),
           // home: BuyScreenWrapper(),
         );
       },

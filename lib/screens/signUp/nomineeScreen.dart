@@ -18,20 +18,25 @@ import 'signCanvaScreen.dart'; // Not used directly
 class nomineeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       // App bar with back button
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         leadingWidth: 46,
         leading: Padding(
           padding: EdgeInsets.only(left: 0),
           child: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back,
+                color: isDark ? Colors.white : Colors.black),
             onPressed: () {
               Navigator.pop(context); // Navigate back to previous screen
             },
           ),
         ),
       ),
+      backgroundColor: isDark ? Colors.black : Colors.white,
       body: GestureDetector(
         // Dismiss keyboard when tapping outside input fields
         onTap: () {
@@ -53,12 +58,17 @@ class nomineeScreen extends StatelessWidget {
               ),
               // Screen title explaining the purpose
               Text("Add Nominees for your investment",
-                  style:
-                  TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold)),
+                  style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? Colors.white : Colors.black)),
               SizedBox(height: 12.h),
 
               // Visual representation of nomination concept
-              Image.asset("assets/images/nomineescreen.png", height: 250.h),
+              Center(
+                child: Image.asset("assets/images/nomineescreen.png",
+                    height: 250.h),
+              ),
               SizedBox(height: 12.h),
 
               // Information card highlighting benefits of nomination
@@ -67,7 +77,9 @@ class nomineeScreen extends StatelessWidget {
                 padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.r),
-                  border: Border.all(color: Color(0xff2f2f2f)),
+                  border: Border.all(
+                      color: isDark ? Color(0xff2f2f2f) : Color(0xffD1D5DB)),
+                  color: isDark ? Color(0xFF1A1A1A) : Colors.white,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,19 +87,27 @@ class nomineeScreen extends StatelessWidget {
                     // Card title
                     Text("Secure Your Investments: Add a Nominee Today!",
                         style: TextStyle(
-                            color: Color(0xffEBEEF5), fontSize: 12.sp)),
+                            color:
+                                isDark ? Color(0xffEBEEF5) : Color(0xff1A1A1A),
+                            fontSize: 12.sp)),
                     SizedBox(height: 8.h),
 
                     // Bullet points highlighting benefits
                     Text("✓  Easy asset transfer.",
                         style: TextStyle(
-                            color: Color(0xffC9CACC), fontSize: 12.sp)),
+                            color:
+                                isDark ? Color(0xffC9CACC) : Color(0xff6B7280),
+                            fontSize: 12.sp)),
                     Text("✓  Avoids legal hassles.",
                         style: TextStyle(
-                            color: Color(0xffC9CACC), fontSize: 12.sp)),
+                            color:
+                                isDark ? Color(0xffC9CACC) : Color(0xff6B7280),
+                            fontSize: 12.sp)),
                     Text("✓  Quick claim settlement.",
                         style: TextStyle(
-                            color: Color(0xffC9CACC), fontSize: 12.sp)),
+                            color:
+                                isDark ? Color(0xffC9CACC) : Color(0xff6B7280),
+                            fontSize: 12.sp)),
                   ],
                 ),
               ),
@@ -109,7 +129,7 @@ class nomineeScreen extends StatelessWidget {
                       },
                       child: Text("I don't want to add nominees",
                           style: TextStyle(
-                              color: Colors.white,
+                              color: isDark ? Colors.white : Colors.black,
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w600)))),
               SizedBox(height: 10.h),

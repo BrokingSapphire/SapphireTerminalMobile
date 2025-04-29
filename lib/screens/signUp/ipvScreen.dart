@@ -18,14 +18,18 @@ import '../../utils/constWidgets.dart'; // Reusable UI components
 class ipvScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       // App bar with back button
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         leadingWidth: 46,
         leading: Padding(
           padding: EdgeInsets.only(left: 0),
           child: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back,
+                color: isDark ? Colors.white : Colors.black),
             onPressed: () {
               Navigator.pop(context); // Navigate back to previous screen
             },
@@ -47,13 +51,16 @@ class ipvScreen extends StatelessWidget {
             ),
             // Screen title - explains the purpose of this verification step
             Text("In-Person Verification (IPV)",
-                style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold)),
+                style: TextStyle(
+                    fontSize: 22.sp,
+                    fontWeight: FontWeight.bold,
+                    color: isDark ? Colors.white : Colors.black)),
             SizedBox(height: 12.h),
 
             // Visual representation of IPV process (illustration)
             Center(
                 child:
-                Image.asset("assets/images/ipvscreen.png", height: 200.h)),
+                    Image.asset("assets/images/ipvscreen.png", height: 200.h)),
 
             // Push content to top and instructions/button to bottom
             Spacer(),
@@ -61,8 +68,8 @@ class ipvScreen extends StatelessWidget {
             // Instruction container with important selfie guidelines
             Container(
               decoration: BoxDecoration(
-                color: Colors.grey.shade900,
-                borderRadius: BorderRadius.circular(6.r),
+                color: isDark ? Colors.grey.shade900 : Color(0xffEDEEEF),
+                borderRadius: BorderRadius.circular(8.r),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

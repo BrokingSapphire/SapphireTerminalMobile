@@ -114,9 +114,10 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
 
   /// Shows a bottom sheet to select relationship for a nominee
   /// @param index Index of the nominee to set relationship for
-  void _selectRelation(int index) {
+  /// @param isDark Whether the app is in dark mode
+  void _selectRelation(int index, bool isDark) {
     showModalBottomSheet(
-      backgroundColor: Colors.black,
+      backgroundColor: isDark ? Colors.black : Colors.white,
       context: context,
       isScrollControlled: true, // Allow flexible sizing of bottom sheet
       shape: RoundedRectangleBorder(
@@ -133,7 +134,7 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
               Text("Nominee is my",
                   style: TextStyle(
                       fontSize: 20.sp,
-                      color: Colors.white,
+                      color: isDark ? Colors.white : Colors.black,
                       fontWeight: FontWeight.bold)),
               SizedBox(height: 10.h),
 
@@ -143,7 +144,7 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
                   itemCount: relations.length,
                   separatorBuilder: (context, i) => Divider(
                     height: 1.h,
-                    color: Color(0xff2f2f2f),
+                    color: isDark ? Color(0xff2f2f2f) : Color(0xffD1D5DB),
                   ),
                   itemBuilder: (context, i) {
                     return GestureDetector(
@@ -159,7 +160,8 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
                             horizontal: 8.w, vertical: 15.h),
                         child: Text(relations[i],
                             style: TextStyle(
-                                fontSize: 18.sp, color: Colors.white)),
+                                fontSize: 18.sp,
+                                color: isDark ? Colors.white : Colors.black)),
                       ),
                     );
                   },
@@ -204,8 +206,8 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => const Center(
-        child: CircularProgressIndicator(color: Color(0xFF1DB954)),
+      builder: (_) => Center(
+        child: CircularProgressIndicator(color: Theme.of(context).primaryColor),
       ),
     );
 
@@ -254,15 +256,18 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
     return Scaffold(
       // App bar with back button
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         leadingWidth: 46,
         leading: Padding(
           padding: EdgeInsets.only(left: 0),
           child: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back,
+                color: isDark ? Colors.white : Colors.black),
             onPressed: () => Navigator.pop(context),
           ),
         ),
       ),
+      backgroundColor: isDark ? Colors.black : Colors.white,
       body: Column(
         children: [
           // Header section with title and progress bar
@@ -281,7 +286,7 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
                   children: [
                     Text("Nominee",
                         style: TextStyle(
-                            color: Colors.white,
+                            color: isDark ? Colors.white : Colors.black,
                             fontSize: 18.sp,
                             fontWeight: FontWeight.bold)),
                     // Skip button - allows bypassing nominee addition
@@ -289,7 +294,7 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
                       onTap: () => navi(eSignScreen(), context),
                       child: Text("Skip",
                           style:
-                          TextStyle(color: Colors.green, fontSize: 16.sp)),
+                              TextStyle(color: Colors.green, fontSize: 16.sp)),
                     ),
                   ],
                 ),
@@ -308,7 +313,7 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
           ),
 
           // Add nominee button at bottom of list
-          _buildAddNomineeButton(),
+          _buildAddNomineeButton(isDark),
           SizedBox(height: 20.h),
         ],
       ),
@@ -320,7 +325,11 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             // Continue button - submits nominee details
-            constWidgets.greenButton("Continue", onTap: _submitNominees),
+            constWidgets.greenButton("Continue",
+                //  onTap: _submitNominees,
+                onTap: () {
+              navi(eSignScreen(), context);
+            }),
             SizedBox(height: 10.h),
             // Help button
             Center(child: constWidgets.needHelpButton(context)),
@@ -348,11 +357,14 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Nominee ${index + 1}",
-                  style: TextStyle(color: Colors.white, fontSize: 17.sp)),
+                  style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black,
+                      fontSize: 17.sp)),
               // Show delete button only if there's more than one nominee
               if (nominees.length > 1)
                 IconButton(
-                  icon: Icon(Icons.close, color: Colors.green, size: 22.sp),
+                  icon:
+                      Icon(Icons.close, color: Color(0xFF1DB954), size: 22.sp),
                   onPressed: () => _deleteNominee(index),
                 ),
             ],
@@ -372,21 +384,26 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
 
           // Relationship selector dropdown
           GestureDetector(
-            onTap: () => _selectRelation(index),
+            onTap: () => _selectRelation(index, isDark),
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30.r),
-                border: Border.all(color: Colors.grey.shade700),
+                border: Border.all(
+                    color: isDark ? Colors.grey.shade700 : Color(0xff6B7280)),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    nominees[index]["relation"] ?? "Relation", // Show selected relation or placeholder
-                    style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                    nominees[index]["relation"] ??
+                        "Relation", // Show selected relation or placeholder
+                    style: TextStyle(
+                        color: isDark ? Colors.white : Colors.black,
+                        fontSize: 16.sp),
                   ),
-                  Icon(Icons.arrow_drop_down, color: Colors.white),
+                  Icon(Icons.arrow_drop_down,
+                      color: isDark ? Colors.white : Colors.black),
                 ],
               ),
             ),
@@ -399,7 +416,7 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
             children: [
               Text("% Share",
                   style: TextStyle(
-                      color: Colors.white,
+                      color: isDark ? Colors.white : Colors.black,
                       fontSize: 16.sp,
                       fontWeight: FontWeight.bold)),
               // Display current share percentage in badge
@@ -407,20 +424,26 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
                 width: 40.w,
                 padding: EdgeInsets.symmetric(vertical: 8.h),
                 decoration: BoxDecoration(
-                  color: Colors.white12,
+                  color: isDark ? Colors.white12 : Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: Center(
-                  child: Text("${nominees[index]["share"].toInt()}%", // Integer percentage
-                      style: TextStyle(color: Colors.white, fontSize: 14.sp)),
+                  child: Text(
+                      "${nominees[index]["share"].toInt()}%", // Integer percentage
+                      style: TextStyle(
+                          color: isDark ? Colors.white : Colors.black,
+                          fontSize: 14.sp)),
                 ),
               ),
             ],
           ),
           // Slider for adjusting nominee's share percentage
-          _buildShareSlider(index),
+          _buildShareSlider(index, isDark),
           SizedBox(height: 24.h),
-          Divider(), // Separator between nominees
+          Divider(
+              color: isDark
+                  ? Colors.grey.shade800
+                  : Colors.grey.shade300), // Separator between nominees
         ],
       ),
     );
@@ -428,30 +451,35 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
 
   /// Builds a slider for adjusting nominee's share percentage
   /// @param index Index of the nominee to adjust share for
+  /// @param isDark Whether the app is in dark mode
   /// @return A slider widget with appropriate styling and behavior
-  Widget _buildShareSlider(int index) {
+  Widget _buildShareSlider(int index, bool isDark) {
     return Slider(
       value: nominees[index]["share"],
       min: 0,
       max: 100,
       activeColor: Colors.green,
-      inactiveColor: Colors.white,
+      inactiveColor: isDark ? Colors.white : Colors.grey.shade300,
       onChanged: (value) => _adjustShare(index, value),
     );
   }
 
   /// Builds the add nominee button
+  /// @param isDark Whether the app is in dark mode
   /// @return A gesture detector with icon and text for adding nominees
-  Widget _buildAddNomineeButton() {
+  Widget _buildAddNomineeButton(bool isDark) {
     return GestureDetector(
       onTap: _addNominee,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.add, color: Colors.white, size: 20.sp),
+          Icon(Icons.add,
+              color: isDark ? Colors.white : Colors.black, size: 20.sp),
           SizedBox(width: 5.w),
           Text("Add Nominee",
-              style: TextStyle(color: Colors.white, fontSize: 16.sp)),
+              style: TextStyle(
+                  color: isDark ? Colors.white : Colors.black,
+                  fontSize: 16.sp)),
         ],
       ),
     );

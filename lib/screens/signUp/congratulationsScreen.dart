@@ -47,14 +47,18 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
+      backgroundColor: isDark ? Colors.black : Colors.white,
       // App bar with back button (rarely used on this screen but provides safety net)
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         leadingWidth: 46,
         leading: Padding(
           padding: EdgeInsets.only(left: 0),
           child: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back,
+                color: isDark ? Colors.white : Colors.black),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -78,15 +82,18 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
                   // Note: {user.Name} appears to be a placeholder that should be replaced with actual user name
                   Text(
                     "Congratulations {user.Name} 🎉 !",
-                    style:
-                    TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w600,
+                      color: isDark ? Colors.white : Colors.black,
+                    ),
                   ),
                   SizedBox(height: 12.h),
                   // Success message explaining account setup completion
                   Text(
                     "Your Sapphire account is now set up and ready to go. Time to start your investment journey!",
                     style: TextStyle(
-                        color: Color(0xFFC9CACC),
+                        color: isDark ? Color(0xFFC9CACC) : Color(0xFF6B7280),
                         fontWeight: FontWeight.w400,
                         fontSize: 14.sp),
                     textAlign: TextAlign.center,
@@ -107,7 +114,9 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
                         // Container for client code display
                         Container(
                           decoration: BoxDecoration(
-                              color: Color(0xff121413),
+                              color: isDark
+                                  ? Color(0xff121413)
+                                  : Color(0xffF5F7FA),
                               borderRadius: BorderRadius.circular(12.r)),
                           height: 271.h,
                           width: double.infinity,
@@ -127,12 +136,16 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
                                     children: [
                                       TextSpan(text: "Your Client Code is"),
                                       TextSpan(
-                                          text: " J08596", // Client ID - should be dynamic in production
+                                          text:
+                                              " J08596", // Client ID - should be dynamic in production
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold)),
                                     ],
                                     style: TextStyle(
                                         fontSize: 16.sp,
+                                        color: isDark
+                                            ? Colors.white
+                                            : Colors.black,
                                         fontWeight: FontWeight.w400)),
                               ),
                               // Motivational message for new users
@@ -141,6 +154,7 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 16.sp,
+                                    color: isDark ? Colors.white : Colors.black,
                                     fontWeight: FontWeight.w400),
                               ),
                             ],
@@ -166,13 +180,15 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
               alignment: Alignment.topCenter,
               child: ConfettiWidget(
                 confettiController: _confettiController,
-                blastDirectionality:
-                BlastDirectionality.explosive, // Ensures uniform spread in all directions
-                emissionFrequency: 0.0001, // Very low frequency to fire all confetti at once
+                blastDirectionality: BlastDirectionality
+                    .explosive, // Ensures uniform spread in all directions
+                emissionFrequency:
+                    0.0001, // Very low frequency to fire all confetti at once
                 numberOfParticles: 100, // Fixed number of confetti pieces
                 gravity: 0.2, // Light gravity for slower falling confetti
                 maxBlastForce: 11, // Upper limit for explosion strength
-                minBlastForce: 10, // Lower limit for explosion strength (close to max for consistency)
+                minBlastForce:
+                    10, // Lower limit for explosion strength (close to max for consistency)
                 // Colorful confetti pieces
                 colors: const [
                   Colors.green,

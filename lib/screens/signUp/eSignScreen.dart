@@ -26,14 +26,18 @@ class _eSignScreenState extends State<eSignScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
+      backgroundColor: isDark ? Colors.black : Colors.white,
       // App bar with back button
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         leadingWidth: 46,
         leading: Padding(
           padding: EdgeInsets.only(left: 0),
           child: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back,
+                color: isDark ? Colors.white : Colors.black),
             onPressed: () {
               Navigator.pop(context); // Navigate back to previous screen
             },
@@ -56,7 +60,11 @@ class _eSignScreenState extends State<eSignScreen> {
             // Screen title explaining the purpose of this step
             Text(
               "Finish account set-up using Aadhar E-sign",
-              style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 22.sp,
+                fontWeight: FontWeight.bold,
+                color: isDark ? Colors.white : Colors.black,
+              ),
               textAlign: TextAlign.start,
             ),
             SizedBox(height: 12.h),
@@ -89,7 +97,7 @@ class _eSignScreenState extends State<eSignScreen> {
                     },
                     child: Text(
                       "I would like to receive ECN and other communications via email.",
-                      style: TextStyle(color: Colors.white, fontSize: 11.sp),
+                      style: TextStyle(color: isDark ? Colors.white : Colors.black, fontSize: 11.sp),
                     ),
                   ),
                 ),

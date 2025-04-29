@@ -12,7 +12,8 @@ import 'package:pinput/pinput.dart'; // Specialized PIN input widget
 import 'package:sapphire/main.dart'; // App-wide navigation utilities
 import 'package:sapphire/screens/home/homeWarpper.dart'; // Home screen destination
 import 'package:local_auth/local_auth.dart'; // For biometric authentication
-import 'package:local_auth/error_codes.dart' as auth_error; // Biometric error codes
+import 'package:local_auth/error_codes.dart'
+    as auth_error; // Biometric error codes
 
 /// MpinScreen - Secure authentication screen for accessing the application
 /// Provides numeric keypad for entering 4-digit PIN with option for biometric authentication
@@ -83,7 +84,8 @@ class _MpinScreenState extends State<MpinScreen> {
             : 'Scan your face to authenticate',
         options: const AuthenticationOptions(
           biometricOnly: true, // Only use biometrics, not device password
-          stickyAuth: true, // Maintain authentication validity during app switches
+          stickyAuth:
+              true, // Maintain authentication validity during app switches
         ),
       );
 
@@ -134,133 +136,135 @@ class _MpinScreenState extends State<MpinScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(height: 35.h),
-            // App logo
-            Image.asset(
-              "assets/images/whiteLogo.png",
-              scale: 0.7,
-            ),
-            SizedBox(height: 20.h),
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Scaffold(
+      backgroundColor: isDark ? Colors.black : Colors.white,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: 35.h),
+          // App logo
+          Image.asset(
+            "assets/images/whiteLogo.png",
+            scale: 0.7,
+          ),
+          SizedBox(height: 20.h),
 
-            // User name display
-            Text(
-              "Nakul Pratap Thakur", // Should be dynamic in production
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 21.sp,
-                color: Colors.white,
+          // User name display
+          Text(
+            "Nakul Pratap Thakur", // Should be dynamic in production
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 21.sp,
+              color: isDark ? Colors.white : Colors.black,
+            ),
+          ),
+          // Client code display
+          Text(
+            "J098WE", // Should be dynamic in production
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 15.sp,
+              color: Color(0xFF1DB954),
+            ),
+          ),
+          SizedBox(height: 30.h),
+
+          // PIN input field using Pinput widget
+          Pinput(
+            length: 4, // 4-digit PIN
+            controller: _pinController,
+            obscureText: true, // Mask PIN for security
+            enabled: false, // No direct input - uses custom keypad
+            separatorBuilder: (index) => SizedBox(width: 12.w),
+            // Default style for PIN dots
+            defaultPinTheme: PinTheme(
+              width: 50.w,
+              height: 50.h,
+              textStyle: TextStyle(
+                fontSize: 24.sp,
+                fontWeight: FontWeight.bold,
+                color: isDark ? Colors.white : Colors.black,
+              ),
+              decoration: BoxDecoration(
+                border: Border.all(
+                    color: isDark ? Colors.grey : Colors.grey.shade400,
+                    width: 1),
+                borderRadius: BorderRadius.circular(6.r),
               ),
             ),
-            // Client code display
-            Text(
-              "J098WE", // Should be dynamic in production
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 15.sp,
-                color: Colors.green,
+            // Style for focused PIN dot
+            focusedPinTheme: PinTheme(
+              width: 50.w,
+              height: 50.h,
+              textStyle: TextStyle(
+                fontSize: 24.sp,
+                fontWeight: FontWeight.bold,
+                color: isDark ? Colors.white : Colors.black,
+              ),
+              decoration: BoxDecoration(
+                border: Border.all(
+                    color: isDark ? Colors.white : Colors.black, width: 2),
+                borderRadius: BorderRadius.circular(8.r),
               ),
             ),
-            SizedBox(height: 30.h),
+          ),
+          SizedBox(height: 20.h),
 
-            // PIN input field using Pinput widget
-            Pinput(
-              length: 4, // 4-digit PIN
-              controller: _pinController,
-              obscureText: true, // Mask PIN for security
-              enabled: false, // No direct input - uses custom keypad
-              separatorBuilder: (index) => SizedBox(width: 12.w),
-              // Default style for PIN dots
-              defaultPinTheme: PinTheme(
-                width: 50.w,
-                height: 50.h,
-                textStyle: TextStyle(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey, width: 1),
-                  borderRadius: BorderRadius.circular(6.r),
-                ),
-              ),
-              // Style for focused PIN dot
-              focusedPinTheme: PinTheme(
-                width: 50.w,
-                height: 50.h,
-                textStyle: TextStyle(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white, width: 2),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-              ),
-            ),
-            SizedBox(height: 20.h),
+          // Conditionally show biometric authentication option if available
+          FutureBuilder<bool>(
+            future: _canAuthenticate(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return SizedBox.shrink(); // Show nothing while checking
+              }
+              bool canAuthenticate = snapshot.data ?? false;
+              if (!canAuthenticate) {
+                return SizedBox.shrink(); // Hide if biometrics not available
+              }
 
-            // Conditionally show biometric authentication option if available
-            FutureBuilder<bool>(
-              future: _canAuthenticate(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return SizedBox.shrink(); // Show nothing while checking
-                }
-                bool canAuthenticate = snapshot.data ?? false;
-                if (!canAuthenticate) {
-                  return SizedBox.shrink(); // Hide if biometrics not available
-                }
-
-                // Show appropriate biometric option based on platform
-                return GestureDetector(
-                  onTap: _authenticate, // Trigger biometric authentication
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Adaptive text based on platform
-                      Text(
-                        Platform.isAndroid
-                            ? "Use Fingerprint"
-                            : Platform.isIOS
-                            ? "Use Face ID"
-                            : "Use Biometric",
-                        style: TextStyle(
-                          color: Colors.green,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
+              // Show appropriate biometric option based on platform
+              return GestureDetector(
+                onTap: _authenticate, // Trigger biometric authentication
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Adaptive text based on platform
+                    Text(
+                      Platform.isAndroid
+                          ? "Use Fingerprint"
+                          : Platform.isIOS
+                              ? "Use Face ID"
+                              : "Use Biometric",
+                      style: TextStyle(
+                        color: Color(0xFF1DB954),
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
                       ),
-                      SizedBox(width: 7.w),
-                      // Adaptive icon based on platform
-                      SvgPicture.asset(
-                        Platform.isAndroid
-                            ? "assets/svgs/fingerprint.svg"
-                            : "assets/svgs/face.svg",
-                        width: 20.w,
-                        colorFilter: ColorFilter.mode(
-                          Colors.green,
-                          BlendMode.srcIn,
-                        ),
+                    ),
+                    SizedBox(width: 7.w),
+                    // Adaptive icon based on platform
+                    SvgPicture.asset(
+                      Platform.isAndroid
+                          ? "assets/svgs/fingerprint.svg"
+                          : "assets/svgs/face.svg",
+                      width: 20.w,
+                      colorFilter: ColorFilter.mode(
+                        Color(0xFF1DB954),
+                        BlendMode.srcIn,
                       ),
-                    ],
-                  ),
-                );
-              },
-            ),
-            Spacer(), // Push numeric keypad to bottom
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+          Spacer(), // Push numeric keypad to bottom
 
-            // Custom numeric keypad for PIN entry
-            buildKeypad(),
-            SizedBox(height: 20.h),
-          ],
-        ),
+          // Custom numeric keypad for PIN entry
+          buildKeypad(),
+          SizedBox(height: 20.h),
+        ],
       ),
     );
   }
@@ -270,10 +274,18 @@ class _MpinScreenState extends State<MpinScreen> {
   Widget buildKeypad() {
     // Define the keypad buttons (numbers 0-9, back, and submit)
     List<String> keys = [
-      "1", "2", "3",
-      "4", "5", "6",
-      "7", "8", "9",
-      "back", "0", "submit"
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "back",
+      "0",
+      "submit"
     ];
 
     return Padding(
@@ -297,22 +309,24 @@ class _MpinScreenState extends State<MpinScreen> {
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: keys[index] == "back"
-                  ? Icon(Icons.backspace, color: Colors.green, size: 28) // Backspace button
+                  ? Icon(Icons.backspace,
+                      color: Color(0xFF1DB954), size: 28) // Backspace button
                   : keys[index] == "submit"
-                  ? InkWell(
-                  onTap: () {
-                    // Navigate to home screen and replace route (no back navigation)
-                    naviRep(HomeWrapper(), context);
-                  },
-                  child:
-                  Icon(Icons.check, color: Colors.green, size: 30)) // Submit button
-                  : Text(
-                keys[index], // Number button
-                style: TextStyle(
-                  fontSize: 22.sp,
-                  color: Colors.green,
-                ),
-              ),
+                      ? InkWell(
+                          onTap: () {
+                            // Navigate to home screen and replace route (no back navigation)
+                            naviRep(HomeWrapper(), context);
+                          },
+                          child: Icon(Icons.check,
+                              color: Color(0xFF1DB954),
+                              size: 30)) // Submit button
+                      : Text(
+                          keys[index], // Number button
+                          style: TextStyle(
+                            fontSize: 22.sp,
+                            color: Color(0xFF1DB954),
+                          ),
+                        ),
             ),
           );
         },

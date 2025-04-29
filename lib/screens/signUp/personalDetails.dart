@@ -10,7 +10,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // For secu
 import 'package:http/http.dart' as http; // For API requests
 import 'package:sapphire/main.dart'; // App-wide navigation utilities
 import 'package:sapphire/screens/signUp/otherDetails.dart'; // Next screen in registration flow
-import 'package:sapphire/screens/signUp/yourInvestmentProfile.dart'; // Not used directly
 import '../../utils/constWidgets.dart'; // Reusable UI components
 
 /// PersonalDetails - Screen for collecting user's personal information
@@ -125,8 +124,10 @@ class _PersonalDetailsState extends State<PersonalDetails> {
     return Scaffold(
       // App bar with back button
       appBar: AppBar(
+        backgroundColor: isDark ? Colors.black : Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back,
+              color: isDark ? Colors.white : Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -144,16 +145,20 @@ class _PersonalDetailsState extends State<PersonalDetails> {
 
               // Screen title
               Text("Personal Details",
-                  style:
-                  TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold)),
+                  style: TextStyle(
+                      fontSize: 22.sp,
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? Colors.white : Colors.black)),
               SizedBox(
                 height: 24.h,
               ),
 
               /// Marital status selection section
               Text("Marital Status",
-                  style:
-                  TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500)),
+                  style: TextStyle(
+                      fontSize: 17.sp,
+                      fontWeight: FontWeight.w500,
+                      color: isDark ? Colors.white : Colors.black)),
               SizedBox(height: 16.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -198,7 +203,10 @@ class _PersonalDetailsState extends State<PersonalDetails> {
               /// Annual income selection section
               Text(
                 "Annual Income",
-                style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                    fontSize: 17.sp,
+                    fontWeight: FontWeight.w500,
+                    color: isDark ? Colors.white : Colors.black),
               ),
               SizedBox(height: 12.h),
               Wrap(
@@ -218,7 +226,10 @@ class _PersonalDetailsState extends State<PersonalDetails> {
               /// Trading experience selection section
               Text(
                 "Trading Experience",
-                style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                    fontSize: 17.sp,
+                    fontWeight: FontWeight.w500,
+                    color: isDark ? Colors.white : Colors.black),
               ),
               SizedBox(height: 12.h),
               Wrap(
@@ -237,7 +248,9 @@ class _PersonalDetailsState extends State<PersonalDetails> {
               /// Account settlement preference section
               Text(
                 "Preference for running account settlement",
-                style: TextStyle(fontSize: 17.sp, color: Color(0xffEBEEF5)),
+                style: TextStyle(
+                    fontSize: 17.sp,
+                    color: isDark ? Colors.white : Colors.black),
               ),
               SizedBox(height: 12.h),
               Row(
@@ -264,10 +277,15 @@ class _PersonalDetailsState extends State<PersonalDetails> {
               height: 52.h,
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: isFormComplete ? submitOccupationDetails : null,
+                // onPressed: isFormComplete ? submitOccupationDetails : null,
+                onPressed: () {
+                  navi(Otherdetails(),
+                      context); // Navigate to other details screen
+                },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                  isFormComplete ? Color(0xFF1DB954) : Color(0xff2f2f2f), // Green if form complete, gray if not
+                  backgroundColor: isFormComplete
+                      ? const Color(0xFF1DB954)
+                      : Colors.grey[400], // Green if form complete, gray if not
                   foregroundColor: Colors.white,
                 ),
                 child: Text("Continue",

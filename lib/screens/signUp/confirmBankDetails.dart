@@ -24,14 +24,19 @@ class confirmBankDetails extends StatefulWidget {
 class _confirmBankDetailsState extends State<confirmBankDetails> {
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       // App bar with back button
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         leadingWidth: 46,
         leading: Padding(
           padding: EdgeInsets.only(left: 0),
           child: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(
+              Icons.arrow_back,
+              color: isDark ? Colors.white : Colors.black,
+            ),
             onPressed: () {
               Navigator.pop(context); // Navigate back to previous screen
             },
@@ -56,7 +61,7 @@ class _confirmBankDetailsState extends State<confirmBankDetails> {
             Text(
               "Link your bank account",
               style: TextStyle(
-                color: Colors.white,
+                color: isDark ? Colors.white : Colors.black,
                 fontSize: 22.sp,
                 fontWeight: FontWeight.bold,
               ),
@@ -67,7 +72,7 @@ class _confirmBankDetailsState extends State<confirmBankDetails> {
             Text(
               "Please confirm your bank details",
               style: TextStyle(
-                color: Colors.grey,
+                color: isDark ? Colors.white : Colors.grey,
                 fontSize: 14.sp,
               ),
             ),
@@ -78,7 +83,9 @@ class _confirmBankDetailsState extends State<confirmBankDetails> {
             Container(
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Color(0xff121413), // Dark background for the card
+                color: isDark
+                    ? Color(0xff121413)
+                    : Color(0xffF5F7FA), // Dark background for the card
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Column(
@@ -101,14 +108,17 @@ class _confirmBankDetailsState extends State<confirmBankDetails> {
                           // Bank name
                           Text(
                             "Kotak Mahindra Bank Ltd",
-                            style: TextStyle(color: Colors.white, fontSize: 15),
+                            style: TextStyle(
+                                color: isDark ? Colors.white : Colors.black,
+                                fontSize: 15),
                           ),
                         ],
                       ),
                       // Edit button to modify bank details if needed
                       InkWell(
                         onTap: () {
-                          Navigator.pop(context); // Return to bank selection/entry screen
+                          Navigator.pop(
+                              context); // Return to bank selection/entry screen
                           // TODO: Implement edit functionality - currently just navigates back
                         },
                         child: Row(
@@ -138,12 +148,16 @@ class _confirmBankDetailsState extends State<confirmBankDetails> {
                           // Label
                           Text("Account Number",
                               style: TextStyle(
-                                  color: Colors.grey, fontSize: 12.sp)),
+                                  color: isDark
+                                      ? Color(0xffC9CACC)
+                                      : Color(0xff6B7280),
+                                  fontSize: 12.sp)),
                           SizedBox(height: 2.h),
                           // Value - partially masked for security in production
                           Text("51236478954",
                               style: TextStyle(
-                                  color: Colors.white, fontSize: 13.sp)),
+                                  color: isDark ? Colors.white : Colors.black,
+                                  fontSize: 13.sp)),
                         ],
                       ),
                       // IFSC code section
@@ -153,12 +167,16 @@ class _confirmBankDetailsState extends State<confirmBankDetails> {
                           // Label
                           Text("IFSC Code",
                               style: TextStyle(
-                                  color: Colors.grey, fontSize: 12.sp)),
+                                  color: isDark
+                                      ? Color(0xffc9cacc)
+                                      : Color(0xff6B7280),
+                                  fontSize: 12.sp)),
                           SizedBox(height: 2.h),
                           // Value
                           Text("KKBK5478124",
                               style: TextStyle(
-                                  color: Colors.white, fontSize: 13.sp)),
+                                  color: isDark ? Colors.white : Colors.black,
+                                  fontSize: 13.sp)),
                         ],
                       ),
                     ],
@@ -171,13 +189,16 @@ class _confirmBankDetailsState extends State<confirmBankDetails> {
                     children: [
                       // Label
                       Text("Branch",
-                          style:
-                          TextStyle(color: Colors.grey, fontSize: 12.sp)),
+                          style: TextStyle(
+                              color: isDark ? Color(0xffC9CACC) : Color(0xff6B7280),
+                              fontSize: 12.sp)),
                       SizedBox(height: 2.h),
                       // Full branch address
                       Text(
                         "GR FLOOR 1ST FLOOR GALAXY TOWERS PLOT 478 CHANDAN UNTHKANA RD MEDICAL SQU OPP HALDIRAM NAGPUR 440009",
-                        style: TextStyle(color: Colors.white, fontSize: 13.sp),
+                        style: TextStyle(
+                            color: isDark ? Colors.white : Colors.black,
+                            fontSize: 13.sp),
                       ),
                     ],
                   ),
@@ -189,7 +210,8 @@ class _confirmBankDetailsState extends State<confirmBankDetails> {
 
             // Confirmation button - navigates to IPV screen when pressed
             constWidgets.greenButton("Confirm", onTap: () {
-              navi(ipvScreen(), context); // Navigate to the In-Person Verification screen
+              navi(ipvScreen(),
+                  context); // Navigate to the In-Person Verification screen
             }),
             SizedBox(height: 10.h),
             // Help button for user assistance

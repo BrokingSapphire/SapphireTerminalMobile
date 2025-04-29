@@ -22,17 +22,20 @@ class SignConfirmationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: Colors.black,
       // App bar with back button
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         leadingWidth: 46,
         leading: Padding(
           padding: EdgeInsets.only(left: 0),
           child: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back,
+                color: isDark ? Colors.white : Colors.black),
             onPressed: () {
-              Navigator.pop(context); // Navigate back to signature capture screen
+              Navigator.pop(
+                  context); // Navigate back to signature capture screen
             },
           ),
         ),
@@ -53,7 +56,7 @@ class SignConfirmationScreen extends StatelessWidget {
             Text(
               "Signature",
               style: TextStyle(
-                color: Colors.white,
+                color: isDark ? Colors.white : Colors.black,
                 fontSize: 22.sp,
                 fontWeight: FontWeight.bold,
               ),
@@ -65,16 +68,21 @@ class SignConfirmationScreen extends StatelessWidget {
               width: double.infinity,
               height: 350.h,
               decoration: BoxDecoration(
-                color: Colors.white, // White background for signature visibility
+                color: isDark
+                    ? Colors.white
+                    : Color(
+                        0xffE3E6EB), // White background for signature visibility
                 borderRadius: BorderRadius.circular(10.r),
                 border: Border.all(color: Colors.white24),
               ),
               // Conditionally display signature or error message
               child: signatureBytes.isNotEmpty
-                  ? Image.memory(signatureBytes, fit: BoxFit.contain) // Display the signature
+                  ? Image.memory(signatureBytes,
+                      fit: BoxFit.contain) // Display the signature
                   : Center(
-                  child: Text("No Signature Found", // Fallback text if signature data is empty
-                      style: TextStyle(color: Colors.black))),
+                      child: Text(
+                          "No Signature Found", // Fallback text if signature data is empty
+                          style: TextStyle(color: Colors.black))),
             ),
 
             // Redo button for retaking signature
@@ -82,9 +90,11 @@ class SignConfirmationScreen extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black, // Match background color
+                  elevation: 0,
+                  backgroundColor: Colors.transparent,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4), // Subtle rounded corners
+                    borderRadius:
+                        BorderRadius.circular(4), // Subtle rounded corners
                   ),
                 ),
                 onPressed: () {
@@ -95,10 +105,14 @@ class SignConfirmationScreen extends StatelessWidget {
                   children: [
                     Text(
                       "Redo",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(
+                          color: isDark ? Colors.white : Colors.black),
                     ),
                     SizedBox(width: 8), // Space between text and icon
-                    SvgPicture.asset('assets/images/Redo.svg'), // Redo icon
+                    SvgPicture.asset(
+                      'assets/images/Redo.svg',
+                      color: isDark ? Colors.white : Colors.black,
+                    ), // Redo icon
                   ],
                 ),
               ),
