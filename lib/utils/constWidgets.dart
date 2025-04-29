@@ -64,7 +64,7 @@ class constWidgets {
           child: GestureDetector(
             onTap: () {
               // Handle tap (e.g., navigate to search screen)
-              navi(searchPageScreen(), context);
+              navi(SearchPageScreen(), context);
             },
             child: Container(
               height: 48.h,
@@ -168,14 +168,15 @@ class constWidgets {
                   Text(
                     title,
                     style: TextStyle(
-                        fontSize: 15.sp,
-                        color: isDark ? Colors.white : Colors.black),
+                      fontSize: 15.sp,
+                      color: isDark ? Colors.white : Colors.black,
+                    ),
                   ),
                   SizedBox(height: 0.h), // Space between title and subtitle
                   Text(
                     subtitle,
                     style: TextStyle(
-                        fontSize: 15.sp,
+                        fontSize: 13.sp,
                         color: isDark ? Colors.white : Colors.black),
                   ),
                 ],
@@ -533,7 +534,7 @@ class constWidgets {
                     SizedBox(width: 8.w), // Adds spacing
                     Container(
                       width: 1, // Thin vertical line
-                      height: 20, // Matches text height
+                      height: 50, // Matches text height
                       color: Color(0XFF2F2F2F),
                     ),
                     SizedBox(width: 8.w), // Adds spacing before text field

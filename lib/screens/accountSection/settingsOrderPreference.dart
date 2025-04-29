@@ -171,82 +171,80 @@ class _SettingsOrderPreferenceState extends State<SettingsOrderPreference> {
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width / 3 - 20;
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor:
-              isDark ? Colors.black : Colors.white, // or your desired color
-          elevation: 0,
-          scrolledUnderElevation: 0, // prevent shadow when scrolling
-          surfaceTintColor: Colors.transparent,
-          leadingWidth: 32.w,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor:
+            isDark ? Colors.black : Colors.white, // or your desired color
+        elevation: 0,
+        scrolledUnderElevation: 0, // prevent shadow when scrolling
+        surfaceTintColor: Colors.transparent,
+        leadingWidth: 32.w,
 
-          title: Padding(
-            padding: const EdgeInsets.only(top: 15),
-            child: Text(
-              "Order Preference",
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 15.sp,
-                  color: isDark ? Colors.white : Colors.black),
-            ),
-          ),
-          leading: Padding(
-            padding: const EdgeInsets.only(top: 15),
-            child: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(Icons.arrow_back,
-                    color: isDark ? Colors.white : Colors.black)),
+        title: Padding(
+          padding: const EdgeInsets.only(top: 15),
+          child: Text(
+            "Order Preference",
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 15.sp,
+                color: isDark ? Colors.white : Colors.black),
           ),
         ),
-        body: Column(
-          children: [
-            // Fixed Divider
-            Divider(
-              color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 10.h),
-                      sections(equityCash, isDark),
-                      SizedBox(height: 24.h),
-                      sections(equityDerivatives, isDark),
-                      SizedBox(height: 24.h),
-                      sections(currDerivatives, isDark),
-                      SizedBox(height: 24.h),
-                      sections(commDerivatives, isDark),
-                      SizedBox(height: 24.h),
-                      Container(
-                        height: 44.h,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Color(0xFF1DB954),
-                          borderRadius: BorderRadius.circular(8.r),
+        leading: Padding(
+          padding: const EdgeInsets.only(top: 15),
+          child: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back,
+                  color: isDark ? Colors.white : Colors.black)),
+        ),
+      ),
+      body: Column(
+        children: [
+          // Fixed Divider
+          Divider(
+            color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 10.h),
+                    sections(equityCash, isDark),
+                    SizedBox(height: 24.h),
+                    sections(equityDerivatives, isDark),
+                    SizedBox(height: 24.h),
+                    sections(currDerivatives, isDark),
+                    SizedBox(height: 24.h),
+                    sections(commDerivatives, isDark),
+                    SizedBox(height: 24.h),
+                    Container(
+                      height: 44.h,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Color(0xFF1DB954),
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "SAVE",
+                          style: TextStyle(
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w600,
+                              color: isDark ? Colors.white : Colors.white),
                         ),
-                        child: Center(
-                          child: Text(
-                            "SAVE",
-                            style: TextStyle(
-                                fontSize: 15.sp,
-                                fontWeight: FontWeight.w600,
-                                color: isDark ? Colors.white : Colors.white),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                      ),
+                    )
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

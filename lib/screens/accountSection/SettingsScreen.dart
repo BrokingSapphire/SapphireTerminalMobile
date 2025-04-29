@@ -30,335 +30,330 @@ class _settingsScreenState extends State<settingsScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor:
-              isDark ? Colors.black : Colors.white, // or your desired color
-          elevation: 0,
-          scrolledUnderElevation: 0, // prevent shadow when scrolling
-          leadingWidth: 32.w,
-          title: Padding(
-            padding: const EdgeInsets.only(top: 15),
-            child: Text(
-              "Settings",
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 15.sp,
-                  color: isDark ? Colors.white : Colors.black),
-            ),
-          ),
-          leading: Padding(
-            padding: const EdgeInsets.only(top: 15),
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.arrow_back,
-                  color: isDark ? Colors.white : Colors.black),
-            ),
-          ),
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(15.h), // Height of the divider
-            child: Divider(
-              color: isDark
-                  ? const Color(0xff2F2F2F)
-                  : const Color(0xffD1D5DB), // Color for the divider
-              // thickness: 1, // Divider thickness
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor:
+            isDark ? Colors.black : Colors.white, // or your desired color
+        elevation: 0,
+        scrolledUnderElevation: 0, // prevent shadow when scrolling
+        leadingWidth: 32.w,
+        title: Padding(
+          padding: const EdgeInsets.only(top: 15),
+          child: Text(
+            "Settings",
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 15.sp,
+                color: isDark ? Colors.white : Colors.black),
           ),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.w),
-                  child: Column(
-                    children: [
-                      SizedBox(height: 14.h),
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: isDark
-                              ? const Color(0xff121413)
-                              : const Color(0xffF4F4F9),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8.w),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    height: 34.h,
-                                    width: 2.w,
-                                    color: Colors.green,
-                                  ),
-                                  SizedBox(width: 20.w),
-                                  Text(
-                                    "Theme",
-                                    style: TextStyle(
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color:
-                                          isDark ? Colors.white : Colors.black,
-                                    ),
-                                  )
-                                ],
-                              ),
-                              SizedBox(height: 12.h),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  SizedBox(width: 20.w),
-
-                                  /// Light button wrapped with GestureDetector
-                                  GestureDetector(
-                                    onTap: () {
-                                      // Provider.of<ThemeProvider>(context,
-                                      //         listen: false)
-                                      //     .setTheme(ThemeMode.light);
-                                    },
-                                    child: constWidgets.choiceChip(
-                                      "Light",
-                                      !isDarkTheme,
-                                      context,
-                                      130.w,
-                                      isDark,
-                                    ),
-                                  ),
-
-                                  SizedBox(width: 15.w),
-
-                                  /// Dark button wrapped with GestureDetector
-                                  GestureDetector(
-                                    onTap: () {
-                                      // Provider.of<ThemeProvider>(context,
-                                      //         listen: false)
-                                      //     .setTheme(ThemeMode.dark);
-                                    },
-                                    child: constWidgets.choiceChip(
-                                      "Dark",
-                                      isDarkTheme,
-                                      context,
-                                      130.w,
-                                      isDark,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
+        leading: Padding(
+          padding: const EdgeInsets.only(top: 15),
+          child: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back,
+                color: isDark ? Colors.white : Colors.black),
+          ),
+        ),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(15.h), // Height of the divider
+          child: Divider(
+            color: isDark
+                ? const Color(0xff2F2F2F)
+                : const Color(0xffD1D5DB), // Color for the divider
+            // thickness: 1, // Divider thickness
+          ),
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                child: Column(
+                  children: [
+                    SizedBox(height: 14.h),
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: isDark
+                            ? const Color(0xff121413)
+                            : const Color(0xffF4F4F9),
+                        borderRadius: BorderRadius.circular(8.r),
                       ),
-
-                      SizedBox(height: 12.h),
-
-                      /// Biometric Authentication Switch
-                      _buildSwitchTile(
-                        title: "Biometric Authentication",
-                        value: biometricAuth,
-                        onChanged: (value) {
-                          setState(() {
-                            biometricAuth = value;
-                          });
-                        },
-                        isDark: isDark,
-                      ),
-                      SizedBox(height: 12.h),
-
-                      /// Other Settings
-                      _buildListTile("Order preference",
-                          "Set default order types and trading settings", () {
-                        navi(SettingsOrderPreference(), context);
-                      }, isDark),
-                      SizedBox(height: 12.h),
-
-                      _buildListTile("Two Factor Authentication (2FA)",
-                          "Add extra security to your account", () {
-                        navi(twoFAScreen(), context);
-                      }, isDark),
-                      SizedBox(height: 12.h),
-
-                      _buildListTile("Session Management",
-                          "View and manage active sessions", () {
-                        navi(SessionManagement(), context);
-                      }, isDark),
-                      SizedBox(height: 12.h),
-
-                      _buildListTile("Permissions",
-                          "Control access and authorization settings", () {
-                        navi(permissionScreen(), context);
-                      }, isDark),
-                      SizedBox(height: 12.h),
-
-                      /// Charts Selection
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: isDark
-                                ? const Color(0xff121413)
-                                : const Color(0xffF4F4F9),
-                            borderRadius: BorderRadius.circular(8.r)),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8.w),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    height: 34.h,
-                                    width: 2.w,
-                                    color: Colors.green,
-                                  ),
-                                  SizedBox(
-                                    width: 20.w,
-                                  ),
-                                  Text(
-                                    "Charts",
-                                    style: TextStyle(
-                                        fontSize: 18.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color: isDark
-                                            ? Colors.white
-                                            : Colors.black),
-                                  )
-                                ],
-                              ),
-                              SizedBox(height: 15.h),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  _buildOptionCard("TradingView",
-                                      "assets/images/tradingview.png", isDark),
-                                  SizedBox(width: 16.w),
-                                  _buildOptionCard("ChartIQ",
-                                      "assets/images/ChartIQ.png", isDark),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 12.h),
-
-                      /// Notifications Section
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: isDark
-                                ? const Color(0xff121413)
-                                : const Color(0xffF4F4F9),
-                            borderRadius: BorderRadius.circular(8.r)),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8.w),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    height: 34.h,
-                                    width: 2.w,
-                                    color: Colors.green,
-                                  ),
-                                  SizedBox(
-                                    width: 20.w,
-                                  ),
-                                  Text(
-                                    "Notification",
-                                    style: TextStyle(
-                                        fontSize: 18.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color: isDark
-                                            ? Colors.white
-                                            : Colors.black),
-                                  )
-                                ],
-                              ),
-                              _buildSwitchTile(
-                                title: "Order Notification",
-                                subtitle: "Get alerts on order placement",
-                                value: orderNotification,
-                                onChanged: (value) {
-                                  setState(() {
-                                    orderNotification = value;
-                                  });
-                                },
-                                isDark: isDark,
-                              ),
-                              _buildSwitchTile(
-                                title: "Trade Notifications",
-                                subtitle: "Receive trade completion alerts",
-                                value: tradeNotification,
-                                onChanged: (value) {
-                                  setState(() {
-                                    tradeNotification = value;
-                                  });
-                                },
-                                isDark: isDark,
-                              ),
-                              _buildSwitchTile(
-                                title: "Trade Recommendations",
-                                subtitle: "Get expert trade suggestions",
-                                value: tradeRecommendation,
-                                onChanged: (value) {
-                                  setState(() {
-                                    tradeRecommendation = value;
-                                  });
-                                },
-                                isDark: isDark,
-                              ),
-                              _buildSwitchTile(
-                                  title: "Promotion",
-                                  subtitle:
-                                      "Stay updated on offers and features",
-                                  value: promotion,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      promotion = value;
-                                    });
-                                  },
-                                  isDark: isDark),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 12.h),
-
-                      /// Delete Account
-                      Container(
-                        height: 60.h,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                        decoration: BoxDecoration(
-                          color: isDark ? Colors.black : Color(0xffF4F4F9),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        width: double.infinity,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.w),
+                        child: Column(
                           children: [
-                            Text(
-                              "Delete Account",
-                              style: TextStyle(
-                                  color: isDark ? Colors.white : Colors.black,
-                                  fontSize: 15.sp),
+                            Row(
+                              children: [
+                                Container(
+                                  height: 34.h,
+                                  width: 2.w,
+                                  color: Colors.green,
+                                ),
+                                SizedBox(width: 20.w),
+                                Text(
+                                  "Theme",
+                                  style: TextStyle(
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: isDark ? Colors.white : Colors.black,
+                                  ),
+                                )
+                              ],
                             ),
-                            Icon(Icons.arrow_forward_ios_rounded,
-                                color: isDark ? Colors.white : Colors.black,
-                                size: 18),
+                            SizedBox(height: 12.h),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SizedBox(width: 20.w),
+
+                                /// Light button wrapped with GestureDetector
+                                GestureDetector(
+                                  onTap: () {
+                                    // Provider.of<ThemeProvider>(context,
+                                    //         listen: false)
+                                    //     .setTheme(ThemeMode.light);
+                                  },
+                                  child: constWidgets.choiceChip(
+                                    "Light",
+                                    !isDarkTheme,
+                                    context,
+                                    130.w,
+                                    isDark,
+                                  ),
+                                ),
+
+                                SizedBox(width: 15.w),
+
+                                /// Dark button wrapped with GestureDetector
+                                GestureDetector(
+                                  onTap: () {
+                                    // Provider.of<ThemeProvider>(context,
+                                    //         listen: false)
+                                    //     .setTheme(ThemeMode.dark);
+                                  },
+                                  child: constWidgets.choiceChip(
+                                    "Dark",
+                                    isDarkTheme,
+                                    context,
+                                    130.w,
+                                    isDark,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+
+                    SizedBox(height: 12.h),
+
+                    /// Biometric Authentication Switch
+                    _buildSwitchTile(
+                      title: "Biometric Authentication",
+                      value: biometricAuth,
+                      onChanged: (value) {
+                        setState(() {
+                          biometricAuth = value;
+                        });
+                      },
+                      isDark: isDark,
+                    ),
+                    SizedBox(height: 12.h),
+
+                    /// Other Settings
+                    _buildListTile("Order preference",
+                        "Set default order types and trading settings", () {
+                      navi(SettingsOrderPreference(), context);
+                    }, isDark),
+                    SizedBox(height: 12.h),
+
+                    _buildListTile("Two Factor Authentication (2FA)",
+                        "Add extra security to your account", () {
+                      navi(twoFAScreen(), context);
+                    }, isDark),
+                    SizedBox(height: 12.h),
+
+                    _buildListTile(
+                        "Session Management", "View and manage active sessions",
+                        () {
+                      navi(SessionManagement(), context);
+                    }, isDark),
+                    SizedBox(height: 12.h),
+
+                    _buildListTile("Permissions",
+                        "Control access and authorization settings", () {
+                      navi(permissionScreen(), context);
+                    }, isDark),
+                    SizedBox(height: 12.h),
+
+                    /// Charts Selection
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: isDark
+                              ? const Color(0xff121413)
+                              : const Color(0xffF4F4F9),
+                          borderRadius: BorderRadius.circular(8.r)),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.w),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  height: 34.h,
+                                  width: 2.w,
+                                  color: Colors.green,
+                                ),
+                                SizedBox(
+                                  width: 20.w,
+                                ),
+                                Text(
+                                  "Charts",
+                                  style: TextStyle(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color:
+                                          isDark ? Colors.white : Colors.black),
+                                )
+                              ],
+                            ),
+                            SizedBox(height: 15.h),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                _buildOptionCard("TradingView",
+                                    "assets/images/tradingview.png", isDark),
+                                SizedBox(width: 16.w),
+                                _buildOptionCard("ChartIQ",
+                                    "assets/images/ChartIQ.png", isDark),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 12.h),
+
+                    /// Notifications Section
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: isDark
+                              ? const Color(0xff121413)
+                              : const Color(0xffF4F4F9),
+                          borderRadius: BorderRadius.circular(8.r)),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.w),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  height: 34.h,
+                                  width: 2.w,
+                                  color: Colors.green,
+                                ),
+                                SizedBox(
+                                  width: 20.w,
+                                ),
+                                Text(
+                                  "Notification",
+                                  style: TextStyle(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color:
+                                          isDark ? Colors.white : Colors.black),
+                                )
+                              ],
+                            ),
+                            _buildSwitchTile(
+                              title: "Order Notification",
+                              subtitle: "Get alerts on order placement",
+                              value: orderNotification,
+                              onChanged: (value) {
+                                setState(() {
+                                  orderNotification = value;
+                                });
+                              },
+                              isDark: isDark,
+                            ),
+                            _buildSwitchTile(
+                              title: "Trade Notifications",
+                              subtitle: "Receive trade completion alerts",
+                              value: tradeNotification,
+                              onChanged: (value) {
+                                setState(() {
+                                  tradeNotification = value;
+                                });
+                              },
+                              isDark: isDark,
+                            ),
+                            _buildSwitchTile(
+                              title: "Trade Recommendations",
+                              subtitle: "Get expert trade suggestions",
+                              value: tradeRecommendation,
+                              onChanged: (value) {
+                                setState(() {
+                                  tradeRecommendation = value;
+                                });
+                              },
+                              isDark: isDark,
+                            ),
+                            _buildSwitchTile(
+                                title: "Promotion",
+                                subtitle: "Stay updated on offers and features",
+                                value: promotion,
+                                onChanged: (value) {
+                                  setState(() {
+                                    promotion = value;
+                                  });
+                                },
+                                isDark: isDark),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 12.h),
+
+                    /// Delete Account
+                    Container(
+                      height: 60.h,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                      decoration: BoxDecoration(
+                        color: isDark ? Colors.black : Color(0xffF4F4F9),
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      width: double.infinity,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Delete Account",
+                            style: TextStyle(
+                                color: isDark ? Colors.white : Colors.black,
+                                fontSize: 15.sp),
+                          ),
+                          Icon(Icons.arrow_forward_ios_rounded,
+                              color: isDark ? Colors.white : Colors.black,
+                              size: 18),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

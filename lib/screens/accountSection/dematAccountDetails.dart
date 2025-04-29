@@ -13,13 +13,15 @@ class DematAccountDetails extends StatefulWidget {
 class _DematAccountDetailsState extends State<DematAccountDetails> {
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: isDark ? Colors.black : Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: isDark ? Colors.black : Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back,
+              color: isDark ? Colors.white : Colors.black),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -27,7 +29,7 @@ class _DematAccountDetailsState extends State<DematAccountDetails> {
         title: Text(
           "Demat Account Details",
           style: TextStyle(
-            color: Colors.white,
+            color: isDark ? Colors.white : Colors.black,
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
           ),
@@ -35,8 +37,8 @@ class _DematAccountDetailsState extends State<DematAccountDetails> {
       ),
       body: Column(
         children: [
-          const Divider(
-            color: Color(0xFF2F2F2F),
+          Divider(
+            color: isDark ? const Color(0xFF2F2F2F) : const Color(0xFFD1D5DB),
             height: 1,
           ),
           Padding(
@@ -44,7 +46,8 @@ class _DematAccountDetailsState extends State<DematAccountDetails> {
             child: Container(
               // height: 250.h,
               decoration: BoxDecoration(
-                color: Color(0xff121413),
+                color:
+                    isDark ? const Color(0xff121413) : const Color(0xFFEBEEF5),
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: Padding(
@@ -55,7 +58,7 @@ class _DematAccountDetailsState extends State<DematAccountDetails> {
                     Text(
                       "Demat Account Number / BO ID",
                       style: TextStyle(
-                        color: Color(0xffc9cacc),
+                        color: isDark ? Color(0xffc9cacc) : Colors.black,
                         fontSize: 11.sp,
                       ),
                     ),
@@ -65,7 +68,8 @@ class _DematAccountDetailsState extends State<DematAccountDetails> {
                         Text(
                           "12883772888983882",
                           style: TextStyle(
-                            color: const Color(0xffEBEEF5),
+                            color:
+                                isDark ? const Color(0xffEBEEF5) : Colors.black,
                             fontSize: 13.sp,
                             fontWeight: FontWeight.w400,
                           ),
@@ -81,8 +85,12 @@ class _DematAccountDetailsState extends State<DematAccountDetails> {
                                       Text('Demat Account Number copied!')),
                             );
                           },
-                          child: SvgPicture.asset("assets/svgs/copy.svg",
-                              width: 14.w, height: 14.h),
+                          child: SvgPicture.asset(
+                            "assets/svgs/copy.svg",
+                            width: 14.w,
+                            height: 14.h,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
                         )
                       ],
                     ),
@@ -90,7 +98,7 @@ class _DematAccountDetailsState extends State<DematAccountDetails> {
                     Text(
                       "DP ID",
                       style: TextStyle(
-                        color: const Color(0xffc9cacc),
+                        color: isDark ? const Color(0xffc9cacc) : Colors.black,
                         fontSize: 11.sp,
                         fontWeight: FontWeight.w400,
                       ),
@@ -101,7 +109,8 @@ class _DematAccountDetailsState extends State<DematAccountDetails> {
                         Text(
                           "8377176737782",
                           style: TextStyle(
-                            color: const Color(0xffEBEEF5),
+                            color:
+                                isDark ? const Color(0xffEBEEF5) : Colors.black,
                             fontSize: 13.sp,
                             fontWeight: FontWeight.w400,
                           ),
@@ -115,8 +124,12 @@ class _DematAccountDetailsState extends State<DematAccountDetails> {
                               SnackBar(content: Text('DP ID copied!')),
                             );
                           },
-                          child: SvgPicture.asset("assets/svgs/copy.svg",
-                              width: 14.w, height: 14.h),
+                          child: SvgPicture.asset(
+                            "assets/svgs/copy.svg",
+                            width: 14.w,
+                            height: 14.h,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
                         )
                       ],
                     ),
@@ -124,7 +137,7 @@ class _DematAccountDetailsState extends State<DematAccountDetails> {
                     Text(
                       "Depository Participant (DP)",
                       style: TextStyle(
-                        color: const Color(0xffEBEEF5),
+                        color: isDark ? const Color(0xffEBEEF5) : Colors.black,
                         fontSize: 11.sp,
                         fontWeight: FontWeight.w400,
                       ),
@@ -135,7 +148,8 @@ class _DematAccountDetailsState extends State<DematAccountDetails> {
                         Text(
                           "Sapphire Broking",
                           style: TextStyle(
-                            color: const Color(0xffEBEEF5),
+                            color:
+                                isDark ? const Color(0xffEBEEF5) : Colors.black,
                             fontSize: 13.sp,
                             fontWeight: FontWeight.w400,
                           ),
@@ -151,8 +165,12 @@ class _DematAccountDetailsState extends State<DematAccountDetails> {
                                       Text('Depository Participant copied!')),
                             );
                           },
-                          child: SvgPicture.asset("assets/svgs/copy.svg",
-                              width: 14.w, height: 14.h),
+                          child: SvgPicture.asset(
+                            "assets/svgs/copy.svg",
+                            width: 14.w,
+                            height: 14.h,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
                         )
                       ],
                     ),
@@ -160,7 +178,7 @@ class _DematAccountDetailsState extends State<DematAccountDetails> {
                     Text(
                       "Depository",
                       style: TextStyle(
-                        color: const Color(0xffEBEEF5),
+                        color: isDark ? const Color(0xffEBEEF5) : Colors.black,
                         fontSize: 11.sp,
                         fontWeight: FontWeight.w400,
                       ),
@@ -171,7 +189,8 @@ class _DematAccountDetailsState extends State<DematAccountDetails> {
                         Text(
                           "CDSL",
                           style: TextStyle(
-                            color: const Color(0xffEBEEF5),
+                            color:
+                                isDark ? const Color(0xffEBEEF5) : Colors.black,
                             fontSize: 13.sp,
                             fontWeight: FontWeight.w400,
                           ),
@@ -184,8 +203,12 @@ class _DematAccountDetailsState extends State<DematAccountDetails> {
                               SnackBar(content: Text('Depository copied!')),
                             );
                           },
-                          child: SvgPicture.asset("assets/svgs/copy.svg",
-                              width: 14.w, height: 14.h),
+                          child: SvgPicture.asset(
+                            "assets/svgs/copy.svg",
+                            width: 14.w,
+                            height: 14.h,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
                         )
                       ],
                     ),

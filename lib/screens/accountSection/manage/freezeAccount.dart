@@ -13,9 +13,10 @@ class FreezeAccount extends StatefulWidget {
 class _FreezeAccountState extends State<FreezeAccount> {
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: isDark ? Colors.black : Colors.white,
         elevation: 0,
         scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,
@@ -24,7 +25,10 @@ class _FreezeAccountState extends State<FreezeAccount> {
           padding: const EdgeInsets.only(top: 15),
           child: Text(
             "Gift Securities",
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 15.sp,
+                color: isDark ? Colors.white : Colors.black),
           ),
         ),
         leading: Padding(
@@ -33,28 +37,35 @@ class _FreezeAccountState extends State<FreezeAccount> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: const Icon(Icons.arrow_back),
+            icon: Icon(
+              Icons.arrow_back,
+              color: isDark ? Colors.white : Colors.black,
+            ),
           ),
         ),
       ),
       body: Column(
         children: [
-          const Divider(color: Color(0xff2F2F2F)),
+          Divider(
+            color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB),
+          ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Column(
               children: [
                 SizedBox(height: 36.h),
-                SvgPicture.asset("assets/svgs/freeze.svg"),
+                SvgPicture.asset(
+                  "assets/svgs/freeze.svg",
+                  color: isDark ? Colors.white : Colors.black,
+                ),
                 SizedBox(height: 24.h),
                 Text(
                   "You can freeze your account if you detect any suspicious activities",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: isDark ? Colors.white : Colors.black),
                 ),
                 SizedBox(height: 18.h),
                 Container(
@@ -62,7 +73,9 @@ class _FreezeAccountState extends State<FreezeAccount> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(6.r),
                     border: Border.all(
-                      color: const Color(0xff2f2f2f),
+                      color: isDark
+                          ? const Color(0xff2f2f2f)
+                          : const Color(0xffD1D5DB),
                       width: 1.5,
                     ),
                   ),
@@ -73,13 +86,18 @@ class _FreezeAccountState extends State<FreezeAccount> {
                       children: [
                         Row(
                           children: [
-                            SvgPicture.asset('assets/svgs/image57.svg'),
+                            SvgPicture.asset(
+                              'assets/svgs/image57.svg',
+                              color: isDark ? Colors.white : Colors.black,
+                            ),
                             SizedBox(width: 8.w),
                             Expanded(
                               child: Text(
                                 "Anyone using your account will be logged out immediately",
                                 style: TextStyle(
-                                  color: const Color(0xffC9CACC),
+                                  color: isDark
+                                      ? const Color(0xffC9CACC)
+                                      : Colors.black,
                                   fontSize: 11.sp,
                                 ),
                               ),
@@ -89,13 +107,18 @@ class _FreezeAccountState extends State<FreezeAccount> {
                         SizedBox(height: 5.h),
                         Row(
                           children: [
-                            SvgPicture.asset('assets/svgs/image58.svg'),
+                            SvgPicture.asset(
+                              'assets/svgs/image58.svg',
+                              color: isDark ? Colors.white : Colors.black,
+                            ),
                             SizedBox(width: 8.w),
                             Expanded(
                               child: Text(
                                 "You will not be able to place any trades while your account is frozen",
                                 style: TextStyle(
-                                  color: const Color(0xffC9CACC),
+                                  color: isDark
+                                      ? const Color(0xffC9CACC)
+                                      : Colors.black,
                                   fontSize: 11.sp,
                                 ),
                               ),
@@ -105,13 +128,18 @@ class _FreezeAccountState extends State<FreezeAccount> {
                         SizedBox(height: 5.h),
                         Row(
                           children: [
-                            SvgPicture.asset('assets/svgs/image59.svg'),
+                            SvgPicture.asset(
+                              'assets/svgs/image59.svg',
+                              color: isDark ? Colors.white : Colors.black,
+                            ),
                             SizedBox(width: 8.w),
                             Expanded(
                               child: Text(
                                 "This is a temporary block. You can unfreeze your account at any time",
                                 style: TextStyle(
-                                  color: const Color(0xffC9CACC),
+                                  color: isDark
+                                      ? const Color(0xffC9CACC)
+                                      : Colors.black,
                                   fontSize: 11.sp,
                                 ),
                               ),
@@ -125,7 +153,8 @@ class _FreezeAccountState extends State<FreezeAccount> {
                 SizedBox(height: 180.h),
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade900,
+                    color:
+                        isDark ? Colors.grey.shade900 : const Color(0xffF4F4F9),
                     borderRadius: BorderRadius.circular(6.r),
                   ),
                   child: Padding(
@@ -143,7 +172,7 @@ class _FreezeAccountState extends State<FreezeAccount> {
                             "Once trading account is frozen, your tradimg and other services will be suspended untill unfreeze",
                             textAlign: TextAlign.left,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: isDark ? Colors.white : Colors.black,
                               fontSize: 13.sp,
                             ),
                           ),

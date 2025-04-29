@@ -12,7 +12,7 @@ import 'package:sapphire/screens/orderWindow/SellScreens/sellScreenWrapper.dart'
 import 'package:sapphire/utils/constWidgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sapphire/utils/naviWithoutAnimation.dart';
-import 'package:sapphire/utils/watchlistTabBar.dart';
+import 'package:sapphire/screens/home/watchlist/watchlistTabBar.dart';
 import 'package:sapphire/utils/filters.dart';
 import 'package:sapphire/wat.dart'; // For showFilterBottomSheet
 import 'package:sapphire/screens/home/watchlist/stock_detail_bottom_sheet.dart';
@@ -374,23 +374,37 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                 _previousOffset = scrollNotification.metrics.pixels;
               } else if (scrollNotification is ScrollUpdateNotification) {
                 double currentOffset = scrollNotification.metrics.pixels;
-                bool isAtTop = currentOffset < 5.0;
                 bool isScrollingDown = currentOffset > _previousOffset;
 
-                if (isAtTop && isScrollingDown) {
+                // Fixed logic: Don't restrict to top 5.0 pixels
+                // Handle search bar visibility based on scroll direction
+                if (isScrollingDown) {
+                  // Hide search bar when scrolling down
                   if (_isSearchBarVisible) {
                     setState(() {
                       _isSearchBarVisible = false;
                     });
                   }
-                } else if (currentOffset < 5.0 && !isScrollingDown) {
+                } else if (!isScrollingDown && currentOffset <= 10.0) {
+                  // Show search bar when scrolling up and near the top
+                  // Only at the top to prevent showing in the middle
                   if (!_isSearchBarVisible) {
                     setState(() {
                       _isSearchBarVisible = true;
                     });
                   }
                 }
+
                 _previousOffset = currentOffset;
+              } else if (scrollNotification is ScrollEndNotification) {
+                // Add this to handle when scrolling ends at the top
+                if (scrollNotification.metrics.pixels == 0) {
+                  if (!_isSearchBarVisible) {
+                    setState(() {
+                      _isSearchBarVisible = true;
+                    });
+                  }
+                }
               }
               return true;
             },
@@ -701,6 +715,7 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                   children: [
                     Text("Watchlist",
                         style: TextStyle(
+                            letterSpacing: 1,
                             fontSize: 22.sp,
                             fontWeight: FontWeight.bold,
                             color: isDark

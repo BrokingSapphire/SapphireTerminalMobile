@@ -13,6 +13,12 @@ class FundsScreen extends StatefulWidget {
 }
 
 class _FundsScreenState extends State<FundsScreen> {
+  Future<void> _onRefresh() async {
+    // TODO: Implement actual data refresh logic here (e.g., API call)
+    await Future.delayed(const Duration(seconds: 1));
+    setState(() {});
+  }
+
   Widget _buildLegendItem(Color color, String label) {
     return Row(
       children: [
@@ -68,582 +74,586 @@ class _FundsScreenState extends State<FundsScreen> {
             color: Color(0xff2F2F2F),
           ),
           Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.w),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6.r),
-                          color: Color(0xff121413)),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.w, vertical: 4.h),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
+            child: RefreshIndicator(
+              onRefresh: _onRefresh,
+              color: const Color(0xff1DB954),
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15.w),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 12.h,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6.r),
+                            color: Color(0xff121413)),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16.w, vertical: 4.h),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 8.h,
+                              ),
+                              Align(
+                                alignment: Alignment.center,
+                                child: Text(
                                   "Total Balance",
                                   style: TextStyle(fontSize: 15.sp),
                                 ),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.refresh,
-                                    color: Colors.green,
-                                    size: 17,
-                                  ),
-                                  padding: EdgeInsets
-                                      .zero, // ✅ Removes extra padding from the button
-                                  constraints:
-                                      BoxConstraints(), // ✅ Shrinks button to icon size
-                                  visualDensity: VisualDensity
-                                      .compact, // ✅ Reduces button spacing
-                                ),
-                              ],
-                            ),
-                            Center(
-                              child: Transform.translate(
-                                offset: Offset(-8, -2),
+                              ),
+                              Center(
                                 child: Text(
                                   '₹ 1,12,532.00',
                                   style: TextStyle(
-                                      fontSize: 20.sp,
-                                      fontWeight: FontWeight.w500),
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 2.h,
+                              ),
+                              Divider(
+                                color: Color(0xff2F2F2F),
+                              ),
+                              SizedBox(
+                                height: 8.h,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Cash Balance",
+                                        style: TextStyle(
+                                            fontSize: 13.sp,
+                                            color: Color(0xffc9cacc)),
+                                      ),
+                                      Text("₹ 12,532.00",
+                                          style: TextStyle(
+                                              fontSize: 15.sp,
+                                              color: Color(0xffEBEEF5),
+                                              fontWeight: FontWeight.w600)),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 15.w),
+                                    child: Text("+"),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Pledge Balance",
+                                        style: TextStyle(
+                                            fontSize: 13.sp,
+                                            color: Color(0xffc9cacc)),
+                                      ),
+                                      Text("₹ 13,834.00",
+                                          style: TextStyle(
+                                              fontSize: 15.sp,
+                                              color: Color(0xffEBEEF5),
+                                              fontWeight: FontWeight.w600)),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 15.h,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16.h,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                navi(fundsWithdrawScreen(), context);
+                              },
+                              child: Container(
+                                child: Center(
+                                  child: Text('Withdraw'),
+                                ),
+                                height: 42.h,
+                                decoration: BoxDecoration(
+                                    color: Colors.green.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(4.r),
+                                    border:
+                                        Border.all(color: Color(0xff1DB954))),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                navi(fundsAddScreen(), context);
+                              },
+                              child: Container(
+                                child: Center(
+                                  child: Text('Deposit'),
+                                ),
+                                height: 42.h,
+                                decoration: BoxDecoration(
+                                    color: Color(0xff1DB954),
+                                    borderRadius: BorderRadius.circular(4.r),
+                                    border:
+                                        Border.all(color: Color(0xff1DB954))),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 16.h,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6.r),
+                            color: Color(0xff121413)),
+                        child: ListTile(
+                          trailing: Icon(
+                            Icons.arrow_forward_ios_outlined,
+                            size: 17,
+                          ),
+                          title: Text(
+                            "Transaction History",
+                            style: TextStyle(fontSize: 15.sp),
+                          ),
+                          leading: SvgPicture.asset(
+                            "assets/svgs/transaction-svgrepo-com.svg",
+                            color: Color(0xFFc9cacc),
+                            height: 24.h,
+                            width: 24.w,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16.h,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6.r),
+                          color: Color(0xff121413),
+                        ),
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 16.h, horizontal: 16.w),
+                                child: Text(
+                                  "Total Balance Breakup",
+                                  style: TextStyle(
+                                      fontSize: 15.sp,
+                                      color: Color(0xffEBEEF5)),
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: 2.h,
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16.w),
+                              child: Divider(
+                                height: 1.h,
+                                color: Color(0xff2F2F2F),
+                              ),
                             ),
-                            Divider(
-                              color: Color(0xff2F2F2F),
-                            ),
                             SizedBox(
-                              height: 8.h,
+                              height: 16.h,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Cash Balance",
-                                      style: TextStyle(
-                                          fontSize: 13.sp,
-                                          color: Color(0xffc9cacc)),
-                                    ),
-                                    Text("₹ 12,532.00",
-                                        style: TextStyle(
-                                            fontSize: 15.sp,
-                                            color: Color(0xffEBEEF5))),
-                                  ],
-                                ),
-                                Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 15.w),
-                                  child: Text("+"),
+                                SizedBox(
+                                  child: CustomGaugeChart(
+                                    totalBalance: 112532,
+                                    marginUtilized: 45614,
+                                  ),
                                 ),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "Pledge Balance",
-                                      style: TextStyle(
-                                          fontSize: 13.sp,
-                                          color: Color(0xffc9cacc)),
-                                    ),
-                                    Text("₹ 13,834.00",
-                                        style: TextStyle(
-                                            fontSize: 15.sp,
-                                            color: Color(0xffEBEEF5))),
+                                    _buildLegendItem(
+                                        Color(0xff38D055), "Total Balance"),
+                                    SizedBox(height: 15.w),
+                                    _buildLegendItem(
+                                        Color(0xffFFC42E), "Margin Utilised"),
                                   ],
                                 ),
                               ],
                             ),
                             SizedBox(
-                              height: 15.h,
-                            )
+                              height: 16.h,
+                            ),
                           ],
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () {
-                              navi(fundsWithdrawScreen(), context);
-                            },
-                            child: Container(
-                              child: Center(
-                                child: Text('Withdraw'),
-                              ),
-                              height: 42.h,
-                              decoration: BoxDecoration(
-                                  color: Colors.green.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(4.r),
-                                  border: Border.all(color: Color(0xff1DB954))),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () {
-                              navi(fundsAddScreen(), context);
-                            },
-                            child: Container(
-                              child: Center(
-                                child: Text('Deposit'),
-                              ),
-                              height: 42.h,
-                              decoration: BoxDecoration(
-                                  color: Color(0xff1DB954),
-                                  borderRadius: BorderRadius.circular(4.r),
-                                  border: Border.all(color: Color(0xff1DB954))),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
+                      SizedBox(height: 16.h),
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(6.r),
-                          color: Color(0xff121413)),
-                      child: ListTile(
-                        trailing: Icon(
-                          Icons.arrow_forward_ios_outlined,
-                          size: 17,
+                          color: Color(0xff121413),
                         ),
-                        title: Text(
-                          "Transaction History",
-                          style: TextStyle(fontSize: 15.sp),
-                        ),
-                        leading: SvgPicture.asset(
-                          "assets/svgs/transaction-svgrepo-com.svg",
-                          color: Color(0xFFc9cacc),
-                          height: 24.h,
-                          width: 24.w,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6.r),
-                        color: Color(0xff121413),
-                      ),
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 16.h, horizontal: 16.w),
-                              child: Text(
-                                "Total Balance Breakup",
-                                style: TextStyle(
-                                    fontSize: 15.sp, color: Color(0xffEBEEF5)),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.w),
-                            child: Divider(
-                              height: 1.h,
-                              color: Color(0xff2F2F2F),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 16.h,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Column(
                             children: [
-                              SizedBox(
-                                child: CustomGaugeChart(
-                                  totalBalance: 112532,
-                                  marginUtilized: 45614,
+                              GestureDetector(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(26.r)),
+                                    ),
+                                    backgroundColor: Color(0xff121413),
+                                    builder: (context) {
+                                      return Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 20.w, vertical: 20.h),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Total Balance",
+                                                  style: TextStyle(
+                                                      fontSize: 15.sp,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Color(0xffEBEEF5)),
+                                                ),
+                                                Spacer(),
+                                                Text(
+                                                  "₹1,00,000",
+                                                  style: TextStyle(
+                                                      fontSize: 15.sp,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Color(0xffEBEEF5)),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 16.h),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Cash Balance",
+                                                  style: TextStyle(
+                                                      fontSize: 13.sp,
+                                                      color: Color(0xffc9cacc)),
+                                                ),
+                                                Spacer(),
+                                                Text(
+                                                  "₹40,000",
+                                                  style: TextStyle(
+                                                      fontSize: 13.sp,
+                                                      color: Color(0xffc9cacc)),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 12.h),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Collateral Balance",
+                                                  style: TextStyle(
+                                                      fontSize: 13.sp,
+                                                      color: Color(0xffc9cacc)),
+                                                ),
+                                                Spacer(),
+                                                Text(
+                                                  "₹60,000",
+                                                  style: TextStyle(
+                                                      fontSize: 13.sp,
+                                                      color: Color(0xffc9cacc)),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 12.h),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Collateral Balance (Liquid Funds)",
+                                                  style: TextStyle(
+                                                      fontSize: 13.sp,
+                                                      color: Color(0xffc9cacc)),
+                                                ),
+                                                Spacer(),
+                                                Text(
+                                                  "₹60,000",
+                                                  style: TextStyle(
+                                                      fontSize: 13.sp,
+                                                      color: Color(0xffc9cacc)),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 16.h),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "Total Balance",
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: Color(0xffEBEEF5)),
+                                    ),
+                                    Spacer(),
+                                    Text(
+                                      "₹112,532.00",
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: Color(0xffEBEEF5)),
+                                    ),
+                                    SizedBox(
+                                      width: 2.w,
+                                    ),
+                                    Icon(
+                                      Icons.keyboard_arrow_down_outlined,
+                                      color: Color(0xffEBEEF5),
+                                    )
+                                  ],
                                 ),
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  _buildLegendItem(
-                                      Color(0xff38D055), "Total Balance"),
-                                  SizedBox(height: 15.w),
-                                  _buildLegendItem(
-                                      Color(0xffFFC42E), "Margin Utilised"),
-                                ],
+                              SizedBox(
+                                height: 16.h,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(26.r)),
+                                    ),
+                                    backgroundColor: Color(0xff121413),
+                                    builder: (context) {
+                                      return Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 20.w, vertical: 20.h),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Margin Utilised",
+                                                  style: TextStyle(
+                                                      fontSize: 15.sp,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Color(0xffEBEEF5)),
+                                                ),
+                                                Spacer(),
+                                                Text(
+                                                  "₹5,00,000",
+                                                  style: TextStyle(
+                                                      fontSize: 15.sp,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Color(0xffEBEEF5)),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 16.h),
+                                            Text("Margin",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Color(0xffEBEEF5),
+                                                    fontSize: 13.sp)),
+                                            SizedBox(height: 6.h),
+                                            _marginRow(
+                                                "Span Margin", "₹4,567.67"),
+                                            _marginRow(
+                                                "Exposure Margin", "₹4,567.67"),
+                                            _marginRow(
+                                                "Delivery Amount", "₹4,567.67"),
+                                            _marginRow(
+                                                "Commodity Additional Margin",
+                                                "₹4,567.67"),
+                                            _marginRow(
+                                                "Cash Intraday / MTF Margin",
+                                                "₹4,567.67"),
+                                            SizedBox(height: 16.h),
+                                            Text("Premiums",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Color(0xffEBEEF5),
+                                                    fontSize: 13.sp)),
+                                            SizedBox(height: 6.h),
+                                            _marginRow(
+                                                "FNO Premiums", "₹4,567.67"),
+                                            _marginRow("Currency Premium",
+                                                "₹4,567.67"),
+                                            _marginRow("Commodity Premium",
+                                                "₹4,567.67"),
+                                            SizedBox(height: 16.h),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "Margin Utilised",
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: Color(0xffEBEEF5)),
+                                    ),
+                                    Spacer(),
+                                    Text(
+                                      "₹112,532.00",
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        color: Color(0xffEBEEF5),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 2.w,
+                                    ),
+                                    Icon(
+                                      Icons.keyboard_arrow_down_outlined,
+                                      color: Color(0xffEBEEF5),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 16.h,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(26.r)),
+                                    ),
+                                    backgroundColor: Color(0xff121413),
+                                    builder: (context) {
+                                      return Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 20.w, vertical: 20.h),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Withdrawable Balance",
+                                                  style: TextStyle(
+                                                      fontSize: 15.sp,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Color(0xffEBEEF5)),
+                                                ),
+                                                Spacer(),
+                                                Text(
+                                                  "₹1,00,000",
+                                                  style: TextStyle(
+                                                      fontSize: 15.sp,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Color(0xffEBEEF5)),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 16.h),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Withdrawal in Progress",
+                                                  style: TextStyle(
+                                                      fontSize: 13.sp,
+                                                      color: Color(0xffc9cacc)),
+                                                ),
+                                                Spacer(),
+                                                Text(
+                                                  "₹40,000",
+                                                  style: TextStyle(
+                                                      fontSize: 13.sp,
+                                                      color: Color(0xffc9cacc)),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 8.h),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "Withdrawable Balance",
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: Color(0xffEBEEF5)),
+                                    ),
+                                    Spacer(),
+                                    Text(
+                                      "₹112,532.00",
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: Color(0xffEBEEF5)),
+                                    ),
+                                    SizedBox(
+                                      width: 2.w,
+                                    ),
+                                    Icon(
+                                      Icons.keyboard_arrow_down_outlined,
+                                      color: Color(0xffEBEEF5),
+                                    )
+                                  ],
+                                ),
                               ),
                             ],
                           ),
-                          SizedBox(
-                            height: 16.h,
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 16.h),
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6.r),
-                        color: Color(0xff121413),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(26.r)),
-                                  ),
-                                  backgroundColor: Color(0xff121413),
-                                  builder: (context) {
-                                    return Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 20.w, vertical: 20.h),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Total Balance",
-                                                style: TextStyle(
-                                                    fontSize: 15.sp,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Color(0xffEBEEF5)),
-                                              ),
-                                              Spacer(),
-                                              Text(
-                                                "₹1,00,000",
-                                                style: TextStyle(
-                                                    fontSize: 15.sp,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Color(0xffEBEEF5)),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height: 16.h),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Cash Balance",
-                                                style: TextStyle(
-                                                    fontSize: 13.sp,
-                                                    color: Color(0xffc9cacc)),
-                                              ),
-                                              Spacer(),
-                                              Text(
-                                                "₹40,000",
-                                                style: TextStyle(
-                                                    fontSize: 13.sp,
-                                                    color: Color(0xffc9cacc)),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height: 12.h),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Collateral Balance",
-                                                style: TextStyle(
-                                                    fontSize: 13.sp,
-                                                    color: Color(0xffc9cacc)),
-                                              ),
-                                              Spacer(),
-                                              Text(
-                                                "₹60,000",
-                                                style: TextStyle(
-                                                    fontSize: 13.sp,
-                                                    color: Color(0xffc9cacc)),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height: 12.h),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Collateral Balance (Liquid Funds)",
-                                                style: TextStyle(
-                                                    fontSize: 13.sp,
-                                                    color: Color(0xffc9cacc)),
-                                              ),
-                                              Spacer(),
-                                              Text(
-                                                "₹60,000",
-                                                style: TextStyle(
-                                                    fontSize: 13.sp,
-                                                    color: Color(0xffc9cacc)),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height: 16.h),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Total Balance",
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        color: Color(0xffEBEEF5)),
-                                  ),
-                                  Spacer(),
-                                  Text(
-                                    "₹112,532.00",
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        color: Color(0xffEBEEF5)),
-                                  ),
-                                  SizedBox(
-                                    width: 2.w,
-                                  ),
-                                  Icon(
-                                    Icons.keyboard_arrow_down_outlined,
-                                    color: Color(0xffEBEEF5),
-                                  )
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 16.h,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(26.r)),
-                                  ),
-                                  backgroundColor: Color(0xff121413),
-                                  builder: (context) {
-                                    return Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 20.w, vertical: 20.h),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Margin Utilised",
-                                                style: TextStyle(
-                                                    fontSize: 15.sp,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Color(0xffEBEEF5)),
-                                              ),
-                                              Spacer(),
-                                              Text(
-                                                "₹5,00,000",
-                                                style: TextStyle(
-                                                    fontSize: 15.sp,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Color(0xffEBEEF5)),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height: 16.h),
-                                          Text("Margin",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Color(0xffEBEEF5),
-                                                  fontSize: 13.sp)),
-                                          SizedBox(height: 6.h),
-                                          _marginRow(
-                                              "Span Margin", "₹4,567.67"),
-                                          _marginRow(
-                                              "Exposure Margin", "₹4,567.67"),
-                                          _marginRow(
-                                              "Delivery Amount", "₹4,567.67"),
-                                          _marginRow(
-                                              "Commodity Additional Margin",
-                                              "₹4,567.67"),
-                                          _marginRow(
-                                              "Cash Intraday / MTF Margin",
-                                              "₹4,567.67"),
-                                          SizedBox(height: 16.h),
-                                          Text("Premiums",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Color(0xffEBEEF5),
-                                                  fontSize: 13.sp)),
-                                          SizedBox(height: 6.h),
-                                          _marginRow(
-                                              "FNO Premiums", "₹4,567.67"),
-                                          _marginRow(
-                                              "Currency Premium", "₹4,567.67"),
-                                          _marginRow(
-                                              "Commodity Premium", "₹4,567.67"),
-                                          SizedBox(height: 16.h),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Margin Utilised",
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        color: Color(0xffEBEEF5)),
-                                  ),
-                                  Spacer(),
-                                  Text(
-                                    "₹112,532.00",
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        color: Color(0xffEBEEF5)),
-                                  ),
-                                  SizedBox(
-                                    width: 2.w,
-                                  ),
-                                  Icon(
-                                    Icons.keyboard_arrow_down_outlined,
-                                    color: Color(0xffEBEEF5),
-                                  )
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 16.h,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(26.r)),
-                                  ),
-                                  backgroundColor: Color(0xff121413),
-                                  builder: (context) {
-                                    return Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 20.w, vertical: 20.h),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Withdrawable Balance",
-                                                style: TextStyle(
-                                                    fontSize: 15.sp,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Color(0xffEBEEF5)),
-                                              ),
-                                              Spacer(),
-                                              Text(
-                                                "₹1,00,000",
-                                                style: TextStyle(
-                                                    fontSize: 15.sp,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Color(0xffEBEEF5)),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height: 16.h),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Withdrawal in Progress",
-                                                style: TextStyle(
-                                                    fontSize: 13.sp,
-                                                    color: Color(0xffc9cacc)),
-                                              ),
-                                              Spacer(),
-                                              Text(
-                                                "₹40,000",
-                                                style: TextStyle(
-                                                    fontSize: 13.sp,
-                                                    color: Color(0xffc9cacc)),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height: 8.h),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Withdrawable Balance",
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        color: Color(0xffEBEEF5)),
-                                  ),
-                                  Spacer(),
-                                  Text(
-                                    "₹112,532.00",
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        color: Color(0xffEBEEF5)),
-                                  ),
-                                  SizedBox(
-                                    width: 2.w,
-                                  ),
-                                  Icon(
-                                    Icons.keyboard_arrow_down_outlined,
-                                    color: Color(0xffEBEEF5),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
+          )
         ],
       ),
     );

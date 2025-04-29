@@ -66,6 +66,7 @@ class _HoldingsScreenState extends State<HoldingsScreen> {
                         Text(
                           "Holdings",
                           style: TextStyle(
+                            letterSpacing: 1,
                             fontSize: 22.sp,
                             fontWeight: FontWeight.bold,
                             color: isDark ? Colors.white : Colors.black,
@@ -243,6 +244,7 @@ Widget marketDataCard(String title, String price, String change, bool isDark) {
   final Color changeColor = isPositive ? Colors.green : Colors.red;
   return Container(
     height: 62.h,
+    width: 175.w,
     padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
     decoration: BoxDecoration(
       color: isDark ? const Color(0xff121413) : const Color(0xFFF4F4F9),

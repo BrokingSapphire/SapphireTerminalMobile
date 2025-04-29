@@ -75,6 +75,7 @@ class _OrderSectionState extends State<OrderSection> {
                   Text(
                     "Orders",
                     style: TextStyle(
+                      letterSpacing: 1,
                       fontSize: 22.sp,
                       fontWeight: FontWeight.bold,
                       color: const Color(0xffEBEEF5),

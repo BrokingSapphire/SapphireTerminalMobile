@@ -10,7 +10,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // For secu
 import 'package:http/http.dart' as http; // For API requests
 import 'package:sapphire/main.dart'; // App-wide navigation utilities
 import 'package:sapphire/screens/signUp/otherDetails.dart'; // Next screen in registration flow
-import 'package:sapphire/screens/signUp/yourInvestmentProfile.dart'; // Not used directly
+// Not used directly
 import '../../utils/constWidgets.dart'; // Reusable UI components
 
 /// PersonalDetails - Screen for collecting user's personal information
@@ -145,7 +145,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
               // Screen title
               Text("Personal Details",
                   style:
-                  TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold)),
+                      TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold)),
               SizedBox(
                 height: 24.h,
               ),
@@ -153,7 +153,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
               /// Marital status selection section
               Text("Marital Status",
                   style:
-                  TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500)),
+                      TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500)),
               SizedBox(height: 16.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -266,8 +266,10 @@ class _PersonalDetailsState extends State<PersonalDetails> {
               child: ElevatedButton(
                 onPressed: isFormComplete ? submitOccupationDetails : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                  isFormComplete ? Color(0xFF1DB954) : Color(0xff2f2f2f), // Green if form complete, gray if not
+                  backgroundColor: isFormComplete
+                      ? Color(0xFF1DB954)
+                      : Color(
+                          0xff2f2f2f), // Green if form complete, gray if not
                   foregroundColor: Colors.white,
                 ),
                 child: Text("Continue",

@@ -60,12 +60,13 @@ class _DisclosureState extends State<Disclosure> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
+        centerTitle: true,
         backgroundColor: isDark ? Colors.black : Colors.white,
         title: Text(
           "Risk Disclosure on Derivatives",
           style: TextStyle(
             color: isDark ? Colors.white : Colors.black,
-            fontSize: 18.sp,
+            fontSize: 17.sp,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -170,7 +171,7 @@ class _DisclosureState extends State<Disclosure> {
                           child: Container(
                             width: 350.w,
                             height: 45.h,
-                            color: Colors.green,
+                            color: Color(0xFF1DB954),
                             child: Center(
                                 child: Text(
                               "UNDERSTOOD",

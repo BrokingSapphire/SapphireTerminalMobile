@@ -216,20 +216,17 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         behavior: HitTestBehavior.opaque,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Column(
-            children: [
-              Divider(color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB)),
-              Expanded(
+        child: Column(
+          children: [
+            Divider(color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB)),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 7.h),
+                    SizedBox(height: 32.h),
 
-                    // Withdrawable Amount
-
-                    // Amount Display: Rupee sign and amount are visually centered
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: Center(
@@ -296,22 +293,22 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                             )),
                       ),
                     ),
-                    SizedBox(height: 20.h),
+                    SizedBox(height: 28.h),
                     // Quick Amount Buttons
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         _buildAmountButton(
                             '+₹5,000', () => _addAmount(5000), isDark),
-                        SizedBox(width: 16.w),
+                        SizedBox(width: 24.w),
                         _buildAmountButton(
                             '+₹10,000', () => _addAmount(10000), isDark),
-                        SizedBox(width: 16.w),
+                        SizedBox(width: 24.w),
                         _buildAmountButton(
                             '+₹20,000', () => _addAmount(20000), isDark),
                       ],
                     ),
-                    SizedBox(height: 20.h),
+                    SizedBox(height: 28.h),
 
                     // Instant / Regular
                     Container(
@@ -342,7 +339,10 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                                       _isInstant ? Colors.green : Colors.grey,
                                 ),
                                 SizedBox(width: 6.w),
-                                SvgPicture.asset('assets/svgs/instant.svg')
+                                SvgPicture.asset(
+                                  'assets/svgs/instant.svg',
+                                ),
+                                Text("⚡️")
                               ],
                             ),
                           ),
@@ -379,7 +379,8 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 34.h),
+                    // SizedBox(height: 34.h),
+                    Spacer(),
                     Container(
                       padding: EdgeInsets.symmetric(
                           horizontal: 15.w, vertical: 10.h),
@@ -499,8 +500,8 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -508,24 +509,27 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
 
   // Quick Amount Button
   Widget _buildAmountButton(String text, VoidCallback onPressed, bool isDark) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: isDark ? Color(0xff121413) : Color(0xffF4F4F9),
-        shape: RoundedRectangleBorder(
-          side: BorderSide(
-            color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB),
-            width: 1,
+    return Container(
+      height: 34.h,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: isDark ? Color(0xff121413) : Color(0xffF4F4F9),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB),
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(8.r),
           ),
-          borderRadius: BorderRadius.circular(8.r),
+          padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 6.h),
         ),
-        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          fontSize: 14.sp,
-          color: isDark ? Colors.white : Colors.black,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontSize: 12.sp,
+            color: isDark ? Colors.white : Colors.black,
+          ),
         ),
       ),
     );

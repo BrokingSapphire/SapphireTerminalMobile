@@ -217,7 +217,7 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Container(
                   width: double.infinity,
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  // padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: Center(
                     child: IntrinsicWidth(
                       child: Row(
@@ -276,14 +276,14 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
               ),
             ),
           ),
-          SizedBox(height: 20.h),
+          SizedBox(height: 28.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _buildAmountButton('+₹5,000', isDark, () => _addAmount(5000)),
-              SizedBox(width: 16.w),
+              SizedBox(width: 24.w),
               _buildAmountButton('+₹10,000', isDark, () => _addAmount(10000)),
-              SizedBox(width: 16.w),
+              SizedBox(width: 24.w),
               _buildAmountButton('+₹20,000', isDark, () => _addAmount(20000)),
             ],
           ),
@@ -454,25 +454,28 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
   }
 
   Widget _buildAmountButton(String text, bool isDark, VoidCallback onPressed) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor:
-            isDark ? const Color(0xff121413) : const Color(0xFFF5F5F5),
-        shape: RoundedRectangleBorder(
-          side: BorderSide(
-            color: isDark ? const Color(0xff2F2F2F) : Colors.grey.shade300,
-            width: 1,
+    return Container(
+      height: 34.h,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor:
+              isDark ? const Color(0xff121413) : const Color(0xFFF5F5F5),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: isDark ? const Color(0xff2F2F2F) : Colors.grey.shade300,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(8.r),
           ),
-          borderRadius: BorderRadius.circular(8.r),
+          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
         ),
-        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          fontSize: 14.sp,
-          color: isDark ? Colors.white : Colors.black,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontSize: 12.sp,
+            color: isDark ? Colors.white : Colors.black,
+          ),
         ),
       ),
     );
@@ -704,7 +707,6 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
               TextField(
                 controller: upiId,
                 decoration: InputDecoration(
-                  
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide(
@@ -717,7 +719,9 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
                   hintText: "Enter UPI ID",
                   hintStyle: TextStyle(
                     fontSize: 13.sp,
-                    color: isDark ? const Color(0xffC9CACC) : const Color(0xff6B7280),
+                    color: isDark
+                        ? const Color(0xffC9CACC)
+                        : const Color(0xff6B7280),
                     fontWeight: FontWeight.w400,
                   ),
                 ),

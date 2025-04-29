@@ -64,6 +64,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                           Text(
                             "Discover",
                             style: TextStyle(
+                              letterSpacing: 1,
                               fontSize: 22.sp,
                               fontWeight: FontWeight.bold,
                               color: const Color(0xffEBEEF5),

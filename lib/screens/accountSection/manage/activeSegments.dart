@@ -20,9 +20,11 @@ class _ActiveSegmentsState extends State<ActiveSegments> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black, // or your desired color
+        backgroundColor:
+            isDark ? Colors.black : Colors.white, // or your desired color
         elevation: 0,
         scrolledUnderElevation: 0, // prevent shadow when scrolling
         surfaceTintColor: Colors.transparent,
@@ -32,7 +34,10 @@ class _ActiveSegmentsState extends State<ActiveSegments> {
           padding: const EdgeInsets.only(top: 15),
           child: Text(
             "Active Segments",
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 15.sp,
+                color: isDark ? Colors.white : Colors.black),
           ),
         ),
         leading: Padding(
@@ -41,12 +46,15 @@ class _ActiveSegmentsState extends State<ActiveSegments> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Icon(Icons.arrow_back)),
+              icon: Icon(
+                Icons.arrow_back,
+                color: isDark ? Colors.white : Colors.black,
+              )),
         ),
       ),
       body: Column(
         children: [
-          Divider(color: Color(0xff2F2F2F)),
+          Divider(color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB)),
           Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -55,7 +63,7 @@ class _ActiveSegmentsState extends State<ActiveSegments> {
                   SizedBox(height: 15.h),
                   Container(
                     decoration: BoxDecoration(
-                      color: Color(0xff121413), // Card background color
+                      color: isDark ? Color(0xff121413) : Color(0xffF4F4F9),
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Column(
@@ -70,6 +78,7 @@ class _ActiveSegmentsState extends State<ActiveSegments> {
                               internet = value;
                             });
                           },
+                          isDark: isDark,
                         ),
                         SizedBox(
                           height: 15.h,
@@ -83,6 +92,7 @@ class _ActiveSegmentsState extends State<ActiveSegments> {
                               storage = value;
                             });
                           },
+                          isDark: isDark,
                         ),
                         SizedBox(
                           height: 15.h,
@@ -96,6 +106,7 @@ class _ActiveSegmentsState extends State<ActiveSegments> {
                               location = value;
                             });
                           },
+                          isDark: isDark,
                         ),
                         SizedBox(
                           height: 15.h,
@@ -109,6 +120,7 @@ class _ActiveSegmentsState extends State<ActiveSegments> {
                               smsreading = value;
                             });
                           },
+                          isDark: isDark,
                         ),
                         SizedBox(
                           height: 15.h,
@@ -122,6 +134,7 @@ class _ActiveSegmentsState extends State<ActiveSegments> {
                               notification = value;
                             });
                           },
+                          isDark: isDark,
                         ),
                         SizedBox(height: 15.h),
                       ],
@@ -136,16 +149,16 @@ class _ActiveSegmentsState extends State<ActiveSegments> {
     );
   }
 
-  Widget _buildSwitchTile({
-    required String title,
-    required String subtitle,
-    required bool value,
-    required Function(bool) onChanged,
-  }) {
+  Widget _buildSwitchTile(
+      {required String title,
+      required String subtitle,
+      required bool value,
+      required Function(bool) onChanged,
+      required bool isDark}) {
     return SizedBox(
       height: 55.h,
       child: ListTile(
-        tileColor: Color(0xff121413),
+        tileColor: isDark ? Color(0xff121413) : Colors.white,
         contentPadding: EdgeInsets.symmetric(horizontal: 16.w),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.r),
@@ -154,19 +167,24 @@ class _ActiveSegmentsState extends State<ActiveSegments> {
           children: [
             Text(
               title,
-              style: TextStyle(color: Colors.white, fontSize: 13.sp),
+              style: TextStyle(
+                  color: isDark ? Colors.white : Colors.black, fontSize: 13.sp),
             ),
             SizedBox(
               width: 2.w,
             ),
             Visibility(
                 visible: value,
-                child: SvgPicture.asset('assets/svgs/verified.svg'))
+                child: SvgPicture.asset(
+                  'assets/svgs/verified.svg',
+                ))
           ],
         ),
         subtitle: Text(
           subtitle,
-          style: TextStyle(color: Colors.white70, fontSize: 11.sp),
+          style: TextStyle(
+              color: isDark ? Colors.white70 : Colors.black.withOpacity(0.7),
+              fontSize: 11.sp),
         ),
         trailing: CustomToggleSwitch(
           initialValue: value,

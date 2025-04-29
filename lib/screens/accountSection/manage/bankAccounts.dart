@@ -27,11 +27,12 @@ class _BankAccountsState extends State<BankAccounts> {
     },
   ];
 
-  Widget bankDetails(Map<String, dynamic> account) {
+  Widget bankDetails(Map<String, dynamic> account, bool isDark) {
     return Container(
       margin: EdgeInsets.only(bottom: 16.h),
       decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xff2f2f2f)),
+        border: Border.all(
+            color: isDark ? const Color(0xff2f2f2f) : Color(0xffD1D5DB)),
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Padding(
@@ -54,7 +55,9 @@ class _BankAccountsState extends State<BankAccounts> {
                       Text(
                         account['bankName'],
                         style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 13.sp),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 13.sp,
+                            color: isDark ? Colors.white : Colors.black),
                       ),
                       SizedBox(
                         width: 20.w,
@@ -84,12 +87,18 @@ class _BankAccountsState extends State<BankAccounts> {
                       Text(
                         "A/c Number:",
                         style: TextStyle(
-                            fontSize: 11.sp, color: const Color(0xffC9CACC)),
+                            fontSize: 11.sp,
+                            color: isDark
+                                ? const Color(0xffC9CACC)
+                                : Colors.black),
                       ),
                       Text(
                         account['accountNumber'],
                         style: TextStyle(
-                            fontSize: 11.sp, color: const Color(0xffFAFAFA)),
+                            fontSize: 11.sp,
+                            color: isDark
+                                ? const Color(0xffFAFAFA)
+                                : Colors.black),
                       ),
                     ],
                   ),
@@ -100,12 +109,18 @@ class _BankAccountsState extends State<BankAccounts> {
                       Text(
                         "IFS code:",
                         style: TextStyle(
-                            fontSize: 11.sp, color: const Color(0xffC9CACC)),
+                            fontSize: 11.sp,
+                            color: isDark
+                                ? const Color(0xffC9CACC)
+                                : Colors.black),
                       ),
                       Text(
                         account['ifsc'],
                         style: TextStyle(
-                            fontSize: 11.sp, color: const Color(0xffFAFAFA)),
+                            fontSize: 11.sp,
+                            color: isDark
+                                ? const Color(0xffFAFAFA)
+                                : Colors.black),
                       ),
                     ],
                   ),
@@ -116,12 +131,18 @@ class _BankAccountsState extends State<BankAccounts> {
                       Text(
                         "Branch:",
                         style: TextStyle(
-                            fontSize: 11.sp, color: const Color(0xffC9CACC)),
+                            fontSize: 11.sp,
+                            color: isDark
+                                ? const Color(0xffC9CACC)
+                                : Colors.black),
                       ),
                       Text(
                         account['branch'],
                         style: TextStyle(
-                            fontSize: 11.sp, color: const Color(0xffFAFAFA)),
+                            fontSize: 11.sp,
+                            color: isDark
+                                ? const Color(0xffFAFAFA)
+                                : Colors.black),
                       ),
                     ],
                   ),
@@ -134,7 +155,7 @@ class _BankAccountsState extends State<BankAccounts> {
     );
   }
 
-  Widget addBankButton() {
+  Widget addBankButton(bool isDark) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 12.h),
       child: GestureDetector(
@@ -145,18 +166,19 @@ class _BankAccountsState extends State<BankAccounts> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const Icon(Icons.add, color: Colors.white),
+            Icon(Icons.add, color: isDark ? Colors.white : Colors.black),
             SizedBox(width: 8.w),
             Text(
               "Add Bank Account",
               style: TextStyle(
                 fontSize: 15.sp,
-                color: Colors.white,
+                color: isDark ? Colors.white : Colors.black,
                 fontWeight: FontWeight.w500,
               ),
             ),
             Spacer(),
-            Icon(Icons.arrow_forward_ios_outlined, size: 15.sp)
+            Icon(Icons.arrow_forward_ios_outlined,
+                size: 15.sp, color: isDark ? Colors.white : Colors.black)
           ],
         ),
       ),
@@ -165,9 +187,10 @@ class _BankAccountsState extends State<BankAccounts> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: isDark ? Colors.black : Colors.white,
         elevation: 0,
         scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,
@@ -176,7 +199,10 @@ class _BankAccountsState extends State<BankAccounts> {
           padding: const EdgeInsets.only(top: 15),
           child: Text(
             "Bank Details",
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 15.sp,
+                color: isDark ? Colors.white : Colors.black),
           ),
         ),
         leading: Padding(
@@ -185,15 +211,15 @@ class _BankAccountsState extends State<BankAccounts> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: const Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back,
+                color: isDark ? Colors.white : Colors.black),
           ),
         ),
       ),
       body: Column(
         children: [
-          const Divider(
-            color: Color(0xff2f2f2f),
-            height: 1,
+          Divider(
+            color: isDark ? Color(0xff2f2f2f) : Color(0xffD1D5DB),
           ),
           SizedBox(height: 8.h),
           Expanded(
@@ -203,9 +229,9 @@ class _BankAccountsState extends State<BankAccounts> {
                 itemCount: dummyBankAccounts.length + 1, // +1 for the button
                 itemBuilder: (context, index) {
                   if (index < dummyBankAccounts.length) {
-                    return bankDetails(dummyBankAccounts[index]);
+                    return bankDetails(dummyBankAccounts[index], isDark);
                   } else {
-                    return addBankButton();
+                    return addBankButton(isDark);
                   }
                 },
               ),

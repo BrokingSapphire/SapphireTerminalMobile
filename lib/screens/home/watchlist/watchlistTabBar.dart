@@ -358,10 +358,17 @@ class _WatchlistTabBarState extends State<WatchlistTabBar> {
       ),
       builder: (context) => Column(
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ListTile(
-            leading: Icon(Icons.playlist_add,
-                color: widget.isDark ? Colors.white : Colors.black),
+            contentPadding: EdgeInsets.only(left: 16.w),
+            minLeadingWidth: 16.w,
+            leading: SvgPicture.asset(
+              "assets/svgs/createWatchlist.svg",
+              height: 20.h,
+              width: 20.w,
+              color: widget.isDark ? Colors.white : Colors.black,
+            ),
             title: Text(
               "Create Watchlist",
               style:
@@ -373,8 +380,14 @@ class _WatchlistTabBarState extends State<WatchlistTabBar> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.category,
-                color: widget.isDark ? Colors.white : Colors.black),
+            contentPadding: EdgeInsets.only(left: 16.w),
+            minLeadingWidth: 16.w,
+            leading: SvgPicture.asset(
+              "assets/svgs/addCategories.svg",
+              height: 20.h,
+              width: 20.w,
+              color: widget.isDark ? Colors.white : Colors.black,
+            ),
             title: Text(
               "Add Category",
               style:
@@ -444,6 +457,7 @@ class _WatchlistTabBarState extends State<WatchlistTabBar> {
                                 widget.tabNames[index],
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
+                                  letterSpacing: 1,
                                   color: isSelected
                                       ? Colors.green
                                       : (widget.isDark

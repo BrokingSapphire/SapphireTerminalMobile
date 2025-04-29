@@ -82,6 +82,7 @@ class _TradesScreenState extends State<TradesScreen> {
                     Text(
                       "Trades",
                       style: TextStyle(
+                        letterSpacing: 1,
                         fontSize: 22.sp,
                         fontWeight: FontWeight.bold,
                         color: const Color(0xffEBEEF5),
@@ -149,7 +150,8 @@ class _TradesScreenState extends State<TradesScreen> {
             color: const Color(0xff1DB954), // Refresh indicator color
             backgroundColor: const Color(0xff121413),
             child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(), // Ensures scrollability
+              physics:
+                  const AlwaysScrollableScrollPhysics(), // Ensures scrollability
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -198,16 +200,17 @@ class CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       color: const Color(0xff000000),
-      child: Stack(
-        children:[  Positioned.fill(
-      child: Container(
-      alignment: Alignment.bottomCenter,
-        child: Container(
-          height: 1,
-          color: const Color(0xff2f2f2f),
+      child: Stack(children: [
+        Positioned.fill(
+          child: Container(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              height: 1,
+              color: const Color(0xff2f2f2f),
+            ),
+          ),
         ),
-      ),
-    ),Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: List.generate(tabNames.length, (index) {
             final isSelected = index == selectedIndex;
@@ -243,8 +246,8 @@ class CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
               ),
             );
           }),
-        ),]
-      ),
+        ),
+      ]),
     );
   }
 
