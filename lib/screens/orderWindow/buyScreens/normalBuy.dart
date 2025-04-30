@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sapphire/screens/orderWindow/SellScreens/sellScreenWrapper.dart';
+import 'package:sapphire/screens/orderWindow/BuyScreens/buyWrapper.dart';
+import 'package:sapphire/screens/orderWindow/SellScreens/sellWrapper.dart';
 import 'package:sapphire/utils/animatedToggles.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
-class NormalSellScreen extends StatefulWidget {
+class NormalBuyScreen extends StatefulWidget {
   final String tabName;
-  NormalSellScreen(this.tabName);
+  NormalBuyScreen(this.tabName);
 
   @override
-  State<NormalSellScreen> createState() => _NormalSellScreenState();
+  State<NormalBuyScreen> createState() => _NormalBuyScreenState();
 }
 
-class _NormalSellScreenState extends State<NormalSellScreen> {
+class _NormalBuyScreenState extends State<NormalBuyScreen> {
   bool _stopLoss = false;
   bool _gtt = false;
 
@@ -36,7 +37,7 @@ class _NormalSellScreenState extends State<NormalSellScreen> {
         child: Column(
           children: [
             // Delivery / Intraday / MTF Tabs
-            sellAnimatedToggle(
+            buyAnimatedToggle(
               options: _options,
               selectedIndex: _selectedIndex,
               onToggle: (index) {
@@ -101,9 +102,9 @@ class _NormalSellScreenState extends State<NormalSellScreen> {
                     ],
                   ),
                 ),
-                SizedBox(width: 10.w),
+                SizedBox(width: 20.w),
                 Expanded(
-                  child: sellScreenToggle(
+                  child: buyScreenToggle(
                     isFirstOptionSelected: isMarketSelected,
                     onToggle: (value) {
                       setState(() {
@@ -113,7 +114,7 @@ class _NormalSellScreenState extends State<NormalSellScreen> {
                     firstOption: "Market",
                     secondOption: "Limit",
                   ),
-                ),
+                )
               ],
             ),
 
@@ -164,7 +165,8 @@ class _NormalSellScreenState extends State<NormalSellScreen> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide:
+                      BorderSide(color: isDark ? Colors.white : Colors.black),
                 ),
                 hintText: "Enter Price",
                 hintStyle:
@@ -221,10 +223,8 @@ class _NormalSellScreenState extends State<NormalSellScreen> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
-                  borderSide: BorderSide(
-                      color: isDark
-                          ? Colors.white
-                          : Colors.black.withOpacity(0.5)),
+                  borderSide:
+                      BorderSide(color: isDark ? Colors.white : Colors.black),
                 ),
                 hintStyle: TextStyle(
                   fontSize: 15.sp,
@@ -247,7 +247,7 @@ class _NormalSellScreenState extends State<NormalSellScreen> {
                   },
                   child: Row(
                     children: [
-                      sellScreenCheckbox(
+                      CustomCheckbox(
                         size: 20,
                         value: _stopLoss,
                         onChanged: (_) {
@@ -257,18 +257,22 @@ class _NormalSellScreenState extends State<NormalSellScreen> {
                         },
                       ),
                       SizedBox(width: 10.w),
-                      Text("StopLoss",
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              color: isDark ? Colors.white : Colors.black)),
+                      Text(
+                        "StopLoss",
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            color: isDark ? Colors.white : Colors.black),
+                      ),
+                      SizedBox(width: 5.w),
+                      Icon(Icons.info_outline,
+                          size: 15,
+                          color: isDark ? Color(0xffc9cacc) : Colors.black),
                     ],
                   ),
                 ),
-                SizedBox(width: 5.w),
-                Icon(Icons.info_outline,
-                    size: 15, color: isDark ? Color(0xffc9cacc) : Colors.black),
                 SizedBox(width: 35.w),
                 GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: () {
                     setState(() {
                       _gtt = !_gtt;
@@ -276,26 +280,25 @@ class _NormalSellScreenState extends State<NormalSellScreen> {
                   },
                   child: Row(
                     children: [
-                      sellScreenCheckbox(
+                      CustomCheckbox(
                         size: 20,
                         value: _gtt,
-                        onChanged: (_) {
-                          setState(() {
-                            _gtt = !_gtt;
-                          });
-                        },
+                        onChanged: (_) {},
                       ),
                       SizedBox(width: 10.w),
-                      Text("GTT",
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              color: isDark ? Colors.white : Colors.black)),
+                      Text(
+                        "GTT",
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            color: isDark ? Colors.white : Colors.black),
+                      ),
+                      SizedBox(width: 5.w),
+                      Icon(Icons.info_outline,
+                          size: 15,
+                          color: isDark ? Color(0xffc9cacc) : Colors.black),
                     ],
                   ),
                 ),
-                SizedBox(width: 5.w),
-                Icon(Icons.info_outline,
-                    size: 15, color: isDark ? Color(0xffc9cacc) : Colors.black),
               ],
             ),
 
@@ -335,7 +338,7 @@ class _NormalSellScreenState extends State<NormalSellScreen> {
                   SizedBox(height: 24.h),
                   Row(
                     children: [
-                      sellRadioButton(
+                      CustomRadioButton(
                           isSelected: _validityOptionIndex == 0,
                           onTap: () {
                             setState(() {
@@ -348,7 +351,7 @@ class _NormalSellScreenState extends State<NormalSellScreen> {
                               fontSize: 14.sp,
                               color: isDark ? Colors.white : Colors.black)),
                       SizedBox(width: 14.w),
-                      sellRadioButton(
+                      CustomRadioButton(
                           isSelected: _validityOptionIndex == 1,
                           onTap: () {
                             setState(() {
@@ -361,7 +364,7 @@ class _NormalSellScreenState extends State<NormalSellScreen> {
                               fontSize: 14.sp,
                               color: isDark ? Colors.white : Colors.black)),
                       SizedBox(width: 14.w),
-                      sellRadioButton(
+                      CustomRadioButton(
                           isSelected: _validityOptionIndex == 2,
                           onTap: () {
                             setState(() {
@@ -400,10 +403,8 @@ class _NormalSellScreenState extends State<NormalSellScreen> {
                                     horizontal: 10.w, vertical: 15.h),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(6.r),
-                                  borderSide: BorderSide(
-                                      color: isDark
-                                          ? Colors.grey.shade700
-                                          : Colors.black),
+                                  borderSide:
+                                      BorderSide(color: Colors.grey.shade700),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(6.r),
@@ -436,7 +437,7 @@ class _NormalSellScreenState extends State<NormalSellScreen> {
                             decoration: BoxDecoration(
                               color: isDark
                                   ? Color(0xff2f2f2f)
-                                  : Color(0xFFF4F4F9),
+                                  : Color(0xffF4F4F9),
                               borderRadius: BorderRadius.circular(6.r),
                             ),
                             padding: EdgeInsets.only(left: 8.0),
@@ -445,8 +446,7 @@ class _NormalSellScreenState extends State<NormalSellScreen> {
                               "0",
                               style: TextStyle(
                                 fontSize: 17.sp,
-                                color:
-                                    isDark ? Color(0xffc9cacc) : Colors.black,
+                                color: Color(0xffc9cacc),
                               ),
                             ),
                           ),

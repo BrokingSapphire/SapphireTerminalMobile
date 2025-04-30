@@ -3,10 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:holdable_button/holdable_button.dart';
 import 'package:holdable_button/utils/utils.dart';
 import 'package:sapphire/screens/home/orders/gttScreenWrapper.dart';
-import 'package:sapphire/screens/orderWindow/BuyScreens/IcebergBuyScreen.dart';
-import 'package:sapphire/screens/orderWindow/BuyScreens/InstantBuyScreen.dart';
-import 'package:sapphire/screens/orderWindow/BuyScreens/MTFBuyScreen.dart';
-import 'package:sapphire/screens/orderWindow/BuyScreens/NormalBuyScreen.dart';
+import 'package:sapphire/screens/orderWindow/BuyScreens/icebergBuy.dart';
+import 'package:sapphire/screens/orderWindow/BuyScreens/instantBuy.dart';
+import 'package:sapphire/screens/orderWindow/BuyScreens/coverBuy.dart';
+import 'package:sapphire/screens/orderWindow/BuyScreens/normalBuy.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class BuyScreenWrapper extends StatefulWidget {

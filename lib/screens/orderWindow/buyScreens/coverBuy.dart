@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sapphire/screens/orderWindow/BuyScreens/buyScreenWrapper.dart';
-import 'package:sapphire/screens/orderWindow/SellScreens/sellScreenWrapper.dart';
+import 'package:sapphire/screens/orderWindow/BuyScreens/buyWrapper.dart';
 import 'package:sapphire/utils/animatedToggles.dart';
-import 'package:sapphire/utils/constWidgets.dart';
+import 'package:flutter/cupertino.dart';
 
-class NormalBuyScreen extends StatefulWidget {
+import '../../../utils/constWidgets.dart';
+
+class MTFBuyScreen extends StatefulWidget {
   final String tabName;
-  NormalBuyScreen(this.tabName);
+  MTFBuyScreen(this.tabName);
 
   @override
-  State<NormalBuyScreen> createState() => _NormalBuyScreenState();
+  State<MTFBuyScreen> createState() => _MTFBuyScreenState();
 }
 
-class _NormalBuyScreenState extends State<NormalBuyScreen> {
+class _MTFBuyScreenState extends State<MTFBuyScreen> {
   bool _stopLoss = false;
   bool _gtt = false;
 
@@ -103,6 +104,8 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
                   ),
                 ),
                 SizedBox(width: 20.w),
+
+                // Market / Limit Toggle
                 Expanded(
                   child: buyScreenToggle(
                     isFirstOptionSelected: isMarketSelected,
@@ -165,8 +168,7 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
-                  borderSide:
-                      BorderSide(color: isDark ? Colors.white : Colors.black),
+                  borderSide: BorderSide(color: Colors.white),
                 ),
                 hintText: "Enter Price",
                 hintStyle:
@@ -232,8 +234,9 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
                 ),
               ),
             ),
-
-            SizedBox(height: 15.h),
+            SizedBox(
+              height: 16.h,
+            ),
 
             // Stoploss and GTT
             Row(
@@ -267,12 +270,11 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
                       Icon(Icons.info_outline,
                           size: 15,
                           color: isDark ? Color(0xffc9cacc) : Colors.black),
+                      SizedBox(width: 35.w),
                     ],
                   ),
                 ),
-                SizedBox(width: 35.w),
                 GestureDetector(
-                  behavior: HitTestBehavior.opaque,
                   onTap: () {
                     setState(() {
                       _gtt = !_gtt;
@@ -283,7 +285,11 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
                       CustomCheckbox(
                         size: 20,
                         value: _gtt,
-                        onChanged: (_) {},
+                        onChanged: (_) {
+                          setState(() {
+                            _gtt = !_gtt;
+                          });
+                        },
                       ),
                       SizedBox(width: 10.w),
                       Text(
