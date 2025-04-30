@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sapphire/screens/orderWindow/SellScreens/sellScreenWrapper.dart';
+import 'package:sapphire/screens/orderWindow/SellScreens/sellWrapper.dart';
 import 'package:sapphire/utils/animatedToggles.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:sapphire/utils/constWidgets.dart';
 
-import '../../../utils/constWidgets.dart';
-
-class MTFSellScreen extends StatefulWidget {
+class NormalSellScreen extends StatefulWidget {
   final String tabName;
-  MTFSellScreen(this.tabName);
+  NormalSellScreen(this.tabName);
 
   @override
-  State<MTFSellScreen> createState() => _MTFSellScreenState();
+  State<NormalSellScreen> createState() => _NormalSellScreenState();
 }
 
-class _MTFSellScreenState extends State<MTFSellScreen> {
+class _NormalSellScreenState extends State<NormalSellScreen> {
   bool _stopLoss = false;
   bool _gtt = false;
 
@@ -103,9 +101,7 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                     ],
                   ),
                 ),
-                SizedBox(width: 20.w),
-
-                // Market / Limit Toggle
+                SizedBox(width: 10.w),
                 Expanded(
                   child: sellScreenToggle(
                     isFirstOptionSelected: isMarketSelected,
@@ -168,8 +164,7 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
-                  borderSide:
-                      BorderSide(color: isDark ? Colors.white : Colors.black),
+                  borderSide: BorderSide(color: Colors.white),
                 ),
                 hintText: "Enter Price",
                 hintStyle:
@@ -226,8 +221,10 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
-                  borderSide:
-                      BorderSide(color: isDark ? Colors.white : Colors.black),
+                  borderSide: BorderSide(
+                      color: isDark
+                          ? Colors.white
+                          : Colors.black.withOpacity(0.5)),
                 ),
                 hintStyle: TextStyle(
                   fontSize: 15.sp,
@@ -269,8 +266,7 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                 ),
                 SizedBox(width: 5.w),
                 Icon(Icons.info_outline,
-                    size: 15.sp,
-                    color: isDark ? Color(0xffc9cacc) : Colors.black),
+                    size: 15, color: isDark ? Color(0xffc9cacc) : Colors.black),
                 SizedBox(width: 35.w),
                 GestureDetector(
                   onTap: () {
@@ -299,8 +295,7 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                 ),
                 SizedBox(width: 5.w),
                 Icon(Icons.info_outline,
-                    size: 15.sp,
-                    color: isDark ? Color(0xffc9cacc) : Colors.black),
+                    size: 15, color: isDark ? Color(0xffc9cacc) : Colors.black),
               ],
             ),
 
@@ -405,8 +400,10 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                                     horizontal: 10.w, vertical: 15.h),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(6.r),
-                                  borderSide:
-                                      BorderSide(color: Colors.grey.shade700),
+                                  borderSide: BorderSide(
+                                      color: isDark
+                                          ? Colors.grey.shade700
+                                          : Colors.black),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(6.r),
@@ -448,7 +445,8 @@ class _MTFSellScreenState extends State<MTFSellScreen> {
                               "0",
                               style: TextStyle(
                                 fontSize: 17.sp,
-                                color: Color(0xffc9cacc),
+                                color:
+                                    isDark ? Color(0xffc9cacc) : Colors.black,
                               ),
                             ),
                           ),

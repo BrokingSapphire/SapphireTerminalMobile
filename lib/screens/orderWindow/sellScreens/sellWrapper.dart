@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:holdable_button/holdable_button.dart';
 import 'package:holdable_button/utils/utils.dart';
-import 'package:sapphire/screens/orderWindow/BuyScreens/IcebergBuyScreen.dart';
-import 'package:sapphire/screens/orderWindow/BuyScreens/MTFBuyScreen.dart';
-import 'package:sapphire/screens/orderWindow/BuyScreens/NormalBuyScreen.dart';
-import 'package:sapphire/screens/orderWindow/SellScreens/MTFSellScreen.dart';
+import 'package:sapphire/screens/orderWindow/BuyScreens/icebergBuy.dart';
+import 'package:sapphire/screens/orderWindow/BuyScreens/coverBuy.dart';
+import 'package:sapphire/screens/orderWindow/BuyScreens/normalBuy.dart';
+import 'package:sapphire/screens/orderWindow/SellScreens/coverSell.dart';
 import 'package:sapphire/screens/orderWindow/SellScreens/icebergSellScreen.dart';
 import 'package:sapphire/screens/orderWindow/SellScreens/instantSellScreen.dart';
-import 'package:sapphire/screens/orderWindow/SellScreens/normalSellScreen.dart';
+import 'package:sapphire/screens/orderWindow/SellScreens/normalSell.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
-import '../BuyScreens/InstantBuyScreen.dart';
+import '../BuyScreens/instantBuy.dart';
 
 class SellScreenWrapper extends StatefulWidget {
   @override

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sapphire/screens/orderWindow/BuyScreens/buyScreenWrapper.dart';
+import 'package:sapphire/screens/orderWindow/SellScreens/sellWrapper.dart';
 import 'package:sapphire/utils/animatedToggles.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../utils/constWidgets.dart';
 
-class MTFBuyScreen extends StatefulWidget {
+class MTFSellScreen extends StatefulWidget {
   final String tabName;
-  MTFBuyScreen(this.tabName);
+  MTFSellScreen(this.tabName);
 
   @override
-  State<MTFBuyScreen> createState() => _MTFBuyScreenState();
+  State<MTFSellScreen> createState() => _MTFSellScreenState();
 }
 
-class _MTFBuyScreenState extends State<MTFBuyScreen> {
+class _MTFSellScreenState extends State<MTFSellScreen> {
   bool _stopLoss = false;
   bool _gtt = false;
 
@@ -38,7 +38,7 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
         child: Column(
           children: [
             // Delivery / Intraday / MTF Tabs
-            buyAnimatedToggle(
+            sellAnimatedToggle(
               options: _options,
               selectedIndex: _selectedIndex,
               onToggle: (index) {
@@ -107,7 +107,7 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
 
                 // Market / Limit Toggle
                 Expanded(
-                  child: buyScreenToggle(
+                  child: sellScreenToggle(
                     isFirstOptionSelected: isMarketSelected,
                     onToggle: (value) {
                       setState(() {
@@ -117,7 +117,7 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                     firstOption: "Market",
                     secondOption: "Limit",
                   ),
-                )
+                ),
               ],
             ),
 
@@ -168,7 +168,8 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide:
+                      BorderSide(color: isDark ? Colors.white : Colors.black),
                 ),
                 hintText: "Enter Price",
                 hintStyle:
@@ -234,9 +235,8 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 16.h,
-            ),
+
+            SizedBox(height: 15.h),
 
             // Stoploss and GTT
             Row(
@@ -250,7 +250,7 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                   },
                   child: Row(
                     children: [
-                      CustomCheckbox(
+                      sellScreenCheckbox(
                         size: 20,
                         value: _stopLoss,
                         onChanged: (_) {
@@ -260,20 +260,18 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                         },
                       ),
                       SizedBox(width: 10.w),
-                      Text(
-                        "StopLoss",
-                        style: TextStyle(
-                            fontSize: 14.sp,
-                            color: isDark ? Colors.white : Colors.black),
-                      ),
-                      SizedBox(width: 5.w),
-                      Icon(Icons.info_outline,
-                          size: 15,
-                          color: isDark ? Color(0xffc9cacc) : Colors.black),
-                      SizedBox(width: 35.w),
+                      Text("StopLoss",
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: isDark ? Colors.white : Colors.black)),
                     ],
                   ),
                 ),
+                SizedBox(width: 5.w),
+                Icon(Icons.info_outline,
+                    size: 15.sp,
+                    color: isDark ? Color(0xffc9cacc) : Colors.black),
+                SizedBox(width: 35.w),
                 GestureDetector(
                   onTap: () {
                     setState(() {
@@ -282,7 +280,7 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                   },
                   child: Row(
                     children: [
-                      CustomCheckbox(
+                      sellScreenCheckbox(
                         size: 20,
                         value: _gtt,
                         onChanged: (_) {
@@ -292,19 +290,17 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                         },
                       ),
                       SizedBox(width: 10.w),
-                      Text(
-                        "GTT",
-                        style: TextStyle(
-                            fontSize: 14.sp,
-                            color: isDark ? Colors.white : Colors.black),
-                      ),
-                      SizedBox(width: 5.w),
-                      Icon(Icons.info_outline,
-                          size: 15,
-                          color: isDark ? Color(0xffc9cacc) : Colors.black),
+                      Text("GTT",
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: isDark ? Colors.white : Colors.black)),
                     ],
                   ),
                 ),
+                SizedBox(width: 5.w),
+                Icon(Icons.info_outline,
+                    size: 15.sp,
+                    color: isDark ? Color(0xffc9cacc) : Colors.black),
               ],
             ),
 
@@ -344,7 +340,7 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                   SizedBox(height: 24.h),
                   Row(
                     children: [
-                      CustomRadioButton(
+                      sellRadioButton(
                           isSelected: _validityOptionIndex == 0,
                           onTap: () {
                             setState(() {
@@ -357,7 +353,7 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                               fontSize: 14.sp,
                               color: isDark ? Colors.white : Colors.black)),
                       SizedBox(width: 14.w),
-                      CustomRadioButton(
+                      sellRadioButton(
                           isSelected: _validityOptionIndex == 1,
                           onTap: () {
                             setState(() {
@@ -370,7 +366,7 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                               fontSize: 14.sp,
                               color: isDark ? Colors.white : Colors.black)),
                       SizedBox(width: 14.w),
-                      CustomRadioButton(
+                      sellRadioButton(
                           isSelected: _validityOptionIndex == 2,
                           onTap: () {
                             setState(() {
@@ -443,7 +439,7 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                             decoration: BoxDecoration(
                               color: isDark
                                   ? Color(0xff2f2f2f)
-                                  : Color(0xffF4F4F9),
+                                  : Color(0xFFF4F4F9),
                               borderRadius: BorderRadius.circular(6.r),
                             ),
                             padding: EdgeInsets.only(left: 8.0),

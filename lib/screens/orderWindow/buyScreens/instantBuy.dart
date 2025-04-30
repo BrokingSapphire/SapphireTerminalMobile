@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sapphire/screens/orderWindow/BuyScreens/buyScreenWrapper.dart';
+import 'package:sapphire/screens/orderWindow/BuyScreens/buyWrapper.dart';
 import 'package:sapphire/utils/animatedToggles.dart';
 
 class BuyScreenTabContent extends StatefulWidget {
