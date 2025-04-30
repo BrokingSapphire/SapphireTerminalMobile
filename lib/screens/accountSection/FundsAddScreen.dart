@@ -1,18 +1,11 @@
-// File: deposit.dart
-// Description: Funds deposit screen in the Sapphire Trading application.
-// This screen allows users to input and confirm deposit amounts, select payment methods (UPI/Net Banking), and complete transactions.
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // For text input formatting
-import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
-import 'package:flutter_svg/svg.dart'; // For SVG image rendering
-import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:sapphire/utils/constWidgets.dart';
 
-/// Utility class for number formatting
-/// Provides methods to format numbers in Indian number format (with commas)
+// Utility class for number formatting
 class NumberUtils {
-  /// Formats a number string to Indian number format with commas
-  /// Example: 12345678 becomes 1,23,45,678
   static String formatIndianNumber(String number) {
     if (number.isEmpty) {
       return "0";
@@ -33,30 +26,22 @@ class NumberUtils {
   }
 }
 
-/// Custom formatter for Indian number system with fixed decimal places
-/// Formats input values to follow Indian number formatting with 2 decimal places
+// Custom formatter for Indian number system
 class FixedDecimalIndianFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    // Remove all non-digit characters except decimal point
     String newText = newValue.text.replaceAll(RegExp(r'[^\d.]'), '');
-
-    // Handle empty input
     if (newText.isEmpty) {
       return const TextEditingValue(
         text: '0.00',
         selection: TextSelection.collapsed(offset: 4),
       );
     }
-
-    // Split into integer and decimal parts
     String integerPart = newText.split('.').first;
     String decimalPart = newText.contains('.') && newText.split('.').length > 1
         ? newText.split('.').last
         : '00';
-
-    // Handle leading zeros in integer part
     if (integerPart.isEmpty || integerPart == '0') {
       integerPart = '0';
     } else {
@@ -64,23 +49,16 @@ class FixedDecimalIndianFormatter extends TextInputFormatter {
         integerPart = integerPart.substring(1);
       }
     }
-
-    // Format the integer part with commas
     String formattedInteger = NumberUtils.formatIndianNumber(integerPart);
-
-    // Ensure decimal part is exactly 2 digits
     if (decimalPart.length > 2) decimalPart = decimalPart.substring(0, 2);
     if (decimalPart.isEmpty) {
       decimalPart = '00';
     } else if (decimalPart.length == 1) {
       decimalPart = '${decimalPart}0';
     }
-
-    // Combine integer and decimal parts
     String formattedAmount = decimalPart == '00' && !newText.contains('.')
         ? '$formattedInteger.00'
         : '$formattedInteger.$decimalPart';
-
     return TextEditingValue(
       text: formattedAmount,
       selection: TextSelection.collapsed(offset: formattedAmount.length),
@@ -88,9 +66,6 @@ class FixedDecimalIndianFormatter extends TextInputFormatter {
   }
 }
 
-/// fundsAddScreen - Screen for initiating fund deposits to the trading account
-/// Provides amount entry via custom keypad, payment method selection, and transaction processing
-/// Note: Class name should be capitalized as per Dart conventions (FundsAddScreen)
 class fundsAddScreen extends StatefulWidget {
   const fundsAddScreen({super.key});
 
@@ -98,22 +73,17 @@ class fundsAddScreen extends StatefulWidget {
   State<fundsAddScreen> createState() => _fundsAddScreenState();
 }
 
-/// State class for the fundsAddScreen widget
-/// Manages the UI display and validation for fund deposits
 class _fundsAddScreenState extends State<fundsAddScreen> {
-  String? selectedBank = 'icici'; // Default selected bank
-  String amountText = '0.00'; // Default amount text
-  late TextEditingController amountController; // Controller for amount input
-  TextEditingController upiId = TextEditingController(); // Controller for UPI ID input
-  bool _isDecimalMode = false; // Flag for decimal input mode
-  String _decimalPart = ''; // Stores decimal part during input
-  bool _amountInvalid = false; // Flag for invalid amount
-  static const int minAmount = 99; // Minimum deposit amount
-  static const int maxAmount = 999999999; // Maximum deposit amount (₹9,99,99,999)
+  String? selectedBank = 'icici';
+  String amountText = '0.00';
+  late TextEditingController amountController;
+  TextEditingController upiId = TextEditingController();
+  bool _isDecimalMode = false;
+  String _decimalPart = '';
+  bool _amountInvalid = false;
+  static const int minAmount = 99;
+  static const int maxAmount = 999999999; // ₹9,99,99,999
 
-  /// Validates the entered deposit amount
-  /// Checks if amount is within allowed min/max range
-  /// Returns true if valid, false otherwise
   bool _validateAmount() {
     String amtStr = amountController.text.replaceAll(',', '');
     double amt = double.tryParse(amtStr) ?? 0.0;
@@ -130,8 +100,6 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
     }
   }
 
-  /// Checks if entered amount meets minimum required threshold
-  /// Returns true if amount is ≥ 100, false otherwise
   bool _isAmountSufficient() {
     String amtStr = amountController.text.replaceAll(',', '');
     double amt = double.tryParse(amtStr) ?? 0.0;
@@ -141,41 +109,31 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
   @override
   void initState() {
     super.initState();
-    // Initialize the amount text controller
     amountController = TextEditingController(text: amountText);
   }
 
   @override
   void dispose() {
-    // Clean up controllers when widget is disposed
     amountController.dispose();
     upiId.dispose();
     super.dispose();
   }
 
-  // List of available bank accounts for deposit
   final List<Map<String, String>> banks = [
     {'name': 'ICICI Bank', 'details': 'XXXX XXXX 6485'},
   ];
 
-  /// Adds a predefined value to the current amount
-  /// Used for quick amount buttons (+5000, +10000, etc.)
-  /// Formats the amount with Indian number formatting (commas)
   void _addAmount(int value) {
     String currentText =
         amountController.text.replaceAll(',', '').split('.').first;
     double currentAmount = double.tryParse(currentText) ?? 0.0;
     double newAmount = currentAmount + value;
-
-    // Ensure amount doesn't exceed maximum
     if (newAmount > maxAmount) {
       newAmount = maxAmount.toDouble();
     }
-
     String integerPart = newAmount.toInt().toString();
     String formattedAmount =
         '${NumberUtils.formatIndianNumber(integerPart)}.00';
-
     setState(() {
       amountText = formattedAmount;
       amountController.text = formattedAmount;
@@ -194,7 +152,6 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      // App bar with back button and available balance
       appBar: AppBar(
         backgroundColor: backgroundColor,
         elevation: 0,
@@ -203,7 +160,7 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
           padding: EdgeInsets.only(top: 15.h),
           child: IconButton(
             onPressed: () {
-              Navigator.pop(context); // Navigate back to previous screen
+              Navigator.pop(context);
             },
             icon: Icon(Icons.arrow_back, color: textColor),
           ),
@@ -219,7 +176,6 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
             ),
           ),
         ),
-        // Display available balance in the app bar
         actions: [
           Padding(
             padding: EdgeInsets.only(top: 15.h),
@@ -228,7 +184,7 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
               style: TextStyle(
                 fontSize: 13.sp,
                 color:
-                isDark ? const Color(0xffC9CACC) : const Color(0xff6B7280),
+                    isDark ? const Color(0xffC9CACC) : const Color(0xff6B7280),
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -252,10 +208,8 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
         children: [
           Divider(
               color:
-              isDark ? const Color(0xff2F2F2F) : const Color(0xffD1D5DB)),
+                  isDark ? const Color(0xff2F2F2F) : const Color(0xffD1D5DB)),
           SizedBox(height: 50.h),
-
-          // Amount input field with Rupee symbol
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Center(
@@ -263,6 +217,7 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Container(
                   width: double.infinity,
+                  // padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: Center(
                     child: IntrinsicWidth(
                       child: Row(
@@ -281,7 +236,7 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
                           Flexible(
                             child: TextField(
                               controller: amountController,
-                              readOnly: true, // Use custom keypad instead of system keyboard
+                              readOnly: true,
                               enableInteractiveSelection: false,
                               showCursor: false,
                               style: TextStyle(
@@ -290,8 +245,8 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
                                 color: amountController.text == "0.00"
                                     ? const Color(0xffC9CACC)
                                     : _amountInvalid
-                                    ? Colors.red
-                                    : textColor,
+                                        ? Colors.red
+                                        : textColor,
                                 overflow: TextOverflow.ellipsis,
                               ),
                               textAlign: TextAlign.center,
@@ -322,8 +277,6 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
             ),
           ),
           SizedBox(height: 28.h),
-
-          // Quick Amount Buttons for fast amount selection
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -335,8 +288,6 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
             ],
           ),
           const Spacer(),
-
-          // Bank Account Selection Widget
           Container(
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: BoxDecoration(
@@ -390,11 +341,7 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
               ),
             ),
           ),
-
-          // Custom Number Keypad for amount entry
           _buildNumberKeypad(isDark),
-
-          // Continue Button - enabled only when amount is valid
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
             child: SizedBox(
@@ -416,12 +363,12 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
                 ),
                 onPressed: isAmountValid
                     ? () {
-                  _addDecimalPart();
-                  if (_validateAmount()) {
-                    _selectPaymentMethod(
-                        context, isDark, amountController.text);
-                  }
-                }
+                        _addDecimalPart();
+                        if (_validateAmount()) {
+                          _selectPaymentMethod(
+                              context, isDark, amountController.text);
+                        }
+                      }
                     : null,
                 child: Text(
                   "Continue",
@@ -438,12 +385,9 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
     );
   }
 
-  /// Builds the custom number keypad for amount entry
-  /// Provides digits 0-9, decimal point, and backspace
   Widget _buildNumberKeypad(bool isDark) {
     final textColor = const Color(0xFF1DB954);
 
-    /// Helper method to build individual keypad buttons
     Widget _buildKeypadButton(String text,
         {VoidCallback? onPressed, Color? color, IconData? icon}) {
       return Expanded(
@@ -457,13 +401,13 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
             child: icon != null
                 ? Icon(icon, color: color ?? textColor, size: 24.sp)
                 : Text(
-              text,
-              style: TextStyle(
-                fontSize: 24.sp,
-                fontWeight: FontWeight.w500,
-                color: color ?? textColor,
-              ),
-            ),
+                    text,
+                    style: TextStyle(
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.w500,
+                      color: color ?? textColor,
+                    ),
+                  ),
           ),
         ),
       );
@@ -473,7 +417,6 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(
         children: [
-          // First row of keypad (1, 2, 3)
           Row(
             children: [
               _buildKeypadButton('1', onPressed: () => _handleKeypadPress('1')),
@@ -481,7 +424,6 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
               _buildKeypadButton('3', onPressed: () => _handleKeypadPress('3')),
             ],
           ),
-          // Second row of keypad (4, 5, 6)
           Row(
             children: [
               _buildKeypadButton('4', onPressed: () => _handleKeypadPress('4')),
@@ -489,7 +431,6 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
               _buildKeypadButton('6', onPressed: () => _handleKeypadPress('6')),
             ],
           ),
-          // Third row of keypad (7, 8, 9)
           Row(
             children: [
               _buildKeypadButton('7', onPressed: () => _handleKeypadPress('7')),
@@ -497,7 +438,6 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
               _buildKeypadButton('9', onPressed: () => _handleKeypadPress('9')),
             ],
           ),
-          // Fourth row of keypad (., 0, backspace)
           Row(
             children: [
               _buildKeypadButton('.', onPressed: () => _handleKeypadPress('.')),
@@ -513,8 +453,6 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
     );
   }
 
-  /// Creates a quick amount selection button
-  /// Used for quickly adding common amounts to the deposit
   Widget _buildAmountButton(String text, bool isDark, VoidCallback onPressed) {
     return Container(
       height: 34.h,
@@ -522,7 +460,7 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor:
-          isDark ? const Color(0xff121413) : const Color(0xFFF5F5F5),
+              isDark ? const Color(0xff121413) : const Color(0xFFF5F5F5),
           shape: RoundedRectangleBorder(
             side: BorderSide(
               color: isDark ? const Color(0xff2F2F2F) : Colors.grey.shade300,
@@ -543,13 +481,10 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
     );
   }
 
-  /// Handles keypad digit press
-  /// Manages input differently based on whether in decimal mode or not
   void _handleKeypadPress(String input) {
     String currentText =
         amountController.text.replaceAll(',', '').split('.').first;
 
-    // Handle decimal point input
     if (input == '.') {
       if (!_isDecimalMode) {
         setState(() {
@@ -562,7 +497,6 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
       return;
     }
 
-    // Handle input in decimal mode
     if (_isDecimalMode) {
       if (_decimalPart == '00') {
         _decimalPart = '${input}0';
@@ -571,12 +505,10 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
       }
       setState(() {
         amountText =
-        '${NumberUtils.formatIndianNumber(currentText)}.$_decimalPart';
+            '${NumberUtils.formatIndianNumber(currentText)}.$_decimalPart';
         amountController.text = amountText;
       });
-    }
-    // Handle input in normal (integer) mode
-    else {
+    } else {
       String newText = currentText == '0' ? input : currentText + input;
       if (int.tryParse(newText) != null && int.parse(newText) <= maxAmount) {
         String formattedAmount =
@@ -589,8 +521,6 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
     }
   }
 
-  /// Ensures decimal part is properly formatted before proceeding
-  /// Formats amount as "integer.decimal" with exactly 2 decimal places
   void _addDecimalPart() {
     String currentText = amountController.text.replaceAll(',', '');
     String integerPart = currentText.split('.').first;
@@ -612,24 +542,19 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
     });
   }
 
-  /// Handles backspace press on the custom keypad
-  /// Removes the last digit and reformats the amount
   void _handleBackspace() {
     String currentText = amountController.text.replaceAll(',', '');
     String integerPart = currentText.split('.').first;
 
-    // If in decimal mode, exit decimal mode entirely
     if (_isDecimalMode) {
       setState(() {
         _isDecimalMode = false;
         _decimalPart = '';
         amountText =
-        '${NumberUtils.formatIndianNumber(integerPart.isEmpty ? '0' : integerPart)}.00';
+            '${NumberUtils.formatIndianNumber(integerPart.isEmpty ? '0' : integerPart)}.00';
         amountController.text = amountText;
       });
-    }
-    // If in integer mode, remove last digit
-    else {
+    } else {
       if (integerPart.length <= 1) {
         integerPart = '0';
       } else {
@@ -644,8 +569,6 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
     }
   }
 
-  /// Opens payment method selection bottom sheet
-  /// Displays UPI options, UPI ID input, and Net Banking option
   void _selectPaymentMethod(BuildContext context, bool isDark, String amount) {
     double parsedAmount = double.tryParse(amount.replaceAll(',', '')) ?? 0.0;
     bool isAboveTwoLakh = parsedAmount > 200000;
@@ -664,7 +587,6 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(height: 16.h),
-              // Header row with title and close button
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -684,12 +606,9 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
                 ],
               ),
               SizedBox(height: 28.h),
-
-              // UPI payment options row (PhonePe, GPay, PayTM)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  // PhonePe option
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Column(
@@ -711,7 +630,6 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
                       ],
                     ),
                   ),
-                  // GPay option
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Column(
@@ -733,7 +651,6 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
                       ],
                     ),
                   ),
-                  // PayTM option
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
                     child: Column(
@@ -759,8 +676,6 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
                 ],
               ),
               SizedBox(height: 24.h),
-
-              // OR separator
               Row(
                 children: [
                   Expanded(
@@ -789,8 +704,6 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
                 ],
               ),
               SizedBox(height: 24.h),
-
-              // UPI ID input field
               TextField(
                 controller: upiId,
                 decoration: InputDecoration(
@@ -814,8 +727,6 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
                 ),
               ),
               SizedBox(height: 24.h),
-
-              // Net Banking option
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 2.w),
                 decoration: BoxDecoration(
@@ -825,7 +736,7 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
                   borderRadius: BorderRadius.circular(8.r),
                   border: Border.all(
                     color:
-                    isDark ? const Color(0xff2F2F2F) : Colors.grey.shade300,
+                        isDark ? const Color(0xff2F2F2F) : Colors.grey.shade300,
                     width: 1,
                   ),
                 ),
@@ -850,15 +761,9 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
                 ),
               ),
               SizedBox(height: 24.h),
-
-              // Confirm deposit button
               constWidgets.greenButton(
                 "Add ${amountController.text}",
-                onTap: () {
-                  // TODO: Implement deposit transaction processing
-                  // Close bottom sheet and navigate to confirmation/status screen
-                  Navigator.pop(context);
-                },
+                onTap: () {},
               ),
               SizedBox(height: 15.h),
             ],

@@ -1,16 +1,10 @@
-// File: funds.dart
-// Description: Funds management screen in the Sapphire Trading application.
-// This screen displays the user's fund balances, allows deposits/withdrawals, and shows breakdowns of fund allocations.
-
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
-import 'package:flutter_svg/svg.dart'; // For SVG image rendering
-import 'package:sapphire/main.dart'; // App-wide navigation utilities
-import 'package:sapphire/screens/accountSection/FundsAddScreen.dart'; // Screen for adding funds (deposits)
-import 'package:sapphire/screens/accountSection/FundsWithdrawScreen.dart'; // Screen for withdrawing funds
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:sapphire/main.dart';
+import 'package:sapphire/screens/accountSection/FundsAddScreen.dart';
+import 'package:sapphire/screens/accountSection/FundsWithdrawScreen.dart';
 
-/// FundsScreen - Main screen for managing and viewing trading account balances
-/// Displays total balance, allows deposits/withdrawals, and shows detailed breakdowns of fund allocations
 class FundsScreen extends StatefulWidget {
   const FundsScreen({super.key});
 
@@ -18,19 +12,13 @@ class FundsScreen extends StatefulWidget {
   State<FundsScreen> createState() => _FundsScreenState();
 }
 
-/// State class for the FundsScreen widget
-/// Manages the UI display and interactions for funds management
 class _FundsScreenState extends State<FundsScreen> {
-  /// Handles the pull-to-refresh functionality
-  /// Refreshes the fund data from the server (currently just a placeholder)
   Future<void> _onRefresh() async {
     // TODO: Implement actual data refresh logic here (e.g., API call)
     await Future.delayed(const Duration(seconds: 1));
     setState(() {});
   }
 
-  /// Creates a legend item with a colored circle and label
-  /// Used for the balance breakdown chart legend
   Widget _buildLegendItem(Color color, String label) {
     return Row(
       children: [
@@ -57,7 +45,6 @@ class _FundsScreenState extends State<FundsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // App Bar with back button and title
       appBar: AppBar(
         backgroundColor: Colors.black, // or your desired color
         elevation: 0,
@@ -76,7 +63,7 @@ class _FundsScreenState extends State<FundsScreen> {
           padding: const EdgeInsets.only(top: 15),
           child: IconButton(
               onPressed: () {
-                Navigator.pop(context); // Navigate back to previous screen
+                Navigator.pop(context);
               },
               icon: Icon(Icons.arrow_back)),
         ),
@@ -100,8 +87,6 @@ class _FundsScreenState extends State<FundsScreen> {
                       SizedBox(
                         height: 12.h,
                       ),
-                      // Total Balance Card
-                      // Displays the user's total balance and breakdowns of cash and pledge balances
                       Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
@@ -140,14 +125,12 @@ class _FundsScreenState extends State<FundsScreen> {
                               SizedBox(
                                 height: 8.h,
                               ),
-                              // Cash and Pledge Balance breakdown row
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  // Cash Balance section
                                   Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Cash Balance",
@@ -164,13 +147,12 @@ class _FundsScreenState extends State<FundsScreen> {
                                   ),
                                   Padding(
                                     padding:
-                                    EdgeInsets.symmetric(horizontal: 15.w),
+                                        EdgeInsets.symmetric(horizontal: 15.w),
                                     child: Text("+"),
                                   ),
-                                  // Pledge Balance section
                                   Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Pledge Balance",
@@ -197,14 +179,12 @@ class _FundsScreenState extends State<FundsScreen> {
                       SizedBox(
                         height: 16.h,
                       ),
-                      // Action buttons row - Withdraw and Deposit
                       Row(
                         children: [
-                          // Withdraw button
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                navi(fundsWithdrawScreen(), context); // Navigate to withdraw funds screen
+                                navi(fundsWithdrawScreen(), context);
                               },
                               child: Container(
                                 child: Center(
@@ -215,18 +195,17 @@ class _FundsScreenState extends State<FundsScreen> {
                                     color: Colors.green.withOpacity(0.2),
                                     borderRadius: BorderRadius.circular(4.r),
                                     border:
-                                    Border.all(color: Color(0xff1DB954))),
+                                        Border.all(color: Color(0xff1DB954))),
                               ),
                             ),
                           ),
                           SizedBox(
                             width: 10.w,
                           ),
-                          // Deposit button
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                navi(fundsAddScreen(), context); // Navigate to add funds screen
+                                navi(fundsAddScreen(), context);
                               },
                               child: Container(
                                 child: Center(
@@ -237,7 +216,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                     color: Color(0xff1DB954),
                                     borderRadius: BorderRadius.circular(4.r),
                                     border:
-                                    Border.all(color: Color(0xff1DB954))),
+                                        Border.all(color: Color(0xff1DB954))),
                               ),
                             ),
                           ),
@@ -246,8 +225,6 @@ class _FundsScreenState extends State<FundsScreen> {
                       SizedBox(
                         height: 16.h,
                       ),
-                      // Transaction History Button
-                      // Navigates to transaction history screen (implementation pending)
                       Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
@@ -273,8 +250,6 @@ class _FundsScreenState extends State<FundsScreen> {
                       SizedBox(
                         height: 16.h,
                       ),
-                      // Balance Breakup visualization Card
-                      // Shows a gauge chart representing total balance and margin utilized
                       Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
@@ -306,7 +281,6 @@ class _FundsScreenState extends State<FundsScreen> {
                             SizedBox(
                               height: 16.h,
                             ),
-                            // Gauge chart and legend display
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -336,8 +310,6 @@ class _FundsScreenState extends State<FundsScreen> {
                         ),
                       ),
                       SizedBox(height: 16.h),
-                      // Detailed Balance Information Card
-                      // Shows expandable sections for Total Balance, Margin Utilized, and Withdrawable Balance
                       Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
@@ -348,8 +320,6 @@ class _FundsScreenState extends State<FundsScreen> {
                           padding: const EdgeInsets.all(12.0),
                           child: Column(
                             children: [
-                              // Total Balance expandable section
-                              // Opens bottom sheet with detailed breakdown when tapped
                               GestureDetector(
                                 onTap: () {
                                   showModalBottomSheet(
@@ -366,7 +336,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Row(
                                               children: [
@@ -375,7 +345,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                                   style: TextStyle(
                                                       fontSize: 15.sp,
                                                       fontWeight:
-                                                      FontWeight.w600,
+                                                          FontWeight.w600,
                                                       color: Color(0xffEBEEF5)),
                                                 ),
                                                 Spacer(),
@@ -384,7 +354,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                                   style: TextStyle(
                                                       fontSize: 15.sp,
                                                       fontWeight:
-                                                      FontWeight.w600,
+                                                          FontWeight.w600,
                                                       color: Color(0xffEBEEF5)),
                                                 ),
                                               ],
@@ -478,8 +448,6 @@ class _FundsScreenState extends State<FundsScreen> {
                               SizedBox(
                                 height: 16.h,
                               ),
-                              // Margin Utilized expandable section
-                              // Opens bottom sheet with detailed breakdown of different margin types
                               GestureDetector(
                                 onTap: () {
                                   showModalBottomSheet(
@@ -496,7 +464,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Row(
                                               children: [
@@ -505,7 +473,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                                   style: TextStyle(
                                                       fontSize: 15.sp,
                                                       fontWeight:
-                                                      FontWeight.w500,
+                                                          FontWeight.w500,
                                                       color: Color(0xffEBEEF5)),
                                                 ),
                                                 Spacer(),
@@ -514,7 +482,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                                   style: TextStyle(
                                                       fontSize: 15.sp,
                                                       fontWeight:
-                                                      FontWeight.w500,
+                                                          FontWeight.w500,
                                                       color: Color(0xffEBEEF5)),
                                                 ),
                                               ],
@@ -587,8 +555,6 @@ class _FundsScreenState extends State<FundsScreen> {
                               SizedBox(
                                 height: 16.h,
                               ),
-                              // Withdrawable Balance expandable section
-                              // Opens bottom sheet with withdrawable balance details
                               GestureDetector(
                                 onTap: () {
                                   showModalBottomSheet(
@@ -605,7 +571,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Row(
                                               children: [
@@ -614,7 +580,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                                   style: TextStyle(
                                                       fontSize: 15.sp,
                                                       fontWeight:
-                                                      FontWeight.w600,
+                                                          FontWeight.w600,
                                                       color: Color(0xffEBEEF5)),
                                                 ),
                                                 Spacer(),
@@ -623,7 +589,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                                   style: TextStyle(
                                                       fontSize: 15.sp,
                                                       fontWeight:
-                                                      FontWeight.w600,
+                                                          FontWeight.w600,
                                                       color: Color(0xffEBEEF5)),
                                                 ),
                                               ],
@@ -693,8 +659,6 @@ class _FundsScreenState extends State<FundsScreen> {
     );
   }
 
-  /// Helper widget to create consistent margin item rows
-  /// Used in the margin breakdown bottom sheet
   Widget _marginRow(String label, String value) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 6.h),
@@ -717,8 +681,6 @@ class _FundsScreenState extends State<FundsScreen> {
   }
 }
 
-/// CustomGaugeChart - Widget that displays the balance breakdown as a gauge chart
-/// Visualizes the relationship between total balance and margin utilized
 class CustomGaugeChart extends StatelessWidget {
   final double totalBalance;
   final double marginUtilized;
@@ -774,8 +736,6 @@ class CustomGaugeChart extends StatelessWidget {
   }
 }
 
-/// GaugeChartPainter - Custom painter for the semi-circular gauge chart
-/// Draws a semi-circular chart showing the proportion of margin utilized to total balance
 class GaugeChartPainter extends CustomPainter {
   final double totalBalance;
   final double marginUtilized;
