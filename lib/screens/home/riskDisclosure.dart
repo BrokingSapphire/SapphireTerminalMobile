@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/home/homeWarpper.dart';
-import 'package:sapphire/screens/home/watchlist/watchlistScreen.dart';
+import 'package:sapphire/screens/home/watchlist/watchlist.dart';
 import 'package:sapphire/utils/naviWithoutAnimation.dart';
 import 'package:url_launcher/url_launcher.dart';
 

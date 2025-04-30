@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/accountSection/fundsScreen.dart';
-import 'package:sapphire/screens/accountSection/profileScreen.dart';
+import 'package:sapphire/screens/accountSection/funds.dart';
+import 'package:sapphire/screens/accountSection/account.dart';
 import 'package:sapphire/screens/home/searchPage.dart';
-import 'package:sapphire/screens/orderWindow/BuyScreens/buyScreenWrapper.dart';
-import 'package:sapphire/screens/orderWindow/SellScreens/sellScreenWrapper.dart';
+import 'package:sapphire/screens/orderWindow/BuyScreens/buyWrapper.dart';
+import 'package:sapphire/screens/orderWindow/SellScreens/sellWrapper.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sapphire/utils/naviWithoutAnimation.dart';
 import 'package:sapphire/screens/home/watchlist/watchlistTabBar.dart';
 import 'package:sapphire/utils/filters.dart';
 import 'package:sapphire/wat.dart'; // For showFilterBottomSheet
-import 'package:sapphire/screens/home/watchlist/stock_detail_bottom_sheet.dart';
+import 'package:sapphire/screens/home/watchlist/stockDetailSheet.dart';
 
 class WatchlistScreen extends StatefulWidget {
   const WatchlistScreen({super.key});

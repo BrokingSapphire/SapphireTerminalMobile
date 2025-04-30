@@ -3,10 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:sapphire/screens/home/trades/future/ClosedFutureGridScreen.dart';
-import 'package:sapphire/screens/home/trades/future/ClosedFutureListScreen.dart';
-import 'package:sapphire/screens/home/trades/stock/ClosedGridScreen.dart';
-import 'package:sapphire/screens/home/trades/stock/ClosedListScreen.dart';
+import 'package:sapphire/screens/home/trades/future/closedFuturesGrid.dart';
+import 'package:sapphire/screens/home/trades/future/closedFuturesList.dart';
+import 'package:sapphire/screens/home/trades/stock/closedStocksGrid.dart';
+import 'package:sapphire/screens/home/trades/stock/closedStocksList.dart';
 
 class TradesFutureClosedScreen extends StatefulWidget {
   const TradesFutureClosedScreen({super.key});
