@@ -5,11 +5,11 @@ import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/accountSection/funds.dart';
 import 'package:sapphire/screens/accountSection/account.dart';
 import 'package:sapphire/screens/home/trades/tradeReuse.dart';
-import 'package:sapphire/screens/home/trades/stock/tradesActiveScreen.dart';
-import 'package:sapphire/screens/home/trades/stock/tradesClosedScreen.dart';
+import 'package:sapphire/screens/home/trades/stock/activeStocks.dart';
+import 'package:sapphire/screens/home/trades/stock/closedStocks.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 import 'package:sapphire/utils/naviWithoutAnimation.dart';
-import '../holdings/holdingsScreen.dart';
+import '../holdings/holdings.dart';
 
 class TradesScreen extends StatefulWidget {
   const TradesScreen({super.key});

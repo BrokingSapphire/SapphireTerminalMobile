@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/accountSection/fundsScreen.dart';
-import 'package:sapphire/screens/accountSection/profileScreen.dart';
-import 'package:sapphire/screens/home/holdings/mutualFunds/mutualScreen.dart';
-import 'package:sapphire/screens/home/holdings/positions/position.dart';
+import 'package:sapphire/screens/accountSection/funds.dart';
+import 'package:sapphire/screens/accountSection/account.dart';
+import 'package:sapphire/screens/home/holdings/mutualFunds/mutualFunds.dart';
+import 'package:sapphire/screens/home/holdings/positions/positions.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 import 'package:sapphire/utils/naviWithoutAnimation.dart';
-import 'equity/equityScreen.dart';
+import 'equity/equity.dart';
 
 class HoldingsScreen extends StatefulWidget {
   const HoldingsScreen({super.key});
