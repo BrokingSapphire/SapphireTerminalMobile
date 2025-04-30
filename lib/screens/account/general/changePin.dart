@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/accountSection/ChangeNewPinScreen.dart';
+import 'package:sapphire/screens/accountSection/changeNewPin.dart';
 
 import '../../utils/constWidgets.dart';
 

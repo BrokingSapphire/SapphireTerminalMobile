@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/accountSection/FundsAddScreen.dart';
-import 'package:sapphire/screens/accountSection/FundsWithdrawScreen.dart';
+import 'package:sapphire/screens/accountSection/fundsAddScreen.dart';
+import 'package:sapphire/screens/accountSection/fundsWithdrawScreen.dart';
 
 class FundsScreen extends StatefulWidget {
   const FundsScreen({super.key});
