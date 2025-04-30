@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:flutter_svg/svg.dart'; // For SVG rendering support
 import 'package:sapphire/main.dart'; // Contains app-wide utilities
-import 'package:sapphire/screens/home/watchlist/disclosure.dart'; // Next screen after successful login
+import 'package:sapphire/screens/home/watchlist/riskDisclosure.dart'; // Next screen after successful login
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
 import 'package:sapphire/utils/naviWithoutAnimation.dart'; // Custom navigation utility
 
