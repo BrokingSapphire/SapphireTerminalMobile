@@ -513,211 +513,209 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
-    return SafeArea(
-        child: Scaffold(
-            backgroundColor: isDark ? const Color(0xff000000) : Colors.white,
-            body: NestedScrollView(
-              headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                // Pinned AppBar
-                Theme(
-                  data: Theme.of(context).copyWith(
-                    appBarTheme: AppBarTheme(
-                      backgroundColor:
-                          isDark ? const Color(0xff000000) : Colors.white,
-                      foregroundColor: isDark ? Colors.white : Colors.black,
-                      elevation: 0,
-                      surfaceTintColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                      scrolledUnderElevation: 0,
-                      iconTheme: IconThemeData(
-                          color: isDark ? Colors.white : Colors.black),
-                      titleTextStyle: TextStyle(
-                        fontSize: 22.sp,
-                        fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white : Colors.black,
-                      ),
+    return Scaffold(
+        backgroundColor: isDark ? const Color(0xff000000) : Colors.white,
+        body: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            // Pinned AppBar
+            Theme(
+              data: Theme.of(context).copyWith(
+                appBarTheme: AppBarTheme(
+                  backgroundColor:
+                      isDark ? const Color(0xff000000) : Colors.white,
+                  foregroundColor: isDark ? Colors.white : Colors.black,
+                  elevation: 0,
+                  surfaceTintColor: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                  scrolledUnderElevation: 0,
+                  iconTheme: IconThemeData(
+                      color: isDark ? Colors.white : Colors.black),
+                  titleTextStyle: TextStyle(
+                    fontSize: 22.sp,
+                    fontWeight: FontWeight.bold,
+                    color: isDark ? Colors.white : Colors.black,
+                  ),
+                ),
+              ),
+              child: SliverAppBar(
+                pinned: true,
+                backgroundColor:
+                    isDark ? const Color(0xff000000) : Colors.white,
+                elevation: 0,
+                scrolledUnderElevation: 0,
+                surfaceTintColor: Colors.transparent,
+                shadowColor: Colors.transparent,
+                automaticallyImplyLeading: false,
+                toolbarHeight: 60.h,
+                leadingWidth: 32.w,
+                leading: IconButton(
+                  icon: Icon(Icons.arrow_back,
+                      color: isDark ? Colors.white : Colors.black),
+                  onPressed: () => Navigator.pop(context),
+                ),
+                title: Text(
+                  "Account",
+                  style: TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.bold,
+                    color: isDark ? Colors.white : Colors.black,
+                  ),
+                ),
+                actions: [
+                  Padding(
+                    padding: EdgeInsets.only(right: 16.w),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      radius: 22.r,
+                    ),
+                  )
+                ],
+              ),
+            ),
+            // Pinned Divider
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: _PinnedDividerDelegate(isDark: isDark),
+              floating: false,
+            ),
+
+            // Profile card as scrollable
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                child: GestureDetector(
+                  onTap: () {
+                    navi(AccountScreen(), context);
+                  },
+                  behavior: HitTestBehavior.opaque,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.r),
+                      color: isDark
+                          ? const Color(0xff121413)
+                          : const Color(0xFFF4F4F9),
+                    ),
+                    padding: EdgeInsets.all(16.w),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 28.r,
+                          backgroundColor: isDark
+                              ? const Color(0xff021814)
+                              : Colors.green.withOpacity(0.2),
+                          child: Text(
+                            "NK",
+                            style: TextStyle(
+                              fontSize: 22.sp,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xff22A06B),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 16.w),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Nakul Pratap Thakur",
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w500,
+                                color: isDark ? Colors.white : Colors.black,
+                              ),
+                            ),
+                            SizedBox(height: 4.h),
+                            Text(
+                              "AA0000",
+                              style: TextStyle(
+                                color: isDark
+                                    ? Color(0xffC9CACC)
+                                    : Color(0xff6B7280),
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios_outlined,
+                          color: isDark ? Color(0xffC9CACC) : Colors.black,
+                          size: 20.sp,
+                        ),
+                        SizedBox(width: 12.w),
+                      ],
                     ),
                   ),
-                  child: SliverAppBar(
-                    pinned: true,
-                    backgroundColor:
-                        isDark ? const Color(0xff000000) : Colors.white,
-                    elevation: 0,
-                    scrolledUnderElevation: 0,
-                    surfaceTintColor: Colors.transparent,
-                    shadowColor: Colors.transparent,
-                    automaticallyImplyLeading: false,
-                    toolbarHeight: 60.h,
-                    leadingWidth: 32.w,
-                    leading: IconButton(
-                      icon: Icon(Icons.arrow_back,
-                          color: isDark ? Colors.white : Colors.black),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    title: Text(
-                      "Account",
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white : Colors.black,
+                ),
+              ),
+            )
+          ],
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10.h),
+                      SizedBox(height: 10.h),
+                      cardWithTitle(
+                          'General', general, generalOnTap, generalSvg, isDark),
+                      SizedBox(height: 10.h),
+                      cardWithTitle(
+                          "Manage", manage, manageOnTap, manageSvg, isDark),
+                      SizedBox(height: 10.h),
+                      cardWithTitle(
+                          "Reports", reports, reportsOnTap, reportsSvg, isDark),
+                      SizedBox(height: 10.h),
+                      cardWithTitle(
+                          "Support", support, supportOnTap, supportSvg, isDark),
+                      SizedBox(height: 10.h),
+                      cardWithTitle(
+                          "Others", others, othersOnTap, othersSvg, isDark),
+                      SizedBox(height: 20.h),
+                      Text(
+                        "© 2025 Sapphire Broking. All rights reserved. SEBI Registered Stock Broker | Member: NSE, BSE, MCX, NCDEX Registered Office: [Address], Nagpur, Maharashtra, India Email: support@sapphirebroking.com | Phone: +91 XXXXXXXXXX. Investments in securities markets are subject to market risks. Read all scheme-related documents carefully before investing. All disputes subject to Nagpur jurisdiction.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 12.sp, color: Color(0xff9B9B9B)),
                       ),
-                    ),
-                    actions: [
-                      Padding(
-                        padding: EdgeInsets.only(right: 16.w),
-                        child: CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          radius: 22.r,
-                        ),
-                      )
+                      SizedBox(height: 10.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FaIcon(FontAwesomeIcons.twitter,
+                              color: Color(0xff9B9B9B)),
+                          SizedBox(width: 10.w),
+                          FaIcon(FontAwesomeIcons.linkedin,
+                              color: Color(0xff9B9B9B)),
+                          SizedBox(width: 10.w),
+                          FaIcon(FontAwesomeIcons.instagram,
+                              color: Color(0xff9B9B9B)),
+                          SizedBox(width: 10.w),
+                          FaIcon(FontAwesomeIcons.youtube,
+                              color: Color(0xff9B9B9B)),
+                          SizedBox(width: 10.w),
+                          FaIcon(FontAwesomeIcons.whatsapp,
+                              color: Color(0xff9B9B9B)),
+                          SizedBox(width: 10.w),
+                          FaIcon(FontAwesomeIcons.telegram,
+                              color: Color(0xff9B9B9B)),
+                          SizedBox(width: 10.w),
+                          FaIcon(FontAwesomeIcons.facebook,
+                              color: Color(0xff9B9B9B)),
+                        ],
+                      ),
+                      SizedBox(height: 30.h),
                     ],
                   ),
                 ),
-                // Pinned Divider
-                SliverPersistentHeader(
-                  pinned: true,
-                  delegate: _PinnedDividerDelegate(isDark: isDark),
-                  floating: false,
-                ),
-
-                // Profile card as scrollable
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                    child: GestureDetector(
-                      onTap: () {
-                        navi(AccountScreen(), context);
-                      },
-                      behavior: HitTestBehavior.opaque,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.r),
-                          color: isDark
-                              ? const Color(0xff121413)
-                              : const Color(0xFFF4F4F9),
-                        ),
-                        padding: EdgeInsets.all(16.w),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 28.r,
-                              backgroundColor: isDark
-                                  ? const Color(0xff021814)
-                                  : Colors.green.withOpacity(0.2),
-                              child: Text(
-                                "NK",
-                                style: TextStyle(
-                                  fontSize: 22.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: const Color(0xff22A06B),
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 16.w),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Nakul Pratap Thakur",
-                                  style: TextStyle(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: isDark ? Colors.white : Colors.black,
-                                  ),
-                                ),
-                                SizedBox(height: 4.h),
-                                Text(
-                                  "AA0000",
-                                  style: TextStyle(
-                                    color: isDark
-                                        ? Color(0xffC9CACC)
-                                        : Color(0xff6B7280),
-                                    fontSize: 13.sp,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Spacer(),
-                            Icon(
-                              Icons.arrow_forward_ios_outlined,
-                              color: isDark ? Color(0xffC9CACC) : Colors.black,
-                              size: 20.sp,
-                            ),
-                            SizedBox(width: 12.w),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                )
               ],
-              body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: Column(
-                        children: [
-                          SizedBox(height: 10.h),
-                          SizedBox(height: 10.h),
-                          cardWithTitle('General', general, generalOnTap,
-                              generalSvg, isDark),
-                          SizedBox(height: 10.h),
-                          cardWithTitle(
-                              "Manage", manage, manageOnTap, manageSvg, isDark),
-                          SizedBox(height: 10.h),
-                          cardWithTitle("Reports", reports, reportsOnTap,
-                              reportsSvg, isDark),
-                          SizedBox(height: 10.h),
-                          cardWithTitle("Support", support, supportOnTap,
-                              supportSvg, isDark),
-                          SizedBox(height: 10.h),
-                          cardWithTitle(
-                              "Others", others, othersOnTap, othersSvg, isDark),
-                          SizedBox(height: 20.h),
-                          Text(
-                            "© 2025 Sapphire Broking. All rights reserved. SEBI Registered Stock Broker | Member: NSE, BSE, MCX, NCDEX Registered Office: [Address], Nagpur, Maharashtra, India Email: support@sapphirebroking.com | Phone: +91 XXXXXXXXXX. Investments in securities markets are subject to market risks. Read all scheme-related documents carefully before investing. All disputes subject to Nagpur jurisdiction.",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 12.sp, color: Color(0xff9B9B9B)),
-                          ),
-                          SizedBox(height: 10.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              FaIcon(FontAwesomeIcons.twitter,
-                                  color: Color(0xff9B9B9B)),
-                              SizedBox(width: 10.w),
-                              FaIcon(FontAwesomeIcons.linkedin,
-                                  color: Color(0xff9B9B9B)),
-                              SizedBox(width: 10.w),
-                              FaIcon(FontAwesomeIcons.instagram,
-                                  color: Color(0xff9B9B9B)),
-                              SizedBox(width: 10.w),
-                              FaIcon(FontAwesomeIcons.youtube,
-                                  color: Color(0xff9B9B9B)),
-                              SizedBox(width: 10.w),
-                              FaIcon(FontAwesomeIcons.whatsapp,
-                                  color: Color(0xff9B9B9B)),
-                              SizedBox(width: 10.w),
-                              FaIcon(FontAwesomeIcons.telegram,
-                                  color: Color(0xff9B9B9B)),
-                              SizedBox(width: 10.w),
-                              FaIcon(FontAwesomeIcons.facebook,
-                                  color: Color(0xff9B9B9B)),
-                            ],
-                          ),
-                          SizedBox(height: 30.h),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )));
+            ),
+          ),
+        ));
   }
 
   // Market Card UI

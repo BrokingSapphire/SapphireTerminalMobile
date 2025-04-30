@@ -33,11 +33,14 @@ class _OrderbookState extends State<Orderbook> {
       ),
       isScrollControlled: true,
       builder: (BuildContext context) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return Container(
               decoration: BoxDecoration(
-                color: Colors.grey.shade900.withOpacity(0.95),
+                color: isDark
+                    ? Colors.grey.shade900.withOpacity(0.95)
+                    : Colors.white,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(26.r)),
               ),
               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.h),
@@ -48,16 +51,23 @@ class _OrderbookState extends State<Orderbook> {
                   Text(
                     "Search and filter",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: isDark ? Colors.white : Colors.black,
                       fontSize: 17.sp,
                       fontWeight: FontWeight.w600,
                     ),
                     softWrap: true,
                   ),
                   SizedBox(height: 4.h),
-                  Divider(color: Color(0xff2F2F2F)),
+                  Divider(
+                      color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB)),
                   SizedBox(height: 8.h),
-                  Text("Segment", softWrap: true),
+                  Text("Segment",
+                      softWrap: true,
+                      style: TextStyle(
+                        color: isDark ? Colors.white : Colors.black,
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w500,
+                      )),
                   SizedBox(height: 2.h),
                   SizedBox(
                     height: 40.h,
@@ -68,13 +78,14 @@ class _OrderbookState extends State<Orderbook> {
                         ),
                         hintText: 'Equity',
                         hintStyle: TextStyle(
-                          color: Colors.white70,
+                          color: isDark ? Colors.white70 : Colors.black,
                           fontSize: 10.sp,
                         ),
                         contentPadding: EdgeInsets.symmetric(
                             horizontal: 12.w), // Remove default padding
                       ),
-                      dropdownColor: Colors.grey.shade800,
+                      dropdownColor:
+                          isDark ? Colors.grey.shade800 : Color(0xffF4F4F9),
                       style: TextStyle(color: Colors.white, fontSize: 10.sp),
                       value: selectedSegment,
                       selectedItemBuilder: (BuildContext context) {
@@ -86,7 +97,7 @@ class _OrderbookState extends State<Orderbook> {
                               child: Text(
                                 value,
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: isDark ? Colors.white : Colors.black,
                                   fontSize: 13.sp,
                                 ),
                                 softWrap: true,
@@ -101,8 +112,9 @@ class _OrderbookState extends State<Orderbook> {
                           value: value,
                           child: Text(
                             value,
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 13.sp),
+                            style: TextStyle(
+                                color: isDark ? Colors.white : Colors.black,
+                                fontSize: 13.sp),
                             softWrap: true,
                           ),
                         );
@@ -115,19 +127,29 @@ class _OrderbookState extends State<Orderbook> {
                     ),
                   ),
                   SizedBox(height: 6.h),
-                  Text('Symbol', softWrap: true),
+                  Text(
+                    'Symbol',
+                    softWrap: true,
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black,
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                   SizedBox(height: 2.h),
                   SizedBox(
                     height: 40.h,
                     child: TextField(
-                      style: TextStyle(color: Colors.white, fontSize: 13.sp),
+                      style: TextStyle(
+                          color: isDark ? Colors.white : Colors.black,
+                          fontSize: 13.sp),
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(6.r),
                         ),
                         hintText: 'e.g., NIFTY',
                         hintStyle: TextStyle(
-                          color: Colors.white70,
+                          color: isDark ? Colors.white70 : Colors.black,
                           fontSize: 13.sp,
                         ),
                       ),
@@ -139,7 +161,15 @@ class _OrderbookState extends State<Orderbook> {
                     ),
                   ),
                   SizedBox(height: 6.h),
-                  Text('Date range', softWrap: true),
+                  Text(
+                    'Date range',
+                    softWrap: true,
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black,
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                   SizedBox(height: 2.h),
                   GestureDetector(
                     onTap: () async {
@@ -198,7 +228,7 @@ class _OrderbookState extends State<Orderbook> {
                             ? 'Select date range'
                             : '${DateFormat('dd-MM-yyyy').format(dateRange!.start)} - ${DateFormat('dd-MM-yyyy').format(dateRange!.end)}',
                         style: TextStyle(
-                          color: Colors.white70,
+                          color: isDark ? Colors.white70 : Colors.black,
                           fontSize: 13.sp,
                         ),
                         softWrap: true,
@@ -227,15 +257,19 @@ class _OrderbookState extends State<Orderbook> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 32.w,
-        backgroundColor: Colors.black,
+        backgroundColor: isDark ? Colors.black : Colors.white,
         title: Padding(
           padding: const EdgeInsets.only(top: 15),
           child: Text(
             'Orderbook',
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 15.sp,
+                color: isDark ? Colors.white : Colors.black),
             softWrap: true,
           ),
         ),
@@ -245,14 +279,17 @@ class _OrderbookState extends State<Orderbook> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(
+              Icons.arrow_back,
+              color: isDark ? Colors.white : Colors.black,
+            ),
           ),
         ),
       ),
       body: Column(
         children: [
           Divider(
-            color: Color(0xff2F2F2F),
+            color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB),
             height: 1.h,
           ),
           SizedBox(
@@ -272,7 +309,7 @@ class _OrderbookState extends State<Orderbook> {
                           "Statement for",
                           style: TextStyle(
                             fontSize: 13.sp,
-                            color: Color(0xffc9cacc),
+                            color: isDark ? Color(0xffc9cacc) : Colors.black,
                           ),
                           softWrap: true,
                         ),

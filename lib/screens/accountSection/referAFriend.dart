@@ -15,13 +15,15 @@ class ReferAFriend extends StatefulWidget {
 class _ReferAFriendState extends State<ReferAFriend> {
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: isDark ? Colors.black : Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: isDark ? Colors.black : Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back,
+              color: isDark ? Colors.white : Colors.black),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -29,7 +31,7 @@ class _ReferAFriendState extends State<ReferAFriend> {
         title: Text(
           "Refer a friend",
           style: TextStyle(
-            color: Colors.white,
+            color: isDark ? Colors.white : Colors.black,
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
           ),
@@ -37,8 +39,8 @@ class _ReferAFriendState extends State<ReferAFriend> {
       ),
       body: Column(
         children: [
-          const Divider(
-            color: Color(0xFF2F2F2F),
+          Divider(
+            color: isDark ? Color(0xFF2F2F2F) : Color(0xffD1D5DB),
           ),
           Expanded(
             child: Padding(
@@ -52,8 +54,8 @@ class _ReferAFriendState extends State<ReferAFriend> {
                     "assets/svgs/referFriend.svg",
                     width: 137.w,
                     height: 96.h,
-                    colorFilter:
-                        ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                    colorFilter: ColorFilter.mode(
+                        isDark ? Colors.white : Colors.black, BlendMode.srcIn),
                   ),
                   SizedBox(height: 38.h),
 
@@ -64,7 +66,7 @@ class _ReferAFriendState extends State<ReferAFriend> {
                       'Invite your friends and family to join and earn 300 reward points on every referral!',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Colors.white,
+                        color: isDark ? Colors.white : Colors.black,
                         fontSize: 15.sp,
                         fontWeight: FontWeight.w400,
                       ),
@@ -79,7 +81,7 @@ class _ReferAFriendState extends State<ReferAFriend> {
                       'Use your points to unlock premium features or enjoy free AMC.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Color(0xFFC9CACC),
+                        color: isDark ? Color(0xFFC9CACC) : Colors.black54,
                         fontSize: 15.sp,
                         fontWeight: FontWeight.w400,
                       ),
@@ -98,7 +100,7 @@ class _ReferAFriendState extends State<ReferAFriend> {
                         style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w400,
-                            color: Color(0xffEBEEF5)),
+                            color: isDark ? Color(0xffEBEEF5) : Colors.black),
                       ),
                     ),
                   ),
@@ -108,13 +110,15 @@ class _ReferAFriendState extends State<ReferAFriend> {
                     child: DottedBorder(
                       borderType: BorderType.RRect,
                       radius: Radius.circular(3.r),
-                      color: Color(0xffB8DBD94D).withOpacity(0.3),
+                      color: isDark
+                          ? Color(0xffB8DBD94D).withOpacity(0.3)
+                          : Colors.black87,
                       dashPattern: [12, 4],
                       strokeWidth: 1,
                       child: Container(
                         height: 48.h,
                         decoration: BoxDecoration(
-                          color: Color(0xff121413),
+                          color: isDark ? Color(0xff121413) : Color(0xffF4F4F9),
                         ),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 12),
@@ -124,7 +128,7 @@ class _ReferAFriendState extends State<ReferAFriend> {
                             Text(
                               'JH04-HBJ6-WL2A-YJ7F',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: isDark ? Colors.white : Colors.black,
                                 fontSize: 13.sp,
                                 letterSpacing: 1.2,
                                 fontWeight: FontWeight.w500,

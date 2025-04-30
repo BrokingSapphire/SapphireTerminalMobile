@@ -45,7 +45,8 @@ class _TradesandchargesState extends State<Tradesandcharges> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black, // or your desired color
+        backgroundColor:
+            isDark ? Colors.black : Colors.white, // or your desired color
         elevation: 0,
         scrolledUnderElevation: 0, // prevent shadow when scrolling
         surfaceTintColor: Colors.transparent,
@@ -55,7 +56,10 @@ class _TradesandchargesState extends State<Tradesandcharges> {
           padding: const EdgeInsets.only(top: 15),
           child: Text(
             "Trades & Charges",
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 15.sp,
+                color: isDark ? Colors.white : Colors.black),
           ),
         ),
         leading: Padding(
@@ -64,12 +68,18 @@ class _TradesandchargesState extends State<Tradesandcharges> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Icon(Icons.arrow_back)),
+              icon: Icon(
+                Icons.arrow_back,
+                color: isDark ? Colors.white : Colors.black,
+              )),
         ),
       ),
       body: Column(
         children: [
-          Divider(color: Color(0xff2F2F2F)), // Full-width divider
+          Divider(
+              color: isDark
+                  ? Color(0xff2F2F2F)
+                  : Color(0xffD1D5DB)), // Full-width divider
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
@@ -79,17 +89,17 @@ class _TradesandchargesState extends State<Tradesandcharges> {
                 /// **Charges Summary Container**
                 Container(
                   decoration: BoxDecoration(
-                      color: Color(0xff121413),
+                      color: isDark ? Color(0xff121413) : Color(0xffF4F4F9),
                       borderRadius: BorderRadius.circular(6.r)),
                   child: Column(
                     children: [
                       SizedBox(height: 16.h),
 
                       /// **Brokerage**
-                      _buildRow("Brokerage", "₹2.60"),
+                      _buildRow("Brokerage", "₹2.60", isDark),
 
                       /// **Exchange Charges**
-                      _buildRow("Exchange Charges", "₹1.52"),
+                      _buildRow("Exchange Charges", "₹1.52", isDark),
 
                       /// **Total Charges Box**
                       Padding(
@@ -97,7 +107,9 @@ class _TradesandchargesState extends State<Tradesandcharges> {
                         child: Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
-                              color: Color(0xff252525),
+                              color: isDark
+                                  ? Color(0xff252525)
+                                  : Colors.grey.withOpacity(0.3),
                               borderRadius: BorderRadius.circular(6.r)),
                           child: Padding(
                             padding: EdgeInsets.symmetric(
@@ -117,7 +129,9 @@ class _TradesandchargesState extends State<Tradesandcharges> {
                                               "Total Charges",
                                               style: TextStyle(
                                                 fontSize: 14.sp,
-                                                color: Colors.white,
+                                                color: isDark
+                                                    ? Colors.white
+                                                    : Colors.black,
                                               ),
                                               textAlign: TextAlign.center,
                                             ),
@@ -159,7 +173,9 @@ class _TradesandchargesState extends State<Tradesandcharges> {
                             child: RichText(
                               text: TextSpan(
                                 style: TextStyle(
-                                    fontSize: 13.sp, color: Colors.white),
+                                    fontSize: 13.sp,
+                                    color:
+                                        isDark ? Colors.white : Colors.black),
                                 children: [
                                   TextSpan(text: "You have placed "),
                                   TextSpan(
@@ -192,7 +208,9 @@ class _TradesandchargesState extends State<Tradesandcharges> {
                       children: [
                         Text(
                           "Trade and Charges Summary for",
-                          style: TextStyle(fontSize: 13.sp),
+                          style: TextStyle(
+                              fontSize: 13.sp,
+                              color: isDark ? Colors.white : Colors.black),
                         ),
                         SizedBox(height: 4.h),
                         Text(
@@ -220,14 +238,14 @@ class _TradesandchargesState extends State<Tradesandcharges> {
           ),
 
           /// **Expandable Order List**
-          Expanded(child: orderTilesExpandables()),
+          Expanded(child: orderTilesExpandables(isDark)),
         ],
       ),
     );
   }
 
   /// **Widget for Expandable Order List**
-  Widget orderTilesExpandables() {
+  Widget orderTilesExpandables(bool isDark) {
     return ListView(
       shrinkWrap: true, // Prevents infinite height issue
       children: ordersData.entries.map((monthEntry) {
@@ -256,8 +274,9 @@ class _TradesandchargesState extends State<Tradesandcharges> {
                       children: [
                         Text(
                           month,
-                          style:
-                              TextStyle(fontSize: 15.sp, color: Colors.white),
+                          style: TextStyle(
+                              fontSize: 15.sp,
+                              color: isDark ? Colors.white : Colors.black),
                         ),
                         SizedBox(width: 10.w),
                         Container(
@@ -324,7 +343,9 @@ class _TradesandchargesState extends State<Tradesandcharges> {
                                 Text(
                                   date,
                                   style: TextStyle(
-                                      fontSize: 13.sp, color: Colors.white),
+                                      fontSize: 13.sp,
+                                      color:
+                                          isDark ? Colors.white : Colors.black),
                                 ),
                                 SizedBox(width: 10.w),
                                 Container(
@@ -363,7 +384,7 @@ class _TradesandchargesState extends State<Tradesandcharges> {
                     /// **Show Orders if Date is Expanded**
                     if (dateExpanded[month]![date]!)
                       ...orders.map((order) {
-                        return _buildOrderDetails(order);
+                        return _buildOrderDetails(order, isDark);
                       }),
                   ],
                 );
@@ -375,12 +396,12 @@ class _TradesandchargesState extends State<Tradesandcharges> {
   }
 
   /// **Order Details Container**
-  Widget _buildOrderDetails(Map<String, String> order) {
+  Widget _buildOrderDetails(Map<String, String> order, bool isDark) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 5),
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Color(0xff1B1B1B),
+        color: isDark ? Color(0xff1B1B1B) : Color(0xffF4F4F9),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -395,12 +416,12 @@ class _TradesandchargesState extends State<Tradesandcharges> {
                 style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w500,
-                    color: Colors.white),
+                    color: isDark ? Colors.white : Colors.black),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                 decoration: BoxDecoration(
-                  color: Color(0xff333333),
+                  color: isDark ? Color(0xff333333) : Color(0xfff1f8f6),
                   borderRadius: BorderRadius.circular(4.r),
                 ),
                 child: Text(
@@ -408,7 +429,7 @@ class _TradesandchargesState extends State<Tradesandcharges> {
                   style: TextStyle(
                       fontSize: 10.sp,
                       fontWeight: FontWeight.w500,
-                      color: Colors.white),
+                      color: isDark ? Colors.white : Colors.black),
                 ),
               ),
             ],
@@ -432,7 +453,7 @@ class _TradesandchargesState extends State<Tradesandcharges> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                 decoration: BoxDecoration(
-                  color: Color(0xff143520),
+                  color: isDark ? Color(0xff143520) : Color(0xfff1f8f6),
                   borderRadius: BorderRadius.circular(4.r),
                 ),
                 child: Text(
@@ -442,31 +463,38 @@ class _TradesandchargesState extends State<Tradesandcharges> {
               ),
             ],
           ),
-          Divider(color: Color(0xff2f2f2f), thickness: 0.5),
+          Divider(
+              color: isDark ? Color(0xff2f2f2f) : Color(0xffD1D5DB),
+              thickness: 0.5),
 
           /// **Order Details**
-          _orderDetailRow("Order value", order['value'] ?? ''),
-          _orderDetailRow("Brokerage", order['brokerage'] ?? ''),
-          _orderDetailRow("Charges", order['charges'] ?? '', Colors.red),
+          _orderDetailRow("Order value", order['value'] ?? '', isDark),
+          _orderDetailRow("Brokerage", order['brokerage'] ?? '', isDark),
+          _orderDetailRow(
+              "Charges", order['charges'] ?? '', isDark, Colors.red),
         ],
       ),
     );
   }
 
   /// **Reusable Row for Charges**
-  Widget _orderDetailRow(String label, String value, [Color? color]) {
+  Widget _orderDetailRow(String label, String value, bool isDark,
+      [Color? color]) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 3.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(fontSize: 14.sp, color: Colors.white70)),
+          Text(label,
+              style: TextStyle(
+                  fontSize: 14.sp,
+                  color: isDark ? Colors.white70 : Colors.black)),
           Text(
             value,
             style: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w400,
-                color: color ?? Colors.white),
+                color: color ?? (isDark ? Colors.white : Colors.black)),
           ),
         ],
       ),
@@ -474,14 +502,20 @@ class _TradesandchargesState extends State<Tradesandcharges> {
   }
 
   /// **Reusable Row for Charges**
-  Widget _buildRow(String label, String value) {
+  Widget _buildRow(String label, String value, bool isDark) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 5.h),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Text(label,
-            style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w400)),
+            style: TextStyle(
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w400,
+                color: isDark ? Colors.white : Colors.black)),
         Text(value,
-            style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w400)),
+            style: TextStyle(
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w400,
+                color: isDark ? Colors.white : Colors.black)),
       ]),
     );
   }

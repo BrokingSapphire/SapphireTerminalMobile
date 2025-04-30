@@ -37,13 +37,15 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: isDark ? Colors.black : Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: isDark ? Colors.black : Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white, size: 24.sp),
+          icon: Icon(Icons.arrow_back,
+              color: isDark ? Colors.white : Colors.black, size: 24.sp),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -51,7 +53,7 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
         title: Text(
           "Verified P&L",
           style: TextStyle(
-            color: Colors.white,
+            color: isDark ? Colors.white : Colors.black,
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
           ),
@@ -66,7 +68,7 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
           child: Column(
             children: [
               Divider(
-                color: const Color(0xFF2F2F2F),
+                color: isDark ? const Color(0xFF2F2F2F) : Color(0xffD1D5DB),
                 height: 1.h,
               ),
               Padding(
@@ -76,14 +78,18 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12.r),
-                        color: const Color(0xff121413),
+                        color: isDark
+                            ? const Color(0xff121413)
+                            : Color(0xffF4F4F9),
                       ),
                       padding: EdgeInsets.symmetric(
                           horizontal: 16.w, vertical: 10.h),
                       child: Row(
                         children: [
                           CircleAvatar(
-                            backgroundColor: const Color(0xff021814),
+                            backgroundColor: isDark
+                                ? const Color(0xff021814)
+                                : Color(0xff22A06B).withOpacity(0.2),
                             radius: 35.r,
                             child: Text(
                               "NK",
@@ -105,7 +111,7 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                                   style: TextStyle(
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.white,
+                                    color: isDark ? Colors.white : Colors.black,
                                   ),
                                 )
                               else if (selectedOption == "Short Name")
@@ -114,7 +120,7 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                                   style: TextStyle(
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.white,
+                                    color: isDark ? Colors.white : Colors.black,
                                   ),
                                 )
                               else if (selectedOption == "Masked")
@@ -123,7 +129,7 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                                   style: TextStyle(
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.white,
+                                    color: isDark ? Colors.white : Colors.black,
                                   ),
                                 )
                               else
@@ -132,7 +138,7 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                                   style: TextStyle(
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.white,
+                                    color: isDark ? Colors.white : Colors.black,
                                   ),
                                 ),
                               SizedBox(height: 4.h),
@@ -148,7 +154,9 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                       width: 370.w,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12.r),
-                        color: const Color(0xff121413),
+                        color: isDark
+                            ? const Color(0xff121413)
+                            : Color(0xffF4F4F9),
                       ),
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 18.h),
@@ -163,7 +171,7 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                                   style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: Colors.white,
+                                    color: isDark ? Colors.white : Colors.black,
                                   ),
                                 ),
                               ),
@@ -198,7 +206,9 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                                             option,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
-                                              color: const Color(0xFFEBEEF5),
+                                              color: isDark
+                                                  ? const Color(0xFFEBEEF5)
+                                                  : Colors.black,
                                               fontSize: 14.sp,
                                               fontWeight: FontWeight.w400,
                                             ),
@@ -219,7 +229,9 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                       width: 370.w,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12.r),
-                        color: const Color(0xff121413),
+                        color: isDark
+                            ? const Color(0xff121413)
+                            : const Color(0xffF4F4F9),
                       ),
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 18.h),
@@ -234,7 +246,7 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                                   style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: Colors.white,
+                                    color: isDark ? Colors.white : Colors.black,
                                   ),
                                 ),
                               ),
@@ -259,11 +271,13 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                                       ),
                                     ),
                                     filled: true,
-                                    fillColor: const Color(0xff121413),
+                                    fillColor: isDark
+                                        ? const Color(0xff121413)
+                                        : Color(0xffF4F4F9),
                                   ),
                                   style: TextStyle(
                                     fontSize: 14.sp,
-                                    color: Colors.white,
+                                    color: isDark ? Colors.white : Colors.black,
                                   ),
                                 ),
                               ),
@@ -280,7 +294,9 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                       width: 370.w,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12.r),
-                        color: const Color(0xff121413),
+                        color: isDark
+                            ? const Color(0xff121413)
+                            : Color(0xffF4F4F9),
                       ),
                       padding: EdgeInsets.only(
                           left: 12.w, top: 18.h, right: 12.w, bottom: 10.h),
@@ -296,7 +312,7 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                               style: TextStyle(
                                 fontSize: 15.sp,
                                 fontWeight: FontWeight.w400,
-                                color: Colors.white,
+                                color: isDark ? Colors.white : Colors.black,
                               ),
                             ),
                           ),
@@ -320,7 +336,7 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                                       });
                                     },
                                     child: constWidgets.choiceChipiWithCheckbox(
-                                        segment, isSelected, context));
+                                        segment, isSelected, context, isDark));
                               }),
                             ],
                           ),
@@ -332,7 +348,9 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                       width: 370.w,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12.r),
-                        color: const Color(0xff121413),
+                        color: isDark
+                            ? const Color(0xff121413)
+                            : Color(0xffF4F4F9),
                       ),
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 18.h),
@@ -347,7 +365,7 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: Colors.white,
+                                    color: isDark ? Colors.white : Colors.black,
                                   ),
                                 ),
                               ),
@@ -368,7 +386,9 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                                         style: TextStyle(
                                           fontSize: 13.sp,
                                           fontWeight: FontWeight.w400,
-                                          color: Colors.white,
+                                          color: isDark
+                                              ? Colors.white
+                                              : Colors.black,
                                         ),
                                       ),
                                     ),
@@ -400,11 +420,19 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                                     icon: Padding(
                                       padding: EdgeInsets.only(right: 12.w),
                                       child: Icon(Icons.keyboard_arrow_down,
-                                          color: Colors.white, size: 28),
+                                          color: isDark
+                                              ? Colors.white
+                                              : Colors.black,
+                                          size: 28),
                                     ),
-                                    dropdownColor: Color(0xff121413),
+                                    dropdownColor: isDark
+                                        ? Color(0xff121413)
+                                        : Color(0xffF4F4F9),
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 18.sp),
+                                        color: isDark
+                                            ? Colors.white
+                                            : Colors.black,
+                                        fontSize: 18.sp),
                                     items: dayOptions.map((String value) {
                                       return DropdownMenuItem<String>(
                                         value: value,
@@ -441,7 +469,7 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                                   // Format the dates as yyyy-MM-dd ~ yyyy-MM-dd
                                   "${formatDate(startDate)} ~ ${formatDate(endDate)}",
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: isDark ? Colors.white : Colors.black,
                                     fontSize: 18.sp,
                                   ),
                                 ),
@@ -475,8 +503,8 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                                           width: 2.0,
                                         ),
                                         color: displayTrades
-                                            ? Color(
-                                                0xFF2A3C2E) // Slight green background if selected
+                                            ? Color(0xFF1DB954).withOpacity(
+                                                0.2) // Slight green background if selected
                                             : Colors
                                                 .transparent, // No background if not selected
                                       ),
@@ -500,7 +528,9 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                                           style: TextStyle(
                                             fontSize: 13.sp,
                                             fontWeight: FontWeight.w400,
-                                            color: Colors.white,
+                                            color: isDark
+                                                ? Colors.white
+                                                : Colors.black,
                                           )),
                                     )
                                   ],

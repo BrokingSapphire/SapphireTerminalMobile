@@ -781,7 +781,8 @@ class constWidgets {
     );
   }
 
-  static choiceChipiWithCheckbox(String text, bool val, BuildContext context) {
+  static choiceChipiWithCheckbox(
+      String text, bool val, BuildContext context, bool isDark) {
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -808,7 +809,9 @@ class constWidgets {
             style: TextStyle(
               fontSize: 12.sp, // Increased font size to match image
               fontWeight: FontWeight.w400,
-              color: Colors.white, // White text to match black background
+              color: isDark
+                  ? Colors.white
+                  : Colors.black, // White text to match black background
             ),
           ),
         ],
@@ -825,8 +828,10 @@ class constWidgets {
         borderRadius:
             BorderRadius.circular(8.r), // Larger rounded corners to match image
         color: val
-            ? Color(0xFF26382F)
-            : Color(0xff121413), // Black background to match image
+            ? Colors.green.withOpacity(0.2)
+            : isDark
+                ? Color(0xff121413)
+                : Color(0xffF4F4F9), // Black background to match image
       ),
     );
   }

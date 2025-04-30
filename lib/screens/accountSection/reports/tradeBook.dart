@@ -1,8 +1,12 @@
+import 'dart:math';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:sapphire/screens/accountSection/reports/customCalender.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class Tradebook extends StatefulWidget {
@@ -29,11 +33,14 @@ class _TradebookState extends State<Tradebook> {
       ),
       isScrollControlled: true,
       builder: (BuildContext context) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return Container(
               decoration: BoxDecoration(
-                color: Colors.grey.shade900.withOpacity(0.95),
+                color: isDark
+                    ? Colors.grey.shade900.withOpacity(0.95)
+                    : Colors.white,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(26.r)),
               ),
               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.h),
@@ -44,16 +51,23 @@ class _TradebookState extends State<Tradebook> {
                   Text(
                     "Search and filter",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: isDark ? Colors.white : Colors.black,
                       fontSize: 17.sp,
                       fontWeight: FontWeight.w600,
                     ),
                     softWrap: true,
                   ),
                   SizedBox(height: 4.h),
-                  Divider(color: Color(0xff2F2F2F)),
+                  Divider(
+                      color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB)),
                   SizedBox(height: 8.h),
-                  Text("Segment", softWrap: true),
+                  Text("Segment",
+                      softWrap: true,
+                      style: TextStyle(
+                        color: isDark ? Colors.white : Colors.black,
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w500,
+                      )),
                   SizedBox(height: 2.h),
                   SizedBox(
                     height: 40.h,
@@ -64,13 +78,14 @@ class _TradebookState extends State<Tradebook> {
                         ),
                         hintText: 'Equity',
                         hintStyle: TextStyle(
-                          color: Colors.white70,
+                          color: isDark ? Colors.white70 : Colors.black,
                           fontSize: 10.sp,
                         ),
                         contentPadding: EdgeInsets.symmetric(
                             horizontal: 12.w), // Remove default padding
                       ),
-                      dropdownColor: Colors.grey.shade800,
+                      dropdownColor:
+                          isDark ? Colors.grey.shade800 : Color(0xffF4F4F9),
                       style: TextStyle(color: Colors.white, fontSize: 10.sp),
                       value: selectedSegment,
                       selectedItemBuilder: (BuildContext context) {
@@ -82,7 +97,7 @@ class _TradebookState extends State<Tradebook> {
                               child: Text(
                                 value,
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: isDark ? Colors.white : Colors.black,
                                   fontSize: 13.sp,
                                 ),
                                 softWrap: true,
@@ -97,7 +112,9 @@ class _TradebookState extends State<Tradebook> {
                           value: value,
                           child: Text(
                             value,
-                            style: TextStyle(color: Colors.white, fontSize: 13.sp),
+                            style: TextStyle(
+                                color: isDark ? Colors.white : Colors.black,
+                                fontSize: 13.sp),
                             softWrap: true,
                           ),
                         );
@@ -110,19 +127,29 @@ class _TradebookState extends State<Tradebook> {
                     ),
                   ),
                   SizedBox(height: 6.h),
-                  Text('Symbol', softWrap: true),
+                  Text(
+                    'Symbol',
+                    softWrap: true,
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black,
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                   SizedBox(height: 2.h),
                   SizedBox(
                     height: 40.h,
                     child: TextField(
-                      style: TextStyle(color: Colors.white, fontSize: 13.sp),
+                      style: TextStyle(
+                          color: isDark ? Colors.white : Colors.black,
+                          fontSize: 13.sp),
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(6.r),
                         ),
                         hintText: 'e.g., NIFTY',
                         hintStyle: TextStyle(
-                          color: Colors.white70,
+                          color: isDark ? Colors.white70 : Colors.black,
                           fontSize: 13.sp,
                         ),
                       ),
@@ -134,25 +161,48 @@ class _TradebookState extends State<Tradebook> {
                     ),
                   ),
                   SizedBox(height: 6.h),
-                  Text('Date range', softWrap: true),
+                  Text(
+                    'Date range',
+                    softWrap: true,
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black,
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                   SizedBox(height: 2.h),
                   GestureDetector(
                     onTap: () async {
-                      final pickedDateRange = await showDateRangePicker(
+                      final pickedDateRange = await showDialog<DateTimeRange>(
                         context: context,
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2100),
-                        initialDateRange: dateRange,
-                        builder: (BuildContext context, Widget? child) {
-                          return Theme(
-                            data: ThemeData.dark().copyWith(
-                              colorScheme: ColorScheme.dark(
-                                primary: Colors.green,
-                                onPrimary: Colors.white,
-                                surface: Colors.grey.shade900,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                            backgroundColor: Colors.transparent,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12.r),
+                              child: BackdropFilter(
+                                filter:
+                                    ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                child: Container(
+                                  width: min(
+                                      0.9 * MediaQuery.of(context).size.width,
+                                      800.w),
+                                  padding: EdgeInsets.all(16.w),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        Colors.grey.shade900.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    border: Border.all(
+                                        color: Colors.white.withOpacity(0.2)),
+                                  ),
+                                  child: CustomDateRangePicker(
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime(2100),
+                                    initialDateRange: dateRange,
+                                  ),
+                                ),
                               ),
                             ),
-                            child: child!,
                           );
                         },
                       );
@@ -178,7 +228,7 @@ class _TradebookState extends State<Tradebook> {
                             ? 'Select date range'
                             : '${DateFormat('dd-MM-yyyy').format(dateRange!.start)} - ${DateFormat('dd-MM-yyyy').format(dateRange!.end)}',
                         style: TextStyle(
-                          color: Colors.white70,
+                          color: isDark ? Colors.white70 : Colors.black,
                           fontSize: 13.sp,
                         ),
                         softWrap: true,
@@ -207,15 +257,19 @@ class _TradebookState extends State<Tradebook> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 32.w,
-        backgroundColor: Colors.black,
+        backgroundColor: isDark ? Colors.black : Colors.white,
         title: Padding(
           padding: const EdgeInsets.only(top: 15),
           child: Text(
             'Tradebook',
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 15.sp,
+                color: isDark ? Colors.white : Colors.black),
             softWrap: true,
           ),
         ),
@@ -225,14 +279,17 @@ class _TradebookState extends State<Tradebook> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(
+              Icons.arrow_back,
+              color: isDark ? Colors.white : Colors.black,
+            ),
           ),
         ),
       ),
       body: Column(
         children: [
           Divider(
-            color: Color(0xff2F2F2F),
+            color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB),
             height: 1.h,
           ),
           SizedBox(
@@ -252,7 +309,7 @@ class _TradebookState extends State<Tradebook> {
                           "Statement for",
                           style: TextStyle(
                             fontSize: 13.sp,
-                            color: Color(0xffc9cacc),
+                            color: isDark ? Color(0xffc9cacc) : Colors.black,
                           ),
                           softWrap: true,
                         ),
