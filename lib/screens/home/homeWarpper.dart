@@ -6,7 +6,7 @@ import 'package:sapphire/screens/home/discover/discover.dart';
 import 'package:sapphire/screens/home/orders/orders.dart';
 import 'package:sapphire/screens/home/trades/trades.dart';
 import 'package:sapphire/utils/constWidgets.dart';
-import 'discover/accountsScreen.dart';
+import '../account/account.dart';
 import 'holdings/holdings.dart';
 import 'orders/createGTT.dart';
 import 'orders/gttScreenWrapper.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sapphire/screens/home/searchPage.dart';
+import 'package:sapphire/screens/home/watchlist/searchPage.dart';
 import 'package:sapphire/utils/filters.dart';
 
 import '../main.dart';

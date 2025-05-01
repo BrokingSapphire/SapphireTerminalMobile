@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/accountSection/2FA.dart';
-import 'package:sapphire/screens/accountSection/permission.dart';
-import 'package:sapphire/screens/accountSection/sessionManagement.dart';
-import 'package:sapphire/screens/accountSection/settingsOrderPreference.dart';
+import 'package:sapphire/screens/account/general/2FA.dart';
+import 'package:sapphire/screens/account/general/permission.dart';
+import 'package:sapphire/screens/account/general/sessionManagement.dart';
+import 'package:sapphire/screens/account/general/settingsOrderPreference.dart';
 import 'package:sapphire/themeProvider.dart';
 import 'package:sapphire/utils/toogle.dart';
 
-import '../../utils/constWidgets.dart';
+import 'package:sapphire/utils/constWidgets.dart';
 
 class settingsScreen extends StatefulWidget {
   const settingsScreen({super.key});

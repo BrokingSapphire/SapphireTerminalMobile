@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/accountSection/changeNewPin.dart';
+import 'package:sapphire/screens/account/general/changeNewPin.dart';
 
-import '../../utils/constWidgets.dart';
+import 'package:sapphire/utils/constWidgets.dart';
 
 class changePinScreen extends StatefulWidget {
   @override

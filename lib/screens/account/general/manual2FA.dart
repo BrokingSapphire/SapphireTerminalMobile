@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
-import '../../utils/constWidgets.dart';
+import 'package:sapphire/utils/constWidgets.dart';
 
 class manual2faScreen extends StatefulWidget {
   const manual2faScreen({super.key});
