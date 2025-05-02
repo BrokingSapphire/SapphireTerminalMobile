@@ -1,9 +1,16 @@
+// File: withdrawal.dart
+// Description: Funds withdrawal screen in the Sapphire Trading application.
+// This screen allows users to input and confirm withdrawal amounts, select withdrawal method, and choose bank accounts.
+
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
+import 'package:flutter_svg/flutter_svg.dart'; // For SVG image rendering
 
-import 'package:sapphire/utils/constWidgets.dart';
+import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
 
+/// fundsWithdrawScreen - Screen for initiating fund withdrawals from the trading account
+/// Provides amount entry via custom keypad, withdrawal method selection, and bank account selection
+/// Note: Class name should be capitalized as per Dart conventions (FundsWithdrawScreen)
 class fundsWithdrawScreen extends StatefulWidget {
   const fundsWithdrawScreen({super.key});
 
@@ -11,15 +18,18 @@ class fundsWithdrawScreen extends StatefulWidget {
   State<fundsWithdrawScreen> createState() => _fundsWithdrawScreenState();
 }
 
+/// State class for the fundsWithdrawScreen widget
+/// Manages the UI display and validation for fund withdrawals
 class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
-  String? selectedBank = 'icici';
-  String amountText = '0.00';
-  late TextEditingController amountController;
-  bool _amountInvalid = false;
-  bool _isInstant = true;
-  static const int minAmount = 100;
-  static const int maxAmount = 9999999999; // 99,99,99,999 as integer
+  String? selectedBank = 'icici'; // Default selected bank
+  String amountText = '0.00'; // Default amount text
+  late TextEditingController amountController; // Controller for amount input
+  bool _amountInvalid = false; // Flag for invalid amount
+  bool _isInstant = true; // Flag for instant withdrawal (vs regular)
+  static const int minAmount = 100; // Minimum withdrawal amount
+  static const int maxAmount = 9999999999; // Maximum withdrawal amount (99,99,99,999)
 
+  // List of available bank accounts for withdrawal
   final List<Map<String, String>> banks = [
     {'name': 'ICICI Bank', 'details': 'XXXX XXXX 6485'},
   ];
@@ -27,15 +37,20 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
   @override
   void initState() {
     super.initState();
+    // Initialize the amount text controller
     amountController = TextEditingController(text: amountText);
   }
 
   @override
   void dispose() {
+    // Clean up the controller when the widget is disposed
     amountController.dispose();
     super.dispose();
   }
 
+  /// Validates the entered withdrawal amount
+  /// Checks if amount is within allowed min/max range
+  /// Returns true if valid, false otherwise
   bool _validateAmount() {
     String amtStr = amountController.text.replaceAll(',', '');
     double amt = double.tryParse(amtStr) ?? 0.0;
@@ -52,6 +67,9 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
     }
   }
 
+  /// Adds a predefined value to the current amount
+  /// Used for quick amount buttons (+5000, +10000, etc.)
+  /// Formats the amount with Indian number formatting (commas)
   void _addAmount(int value) {
     String currentText = amountController.text.replaceAll(',', '');
     double currentAmount = double.tryParse(currentText) ?? 0.0;
@@ -61,6 +79,8 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
     String decimalPart = newAmountStr.split('.')[1];
     String formattedAmount = '';
     int len = integerPart.length;
+
+    // Format with Indian number system (e.g., 1,23,456.00)
     if (len <= 3) {
       formattedAmount = integerPart;
     } else {
@@ -75,12 +95,15 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
         pos -= groupSize;
       }
     }
+
     setState(() {
       amountText = formattedAmount + '.' + decimalPart;
       amountController.text = amountText;
     });
   }
 
+  /// Handles keypad digit press
+  /// Appends the pressed digit to current amount and reformats with Indian number formatting
   void _handleKeypadPress(String digit) {
     String currentText = amountController.text.replaceAll(',', '');
     if (currentText == '0' || currentText == '0.00' || currentText.isEmpty) {
@@ -95,11 +118,15 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
     });
   }
 
+  /// Adds or ensures decimal part (two digits after decimal point)
+  /// Used when confirming amount to ensure proper format with cents/paise
   void _addDecimalPart() {
     String currentText = amountController.text.replaceAll(',', '');
     if (currentText.isEmpty) currentText = '0';
     String integerPart = currentText;
     String decimalPart = '00';
+
+    // Handle existing decimal part if present
     if (currentText.contains('.')) {
       var parts = currentText.split('.');
       integerPart = parts[0];
@@ -107,6 +134,7 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
       if (decimalPart.length > 2) decimalPart = decimalPart.substring(0, 2);
       if (decimalPart.length < 2) decimalPart = decimalPart.padRight(2, '0');
     }
+
     String formattedInteger = formatIndianNumber(integerPart);
     setState(() {
       amountText = formattedInteger + '.' + decimalPart;
@@ -114,11 +142,15 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
     });
   }
 
+  /// Formats a number string with Indian number formatting (commas)
+  /// Example: 12345678 becomes 1,23,45,678
   String formatIndianNumber(String number) {
     if (number.isEmpty) return "0";
     String integerPart = number.split('.')[0];
     int len = integerPart.length;
     if (len <= 3) return integerPart;
+
+    // Apply Indian number system grouping (3 digits, then groups of 2)
     String result = integerPart.substring(len - 3);
     int remainingIndex = len - 3;
     while (remainingIndex > 0) {
@@ -130,6 +162,8 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
     return result;
   }
 
+  /// Handles backspace press on the custom keypad
+  /// Removes the last digit and reformats the amount
   void _handleBackspace() {
     String currentText = amountController.text.replaceAll(',', '');
     if (currentText.length <= 1) {
@@ -147,6 +181,8 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
   @override
   Widget build(BuildContext context) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // Create gradient for visual elements (not currently used but available)
     final Shader linearGradient = LinearGradient(
       begin: Alignment.centerLeft,
       end: Alignment.centerRight,
@@ -167,6 +203,7 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
 
     return Scaffold(
       backgroundColor: isDark ? Colors.black : Colors.white,
+      // App bar with back button and withdrawable amount display
       appBar: AppBar(
         leadingWidth: 32.w,
         backgroundColor: isDark ? Colors.black : Colors.white,
@@ -186,11 +223,12 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
           ),
           child: IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(context); // Navigate back to previous screen
               },
               icon: Icon(Icons.arrow_back,
                   color: isDark ? Colors.white : Colors.black)),
         ),
+        // Display withdrawable amount in the app bar
         actions: [
           Padding(
             padding: const EdgeInsets.only(top: 18, right: 5),
@@ -214,7 +252,7 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
         ],
       ),
       body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
+        onTap: () => FocusScope.of(context).unfocus(), // Dismiss keyboard on tap
         behavior: HitTestBehavior.opaque,
         child: Column(
           children: [
@@ -227,6 +265,7 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                   children: [
                     SizedBox(height: 32.h),
 
+                    // Amount input field with Rupee symbol
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: Center(
@@ -238,63 +277,64 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                               child: Center(
                                 child: IntrinsicWidth(
                                     child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '₹',
-                                      style: TextStyle(
-                                        fontSize: 32.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: textColor,
-                                      ),
-                                    ),
-                                    SizedBox(width: 4.w),
-                                    Flexible(
-                                      child: TextField(
-                                        controller: amountController,
-                                        readOnly: true,
-                                        enableInteractiveSelection: false,
-                                        showCursor: false,
-                                        style: TextStyle(
-                                          fontSize: 32.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color:
-                                              (amountController.text == "0" ||
-                                                      amountController.text ==
-                                                          "0.00")
-                                                  ? Color(0xffC9CACC)
-                                                  : (_amountInvalid
-                                                      ? Colors.red
-                                                      : textColor),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          enabledBorder: InputBorder.none,
-                                          focusedBorder: InputBorder.none,
-                                          errorBorder: InputBorder.none,
-                                          disabledBorder: InputBorder.none,
-                                          hintText: '0',
-                                          hintStyle: TextStyle(
-                                            color: textColor.withOpacity(0.5),
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          '₹',
+                                          style: TextStyle(
                                             fontSize: 32.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: textColor,
                                           ),
-                                          isCollapsed: true,
-                                          contentPadding: EdgeInsets.zero,
                                         ),
-                                        maxLines: 1,
-                                      ),
-                                    ),
-                                  ],
-                                )),
+                                        SizedBox(width: 4.w),
+                                        Flexible(
+                                          child: TextField(
+                                            controller: amountController,
+                                            readOnly: true, // Use custom keypad instead of system keyboard
+                                            enableInteractiveSelection: false,
+                                            showCursor: false,
+                                            style: TextStyle(
+                                              fontSize: 32.sp,
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                              (amountController.text == "0" ||
+                                                  amountController.text ==
+                                                      "0.00")
+                                                  ? Color(0xffC9CACC) // Gray for zero/empty
+                                                  : (_amountInvalid
+                                                  ? Colors.red // Red for invalid amounts
+                                                  : textColor), // Default text color
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              enabledBorder: InputBorder.none,
+                                              focusedBorder: InputBorder.none,
+                                              errorBorder: InputBorder.none,
+                                              disabledBorder: InputBorder.none,
+                                              hintText: '0',
+                                              hintStyle: TextStyle(
+                                                color: textColor.withOpacity(0.5),
+                                                fontSize: 32.sp,
+                                              ),
+                                              isCollapsed: true,
+                                              contentPadding: EdgeInsets.zero,
+                                            ),
+                                            maxLines: 1,
+                                          ),
+                                        ),
+                                      ],
+                                    )),
                               ),
                             )),
                       ),
                     ),
                     SizedBox(height: 28.h),
-                    // Quick Amount Buttons
+
+                    // Quick Amount Buttons for fast amount selection
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -310,19 +350,20 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                     ),
                     SizedBox(height: 28.h),
 
-                    // Instant / Regular
+                    // Withdrawal Method Selection (Instant/Regular)
                     Container(
                       height: 60.h,
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         border: Border.all(
                             color:
-                                isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB)),
+                            isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB)),
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          // Instant withdrawal option
                           GestureDetector(
                             onTap: () {
                               setState(() {
@@ -336,7 +377,7 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                                       ? Icons.radio_button_checked
                                       : Icons.radio_button_off,
                                   color:
-                                      _isInstant ? Colors.green : Colors.grey,
+                                  _isInstant ? Colors.green : Colors.grey,
                                 ),
                                 SizedBox(width: 6.w),
                                 SvgPicture.asset(
@@ -347,6 +388,7 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                             ),
                           ),
                           SizedBox(width: 30.w),
+                          // Regular withdrawal option
                           GestureDetector(
                             onTap: () {
                               setState(() {
@@ -362,8 +404,8 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                                   color: !_isInstant
                                       ? Colors.green
                                       : isDark
-                                          ? Colors.white
-                                          : Colors.black,
+                                      ? Colors.white
+                                      : Colors.black,
                                 ),
                                 SizedBox(width: 6.w),
                                 Text(
@@ -379,22 +421,24 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                         ],
                       ),
                     ),
-                    // SizedBox(height: 34.h),
+
                     Spacer(),
+
+                    // Withdrawal timing information notice
                     Container(
                       padding: EdgeInsets.symmetric(
                           horizontal: 15.w, vertical: 10.h),
                       decoration: BoxDecoration(
-                        color: isDark ? Color(0xFF2F2708) : Color(0xFFFEF8E5),
+                        color: isDark ? Color(0xFF2F2708) : Color(0xFFFEF8E5), // Amber background
                         border: Border.all(
                             color:
-                                isDark ? Color(0xFFB58E00) : Color(0xFFD1D5DB),
+                            isDark ? Color(0xFFB58E00) : Color(0xFFD1D5DB),
                             width: 1.w),
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Text(
                         "Withdrawal requests between 5:00 AM and 5:00 PM are credited the same day. "
-                        "Requests placed after 5:00 PM and before 5:00 AM are processed the next working day.",
+                            "Requests placed after 5:00 PM and before 5:00 AM are processed the next working day.",
                         style: TextStyle(
                             fontSize: 11.sp,
                             fontWeight: FontWeight.w500,
@@ -402,6 +446,8 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                       ),
                     ),
                     SizedBox(height: 15.h),
+
+                    // Bank Account Selection Widget
                     Container(
                       decoration: BoxDecoration(
                         color: isDark
@@ -462,19 +508,19 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                       ),
                     ),
 
-                    // Custom Keypad
+                    // Custom Number Keypad for amount entry
                     _buildNumberKeypad(),
 
-                    // Withdraw Button
+                    // Withdraw Action Button
                     ElevatedButton(
                       onPressed: () {
-                        _addDecimalPart();
+                        _addDecimalPart(); // Ensure decimal formatting is correct
                         if (_validateAmount()) {
                           // TODO: Add your withdraw logic here
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF00C853),
+                        backgroundColor: Color(0xFF00C853), // Green button color
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25.r),
                         ),
@@ -490,11 +536,9 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                       ),
                     ),
 
-                    // Info box
-
                     SizedBox(height: 15.h),
 
-                    // Proceed button
+                    // Note: The following buttons are commented out in the original code
                     // constWidgets.greenButton("Proceed"),
                     // SizedBox(height: 20.h),
                   ],
@@ -507,7 +551,8 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
     );
   }
 
-  // Quick Amount Button
+  /// Creates a quick amount selection button
+  /// Used for quickly adding common amounts to the withdrawal
   Widget _buildAmountButton(String text, VoidCallback onPressed, bool isDark) {
     return Container(
       height: 34.h,
@@ -535,7 +580,8 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
     );
   }
 
-  // Bank Tile
+  /// Creates a bank account selection tile
+  /// Shows bank logo, name, account number and selection status
   Widget _buildBankTile(
       String bankName, String accountNumber, String iconPath, String value) {
     return GestureDetector(
@@ -554,22 +600,22 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
             shape: BoxShape.circle,
             border: Border.all(
               color:
-                  selectedBank == value ? Colors.green : Colors.grey.shade700,
+              selectedBank == value ? Colors.green : Colors.grey.shade700,
               width: 2.5.w,
             ),
             color: selectedBank == value ? Colors.green : Colors.transparent,
           ),
           child: selectedBank == value
               ? Center(
-                  child: Container(
-                    width: 12.w,
-                    height: 12.h,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.black,
-                    ),
-                  ),
-                )
+            child: Container(
+              width: 12.w,
+              height: 12.h,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.black,
+              ),
+            ),
+          )
               : null,
         ),
         title: Row(
@@ -591,10 +637,12 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
     );
   }
 
-  // Custom Number Keypad
+  /// Builds the custom number keypad for amount entry
+  /// Provides digits 0-9, decimal point, and backspace
   Widget _buildNumberKeypad() {
-    final textColor = Color(0xFF1DB954);
+    final textColor = Color(0xFF1DB954); // Green color for keypad
 
+    /// Helper method to build individual keypad buttons
     Widget _buildKeypadButton(String text,
         {VoidCallback? onPressed, Color? color, IconData? icon}) {
       return Expanded(
@@ -608,13 +656,13 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
             child: icon != null
                 ? Icon(icon, color: color ?? textColor, size: 24.sp)
                 : Text(
-                    text,
-                    style: TextStyle(
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.w500,
-                      color: color ?? textColor,
-                    ),
-                  ),
+              text,
+              style: TextStyle(
+                fontSize: 24.sp,
+                fontWeight: FontWeight.w500,
+                color: color ?? textColor,
+              ),
+            ),
           ),
         ),
       );
@@ -624,6 +672,7 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(
         children: [
+          // First row of keypad (1, 2, 3)
           Row(
             children: [
               _buildKeypadButton('1', onPressed: () => _handleKeypadPress('1')),
@@ -631,6 +680,7 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
               _buildKeypadButton('3', onPressed: () => _handleKeypadPress('3')),
             ],
           ),
+          // Second row of keypad (4, 5, 6)
           Row(
             children: [
               _buildKeypadButton('4', onPressed: () => _handleKeypadPress('4')),
@@ -638,6 +688,7 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
               _buildKeypadButton('6', onPressed: () => _handleKeypadPress('6')),
             ],
           ),
+          // Third row of keypad (7, 8, 9)
           Row(
             children: [
               _buildKeypadButton('7', onPressed: () => _handleKeypadPress('7')),
@@ -645,6 +696,7 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
               _buildKeypadButton('9', onPressed: () => _handleKeypadPress('9')),
             ],
           ),
+          // Fourth row of keypad (., 0, backspace)
           Row(
             children: [
               _buildKeypadButton('.', onPressed: () => _handleKeypadPress('.')),
