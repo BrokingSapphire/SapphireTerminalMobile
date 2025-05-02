@@ -108,6 +108,9 @@ flutter:
     - assets/svgs/fingerprint.svg
     - assets/svgs/face.svg
     - assets/svgs/instant.svg
+    - assets/images/image 57.png
+    - assets/images/image 58.png
+    - assets/images/image 59.png
 
     
 
