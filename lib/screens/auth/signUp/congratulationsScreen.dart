@@ -10,8 +10,8 @@ import 'package:confetti/confetti.dart'; // For celebration animation effects
 import 'package:sapphire/screens/home/homeWarpper.dart'; // Home screen (not used directly)
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
 
-import '../../main.dart'; // App-wide navigation utilities
-import 'mPinScreen.dart'; // Next screen for MPIN setup/login
+import 'package:sapphire/main.dart'; // App-wide navigation utilities
+import '../login/mPINScreen.dart'; // Next screen for MPIN setup/login
 
 /// CongratulationsScreen - Celebratory screen shown after successful account setup
 /// Features animated confetti, displays the user's client code, and guides them to login

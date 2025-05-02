@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // For secure token storage
 import 'package:http/http.dart' as http; // For API requests
-import '../../main.dart'; // App-wide navigation utilities
-import '../../utils/constWidgets.dart'; // Reusable UI components
-import 'eSignScreen.dart'; // Next screen in registration flow
+import '../../../main.dart'; // App-wide navigation utilities
+import '../../../utils/constWidgets.dart'; // Reusable UI components
+import '../finalStep/eSignScreen.dart'; // Next screen in registration flow
 
 /// NomineeDetailsScreen - Screen for adding account nominees and their share percentages
 /// Allows users to add multiple nominees and specify inheritance distribution percentages

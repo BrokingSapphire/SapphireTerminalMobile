@@ -5,7 +5,7 @@ import 'package:sapphire/functions/authFunctions.dart'; // Authentication utilit
 import 'package:sapphire/screens/signUp/mobileOtpVerification.dart'; // Next screen in registration flow
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
 
-import '../../main.dart'; // App-wide utilities
+import '../../../main.dart'; // App-wide utilities
 
 /// MobileOtp - Screen for collecting user's mobile number
 /// Follows email verification in the registration flow

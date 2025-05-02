@@ -8,9 +8,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive U
 import 'package:sapphire/screens/signUp/eSignScreen.dart'; // Screen for skipping nominees
 import 'package:sapphire/screens/signUp/nomineeDetailsScreen.dart'; // Screen for adding nominees
 
-import '../../main.dart'; // App-wide navigation utilities
-import '../../utils/constWidgets.dart'; // Reusable UI components
-import 'signCanvaScreen.dart'; // Not used directly
+import '../../../main.dart'; // App-wide navigation utilities
+import '../../../utils/constWidgets.dart'; // Reusable UI components
+import '../signCanvaScreen.dart'; // Not used directly
 
 /// nomineeScreen - Introductory screen explaining the purpose of adding nominees
 /// Presents the concept and benefits of nominees before allowing users to add or skip

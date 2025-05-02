@@ -10,8 +10,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // For secu
 import 'package:http/http.dart' as http; // For API requests
 import 'package:sapphire/screens/signUp/confirmBankDetails.dart'; // Next screen after successful linking
 import 'package:sapphire/screens/signUp/linkWithUpiScreen.dart'; // Alternative UPI linking screen
-import '../../main.dart'; // App-wide navigation utilities
-import '../../utils/constWidgets.dart'; // Reusable UI components
+import '../../../main.dart'; // App-wide navigation utilities
+import '../../../utils/constWidgets.dart'; // Reusable UI components
 
 /// ManualLinkingScreen - Screen for manually entering bank account details
 /// Provides fields for IFSC code, account number, and account type selection

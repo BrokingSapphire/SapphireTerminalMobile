@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:flutter_svg/svg.dart'; // For SVG rendering support
 import 'package:sapphire/main.dart'; // Contains app-wide navigation utilities
-import 'package:sapphire/screens/signUp/emailScreen.dart'; // Sign-up flow starting screen
-import 'package:sapphire/screens/signUp/loginScreen.dart'; // Authentication screen
+import 'package:sapphire/screens/auth/signUp/contactDetails/emailScreen.dart'; // Sign-up flow starting screen
+import 'package:sapphire/screens/auth/login/loginScreen.dart'; // Authentication screen
 import 'package:sapphire/utils/constWidgets.dart'; // Contains reusable UI components
 
 /// InitialScreen - Welcome screen widget that serves as the entry point to the application

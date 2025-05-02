@@ -9,7 +9,7 @@ import 'package:sapphire/screens/signUp/panDetails.dart'; // Next screen in mobi
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
 import 'package:url_launcher/url_launcher.dart'; // For opening web URLs
 
-import '../../main.dart'; // App-wide utilities and navigator key
+import '../../../main.dart'; // App-wide utilities and navigator key
 import 'mobileOtp.dart'; // Next screen in email verification flow
 
 /// MobileOtpVerification - Screen for OTP verification of either email or mobile number

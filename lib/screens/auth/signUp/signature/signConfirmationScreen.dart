@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:flutter_svg/flutter_svg.dart'; // For SVG rendering support
 import 'package:sapphire/main.dart'; // App-wide navigation utilities
-import '../../utils/constWidgets.dart'; // Reusable UI components
-import 'NomineeScreen.dart'; // Next screen in registration flow
+import '../../../utils/constWidgets.dart'; // Reusable UI components
+import '../NomineeScreen.dart'; // Next screen in registration flow
 
 /// SignConfirmationScreen - Screen for reviewing and confirming the captured signature
 /// Displays the signature image and provides options to redo or proceed

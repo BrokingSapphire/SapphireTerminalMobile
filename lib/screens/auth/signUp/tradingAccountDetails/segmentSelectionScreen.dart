@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive U
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // For secure token storage
 import 'package:http/http.dart' as http; // For API requests
 import 'package:sapphire/screens/signUp/familyDetailsScreen.dart'; // Next screen in registration flow
-import '../../main.dart'; // App-wide navigation utilities
-import '../../utils/constWidgets.dart'; // Reusable UI components
+import '../../../main.dart'; // App-wide navigation utilities
+import '../../../utils/constWidgets.dart'; // Reusable UI components
 
 /// SegmentSelectionScreen - Screen for selecting market segments for trading
 /// Allows users to choose which financial markets they want to access (equities, F&O, etc.)

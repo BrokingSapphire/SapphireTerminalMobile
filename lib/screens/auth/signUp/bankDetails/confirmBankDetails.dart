@@ -4,10 +4,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
-import 'package:sapphire/screens/signUp/ipvScreen.dart'; // Next screen in registration flow (IPV - In-Person Verification)
+import 'package:sapphire/screens/auth/signUp/inPersonVerification/ipvScreen.dart'; // Next screen in registration flow (IPV - In-Person Verification)
 
-import '../../main.dart'; // App-wide navigation utilities
-import '../../utils/constWidgets.dart'; // Reusable UI components
+import '../../../main.dart'; // App-wide navigation utilities
+import '../../../utils/constWidgets.dart'; // Reusable UI components
 
 /// ConfirmBankDetails - Screen for verifying and confirming bank account information
 /// Displays pre-fetched bank details for user confirmation before proceeding to the next KYC step

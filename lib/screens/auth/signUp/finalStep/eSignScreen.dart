@@ -6,9 +6,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 
-import '../../main.dart'; // App-wide navigation utilities
-import '../../utils/constWidgets.dart'; // Reusable UI components
-import 'congratulationsScreen.dart'; // Next screen after successful E-sign
+import '../../../main.dart'; // App-wide navigation utilities
+import '../../../utils/constWidgets.dart'; // Reusable UI components
+import '../congratulationsScreen.dart'; // Next screen after successful E-sign
 
 /// eSignScreen - The final regulatory step in account creation
 /// Handles Aadhaar-based electronic signature authorization for account documents
