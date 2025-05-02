@@ -19,7 +19,7 @@ import 'package:sapphire/screens/account/reports/orderBook.dart';
 import 'package:sapphire/screens/account/reports/tradeBook.dart';
 import 'package:sapphire/screens/account/reports/tradesAndCharges.dart';
 import 'package:sapphire/screens/account/reports/verifiedP&L.dart';
-import 'package:sapphire/screens/signUp/loginScreen.dart';
+import 'package:sapphire/screens/auth/login/login.dart';
 
 import '../../utils/constWidgets.dart';
 
