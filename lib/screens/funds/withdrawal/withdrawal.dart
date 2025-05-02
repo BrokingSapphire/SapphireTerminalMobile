@@ -406,8 +406,8 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                                     Flexible(
                                       child: TextField(
                                         controller: amountController,
-                                        readOnly:
-                                            true, // Use custom keypad instead of system keyboard
+                                        readOnly: true,
+                                        // Use custom keypad instead of system keyboard
                                         enableInteractiveSelection: false,
                                         showCursor: false,
                                         style: TextStyle(
@@ -422,7 +422,8 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                                               : (_amountInvalid
                                                   ? Colors
                                                       .red // Red for invalid amounts
-                                                  : textColor), // Default text color
+                                                  : textColor),
+                                          // Default text color
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         textAlign: TextAlign.center,

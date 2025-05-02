@@ -190,7 +190,8 @@ class _otp2faScreenState extends State<otp2faScreen> {
                             TextSpan(text: "Expires in  "),
                             TextSpan(
                               text:
-                                  "0:${_timerSeconds.toString().padLeft(2, '0')} ", // Green seconds
+                                  "0:${_timerSeconds.toString().padLeft(2, '0')} ",
+                              // Green seconds
                               style: TextStyle(color: Colors.green),
                             ),
                             TextSpan(text: " seconds"),

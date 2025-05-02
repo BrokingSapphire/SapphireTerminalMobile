@@ -6,6 +6,7 @@ import 'package:sapphire/utils/constWidgets.dart';
 
 class NormalSellScreen extends StatefulWidget {
   final String tabName;
+
   NormalSellScreen(this.tabName);
 
   @override

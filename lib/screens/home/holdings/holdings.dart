@@ -168,6 +168,7 @@ class CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   double get minExtent => 35.h;
+
   @override
   double get maxExtent => 55.h;
 

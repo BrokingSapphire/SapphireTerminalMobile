@@ -772,14 +772,12 @@ class _sellScreenCheckboxState extends State<sellScreenCheckbox> {
         height: widget.size,
         decoration: BoxDecoration(
             border: Border.all(
-              color: widget.value
-                  ? Color(0xffE53935)
-                  : Colors.grey
-                      .shade800, // Matches 'side: BorderSide(color: Colors.grey.shade800, width: 1)'
+              color: widget.value ? Color(0xffE53935) : Colors.grey.shade800,
+              // Matches 'side: BorderSide(color: Colors.grey.shade800, width: 1)'
               width: 1,
             ),
-            borderRadius: BorderRadius.circular(6
-                .r), // Matches 'shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.r))'
+            borderRadius: BorderRadius.circular(6.r),
+            // Matches 'shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.r))'
             color: Colors.transparent
             // Matches 'activeColor: Colors.green' and 'fillColor: WidgetStateProperty.all(Colors.transparent)'
             ),
@@ -789,8 +787,8 @@ class _sellScreenCheckboxState extends State<sellScreenCheckbox> {
                     widget.checkmarkPadding), // Padding around checkmark
                 child: Icon(
                   Icons.check,
-                  color: Color(
-                      0xffE53935), // Matches 'checkColor: Colors.green' (changed to white for better visibility on green background)
+                  color: Color(0xffE53935),
+                  // Matches 'checkColor: Colors.green' (changed to white for better visibility on green background)
                   size: widget.size -
                       (widget.checkmarkPadding *
                           2.4), // Adjust size to fit padding

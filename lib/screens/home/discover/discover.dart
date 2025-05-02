@@ -41,9 +41,10 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
         child: Scaffold(
             backgroundColor: const Color(0xff000000),
             appBar: AppBar(
-              elevation: 0, // Remove shadow
-              surfaceTintColor:
-                  Colors.black, // Prevent grey overlay (for Material 3)
+              elevation: 0,
+              // Remove shadow
+              surfaceTintColor: Colors.black,
+              // Prevent grey overlay (for Material 3)
               shadowColor: Colors.transparent,
               backgroundColor: const Color(0xff000000),
               // automaticallyImplyLeading: false, // ✅ As requested

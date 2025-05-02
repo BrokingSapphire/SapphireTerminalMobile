@@ -164,7 +164,7 @@ class _SegmentSelectionScreenState extends State<SegmentSelectionScreen> {
             ),
             Spacer(),
             constWidgets.greenButton("Continue",
-                // onTap: selectedSegments.isEmpty  
+                // onTap: selectedSegments.isEmpty
                 //     ? null
                 //     : () {
                 //         submitSelectedSegments();

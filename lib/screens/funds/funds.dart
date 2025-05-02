@@ -61,7 +61,8 @@ class _FundsScreenState extends State<FundsScreen> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
-        scrolledUnderElevation: 0, // prevent shadow when scrolling
+        scrolledUnderElevation: 0,
+        // prevent shadow when scrolling
         surfaceTintColor: Colors.transparent,
         leadingWidth: 32.w,
 

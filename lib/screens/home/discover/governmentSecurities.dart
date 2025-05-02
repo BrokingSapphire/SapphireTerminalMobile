@@ -51,13 +51,20 @@ class _GovernmentSecuritiesState extends State<GovernmentSecurities> {
                     child: Column(
                       children: [
                         governmentSecuritiesTiles(
-                          "assets/images/reliance logo.png", // img
-                          "Akme Fintrade India ltd. (Aasaan Loans)", // title
-                          "21 June 2025", // endDate
-                          "6.80%", // yield
-                          "GSEC", // badge1
-                          "3,21,380.00", // price
-                          "6,789.00", // lotSize
+                          "assets/images/reliance logo.png",
+                          // img
+                          "Akme Fintrade India ltd. (Aasaan Loans)",
+                          // title
+                          "21 June 2025",
+                          // endDate
+                          "6.80%",
+                          // yield
+                          "GSEC",
+                          // badge1
+                          "3,21,380.00",
+                          // price
+                          "6,789.00",
+                          // lotSize
                           "CLOSING TODAY", // badge2
                         ),
                       ],

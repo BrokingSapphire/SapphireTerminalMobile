@@ -119,7 +119,8 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
     showModalBottomSheet(
       backgroundColor: isDark ? Colors.black : Colors.white,
       context: context,
-      isScrollControlled: true, // Allow flexible sizing of bottom sheet
+      isScrollControlled: true,
+      // Allow flexible sizing of bottom sheet
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(15.r)),
       ),
@@ -428,8 +429,8 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: Center(
-                  child: Text(
-                      "${nominees[index]["share"].toInt()}%", // Integer percentage
+                  child: Text("${nominees[index]["share"].toInt()}%",
+                      // Integer percentage
                       style: TextStyle(
                           color: isDark ? Colors.white : Colors.black,
                           fontSize: 14.sp)),

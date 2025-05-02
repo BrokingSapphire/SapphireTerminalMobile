@@ -137,9 +137,10 @@ class _TradesOptionClosedScreen extends State<TradesOptionClosedScreen>
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8.r),
                         child: ToggleButtons(
-                          renderBorder: false, // Removes vertical divider
-                          borderRadius:
-                              BorderRadius.circular(8.r), // Rounded corners
+                          renderBorder: false,
+                          // Removes vertical divider
+                          borderRadius: BorderRadius.circular(8.r),
+                          // Rounded corners
                           isSelected: [isGridView, !isGridView],
                           onPressed: (index) {
                             setState(() {

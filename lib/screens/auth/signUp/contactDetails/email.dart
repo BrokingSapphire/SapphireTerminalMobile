@@ -271,7 +271,7 @@ class _EmailScreenState extends State<EmailScreen> {
                   backgroundColor: (_email.text.isNotEmpty && !_isEmailInvalid)
                       ? Color(0xFF1DB954)
                       : Color(0xff2f2f2f),
-                  foregroundColor:  Colors.white,
+                  foregroundColor: Colors.white,
                 ),
               ),
             ),

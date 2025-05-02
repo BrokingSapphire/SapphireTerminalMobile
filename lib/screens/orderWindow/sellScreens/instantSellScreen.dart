@@ -5,6 +5,7 @@ import 'package:sapphire/utils/animatedToggles.dart';
 
 class SellScreenTabContent extends StatefulWidget {
   final String tabName;
+
   SellScreenTabContent(this.tabName);
 
   @override

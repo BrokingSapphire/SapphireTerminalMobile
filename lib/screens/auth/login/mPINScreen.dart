@@ -172,10 +172,13 @@ class _MpinScreenState extends State<MpinScreen> {
 
           // PIN input field using Pinput widget
           Pinput(
-            length: 4, // 4-digit PIN
+            length: 4,
+            // 4-digit PIN
             controller: _pinController,
-            obscureText: true, // Mask PIN for security
-            enabled: false, // No direct input - uses custom keypad
+            obscureText: true,
+            // Mask PIN for security
+            enabled: false,
+            // No direct input - uses custom keypad
             separatorBuilder: (index) => SizedBox(width: 12.w),
             // Default style for PIN dots
             defaultPinTheme: PinTheme(

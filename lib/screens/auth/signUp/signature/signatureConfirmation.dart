@@ -80,8 +80,8 @@ class SignConfirmationScreen extends StatelessWidget {
                   ? Image.memory(signatureBytes,
                       fit: BoxFit.contain) // Display the signature
                   : Center(
-                      child: Text(
-                          "No Signature Found", // Fallback text if signature data is empty
+                      child: Text("No Signature Found",
+                          // Fallback text if signature data is empty
                           style: TextStyle(color: Colors.black))),
             ),
 

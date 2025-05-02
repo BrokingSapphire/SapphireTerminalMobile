@@ -328,7 +328,7 @@ class _WatchlistTabBarState extends State<WatchlistTabBar> {
             ),
             SizedBox(height: 12.h),
             TextField(
-                maxLength: 50,
+              maxLength: 50,
               maxLengthEnforcement: MaxLengthEnforcement.enforced,
               controller: controller,
               decoration: InputDecoration(

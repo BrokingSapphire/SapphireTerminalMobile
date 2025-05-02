@@ -251,9 +251,11 @@ class _ProfitAndLossState extends State<ProfitAndLoss>
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black, // or your desired color
+        backgroundColor: Colors.black,
+        // or your desired color
         elevation: 0,
-        scrolledUnderElevation: 0, // prevent shadow when scrolling
+        scrolledUnderElevation: 0,
+        // prevent shadow when scrolling
         surfaceTintColor: Colors.transparent,
         leadingWidth: 32.w,
 

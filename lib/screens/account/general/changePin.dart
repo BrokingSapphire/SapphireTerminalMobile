@@ -283,10 +283,11 @@ class _changePinScreenState extends State<changePinScreen> {
     return Scaffold(
       backgroundColor: isDark ? Colors.black : Colors.white,
       appBar: AppBar(
-        backgroundColor:
-            isDark ? Colors.black : Colors.white, // or your desired color
+        backgroundColor: isDark ? Colors.black : Colors.white,
+        // or your desired color
         elevation: 0,
-        scrolledUnderElevation: 0, // prevent shadow when scrolling
+        scrolledUnderElevation: 0,
+        // prevent shadow when scrolling
         surfaceTintColor: Colors.transparent,
         title: Padding(
           padding: EdgeInsets.only(left: 0, top: 15.w),

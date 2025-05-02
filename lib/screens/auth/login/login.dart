@@ -230,7 +230,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: SvgPicture.asset(
                                   isPasswordVisible
                                       ? 'assets/svgs/eye-off.svg' // Eye closed when password is visible
-                                      : 'assets/svgs/eye.svg', // Eye open when password is hidden
+                                      : 'assets/svgs/eye.svg',
+                                  // Eye open when password is hidden
                                   height: 20.h,
                                   width: 20.w,
                                   color: isDark

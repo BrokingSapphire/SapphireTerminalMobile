@@ -97,7 +97,9 @@ class _eSignScreenState extends State<eSignScreen> {
                     },
                     child: Text(
                       "I would like to receive ECN and other communications via email.",
-                      style: TextStyle(color: isDark ? Colors.white : Colors.black, fontSize: 11.sp),
+                      style: TextStyle(
+                          color: isDark ? Colors.white : Colors.black,
+                          fontSize: 11.sp),
                     ),
                   ),
                 ),

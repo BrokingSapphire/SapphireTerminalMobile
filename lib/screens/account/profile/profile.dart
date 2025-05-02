@@ -13,6 +13,7 @@ class AccountScreen extends StatefulWidget {
 class _AccountScreenState extends State<AccountScreen> {
   double width = 150.w;
   bool _segments = false;
+
   Widget titleWithSub(String title, String subtitle, bool isDark) {
     return SizedBox(
       height: 35.h,

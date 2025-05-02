@@ -37,8 +37,7 @@ class SelfieConfirmationScreen extends StatelessWidget {
         ),
         title: Text("Click Continue to Confirm",
             style: TextStyle(
-                color: isDark ? Colors.white : Colors.black,
-                fontSize: 20.sp)),
+                color: isDark ? Colors.white : Colors.black, fontSize: 20.sp)),
       ),
       body: Center(
         child: Padding(
@@ -51,9 +50,9 @@ class SelfieConfirmationScreen extends StatelessWidget {
                 height: 50.h,
               ),
               // Instruction Text (placeholder comment from original code)
-    
+
               SizedBox(height: 20.h),
-    
+
               // Display the captured selfie image in a bordered container
               Center(
                 child: Container(
@@ -77,10 +76,10 @@ class SelfieConfirmationScreen extends StatelessWidget {
                   ),
                 ),
               ),
-    
+
               // Push buttons to bottom of screen
               const Spacer(),
-    
+
               // Action buttons row with Retake and Continue options
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -94,8 +93,7 @@ class SelfieConfirmationScreen extends StatelessWidget {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                            color:
-                                Colors.red, // Red for negative/cancel action
+                            color: Colors.red, // Red for negative/cancel action
                             borderRadius: BorderRadius.circular(6.r)),
                         height: 46.h,
                         child: const Center(

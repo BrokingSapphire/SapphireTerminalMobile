@@ -34,10 +34,11 @@ class _changeNewPinScreenState extends State<changeNewPinScreen> {
       child: Scaffold(
         backgroundColor: isDark ? Colors.black : Colors.white,
         appBar: AppBar(
-          backgroundColor:
-              isDark ? Colors.black : Colors.white, // or your desired color
+          backgroundColor: isDark ? Colors.black : Colors.white,
+          // or your desired color
           elevation: 0,
-          scrolledUnderElevation: 0, // prevent shadow when scrolling
+          scrolledUnderElevation: 0,
+          // prevent shadow when scrolling
           surfaceTintColor: Colors.transparent,
           title: Padding(
             padding: EdgeInsets.only(left: 0, top: 15.w),
@@ -219,24 +220,27 @@ class _changeNewPinScreenState extends State<changeNewPinScreen> {
                       width: double.infinity,
                       child: ElevatedButton(
                         // Button is enabled only when both MPIN fields have exactly 4 digits
-                        onPressed: (newmpin.text.length == 4 && confirmedmpin.text.length == 4)
+                        onPressed: (newmpin.text.length == 4 &&
+                                confirmedmpin.text.length == 4)
                             ? () {
                                 // Add your navigation or completion logic here
                                 if (newmpin.text == confirmedmpin.text) {
                                   Navigator.pop(context);
-                                }else{
-                                  constWidgets.snackbar("Pin not matched", Colors.red, context);
+                                } else {
+                                  constWidgets.snackbar(
+                                      "Pin not matched", Colors.red, context);
                                 }
                               }
                             : null,
                         child: Text(
                           "Continue",
-                          style:
-                              TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              fontSize: 17.sp, fontWeight: FontWeight.w600),
                         ),
                         // Button color changes based on enabled state
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: (newmpin.text.length == 4 && confirmedmpin.text.length == 4)
+                          backgroundColor: (newmpin.text.length == 4 &&
+                                  confirmedmpin.text.length == 4)
                               ? Color(0xFF1DB954)
                               : Color(0xff2f2f2f),
                           foregroundColor: Colors.white,

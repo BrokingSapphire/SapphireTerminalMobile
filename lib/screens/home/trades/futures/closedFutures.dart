@@ -135,9 +135,10 @@ class _TradesFutureClosedScreen extends State<TradesFutureClosedScreen>
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8.r),
                         child: ToggleButtons(
-                          renderBorder: false, // Removes vertical divider
-                          borderRadius:
-                              BorderRadius.circular(8.r), // Rounded corners
+                          renderBorder: false,
+                          // Removes vertical divider
+                          borderRadius: BorderRadius.circular(8.r),
+                          // Rounded corners
                           isSelected: [isGridView, !isGridView],
                           onPressed: (index) {
                             setState(() {
@@ -183,7 +184,9 @@ class _TradesFutureClosedScreen extends State<TradesFutureClosedScreen>
                 // Display GridView or ListView
                 Container(
                     height: 400.h, // Ensures the content has enough space
-                    child: isGridView ? ClosedFutureListScreen() : ClosedFutureGridScreen()),
+                    child: isGridView
+                        ? ClosedFutureListScreen()
+                        : ClosedFutureGridScreen()),
               ],
             ),
           ),

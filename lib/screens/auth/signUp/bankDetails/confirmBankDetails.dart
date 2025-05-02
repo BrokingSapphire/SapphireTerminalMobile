@@ -190,7 +190,9 @@ class _confirmBankDetailsState extends State<confirmBankDetails> {
                       // Label
                       Text("Branch",
                           style: TextStyle(
-                              color: isDark ? Color(0xffC9CACC) : Color(0xff6B7280),
+                              color: isDark
+                                  ? Color(0xffC9CACC)
+                                  : Color(0xff6B7280),
                               fontSize: 12.sp)),
                       SizedBox(height: 2.h),
                       // Full branch address

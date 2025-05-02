@@ -77,8 +77,8 @@ class _TradesComClosedScreen extends State<TradesComClosedScreen>
                                         '${(dynamicPercent ?? 0).toStringAsFixed(1)}%\n',
                                     style: GoogleFonts.poppins(
                                       color: Colors.white,
-                                      fontSize: 11
-                                          .sp, // Larger font size for percentage
+                                      fontSize: 11.sp,
+                                      // Larger font size for percentage
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -137,9 +137,10 @@ class _TradesComClosedScreen extends State<TradesComClosedScreen>
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8.r),
                         child: ToggleButtons(
-                          renderBorder: false, // Removes vertical divider
-                          borderRadius:
-                              BorderRadius.circular(8.r), // Rounded corners
+                          renderBorder: false,
+                          // Removes vertical divider
+                          borderRadius: BorderRadius.circular(8.r),
+                          // Rounded corners
                           isSelected: [isGridView, !isGridView],
                           onPressed: (index) {
                             setState(() {

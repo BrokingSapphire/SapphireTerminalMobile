@@ -426,8 +426,8 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
                           Flexible(
                             child: TextField(
                               controller: amountController,
-                              readOnly:
-                                  true, // Use custom keypad instead of system keyboard
+                              readOnly: true,
+                              // Use custom keypad instead of system keyboard
                               enableInteractiveSelection: false,
                               showCursor: false,
                               style: TextStyle(

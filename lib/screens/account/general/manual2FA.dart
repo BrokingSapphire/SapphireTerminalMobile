@@ -18,10 +18,11 @@ class _manual2faScreenState extends State<manual2faScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor:
-              isDark ? Colors.black : Colors.white, // or your desired color
+          backgroundColor: isDark ? Colors.black : Colors.white,
+          // or your desired color
           elevation: 0,
-          scrolledUnderElevation: 0, // prevent shadow when scrolling
+          scrolledUnderElevation: 0,
+          // prevent shadow when scrolling
           surfaceTintColor: Colors.transparent,
           leadingWidth: 32.w,
 

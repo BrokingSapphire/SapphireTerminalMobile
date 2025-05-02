@@ -9,6 +9,7 @@ import '../../../utils/constWidgets.dart';
 
 class Icebergbuyscreen extends StatefulWidget {
   final String tabName;
+
   Icebergbuyscreen(this.tabName);
 
   @override
@@ -115,8 +116,8 @@ class _IcebergbuyscreenState extends State<Icebergbuyscreen> {
                         },
                       ),
                       SizedBox(
-                        width: 80
-                            .w, // Fixed width for TextField to fit within container
+                        width: 80.w,
+                        // Fixed width for TextField to fit within container
                         child: TextField(
                           controller: TextEditingController(
                               text: quantity.toString())
@@ -650,8 +651,8 @@ class _IcebergbuyscreenState extends State<Icebergbuyscreen> {
                             Container(
                               height: 50.h,
                               child: TextField(
-                                readOnly: _validityOptionIndex ==
-                                    1, // Read-only for IOC
+                                readOnly: _validityOptionIndex == 1,
+                                // Read-only for IOC
                                 controller: TextEditingController(text: "0"),
                                 keyboardType: TextInputType.number,
                                 style: TextStyle(
@@ -712,7 +713,8 @@ class _IcebergbuyscreenState extends State<Icebergbuyscreen> {
                                           _selectedMinutes = newValue;
                                         });
                                       }
-                                    : null, // Disable for Day and IOC
+                                    : null,
+                                // Disable for Day and IOC
                                 items: _minutesOptions
                                     .map<DropdownMenuItem<String>>(
                                         (String value) {

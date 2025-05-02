@@ -219,6 +219,7 @@ class _TradesComActiveScreenState extends State<TradesComActiveScreen>
 
   TextStyle _labelStyle() =>
       TextStyle(color: const Color(0xffC9CACC), fontSize: 12.sp);
+
   TextStyle _valueStyle() =>
       TextStyle(color: const Color(0xffEBEEF5), fontSize: 12.sp);
 }

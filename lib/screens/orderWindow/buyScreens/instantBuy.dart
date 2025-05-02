@@ -84,8 +84,8 @@ class _BuyScreenTabContentState extends State<BuyScreenTabContent> {
                         },
                       ),
                       SizedBox(
-                        width: 80
-                            .w, // Fixed width for TextField to fit within container
+                        width: 80.w,
+                        // Fixed width for TextField to fit within container
                         child: TextField(
                           controller: TextEditingController(
                               text: quantity.toString())

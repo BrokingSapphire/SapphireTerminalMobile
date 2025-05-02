@@ -12,10 +12,11 @@ class twoFAScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: isDark ? Colors.black : Colors.white,
       appBar: AppBar(
-        backgroundColor:
-            isDark ? Colors.black : Colors.white, // or your desired color
+        backgroundColor: isDark ? Colors.black : Colors.white,
+        // or your desired color
         elevation: 0,
-        scrolledUnderElevation: 0, // prevent shadow when scrolling
+        scrolledUnderElevation: 0,
+        // prevent shadow when scrolling
         surfaceTintColor: Colors.transparent,
         leadingWidth: 32.w,
 
@@ -54,7 +55,8 @@ class twoFAScreen extends StatelessWidget {
                 SizedBox(height: 28.h),
                 Center(
                   child: Image.asset(
-                    'assets/images/Vector.png', // Replace with your actual image path
+                    'assets/images/Vector.png',
+                    // Replace with your actual image path
                     width: 70, // Adjust size as needed
                     height: 80,
                     fit: BoxFit.contain,
@@ -187,9 +189,8 @@ class twoFAScreen extends StatelessWidget {
                                               : Colors.black,
                                           fontSize: 16.sp),
                                     ),
-                                    SizedBox(
-                                        height: 4
-                                            .h), // Small spacing between title and subtitle
+                                    SizedBox(height: 4.h),
+                                    // Small spacing between title and subtitle
                                     Text(
                                       "A code will be sent to your phone",
                                       style: TextStyle(
@@ -245,9 +246,8 @@ class twoFAScreen extends StatelessWidget {
                                               : Colors.black,
                                           fontSize: 16.sp),
                                     ),
-                                    SizedBox(
-                                        height: 4
-                                            .h), // Small spacing between title and subtitle
+                                    SizedBox(height: 4.h),
+                                    // Small spacing between title and subtitle
                                     Text(
                                       "Generate a code using an authentication app",
                                       style: TextStyle(

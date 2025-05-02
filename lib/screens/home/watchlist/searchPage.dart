@@ -93,7 +93,8 @@ class _SearchPageScreenState extends State<SearchPageScreen>
                         child: TextField(
                           autofocus: true,
                           inputFormatters: [
-                            UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                            UpperCaseTextFormatter(),
+                            // Custom formatter to force uppercase
                           ],
                           decoration: InputDecoration(
                             hintText: "Search Instruments to add",
@@ -350,14 +351,20 @@ class AppColors {
   const AppColors({required this.isDark});
 
   Color get backgroundColor => isDark ? const Color(0xFF000000) : Colors.white;
+
   Color get textColor => isDark ? Colors.white : Colors.black;
+
   Color get secondaryTextColor =>
       isDark ? const Color(0xFFC9CACC) : Colors.black54;
+
   Color get searchFieldColor =>
       isDark ? const Color(0xFF2F2F2F) : const Color(0xFFF4F4F9);
+
   Color get dividerColor => const Color(0xFF2F2F2F);
+
   Color get accentColor => const Color(0xFF1DB954); // Green accent color
   Color get tabBarColor => isDark ? const Color(0xFF000000) : Colors.white;
+
   Color get borderColor =>
       isDark ? const Color(0xFF2F2F2F) : const Color(0xFFE0E0E0);
 }

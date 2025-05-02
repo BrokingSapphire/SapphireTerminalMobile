@@ -136,8 +136,8 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
                                     children: [
                                       TextSpan(text: "Your Client Code is"),
                                       TextSpan(
-                                          text:
-                                              " J08596", // Client ID - should be dynamic in production
+                                          text: " J08596",
+                                          // Client ID - should be dynamic in production
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold)),
                                     ],
@@ -180,15 +180,18 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
               alignment: Alignment.topCenter,
               child: ConfettiWidget(
                 confettiController: _confettiController,
-                blastDirectionality: BlastDirectionality
-                    .explosive, // Ensures uniform spread in all directions
-                emissionFrequency:
-                    0.0001, // Very low frequency to fire all confetti at once
-                numberOfParticles: 100, // Fixed number of confetti pieces
-                gravity: 0.2, // Light gravity for slower falling confetti
-                maxBlastForce: 11, // Upper limit for explosion strength
-                minBlastForce:
-                    10, // Lower limit for explosion strength (close to max for consistency)
+                blastDirectionality: BlastDirectionality.explosive,
+                // Ensures uniform spread in all directions
+                emissionFrequency: 0.0001,
+                // Very low frequency to fire all confetti at once
+                numberOfParticles: 100,
+                // Fixed number of confetti pieces
+                gravity: 0.2,
+                // Light gravity for slower falling confetti
+                maxBlastForce: 11,
+                // Upper limit for explosion strength
+                minBlastForce: 10,
+                // Lower limit for explosion strength (close to max for consistency)
                 // Colorful confetti pieces
                 colors: const [
                   Colors.green,

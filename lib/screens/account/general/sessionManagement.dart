@@ -15,9 +15,8 @@ class _SessionManagementState extends State<SessionManagement> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: isDark
-              ? Color(0xff121413)
-              : Colors.white, // Matches the background in your image
+          backgroundColor: isDark ? Color(0xff121413) : Colors.white,
+          // Matches the background in your image
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -98,10 +97,11 @@ class _SessionManagementState extends State<SessionManagement> {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:
-            isDark ? Colors.black : Colors.white, // or your desired color
+        backgroundColor: isDark ? Colors.black : Colors.white,
+        // or your desired color
         elevation: 0,
-        scrolledUnderElevation: 0, // prevent shadow when scrolling
+        scrolledUnderElevation: 0,
+        // prevent shadow when scrolling
         surfaceTintColor: Colors.transparent,
         leadingWidth: 32.w,
 
