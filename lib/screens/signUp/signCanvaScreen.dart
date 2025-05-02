@@ -10,7 +10,7 @@ import 'package:sapphire/main.dart'; // App-wide navigation utilities
 import 'package:scribble/scribble.dart'; // Package for handling drawing canvas functionality
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 
-import 'signature/signConfirmationScreen.dart'; // Next screen for signature confirmation
+import 'signConfirmationScreen.dart'; // Next screen for signature confirmation
 
 /// SignCanvasScreen - Screen for capturing user's handwritten signature
 /// Provides a drawing canvas and controls for creating a digital signature

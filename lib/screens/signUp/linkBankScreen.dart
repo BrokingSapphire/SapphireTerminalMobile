@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http; // For API requests
 import 'package:sapphire/main.dart'; // App-wide navigation utilities
 import 'package:sapphire/screens/signUp/manualLinkingScreen.dart'; // Screen for manual bank linking
 import 'package:sapphire/screens/signUp/linkWithUpiScreen.dart'; // Screen for UPI linking
-import '../../../utils/constWidgets.dart'; // Reusable UI components
+import '../../utils/constWidgets.dart'; // Reusable UI components
 
 /// linkBankScreen - Screen that presents bank account linking options
 /// Allows users to choose between linking their bank via UPI or manual entry

@@ -1,4 +1,4 @@
-// File: mPINScreen.dart
+// File: mPinScreen.dart
 // Description: MPIN (Mobile PIN) authentication screen in the Sapphire Trading application.
 // This screen allows users to securely log in using a 4-digit PIN code or biometric authentication
 // (fingerprint on Android, Face ID on iOS) when available.

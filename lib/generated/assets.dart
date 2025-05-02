@@ -188,7 +188,7 @@ class Assets {
   static const String signUpLinkBankScreen = 'lib/screens/signUp/linkBankScreen.dart';
   static const String signUpLinkWithUpiScreen = 'lib/screens/signUp/linkWithUpiScreen.dart';
   static const String signUpLoginScreen = 'lib/screens/signUp/loginScreen.dart';
-  static const String signUpMPinScreen = 'lib/screens/signUp/mPINScreen.dart';
+  static const String signUpMPinScreen = 'lib/screens/signUp/mPinScreen.dart';
   static const String signUpManualLinkingScreen = 'lib/screens/signUp/manualLinkingScreen.dart';
   static const String signUpMobileOtp = 'lib/screens/signUp/mobileOtp.dart';
   static const String signUpMobileOtpVerification = 'lib/screens/signUp/mobileOtpVerification.dart';

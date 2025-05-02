@@ -29,7 +29,7 @@ import 'package:sapphire/screens/signUp/ipvScreen.dart';
 import 'package:sapphire/screens/signUp/linkBankScreen.dart';
 import 'package:sapphire/screens/signUp/linkWithUpiScreen.dart';
 import 'package:sapphire/screens/signUp/loginScreen.dart';
-import 'package:sapphire/screens/signUp/mPINScreen.dart';
+import 'package:sapphire/screens/signUp/mPinScreen.dart';
 import 'package:sapphire/screens/signUp/mobileOtp.dart';
 import 'package:sapphire/screens/signUp/mobileOtpVerification.dart';
 import 'package:sapphire/screens/signUp/nomineeDetailsScreen.dart';

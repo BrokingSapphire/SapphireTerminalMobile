@@ -9,8 +9,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive U
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // For secure token storage
 import 'package:http/http.dart' as http; // For API requests
 import 'package:sapphire/screens/signUp/linkBankScreen.dart'; // Next screen in registration flow
-import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
-import 'package:sapphire/main.dart'; // App-wide navigation utilities
+import '../../utils/constWidgets.dart'; // Reusable UI components
+import '../../main.dart'; // App-wide navigation utilities
 
 /// Otherdetails - Screen for collecting additional regulatory information
 /// Gathers occupation, income level, and politically exposed person status data

@@ -8,7 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive U
 import 'package:sapphire/main.dart'; // App-wide navigation utilities
 import 'package:sapphire/screens/signUp/signCanvaScreen.dart'; // Next screen for signature capture
 
-import '../../../utils/constWidgets.dart'; // Reusable UI components
+import '../../utils/constWidgets.dart'; // Reusable UI components
 
 /// signVerificationScreen - Introduction screen for digital signature process
 /// Explains the importance and benefits of digital signatures before proceeding to capture

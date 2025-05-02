@@ -9,8 +9,8 @@ import 'package:flutter_svg/flutter_svg.dart'; // For SVG rendering support
 import 'package:sapphire/screens/signUp/selfieCameraScreen.dart'; // Next screen for taking selfie
 import 'package:sapphire/screens/signUp/segmentSelectionScreen.dart'; // Not used directly
 
-import '../../../main.dart'; // App-wide navigation utilities
-import '../../../utils/constWidgets.dart'; // Reusable UI components
+import '../../main.dart'; // App-wide navigation utilities
+import '../../utils/constWidgets.dart'; // Reusable UI components
 
 /// ipvScreen - Introduction screen for In-Person Verification process
 /// Explains the IPV requirement and prepares users for selfie verification

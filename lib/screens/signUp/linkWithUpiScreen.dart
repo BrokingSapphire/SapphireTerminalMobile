@@ -9,7 +9,7 @@ import 'package:flutter_svg/svg.dart'; // For SVG rendering support
 import 'package:sapphire/main.dart'; // App-wide navigation utilities
 import 'package:sapphire/screens/signUp/manualLinkingScreen.dart'; // Alternative manual linking screen
 
-import '../../../utils/constWidgets.dart'; // Reusable UI components
+import '../../utils/constWidgets.dart'; // Reusable UI components
 
 /// linkWithUpiScreen - Screen for bank account linking via UPI
 /// Offers multiple UPI app options for making a nominal transaction to verify bank details
