@@ -7,7 +7,7 @@ import 'package:sapphire/screens/account/general/permission.dart';
 import 'package:sapphire/screens/account/general/sessionManagement.dart';
 import 'package:sapphire/screens/account/general/settingsOrderPreference.dart';
 import 'package:sapphire/themeProvider.dart';
-import 'package:sapphire/utils/toogle.dart';
+import 'package:sapphire/utils/toggle.dart';
 
 import 'package:sapphire/utils/constWidgets.dart';
 

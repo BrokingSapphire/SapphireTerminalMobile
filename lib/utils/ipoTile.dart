@@ -1,8 +1,28 @@
+// File: ipoTile.dart
+// Description: Custom IPO listing tile widget for the Sapphire: Terminal Trading application.
+// This file provides a reusable card-style component for displaying IPO details.
+
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 
 typedef VoidCallback = void Function();
 
+/// Creates a comprehensive IPO information tile with company details and subscription options
+/// Displays company logo, key IPO details, subscription status, and an action button
+/// 
+/// Parameters:
+/// - img: Asset path to the company logo image
+/// - title: Company name or IPO title
+/// - closeDate: Last date to apply for the IPO
+/// - minInvestment: Minimum investment amount required
+/// - badge1: Primary category/type badge (e.g., "Mainboard")
+/// - badge2: Secondary category badge (e.g., "Fresh Issue")
+/// - description: Company description text with "View more" option
+/// - statusDay: Subscription day status (e.g., "Last Day")
+/// - subscriptionStatus: Current subscription rate (e.g., "2.5x")
+/// - price: IPO price range or final price
+/// - lotSize: Number of shares in one lot
+/// - onApply: Callback function for the "Apply now" button
 Widget ipoTile({
   required String img,
   required String title,
@@ -20,15 +40,17 @@ Widget ipoTile({
   return Container(
     padding: EdgeInsets.all(16.0),
     decoration: BoxDecoration(
-      color: Color(0xFF181A1B),
+      color: Color(0xFF181A1B), // Dark background for the card
       borderRadius: BorderRadius.circular(16.r),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Header row with company logo and basic details
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Company logo in a circular avatar
             CircleAvatar(
               radius: 22.r,
               backgroundColor: Color(0xFF242525),
@@ -39,10 +61,13 @@ Widget ipoTile({
               ),
             ),
             SizedBox(width: 14.w),
+
+            // Company name and key info section
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Company name
                   Text(title,
                       style: TextStyle(
                         color: Colors.white,
@@ -50,6 +75,8 @@ Widget ipoTile({
                         fontWeight: FontWeight.w500,
                       )),
                   SizedBox(height: 2.h),
+
+                  // Closing date and minimum investment row
                   Row(
                     children: [
                       RichText(
@@ -58,11 +85,11 @@ Widget ipoTile({
                               style: TextStyle(
                                   color: Color(0xffc9cacc), fontSize: 12.sp),
                               children: [
-                            TextSpan(
-                                text: closeDate,
-                                style: TextStyle(
-                                    color: Color(0xFFEBEEF5), fontSize: 12.sp))
-                          ])),
+                                TextSpan(
+                                    text: closeDate,
+                                    style: TextStyle(
+                                        color: Color(0xFFEBEEF5), fontSize: 12.sp))
+                              ])),
                       Spacer(),
                       RichText(
                           text: TextSpan(
@@ -70,22 +97,25 @@ Widget ipoTile({
                               style: TextStyle(
                                   color: Color(0xffc9cacc), fontSize: 12.sp),
                               children: [
-                            TextSpan(
-                                text: minInvestment,
-                                style: TextStyle(
-                                    color: Color(0xFFEBEEF5), fontSize: 12.sp))
-                          ])),
+                                TextSpan(
+                                    text: minInvestment,
+                                    style: TextStyle(
+                                        color: Color(0xFFEBEEF5), fontSize: 12.sp))
+                              ])),
                     ],
                   ),
                   SizedBox(height: 8.h),
+
+                  // Category badges row (Mainboard, Fresh Issue, etc.)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      // Primary badge (e.g., "Mainboard")
                       Container(
                         padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(
-                          color: Color(0xFF6C3EB6).withOpacity(0.6),
+                          color: Color(0xFF6C3EB6).withOpacity(0.6), // Purple background
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(badge1,
@@ -93,16 +123,18 @@ Widget ipoTile({
                                 color: Color(0xffCBA0FF), fontSize: 12)),
                       ),
                       SizedBox(width: 8),
+
+                      // Secondary badge (e.g., "Fresh Issue")
                       Container(
                         padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(
-                          color: Color(0xFF444444),
+                          color: Color(0xFF444444), // Dark gray background
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(badge2,
                             style:
-                                TextStyle(color: Colors.white, fontSize: 12)),
+                            TextStyle(color: Colors.white, fontSize: 12)),
                       ),
                     ],
                   ),
@@ -112,6 +144,8 @@ Widget ipoTile({
           ],
         ),
         SizedBox(height: 16.h),
+
+        // Company description with "View more" option
         Text.rich(
           TextSpan(
             text: description.split("... ")[0] + "... ",
@@ -130,19 +164,22 @@ Widget ipoTile({
           overflow: TextOverflow.ellipsis,
         ),
         SizedBox(height: 14.h),
+
+        // Subscription status container
         Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           decoration: BoxDecoration(
-            color: Color(0xFF232323),
+            color: Color(0xFF232323), // Slightly lighter background
             borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
             children: [
+              // Status day badge (e.g., "Last Day")
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFD9C544).withOpacity(0.5),
+                  color: const Color(0xFFD9C544).withOpacity(0.5), // Golden yellow
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(statusDay,
@@ -152,17 +189,21 @@ Widget ipoTile({
               Text("Subscription status",
                   style: TextStyle(color: Colors.white, fontSize: 13)),
               Spacer(),
+              // Subscription rate (e.g., "2.5x")
               Text(subscriptionStatus,
                   style: TextStyle(
-                      color: Color(0xFF22A06B),
+                      color: Color(0xFF22A06B), // Green text for positive indication
                       fontSize: 15,
                       fontWeight: FontWeight.w600)),
             ],
           ),
         ),
         SizedBox(height: 14.h),
+
+        // Price and lot size row
         Row(
           children: [
+            // Price column
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -177,6 +218,7 @@ Widget ipoTile({
               ],
             ),
             Spacer(),
+            // Lot size column
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -193,23 +235,25 @@ Widget ipoTile({
           ],
         ),
         SizedBox(height: 14.h),
+
+        // Apply now button
         SizedBox(
           width: 150.w,
           height: 35.h,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF1DB954),
+              backgroundColor: const Color(0xFF1DB954), // Brand green color
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            onPressed: onApply ?? () {},
+            onPressed: onApply ?? () {}, // Use provided callback or empty function
             child: Text(
               "Apply now",
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16.sp,
-                  ),
+                color: Colors.white,
+                fontSize: 16.sp,
+              ),
             ),
           ),
         ),

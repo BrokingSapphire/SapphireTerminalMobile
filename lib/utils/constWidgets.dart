@@ -1,13 +1,21 @@
+// File: constWidgets.dart
+// Description: Collection of reusable UI components for the Sapphire: Terminal Trading application.
+// This file provides standardized widgets to maintain consistent UI/UX across the app.
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sapphire/screens/home/watchlist/searchPage.dart';
-import 'package:sapphire/utils/filters.dart';
+import 'package:flutter/services.dart'; // For input formatting and validation
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
+import 'package:sapphire/screens/home/watchlist/searchPage.dart'; // Search page screen
+import 'package:sapphire/utils/filters.dart'; // Filter utility for search and filtering
 
-import '../main.dart';
+import '../main.dart'; // App-wide utilities and navigation
 
+/// constWidgets - Static class containing reusable widgets used throughout the app
+/// Note: Class name should be capitalized as per Dart conventions (ConstWidgets)
 class constWidgets {
+  /// Creates a segment choice chip with checkbox for filter/segment selection UI
+  /// Used in filter bottom sheets and segment selection screens
   static segmentChoiceChipiWithCheckbox(
       String text, bool val, BuildContext context) {
     return Container(
@@ -47,7 +55,7 @@ class constWidgets {
           width: 1.5, // Slightly thicker border for visibility
         ),
         borderRadius:
-            BorderRadius.circular(8.r), // Larger rounded corners to match image
+        BorderRadius.circular(8.r), // Larger rounded corners to match image
         color: val
             ? Color(0xFF26382F)
             : Color(0xff121413), // Black background to match image
@@ -55,6 +63,8 @@ class constWidgets {
     );
   }
 
+  /// Creates a search field with filter button
+  /// Used on search-enabled screens like watchlist, orders, etc.
   static Widget searchField(
       BuildContext context, String hintText, String pageKey, bool isDark) {
     return Row(
@@ -64,7 +74,7 @@ class constWidgets {
           child: GestureDetector(
             onTap: () {
               // Handle tap (e.g., navigate to search screen)
-              navi(SearchPageScreen(), context);
+              navi(SearchPageScreen(), context); // Navigate to search screen
             },
             child: Container(
               height: 48.h,
@@ -104,7 +114,6 @@ class constWidgets {
         GestureDetector(
           onTap: () {
             // Triggering the filter bottom sheet on tap
-
             showFilterBottomSheet(
               context: context,
               pageKey: pageKey, // Dynamically pass the pageKey here
@@ -133,6 +142,8 @@ class constWidgets {
     );
   }
 
+  /// Displays a snackbar message
+  /// Used for showing success, error, or info messages throughout the app
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> snackbar(
       String text, Color color, BuildContext context) {
     return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -144,6 +155,8 @@ class constWidgets {
         )));
   }
 
+  /// Creates a standard list item view for watchlist items
+  /// Displays stock/security information with leading icon, title, subtitle, and trailing values
   static Widget watchListDataView(String leadImageLink, String title,
       String subtitle, String trail1, String trail2, bool isDark) {
     return Column(
@@ -158,7 +171,7 @@ class constWidgets {
                   radius: 18.r,
                   backgroundColor: isDark ? Colors.white : Colors.transparent,
                   backgroundImage:
-                      AssetImage("assets/images/reliance logo.png")),
+                  AssetImage("assets/images/reliance logo.png")),
               SizedBox(width: 10.w), // Space between avatar and text
 
               // Column for Title and Subtitle
@@ -201,8 +214,8 @@ class constWidgets {
                     style: TextStyle(
                         fontSize: 13.sp,
                         color: trail2.startsWith('-')
-                            ? Color(0xffe53935)
-                            : Color(0xff22a06b)),
+                            ? Color(0xffe53935)  // Red color for negative values
+                            : Color(0xff22a06b)), // Green color for positive values
                   ),
                 ],
               ),
@@ -216,6 +229,8 @@ class constWidgets {
     );
   }
 
+  /// Creates a card with two data values displayed side by side
+  /// Used on portfolio, holdings, and other screens to display key metrics
   static Widget singleCard(String firtTitle, String firstValue,
       String secondTitle, String secondValue, bool isDark) {
     return Container(
@@ -225,6 +240,7 @@ class constWidgets {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            // Left side data point
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,6 +263,7 @@ class constWidgets {
                 ),
               ],
             ),
+            // Right side data point
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -269,8 +286,8 @@ class constWidgets {
                             fontWeight: FontWeight.w600,
                             fontSize: 17.sp,
                             color: secondValue.contains('-')
-                                ? Colors.red
-                                : Colors.green),
+                                ? Colors.red    // Red for negative values
+                                : Colors.green), // Green for positive values
                       ),
                       TextSpan(
                         text: " ", // Adding spaces for width
@@ -294,6 +311,8 @@ class constWidgets {
     );
   }
 
+  /// Creates list item for equity holdings showing position details
+  /// Used in portfolio/holdings screens to display stock positions with P&L indicators
   static Widget equityScreenTiles(String title, String subtitle, String trail1,
       String trail2, bool isDark) {
     return Column(
@@ -304,6 +323,7 @@ class constWidgets {
             height: 70.h,
             child: Row(
               children: [
+                // Vertical color bar indicating positive/negative P&L
                 Container(
                     height: 60.h,
                     width: 2.w,
@@ -311,6 +331,7 @@ class constWidgets {
                 SizedBox(
                   width: 10.w,
                 ),
+                // Left column - stock details
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -369,6 +390,7 @@ class constWidgets {
                   ],
                 ),
                 Expanded(child: SizedBox()),
+                // Right column - P&L and price details
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -378,8 +400,8 @@ class constWidgets {
                       style: TextStyle(
                           fontSize: 13.sp,
                           color: trail1.startsWith("-")
-                              ? Colors.red
-                              : Colors.green),
+                              ? Colors.red     // Red for negative P&L
+                              : Colors.green), // Green for positive P&L
                     ),
                     SizedBox(
                       height: 6.h,
@@ -433,6 +455,8 @@ class constWidgets {
     );
   }
 
+  /// Creates a standard green action button used across the app
+  /// Primary call-to-action button for forms, confirmations, and actions
   static greenButton(String text, {Function? onTap}) {
     return Container(
       height: 52.h,
@@ -445,64 +469,68 @@ class constWidgets {
         ),
         style: ButtonStyle(
           foregroundColor: WidgetStateProperty.all(Colors.white),
-          backgroundColor: WidgetStateProperty.all(Color(0xFF1DB954)),
+          backgroundColor: WidgetStateProperty.all(Color(0xFF1DB954)), // Brand green color
         ),
       ),
     );
   }
 
+  /// Creates a standard text input field with optional phone number validation
+  /// Used in forms throughout the app, with specialized handling for phone numbers
   static Widget textField(String hintText, TextEditingController controller,
       {bool isPhoneNumber = false,
-      bool isCapital = false,
-      required bool isDark}) {
+        bool isCapital = false,
+        required bool isDark}) {
     return TextFormField(
       textCapitalization:
-          isCapital ? TextCapitalization.characters : TextCapitalization.none,
+      isCapital ? TextCapitalization.characters : TextCapitalization.none,
       controller: controller,
       keyboardType: isPhoneNumber ? TextInputType.phone : TextInputType.text,
       inputFormatters: isPhoneNumber
           ? [
-              FilteringTextInputFormatter.digitsOnly,
-              LengthLimitingTextInputFormatter(10),
-            ]
+        FilteringTextInputFormatter.digitsOnly, // Only allow digits for phone numbers
+        LengthLimitingTextInputFormatter(10),  // Limit to 10 digits for Indian phone numbers
+      ]
           : [],
       onChanged: isPhoneNumber
           ? (value) {
-              if (value.isNotEmpty && !RegExp(r'^[6789]').hasMatch(value)) {
-                controller.clear();
-                if (navigatorKey.currentContext != null) {
-                  ScaffoldMessenger.of(navigatorKey.currentContext!)
-                      .showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        "Phone number must start with 6, 7, 8, or 9",
-                        style: TextStyle(
-                            color: isDark ? Colors.white : Colors.black),
-                      ),
-                      duration: Duration(seconds: 1),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-              }
-            }
+        // Validation for Indian phone numbers (must start with 6, 7, 8, or 9)
+        if (value.isNotEmpty && !RegExp(r'^[6789]').hasMatch(value)) {
+          controller.clear();
+          if (navigatorKey.currentContext != null) {
+            ScaffoldMessenger.of(navigatorKey.currentContext!)
+                .showSnackBar(
+              SnackBar(
+                content: Text(
+                  "Phone number must start with 6, 7, 8, or 9",
+                  style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black),
+                ),
+                duration: Duration(seconds: 1),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        }
+      }
           : null,
       validator: isPhoneNumber
           ? (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your phone number';
-              }
-              if (!RegExp(r'^[6789]\d{9}$').hasMatch(value)) {
-                return 'Enter a valid 10-digit phone number starting with 6, 7, 8, or 9';
-              }
-              return null;
-            }
+        // Validation logic for phone number fields
+        if (value == null || value.isEmpty) {
+          return 'Please enter your phone number';
+        }
+        if (!RegExp(r'^[6789]\d{9}$').hasMatch(value)) {
+          return 'Enter a valid 10-digit phone number starting with 6, 7, 8, or 9';
+        }
+        return null;
+      }
           : null,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         labelText: hintText,
         labelStyle:
-            TextStyle(color: isDark ? const Color(0xffC9CACC) : Colors.black),
+        TextStyle(color: isDark ? const Color(0xffC9CACC) : Colors.black),
         hintStyle: TextStyle(
             color: isDark ? const Color(0xFFC9CACC) : Colors.black,
             fontSize: 15.sp),
@@ -517,40 +545,44 @@ class constWidgets {
           borderRadius: BorderRadius.all(Radius.circular(30.r)),
           borderSide: BorderSide(color: Colors.green, width: 2.0),
         ),
+        // Custom prefix for phone number fields to show country code
         prefixIcon: isPhoneNumber
             ? Padding(
-                padding: EdgeInsets.only(left: 16.w),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      "+91",
-                      style: TextStyle(
-                          color:
-                              isDark ? const Color(0xffC9CACC) : Colors.black,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    SizedBox(width: 8.w), // Adds spacing
-                    Container(
-                      width: 1, // Thin vertical line
-                      height: 50, // Matches text height
-                      color: Color(0XFF2F2F2F),
-                    ),
-                    SizedBox(width: 8.w), // Adds spacing before text field
-                  ],
-                ),
-              )
+          padding: EdgeInsets.only(left: 16.w),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "+91", // India country code
+                style: TextStyle(
+                    color:
+                    isDark ? const Color(0xffC9CACC) : Colors.black,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500),
+              ),
+              SizedBox(width: 8.w), // Adds spacing
+              Container(
+                width: 1, // Thin vertical line
+                height: 50, // Matches text height
+                color: Color(0XFF2F2F2F),
+              ),
+              SizedBox(width: 8.w), // Adds spacing before text field
+            ],
+          ),
+        )
             : null,
         prefixIconConstraints:
-            isPhoneNumber ? BoxConstraints(minWidth: 20) : null,
+        isPhoneNumber ? BoxConstraints(minWidth: 20) : null,
       ),
       style: TextStyle(
           color: isDark ? Colors.white : Colors.black, fontSize: 16.sp),
     );
   }
 
+  /// Creates a "Need Help?" button with bottom sheet support options
+  /// Used throughout the app to provide access to support resources
   static needHelpButton(BuildContext context) {
+    // Helper function to show FAQ bottom sheet with expandable items
     void showFAQBottomSheet(BuildContext context) {
       List<Map<String, String>> faqList = [
         {
@@ -617,12 +649,12 @@ class constWidgets {
                         itemBuilder: (context, index) {
                           return Padding(
                             padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Column(
                               children: [
                                 ExpansionTile(
                                   tilePadding:
-                                      EdgeInsets.symmetric(horizontal: 8),
+                                  EdgeInsets.symmetric(horizontal: 8),
                                   title: Text(
                                     faqList[index]['question']!,
                                     style: TextStyle(
@@ -645,7 +677,7 @@ class constWidgets {
                                 Divider(
                                     color: Colors.grey.shade800,
                                     height:
-                                        1), // Thin separator like your image
+                                    1), // Thin separator like your image
                               ],
                             ),
                           );
@@ -665,6 +697,7 @@ class constWidgets {
       padding: const EdgeInsets.only(bottom: 8.0),
       child: TextButton(
           onPressed: () {
+            // Show help options in bottom sheet
             showModalBottomSheet(
               context: context,
               shape: RoundedRectangleBorder(
@@ -683,8 +716,9 @@ class constWidgets {
                       ListView(
                         shrinkWrap: true, // Prevent infinite height
                         physics:
-                            NeverScrollableScrollPhysics(), // Disable scrolling in this ListView
+                        NeverScrollableScrollPhysics(), // Disable scrolling in this ListView
                         children: [
+                          // Support Portal option
                           ListTile(
                             leading: SizedBox(
                               height: 25.h,
@@ -711,6 +745,7 @@ class constWidgets {
                           Divider(
                               color: Colors.grey[800],
                               thickness: 1), // Divider between items
+                          // Contact Us option
                           ListTile(
                             leading: SizedBox(
                                 height: 25.h,
@@ -731,6 +766,7 @@ class constWidgets {
                           ),
                           Divider(
                               color: Colors.grey[800], thickness: 1), // Divider
+                          // FAQ option
                           ListTile(
                             leading: SizedBox(
                                 height: 25.h,
@@ -763,6 +799,8 @@ class constWidgets {
     );
   }
 
+  /// Creates a progress bar for multi-step processes like onboarding/registration
+  /// Shows current progress with green bars for completed steps
   static topProgressBar(int index, int filled, BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -781,6 +819,8 @@ class constWidgets {
     );
   }
 
+  /// Creates a choice chip with checkbox for filter selections
+  /// Used in filter UIs and selection screens
   static choiceChipiWithCheckbox(
       String text, bool val, BuildContext context, bool isDark) {
     return Container(
@@ -799,7 +839,7 @@ class constWidgets {
                 },
                 size: 20.0, // Adjust size as needed
                 checkmarkPadding:
-                    4, // Adjust padding around the checkmark (e.g., 2.0, 4.0, or 6.0)
+                4, // Adjust padding around the checkmark (e.g., 2.0, 4.0, or 6.0)
               )),
           SizedBox(
             width: 5.w,
@@ -826,16 +866,18 @@ class constWidgets {
           width: 1.5, // Slightly thicker border for visibility
         ),
         borderRadius:
-            BorderRadius.circular(8.r), // Larger rounded corners to match image
+        BorderRadius.circular(8.r), // Larger rounded corners to match image
         color: val
             ? Colors.green.withOpacity(0.2)
             : isDark
-                ? Color(0xff121413)
-                : Color(0xffF4F4F9), // Black background to match image
+            ? Color(0xff121413)
+            : Color(0xffF4F4F9), // Black background to match image
       ),
     );
   }
 
+  /// Creates a simple choice chip without checkbox for selection UIs
+  /// Used for timeframe selection, order type filters, etc.
   static choiceChip(
       String text, bool val, BuildContext context, double width, bool isDark) {
     return Container(
@@ -858,12 +900,12 @@ class constWidgets {
           color: val
               ? Colors.green
               : isDark
-                  ? Color(0xff2F2F2F)
-                  : Color(0xffD1D5DB), // Gray border to match image
+              ? Color(0xff2F2F2F)
+              : Color(0xffD1D5DB), // Gray border to match image
           width: 1.5, // Slightly thicker border for visibility
         ),
         borderRadius:
-            BorderRadius.circular(3.r), // Larger rounded corners to match image
+        BorderRadius.circular(3.r), // Larger rounded corners to match image
         color: val
             ? (isDark ? Colors.green.withOpacity(0.2) : Colors.green.shade100)
             : (isDark ? const Color(0xFF121413) : Colors.grey.shade100),
@@ -873,6 +915,9 @@ class constWidgets {
   }
 }
 
+/// CustomCheckbox - A custom implementation of checkbox widget
+/// Used for more customizable checkboxes throughout the app UI
+/// Provides better control over size, padding, and appearance
 class CustomCheckbox extends StatefulWidget {
   final bool value;
   final ValueChanged<bool?> onChanged;
@@ -891,6 +936,8 @@ class CustomCheckbox extends StatefulWidget {
   State<CustomCheckbox> createState() => _CustomCheckboxState();
 }
 
+/// State class for the CustomCheckbox widget
+/// Handles display and interaction for the custom checkbox
 class _CustomCheckboxState extends State<CustomCheckbox> {
   @override
   Widget build(BuildContext context) {
@@ -904,33 +951,35 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
               color: widget.value
                   ? Colors.green
                   : Colors.grey
-                      .shade800, // Matches 'side: BorderSide(color: Colors.grey.shade800, width: 1)'
+                  .shade800, // Matches 'side: BorderSide(color: Colors.grey.shade800, width: 1)'
               width: 1,
             ),
             borderRadius: BorderRadius.circular(6
                 .r), // Matches 'shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.r))'
             color: Colors.transparent
-            // Matches 'activeColor: Colors.green' and 'fillColor: WidgetStateProperty.all(Colors.transparent)'
-            ),
+          // Matches 'activeColor: Colors.green' and 'fillColor: WidgetStateProperty.all(Colors.transparent)'
+        ),
         child: widget.value
             ? Padding(
-                padding: EdgeInsets.all(
-                    widget.checkmarkPadding), // Padding around checkmark
-                child: Icon(
-                  Icons.check,
-                  color: Colors
-                      .green, // Matches 'checkColor: Colors.green' (changed to white for better visibility on green background)
-                  size: widget.size -
-                      (widget.checkmarkPadding *
-                          2.4), // Adjust size to fit padding
-                ),
-              )
+          padding: EdgeInsets.all(
+              widget.checkmarkPadding), // Padding around checkmark
+          child: Icon(
+            Icons.check,
+            color: Colors
+                .green, // Matches 'checkColor: Colors.green' (changed to white for better visibility on green background)
+            size: widget.size -
+                (widget.checkmarkPadding *
+                    2.4), // Adjust size to fit padding
+          ),
+        )
             : null,
       ),
     );
   }
 }
 
+/// CustomRadioButton - A custom implementation of radio button widget
+/// Used to create consistent radio selection UI throughout the app
 class CustomRadioButton extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
@@ -951,18 +1000,20 @@ class CustomRadioButton extends StatelessWidget {
         height: 14.h,
         decoration: isSelected
             ? BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.green, width: 3),
-              )
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.green, width: 3),
+        )
             : BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Color(0xff2F2F2F), width: 2),
-              ), // Blank when not selected
+          shape: BoxShape.circle,
+          border: Border.all(color: Color(0xff2F2F2F), width: 2),
+        ), // Blank when not selected
       ),
     );
   }
 }
 
+/// CustomTabBar - A custom tab bar widget with animated selection indicator
+/// Used to create consistent tab UI across the app
 class CustomTabBar extends StatefulWidget {
   final TabController tabController;
   final List<String> options;
@@ -975,6 +1026,8 @@ class CustomTabBar extends StatefulWidget {
   _CustomTabBarState createState() => _CustomTabBarState();
 }
 
+/// State class for the CustomTabBar widget
+/// Handles tab selection and animated indicator
 class _CustomTabBarState extends State<CustomTabBar> {
   @override
   void initState() {
@@ -992,6 +1045,7 @@ class _CustomTabBarState extends State<CustomTabBar> {
       padding: EdgeInsets.symmetric(vertical: 2.h),
       child: Column(
         children: [
+          // Tab options row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(widget.options.length, (index) {
@@ -1012,8 +1066,8 @@ class _CustomTabBarState extends State<CustomTabBar> {
                           color: isSelected
                               ? Color(0xff1DB954)
                               : isDark
-                                  ? Color(0xffEBEEF5)
-                                  : Colors.black,
+                              ? Color(0xffEBEEF5)
+                              : Colors.black,
                         ),
                       ),
                       SizedBox(height: 5.h),
@@ -1023,18 +1077,20 @@ class _CustomTabBarState extends State<CustomTabBar> {
               );
             }),
           ),
-          // Green underline effect divided equally
+          // Animated underline indicator
           LayoutBuilder(
             builder: (context, constraints) {
               double segmentWidth =
                   constraints.maxWidth / widget.options.length;
               return Stack(
                 children: [
+                  // Background divider
                   Container(
                     height: 1.h,
                     width: double.infinity,
                     color: isDark ? Color(0xff2f2f2f) : Color(0xffD1D5DB),
                   ),
+                  // Animated green indicator
                   AnimatedPositioned(
                     duration: Duration(milliseconds: 300),
                     left: widget.tabController.index * segmentWidth,

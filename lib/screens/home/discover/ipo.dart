@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sapphire/utils/constWidgets.dart'; // Assuming this file contains your custom widgets
-import '../../../utils/ipo_tile.dart'; // Assuming this file contains your ipoTile widget
+import '../../../utils/ipoTile.dart'; // Assuming this file contains your ipoTile widget
 
 class IPO extends StatefulWidget {
   const IPO({super.key});

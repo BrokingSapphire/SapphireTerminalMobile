@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sapphire/utils/toogle.dart';
+import 'package:sapphire/utils/toggle.dart';
 
 class permissionScreen extends StatefulWidget {
   const permissionScreen({super.key});
