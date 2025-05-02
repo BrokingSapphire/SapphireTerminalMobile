@@ -145,20 +145,16 @@ class _PersonalDetailsState extends State<PersonalDetails> {
 
               // Screen title
               Text("Personal Details",
-                  style: TextStyle(
-                      fontSize: 22.sp,
-                      fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : Colors.black)),
+                  style:
+                  TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold)),
               SizedBox(
                 height: 24.h,
               ),
 
               /// Marital status selection section
               Text("Marital Status",
-                  style: TextStyle(
-                      fontSize: 17.sp,
-                      fontWeight: FontWeight.w500,
-                      color: isDark ? Colors.white : Colors.black)),
+                  style:
+                  TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500)),
               SizedBox(height: 16.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -283,9 +279,8 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                       context); // Navigate to other details screen
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: isFormComplete
-                      ? const Color(0xFF1DB954)
-                      : Colors.grey[400], // Green if form complete, gray if not
+                  backgroundColor:
+                  isFormComplete ? Color(0xFF1DB954) : Color(0xff2f2f2f), // Green if form complete, gray if not
                   foregroundColor: Colors.white,
                 ),
                 child: Text("Continue",

@@ -296,9 +296,9 @@ class Assets {
   static const String utilsAppTheme = 'lib/utils/appTheme.dart';
   static const String utilsConstWidgets = 'lib/utils/constWidgets.dart';
   static const String utilsFilters = 'lib/utils/filters.dart';
-  static const String utilsIpoTile = 'lib/utils/ipo_tile.dart';
+  static const String utilsIpoTile = 'lib/utils/ipoTile.dart';
   static const String utilsNaviWithoutAnimation = 'lib/utils/naviWithoutAnimation.dart';
-  static const String utilsToogle = 'lib/utils/toogle.dart';
+  static const String utilsToogle = 'lib/utils/toggle.dart';
   static const String utilsWatchlistTabBar = 'lib/utils/watchlistTabBar.dart';
   static const String watchlistDisclosure = 'lib/screens/home/watchlist/disclosure.dart';
   static const String watchlistWatchlistScreen = 'lib/screens/home/watchlist/watchlistScreen.dart';

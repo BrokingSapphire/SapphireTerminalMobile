@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/screens/home/discover/discover.dart';
-import 'package:sapphire/screens/home/orders/orderSection.dart';
-import 'package:sapphire/screens/home/trades/tradesScreen.dart';
+import 'package:sapphire/screens/home/orders/orders.dart';
+import 'package:sapphire/screens/home/trades/trades.dart';
 import 'package:sapphire/utils/constWidgets.dart';
-import 'discover/accountsScreen.dart';
-import 'holdings/holdingsScreen.dart';
-import 'orders/createGttScreen.dart';
+import '../account/account.dart';
+import 'holdings/holdings.dart';
+import 'orders/createGTT.dart';
 import 'orders/gttScreenWrapper.dart';
-import 'watchlist/watchlistScreen.dart';
+import 'watchlist/watchlist.dart';
 
 class HomeWrapper extends StatefulWidget {
   const HomeWrapper({super.key});

@@ -1,25 +1,32 @@
+// File: filters.dart
+// Description: Filter configuration and UI for the Sapphire: Terminal Trading application.
+// This file implements the filtering system used across different sections of the app.
+
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sapphire/utils/constWidgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
+import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
+import 'package:flutter_svg/flutter_svg.dart'; // For SVG image rendering
 
-import 'constWidgets.dart'; // Import flutter_svg
+import 'constWidgets.dart'; // Import for direct access to the widgets
 
-/// 🧩 Model for each filter option
+/// FilterOption - Model class for each filter option configuration
+/// Contains the filter label, available sort directions, and associated icon
 class FilterOption {
-  final String label;
-  final List<String> sortDirections;
-  final String? svgPath; // Optional SVG path for the filter icon
+  final String label;            // Display name of the filter option
+  final List<String> sortDirections; // Available sort directions (Ascending/Descending/etc.)
+  final String? svgPath;         // Optional SVG path for the filter icon
 
   FilterOption({
     required this.label,
     required this.sortDirections,
-    this.svgPath, // Add the optional SVG path
+    this.svgPath, // Optional SVG path
   });
 }
 
-/// 📦 Filter configuration for all pages
+/// Filter configuration map for all pages in the application
+/// Each page key maps to a list of available filter options for that section
 final Map<String, List<FilterOption>> filterConfig = {
+  // Watchlist screen filter options
   'watchlist': [
     FilterOption(
         label: 'Price',
@@ -46,6 +53,8 @@ final Map<String, List<FilterOption>> filterConfig = {
         sortDirections: ['A–Z', 'Z–A'],
         svgPath: 'assets/svgs/alphabetical.svg'),
   ],
+
+  // Equity holdings screen filter options
   'equity': [
     FilterOption(
         label: 'Current Value',
@@ -84,6 +93,8 @@ final Map<String, List<FilterOption>> filterConfig = {
         sortDirections: ['A–Z', 'Z–A'],
         svgPath: 'assets/svgs/grid-2x2.svg'),
   ],
+
+  // Open positions screen filter options
   'positions': [
     FilterOption(
         label: 'Net P&L (₹)',
@@ -122,6 +133,8 @@ final Map<String, List<FilterOption>> filterConfig = {
         sortDirections: ['A–Z', 'Z–A'],
         svgPath: 'assets/svgs/globe.svg'),
   ],
+
+  // Mutual funds screen filter options
   'mutual_funds': [
     FilterOption(
         label: 'Current Value',
@@ -156,6 +169,8 @@ final Map<String, List<FilterOption>> filterConfig = {
         sortDirections: ['A–Z', 'Z–A'],
         svgPath: 'assets/svgs/layers.svg'),
   ],
+
+  // Closed trades screen filter options
   'closed_trades': [
     FilterOption(
         label: 'Date Posted',
@@ -190,6 +205,8 @@ final Map<String, List<FilterOption>> filterConfig = {
         sortDirections: ['A–Z', 'Z–A'],
         svgPath: 'assets/svgs/segment.svg'),
   ],
+
+  // Orders screen filter options
   'orders': [
     FilterOption(
       label: 'Time Placed',
@@ -219,15 +236,24 @@ final Map<String, List<FilterOption>> filterConfig = {
   ]
 };
 
+/// Shows a modal bottom sheet with filter options for the specified page
+/// Allows users to select a sort option and direction for data display
+/// 
+/// Parameters:
+/// - context: The BuildContext for showing the bottom sheet
+/// - pageKey: The key to access the appropriate filters from filterConfig
+/// - onApply: Callback function to handle the selected filters
+/// - isDark: Flag for dark/light theme rendering
 void showFilterBottomSheet({
   required BuildContext context,
   required String pageKey,
   required Function(List<Map<String, String>>) onApply,
   required bool isDark,
 }) {
+  // Get the filter options for the current page
   final options = filterConfig[pageKey] ?? [];
 
-  // Variable to track the selected filter option globally (only one can be selected)
+  // Variables to track the selected filter option and direction
   String? selectedFilterLabel;
   String? selectedDirection;
 
@@ -237,7 +263,7 @@ void showFilterBottomSheet({
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
     ),
-    isScrollControlled: true, // Keep scroll control to ensure correct size
+    isScrollControlled: true, // Allow the sheet to be scrollable and resizable
     builder: (context) {
       return StatefulBuilder(
         builder: (context, setState) {
@@ -246,7 +272,7 @@ void showFilterBottomSheet({
               left: 16.w,
               right: 16.w,
               top: 24.h,
-              bottom: MediaQuery.of(context).viewInsets.bottom + 24.h,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 24.h, // Adjust for keyboard
             ),
             child: Container(
               height: MediaQuery.of(context).size.height *
@@ -255,6 +281,7 @@ void showFilterBottomSheet({
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    // Drag handle at the top of the sheet
                     Center(
                       child: Container(
                         height: 4.h,
@@ -266,28 +293,30 @@ void showFilterBottomSheet({
                         ),
                       ),
                     ),
+                    // Header text
                     Text(
                       "Sort By",
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: isDark ? Colors.white : Colors.black,
-                            fontSize: 18.sp,
-                          ),
+                        color: isDark ? Colors.white : Colors.black,
+                        fontSize: 18.sp,
+                      ),
                     ),
                     SizedBox(height: 24.h),
+                    // Filter options list
                     ...options.map((option) {
                       // Determine if this filter is the one currently selected
                       final isSelected = selectedFilterLabel == option.label;
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          // Filter option label with icon
                           Row(
                             children: [
-                              // If an SVG is provided, show it; otherwise, show default icon
+                              // Display SVG icon if available
                               if (option.svgPath != null)
                                 SvgPicture.asset(
-                                  option.svgPath!, // Load the SVG from the path
-                                  height: 20
-                                      .h, // You can adjust the size as per your requirement
+                                  option.svgPath!,
+                                  height: 20.h,
                                   width: 20.w,
                                   color: isDark ? Colors.white : Colors.black,
                                 )
@@ -304,32 +333,34 @@ void showFilterBottomSheet({
                             ],
                           ),
                           SizedBox(height: 12.h),
+                          // Sort direction options (Ascending/Descending/etc.)
                           Row(
                             children: option.sortDirections.map((dir) {
-                              // If this filter is selected, then this direction can be chosen
+                              // Check if this direction is selected for this filter
                               final isDirectionSelected =
                                   isSelected && selectedDirection == dir;
 
                               return Expanded(
                                 child: Padding(
                                   padding:
-                                      EdgeInsets.symmetric(horizontal: 6.w),
+                                  EdgeInsets.symmetric(horizontal: 6.w),
                                   child: GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        // If this filter is selected, update the direction
+                                        // Update selection state
                                         if (!isSelected) {
                                           selectedFilterLabel = option.label;
                                         }
                                         selectedDirection = dir;
                                       });
                                     },
+                                    // Display choice chip with selection state
                                     child: constWidgets.choiceChip(
-                                      dir, // The direction being displayed ("Ascending" or "Descending")
-                                      isDirectionSelected, // Highlight the selected option
+                                      dir, // Direction label (Ascending/Descending)
+                                      isDirectionSelected, // Whether this direction is selected
                                       context,
-                                      130.w,
-                                      isDark,
+                                      130.w, // Width of the chip
+                                      isDark, // Theme mode
                                     ),
                                   ),
                                 ),

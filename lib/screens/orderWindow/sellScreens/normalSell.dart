@@ -1,0 +1,469 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sapphire/screens/orderWindow/SellScreens/sellWrapper.dart';
+import 'package:sapphire/utils/animatedToggles.dart';
+import 'package:sapphire/utils/constWidgets.dart';
+
+class NormalSellScreen extends StatefulWidget {
+  final String tabName;
+  NormalSellScreen(this.tabName);
+
+  @override
+  State<NormalSellScreen> createState() => _NormalSellScreenState();
+}
+
+class _NormalSellScreenState extends State<NormalSellScreen> {
+  bool _stopLoss = false;
+  bool _gtt = false;
+
+  bool isExpanded = false;
+  bool isMarketSelected = true;
+  int _selectedIndex = 0;
+  int _validityOptionIndex = 0; // 0: Day, 1: IOC, 2: Minutes
+  int quantity = 1;
+
+  TextEditingController priceController =
+      TextEditingController(text: "6643.80");
+
+  final List<String> _options = ["Delivery", "Intraday", "MTF"];
+
+  @override
+  Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Delivery / Intraday / MTF Tabs
+            sellAnimatedToggle(
+              options: _options,
+              selectedIndex: _selectedIndex,
+              onToggle: (index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+            ),
+            SizedBox(height: 20.h),
+
+            // Quantity
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "Quantity",
+                style: TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w400,
+                    color: isDark ? Colors.white : Colors.black),
+              ),
+            ),
+            SizedBox(height: 6.h),
+            Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: isDark
+                            ? Color(0xff2f2f2f)
+                            : Color(0xff2f2f2f).withOpacity(0.5)),
+                    borderRadius: BorderRadius.circular(6.r),
+                  ),
+                  height: 50.h,
+                  width: 185.w,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.remove,
+                            color: isDark ? Colors.white : Colors.black),
+                        onPressed: () {
+                          setState(() {
+                            if (quantity > 1) quantity--;
+                          });
+                        },
+                      ),
+                      Text(
+                        quantity.toString(),
+                        style: TextStyle(
+                            fontSize: 15.sp,
+                            color: isDark ? Colors.white : Colors.black),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.add,
+                            color: isDark ? Colors.white : Colors.black),
+                        onPressed: () {
+                          setState(() {
+                            quantity++;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 10.w),
+                Expanded(
+                  child: sellScreenToggle(
+                    isFirstOptionSelected: isMarketSelected,
+                    onToggle: (value) {
+                      setState(() {
+                        isMarketSelected = value;
+                      });
+                    },
+                    firstOption: "Market",
+                    secondOption: "Limit",
+                  ),
+                ),
+              ],
+            ),
+
+            SizedBox(height: 16.h),
+
+            // Market Label
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "Market",
+                style: TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w400,
+                    color: isDark ? Colors.white : Colors.black),
+              ),
+            ),
+            SizedBox(height: 5.h),
+
+            // Price Input
+            TextField(
+              controller: priceController,
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              style: TextStyle(
+                  fontSize: 15.sp,
+                  color: isDark ? Color(0xffc9cacc) : Colors.black),
+              decoration: InputDecoration(
+                prefixIcon: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.w),
+                  child: Text(
+                    "₹",
+                    style: TextStyle(
+                        fontSize: 18.sp,
+                        color: isDark ? Colors.white : Colors.black),
+                  ),
+                ),
+                prefixIconConstraints:
+                    BoxConstraints(minWidth: 0, minHeight: 0),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
+                filled: true,
+                fillColor: Colors.transparent,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.r),
+                  borderSide: BorderSide(
+                      color: isDark
+                          ? Color(0xff2f2f2f)
+                          : Color(0xff2f2f2f).withOpacity(0.5)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.r),
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+                hintText: "Enter Price",
+                hintStyle:
+                    TextStyle(color: Colors.grey.shade600, fontSize: 15.sp),
+              ),
+            ),
+
+            SizedBox(height: 16.h),
+
+            // Trigger Price Section
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Trigger Price",
+                  style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w400,
+                      color: isDark ? Colors.white : Colors.black),
+                ),
+                Text(
+                  "Qty 1 per leg",
+                  style: TextStyle(
+                      fontSize: 11.sp,
+                      color: isDark ? Color(0xffc9cacc) : Colors.black),
+                ),
+              ],
+            ),
+            SizedBox(height: 5.h),
+            TextField(
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              style: TextStyle(
+                  fontSize: 16.sp, color: isDark ? Colors.white : Colors.black),
+              decoration: InputDecoration(
+                prefixIcon: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.w),
+                  child: Text(
+                    "₹",
+                    style: TextStyle(
+                        fontSize: 18.sp,
+                        color: isDark ? Colors.white : Colors.black),
+                  ),
+                ),
+                prefixIconConstraints:
+                    BoxConstraints(minWidth: 0, minHeight: 0),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.r),
+                  borderSide: BorderSide(
+                      color: isDark
+                          ? Color(0xff2f2f2f)
+                          : Color(0xff2f2f2f).withOpacity(0.5)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.r),
+                  borderSide: BorderSide(
+                      color: isDark
+                          ? Colors.white
+                          : Colors.black.withOpacity(0.5)),
+                ),
+                hintStyle: TextStyle(
+                  fontSize: 15.sp,
+                  color: Colors.grey.shade600,
+                ),
+              ),
+            ),
+
+            SizedBox(height: 15.h),
+
+            // Stoploss and GTT
+            Row(
+              children: [
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    setState(() {
+                      _stopLoss = !_stopLoss;
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      sellScreenCheckbox(
+                        size: 20,
+                        value: _stopLoss,
+                        onChanged: (_) {
+                          setState(() {
+                            _stopLoss = !_stopLoss;
+                          });
+                        },
+                      ),
+                      SizedBox(width: 10.w),
+                      Text("StopLoss",
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: isDark ? Colors.white : Colors.black)),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 5.w),
+                Icon(Icons.info_outline,
+                    size: 15, color: isDark ? Color(0xffc9cacc) : Colors.black),
+                SizedBox(width: 35.w),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _gtt = !_gtt;
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      sellScreenCheckbox(
+                        size: 20,
+                        value: _gtt,
+                        onChanged: (_) {
+                          setState(() {
+                            _gtt = !_gtt;
+                          });
+                        },
+                      ),
+                      SizedBox(width: 10.w),
+                      Text("GTT",
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: isDark ? Colors.white : Colors.black)),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 5.w),
+                Icon(Icons.info_outline,
+                    size: 15, color: isDark ? Color(0xffc9cacc) : Colors.black),
+              ],
+            ),
+
+            SizedBox(height: 18.h),
+
+            // Expandable Section Header
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  isExpanded = !isExpanded;
+                });
+              },
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Row(
+                  children: [
+                    Text(
+                      "Show Validity/Disclose Qty",
+                      style: TextStyle(
+                          fontSize: 15.sp,
+                          color: isDark ? Colors.white : Colors.black),
+                    ),
+                    Icon(isExpanded
+                        ? Icons.keyboard_arrow_up
+                        : Icons.keyboard_arrow_down),
+                  ],
+                ),
+              ),
+            ),
+
+            // Expandable Content
+            AnimatedCrossFade(
+              firstChild: SizedBox.shrink(),
+              secondChild: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 24.h),
+                  Row(
+                    children: [
+                      sellRadioButton(
+                          isSelected: _validityOptionIndex == 0,
+                          onTap: () {
+                            setState(() {
+                              _validityOptionIndex = 0;
+                            });
+                          }),
+                      SizedBox(width: 14.w),
+                      Text("Day",
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: isDark ? Colors.white : Colors.black)),
+                      SizedBox(width: 14.w),
+                      sellRadioButton(
+                          isSelected: _validityOptionIndex == 1,
+                          onTap: () {
+                            setState(() {
+                              _validityOptionIndex = 1;
+                            });
+                          }),
+                      SizedBox(width: 14.w),
+                      Text("IOC",
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: isDark ? Colors.white : Colors.black)),
+                      SizedBox(width: 14.w),
+                      sellRadioButton(
+                          isSelected: _validityOptionIndex == 2,
+                          onTap: () {
+                            setState(() {
+                              _validityOptionIndex = 2;
+                            });
+                          }),
+                      SizedBox(width: 14.w),
+                      Text("Minutes",
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: isDark ? Colors.white : Colors.black)),
+                    ],
+                  ),
+                  SizedBox(height: 24.h),
+                  Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Disclose Quantity",
+                              style: TextStyle(
+                                  fontSize: 15.sp,
+                                  color: isDark ? Colors.white : Colors.black)),
+                          SizedBox(height: 6.h),
+                          Container(
+                            height: 50.h,
+                            width: 160.w,
+                            child: TextField(
+                              controller: TextEditingController(text: "0"),
+                              keyboardType: TextInputType.number,
+                              style: TextStyle(
+                                  fontSize: 17.sp,
+                                  color: isDark ? Colors.white : Colors.black),
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 10.w, vertical: 15.h),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(6.r),
+                                  borderSide: BorderSide(
+                                      color: isDark
+                                          ? Colors.grey.shade700
+                                          : Colors.black),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(6.r),
+                                  borderSide: BorderSide(
+                                      color:
+                                          isDark ? Colors.white : Colors.black),
+                                ),
+                                hintText: "Enter value",
+                                hintStyle: TextStyle(
+                                    fontSize: 17.sp,
+                                    color: Colors.grey.shade600),
+                                isDense: true,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: 10.w),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Minutes",
+                              style: TextStyle(
+                                  fontSize: 15.sp,
+                                  color: isDark ? Colors.white : Colors.black)),
+                          SizedBox(height: 6.h),
+                          Container(
+                            height: 50.h,
+                            width: 160.w,
+                            decoration: BoxDecoration(
+                              color: isDark
+                                  ? Color(0xff2f2f2f)
+                                  : Color(0xFFF4F4F9),
+                              borderRadius: BorderRadius.circular(6.r),
+                            ),
+                            padding: EdgeInsets.only(left: 8.0),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "0",
+                              style: TextStyle(
+                                fontSize: 17.sp,
+                                color:
+                                    isDark ? Color(0xffc9cacc) : Colors.black,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              crossFadeState: isExpanded
+                  ? CrossFadeState.showSecond
+                  : CrossFadeState.showFirst,
+              duration: Duration(milliseconds: 200),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
