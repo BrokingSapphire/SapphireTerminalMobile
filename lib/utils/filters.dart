@@ -12,9 +12,10 @@ import 'constWidgets.dart'; // Import for direct access to the widgets
 /// FilterOption - Model class for each filter option configuration
 /// Contains the filter label, available sort directions, and associated icon
 class FilterOption {
-  final String label;            // Display name of the filter option
-  final List<String> sortDirections; // Available sort directions (Ascending/Descending/etc.)
-  final String? svgPath;         // Optional SVG path for the filter icon
+  final String label; // Display name of the filter option
+  final List<String>
+      sortDirections; // Available sort directions (Ascending/Descending/etc.)
+  final String? svgPath; // Optional SVG path for the filter icon
 
   FilterOption({
     required this.label,
@@ -238,7 +239,7 @@ final Map<String, List<FilterOption>> filterConfig = {
 
 /// Shows a modal bottom sheet with filter options for the specified page
 /// Allows users to select a sort option and direction for data display
-/// 
+///
 /// Parameters:
 /// - context: The BuildContext for showing the bottom sheet
 /// - pageKey: The key to access the appropriate filters from filterConfig
@@ -272,7 +273,8 @@ void showFilterBottomSheet({
               left: 16.w,
               right: 16.w,
               top: 24.h,
-              bottom: MediaQuery.of(context).viewInsets.bottom + 24.h, // Adjust for keyboard
+              bottom: MediaQuery.of(context).viewInsets.bottom +
+                  24.h, // Adjust for keyboard
             ),
             child: Container(
               height: MediaQuery.of(context).size.height *
@@ -297,9 +299,9 @@ void showFilterBottomSheet({
                     Text(
                       "Sort By",
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: isDark ? Colors.white : Colors.black,
-                        fontSize: 18.sp,
-                      ),
+                            color: isDark ? Colors.white : Colors.black,
+                            fontSize: 18.sp,
+                          ),
                     ),
                     SizedBox(height: 24.h),
                     // Filter options list
@@ -316,8 +318,8 @@ void showFilterBottomSheet({
                               if (option.svgPath != null)
                                 SvgPicture.asset(
                                   option.svgPath!,
-                                  height: 20.h,
-                                  width: 20.w,
+                                  height: 16.h,
+                                  width: 16.w,
                                   color: isDark ? Colors.white : Colors.black,
                                 )
                               else
@@ -327,12 +329,12 @@ void showFilterBottomSheet({
                                 option.label,
                                 style: TextStyle(
                                   color: isDark ? Colors.white : Colors.black,
-                                  fontSize: 16.sp,
+                                  fontSize: 13.sp,
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(height: 12.h),
+                          SizedBox(height: 6.h),
                           // Sort direction options (Ascending/Descending/etc.)
                           Row(
                             children: option.sortDirections.map((dir) {
@@ -342,8 +344,9 @@ void showFilterBottomSheet({
 
                               return Expanded(
                                 child: Padding(
-                                  padding:
-                                  EdgeInsets.symmetric(horizontal: 6.w),
+                                  padding: EdgeInsets.only(
+                                      // left: 6.w,
+                                      right: 6.w), // Adds 6.w gap on both sides
                                   child: GestureDetector(
                                     onTap: () {
                                       setState(() {
@@ -367,7 +370,8 @@ void showFilterBottomSheet({
                               );
                             }).toList(),
                           ),
-                          SizedBox(height: 20.h),
+
+                          SizedBox(height: 16.h),
                         ],
                       );
                     }).toList(),

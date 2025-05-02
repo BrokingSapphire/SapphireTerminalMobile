@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/utils/constWidgets.dart';
@@ -130,6 +131,8 @@ class _WatchlistTabBarState extends State<WatchlistTabBar> {
             SizedBox(height: 12.h),
             TextField(
               controller: controller,
+              maxLength: 10,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
               decoration: InputDecoration(
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -137,8 +140,9 @@ class _WatchlistTabBarState extends State<WatchlistTabBar> {
                 labelStyle:
                     TextStyle(color: isDark ? Color(0xffC9CACC) : Colors.black),
                 hintStyle: TextStyle(
-                    color: isDark ? const Color(0xFFC9CACC) : Colors.black,
-                    fontSize: 15.sp),
+                  color: isDark ? const Color(0xFFC9CACC) : Colors.black,
+                  fontSize: 15.sp,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30.r)),
                 ),
@@ -149,6 +153,18 @@ class _WatchlistTabBarState extends State<WatchlistTabBar> {
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30.r)),
                   borderSide: const BorderSide(color: Colors.green, width: 2.0),
+                ),
+                counter: ValueListenableBuilder(
+                  valueListenable: controller,
+                  builder: (context, value, child) {
+                    return Text(
+                      "${controller.text.length}/10",
+                      style: TextStyle(
+                        color: isDark ? Color(0xFFC9CACC) : Colors.black,
+                        fontSize: 12.sp,
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
@@ -222,6 +238,8 @@ class _WatchlistTabBarState extends State<WatchlistTabBar> {
               SizedBox(height: 12.h),
               TextField(
                 controller: controller,
+                maxLength: 10,
+                maxLengthEnforcement: MaxLengthEnforcement.enforced,
                 decoration: InputDecoration(
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -310,6 +328,8 @@ class _WatchlistTabBarState extends State<WatchlistTabBar> {
             ),
             SizedBox(height: 12.h),
             TextField(
+                maxLength: 50,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
               controller: controller,
               decoration: InputDecoration(
                 contentPadding:

@@ -102,9 +102,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider =
-        Provider.of<ThemeProvider>(context); // 👈 Connect theme
-
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return ScreenUtilInit(
       designSize: const Size(393, 852),
       minTextAdapt: true,
@@ -115,7 +113,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: AppThemes.lightTheme,
           darkTheme: AppThemes.darkTheme,
-          themeMode: themeProvider.themeMode, // 👈 Dynamic theme mode
+          themeMode: themeProvider.themeMode,
           home: InitialScreen(),
           // home: BuyScreenWrapper(),
         );

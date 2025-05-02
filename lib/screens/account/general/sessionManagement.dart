@@ -138,14 +138,6 @@ class _SessionManagementState extends State<SessionManagement> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 10.h),
-                Text(
-                  "Application session",
-                  style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w600,
-                      color: isDark ? Colors.white : Colors.black),
-                ),
-                SizedBox(height: 10.h),
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -153,12 +145,12 @@ class _SessionManagementState extends State<SessionManagement> {
                       color: isDark ? Color(0xff121413) : Color(0xffF4F4F9)),
                   child: Padding(
                     padding: EdgeInsets.only(
-                        left: 16.w, right: 16.w, top: 8.h, bottom: 4.h),
+                        left: 16.w, right: 16.w, top: 14.h, bottom: 4.h),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "iPhone 15 Pro Max · your current session",
+                          "iPhone 15 Pro Max · Your current session",
                           style: TextStyle(
                               fontSize: 13.sp,
                               fontWeight: FontWeight.w500,

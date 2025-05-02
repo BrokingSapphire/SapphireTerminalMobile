@@ -59,7 +59,7 @@ class _permissionScreenState extends State<permissionScreen> {
                 children: [
                   SizedBox(height: 15.h),
                   Container(
-                    height: 435.h,
+                    // height: 440.h,
                     padding: EdgeInsets.symmetric(horizontal: 0, vertical: 2),
                     decoration: BoxDecoration(
                       color: isDark
@@ -82,7 +82,7 @@ class _permissionScreenState extends State<permissionScreen> {
                             },
                             isDark: isDark),
                         SizedBox(
-                          height: 15.h,
+                          height: 8.h,
                         ),
                         _buildSwitchTile(
                             title: "Storage",
@@ -96,7 +96,7 @@ class _permissionScreenState extends State<permissionScreen> {
                             },
                             isDark: isDark),
                         SizedBox(
-                          height: 15.h,
+                          height: 8.h,
                         ),
                         _buildSwitchTile(
                             title: "Location",
@@ -110,7 +110,7 @@ class _permissionScreenState extends State<permissionScreen> {
                             },
                             isDark: isDark),
                         SizedBox(
-                          height: 15.h,
+                          height: 8.h,
                         ),
                         _buildSwitchTile(
                             title: "SMS Reading",
@@ -124,7 +124,7 @@ class _permissionScreenState extends State<permissionScreen> {
                             },
                             isDark: isDark),
                         SizedBox(
-                          height: 15.h,
+                          height: 8.h,
                         ),
                         _buildSwitchTile(
                             title: "Notification",
@@ -137,9 +137,6 @@ class _permissionScreenState extends State<permissionScreen> {
                               });
                             },
                             isDark: isDark),
-                        SizedBox(
-                          height: 15.h,
-                        ),
                         _buildSwitchTile(
                             title: "Biometric",
                             subtitle:
@@ -151,6 +148,9 @@ class _permissionScreenState extends State<permissionScreen> {
                               });
                             },
                             isDark: isDark),
+                        SizedBox(
+                          height: 10.h,
+                        ),
                       ],
                     ),
                   ),
@@ -170,7 +170,7 @@ class _permissionScreenState extends State<permissionScreen> {
       required Function(bool) onChanged,
       required bool isDark}) {
     return SizedBox(
-      height: 55.h,
+      height: 60.h,
       child: ListTile(
         tileColor: isDark ? Color(0xff121413) : Color(0xffF4F4F9),
         contentPadding: EdgeInsets.symmetric(horizontal: 16.w),

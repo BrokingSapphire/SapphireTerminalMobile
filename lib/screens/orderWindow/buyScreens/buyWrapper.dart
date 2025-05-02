@@ -83,7 +83,7 @@ class _BuyScreenWrapperState extends State<BuyScreenWrapper>
             ),
             actions: [
               Container(
-                margin: EdgeInsets.only(right: 16.w),
+                margin: EdgeInsets.only(right: 8.w),
                 decoration: BoxDecoration(
                   color: isDark ? Color(0xff2F2F2F) : Color(0xfff4f4f9),
                   borderRadius: BorderRadius.circular(6.r),
@@ -237,7 +237,6 @@ class _BuyScreenWrapperState extends State<BuyScreenWrapper>
               )
             ],
           ),
-          SizedBox(height: 10.h),
           Divider(color: isDark ? Color(0xff2f2f2f) : Color(0xffD1D5DB)),
           SizedBox(height: 16.h),
           Padding(
@@ -273,101 +272,113 @@ class _BuyScreenWrapperState extends State<BuyScreenWrapper>
       ),
       bottomNavigationBar: Container(
         color: isDark ? Colors.black : Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        padding: EdgeInsets.symmetric(vertical: 8.h),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Margin Required",
-                      style: TextStyle(
-                          fontSize: 11.sp,
-                          color: isDark ? Color(0xffC9CACC) : Colors.black),
-                    ),
-                    Text(
-                      "₹75.68",
-                      style: TextStyle(
-                          fontSize: 13.sp,
-                          color: isDark ? Colors.white : Colors.black),
-                    ),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Total Charges",
-                      style: TextStyle(
-                          fontSize: 11.sp,
-                          color: isDark ? Color(0xffC9CACC) : Colors.black),
-                    ),
-                    Text(
-                      "₹75.68",
-                      style: TextStyle(
-                          fontSize: 13.sp,
-                          color: isDark ? Colors.white : Colors.black),
-                    ),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Available Margin",
-                      style: TextStyle(
-                          fontSize: 11.sp,
-                          color: isDark ? Color(0xffC9CACC) : Colors.black),
-                    ),
-                    Text(
-                      "₹2,56,897.89",
-                      style: TextStyle(
-                          fontSize: 13.sp,
-                          color: isDark ? Colors.white : Colors.black),
-                    ),
-                  ],
-                ),
-                Icon(
-                  Icons.refresh,
-                  color: widget.isbuy ? Color(0xff1db954) : Colors.red,
-                  size: 22,
-                ),
-              ],
+            Divider(
+              color: Color(0xFF2F2F2F),
+              thickness: 0.5,
+              height: 1.h,
+            ),
+            SizedBox(height: 8.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Margin Required",
+                        style: TextStyle(
+                            fontSize: 11.sp,
+                            color: isDark ? Color(0xffC9CACC) : Colors.black),
+                      ),
+                      Text(
+                        "₹75.68",
+                        style: TextStyle(
+                            fontSize: 13.sp,
+                            color: isDark ? Colors.white : Colors.black),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Total Charges",
+                        style: TextStyle(
+                            fontSize: 11.sp,
+                            color: isDark ? Color(0xffC9CACC) : Colors.black),
+                      ),
+                      Text(
+                        "₹75.68",
+                        style: TextStyle(
+                            fontSize: 13.sp,
+                            color: isDark ? Colors.white : Colors.black),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Available Margin",
+                        style: TextStyle(
+                            fontSize: 11.sp,
+                            color: isDark ? Color(0xffC9CACC) : Colors.black),
+                      ),
+                      Text(
+                        "₹2,56,897.89",
+                        style: TextStyle(
+                            fontSize: 13.sp,
+                            color: isDark ? Colors.white : Colors.black),
+                      ),
+                    ],
+                  ),
+                  Icon(
+                    Icons.refresh,
+                    color: widget.isbuy ? Color(0xff1db954) : Colors.red,
+                    size: 22,
+                  ),
+                ],
+              ),
             ),
             SizedBox(height: 10.h),
-            HoldableButton(
-              width: double.infinity,
-              height: 54.h,
-              loadingType: LoadingType.fillingLoading,
-              buttonColor: widget.isbuy ? Color(0xff1db954) : Colors.red,
-              loadingColor: Colors.white,
-              radius: 30.r,
-              duration: 1,
-              onConfirm: () {
-                print("Buy action confirmed!");
-              },
-              strokeWidth: 2,
-              beginFillingPoint: Alignment.centerLeft,
-              endFillingPoint: Alignment.centerRight,
-              edgeLoadingStartPoint: 0.0,
-              hasVibrate: true,
-              child: Container(
-                height: 40.h,
-                decoration: BoxDecoration(
-                  color: widget.isbuy ? Color(0xff1db954) : Colors.red,
-                  borderRadius: BorderRadius.circular(30.r),
-                ),
-                child: Center(
-                  child: Text(
-                    "Hold to ${widget.isbuy ? "Buy" : "Sell"}",
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: HoldableButton(
+                width: double.infinity,
+                height: 54.h,
+                loadingType: LoadingType.fillingLoading,
+                buttonColor: widget.isbuy ? Color(0xff1db954) : Colors.red,
+                loadingColor: Colors.white,
+                radius: 30.r,
+                duration: 1,
+                onConfirm: () {
+                  print("Buy action confirmed!");
+                },
+                strokeWidth: 2,
+                beginFillingPoint: Alignment.centerLeft,
+                endFillingPoint: Alignment.centerRight,
+                edgeLoadingStartPoint: 0.0,
+                hasVibrate: true,
+                child: Container(
+                  height: 40.h,
+                  decoration: BoxDecoration(
+                    color: widget.isbuy ? Color(0xff1db954) : Colors.red,
+                    borderRadius: BorderRadius.circular(30.r),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Hold to ${widget.isbuy ? "Buy" : "Sell"}",
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),

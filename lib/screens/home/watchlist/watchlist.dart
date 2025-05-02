@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sapphire/main.dart';
@@ -247,6 +248,8 @@ class _WatchlistScreenState extends State<WatchlistScreen>
             ),
             SizedBox(height: 12.h),
             TextField(
+              maxLength: 50,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
               controller: controller,
               decoration: InputDecoration(
                 contentPadding:
@@ -481,14 +484,10 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                               ],
                             ),
                             child: GestureDetector(
-                              onLongPress: () {
+                              onDoubleTap: () {
                                 // Use a Timer to ensure 2-second long press
-                                Timer(Duration(milliseconds: 2000), () {
-                                  if (mounted) {
-                                    _showEditCategoryDialog(
-                                        context, item, itemIndex);
-                                  }
-                                });
+                                _showEditCategoryDialog(
+                                    context, item, itemIndex);
                               },
                               child: Container(
                                 width: double.infinity,
@@ -687,7 +686,7 @@ class _WatchlistScreenState extends State<WatchlistScreen>
         // Search field
         Expanded(
           child: constWidgets.searchField(
-              context, "Search Everything...", "orders", isDark),
+              context, "Search Instruments to add", "watchlist", isDark),
         ),
       ],
     );

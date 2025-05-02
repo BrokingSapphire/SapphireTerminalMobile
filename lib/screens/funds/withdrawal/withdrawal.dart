@@ -3,10 +3,92 @@
 // This screen allows users to input and confirm withdrawal amounts, select withdrawal method, and choose bank accounts.
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // For text input formatting
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:flutter_svg/flutter_svg.dart'; // For SVG image rendering
 
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
+import 'package:sapphire/screens/funds/bankSelectionPopup.dart'; // Bank selection bottom sheet
+
+/// Utility class for number formatting
+/// Provides methods to format numbers in Indian number format (with commas)
+class NumberUtils {
+  /// Formats a number string to Indian number format with commas
+  /// Example: 12345678 becomes 1,23,45,678
+  static String formatIndianNumber(String number) {
+    if (number.isEmpty) {
+      return "0";
+    }
+    int len = number.length;
+    if (len <= 3) {
+      return number;
+    }
+    String result = number.substring(len - 3);
+    int remainingIndex = len - 3;
+    while (remainingIndex > 0) {
+      int groupSize = remainingIndex >= 2 ? 2 : remainingIndex;
+      int startIndex = remainingIndex - groupSize;
+      result = '${number.substring(startIndex, remainingIndex)},$result';
+      remainingIndex -= groupSize;
+    }
+    return result;
+  }
+}
+
+/// Custom formatter for Indian number system with fixed decimal places
+/// Formats input values to follow Indian number formatting with 2 decimal places
+class FixedDecimalIndianFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    // Remove all non-digit characters except decimal point
+    String newText = newValue.text.replaceAll(RegExp(r'[^\d.]'), '');
+
+    // Handle empty input
+    if (newText.isEmpty) {
+      return const TextEditingValue(
+        text: '0.00',
+        selection: TextSelection.collapsed(offset: 4),
+      );
+    }
+
+    // Split into integer and decimal parts
+    String integerPart = newText.split('.').first;
+    String decimalPart = newText.contains('.') && newText.split('.').length > 1
+        ? newText.split('.').last
+        : '00';
+
+    // Handle leading zeros in integer part
+    if (integerPart.isEmpty || integerPart == '0') {
+      integerPart = '0';
+    } else {
+      while (integerPart.startsWith('0') && integerPart.length > 1) {
+        integerPart = integerPart.substring(1);
+      }
+    }
+
+    // Format the integer part with commas
+    String formattedInteger = NumberUtils.formatIndianNumber(integerPart);
+
+    // Ensure decimal part is exactly 2 digits
+    if (decimalPart.length > 2) decimalPart = decimalPart.substring(0, 2);
+    if (decimalPart.isEmpty) {
+      decimalPart = '00';
+    } else if (decimalPart.length == 1) {
+      decimalPart = '${decimalPart}0';
+    }
+
+    // Combine integer and decimal parts
+    String formattedAmount = decimalPart == '00' && !newText.contains('.')
+        ? '$formattedInteger.00'
+        : '$formattedInteger.$decimalPart';
+
+    return TextEditingValue(
+      text: formattedAmount,
+      selection: TextSelection.collapsed(offset: formattedAmount.length),
+    );
+  }
+}
 
 /// fundsWithdrawScreen - Screen for initiating fund withdrawals from the trading account
 /// Provides amount entry via custom keypad, withdrawal method selection, and bank account selection
@@ -21,17 +103,23 @@ class fundsWithdrawScreen extends StatefulWidget {
 /// State class for the fundsWithdrawScreen widget
 /// Manages the UI display and validation for fund withdrawals
 class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
-  String? selectedBank = 'icici'; // Default selected bank
+  String? selectedBank =
+      'bank_0'; // Default selected bank (first bank in the list)
   String amountText = '0.00'; // Default amount text
   late TextEditingController amountController; // Controller for amount input
   bool _amountInvalid = false; // Flag for invalid amount
   bool _isInstant = true; // Flag for instant withdrawal (vs regular)
+  bool _isDecimalMode = false; // Flag for decimal input mode
+  String _decimalPart = ''; // Stores decimal part during input
   static const int minAmount = 100; // Minimum withdrawal amount
   static const int maxAmount =
       12532; // Maximum withdrawal amount (99,99,99,999)
 
   // List of available bank accounts for withdrawal
   final List<Map<String, String>> banks = [
+    {'name': 'ICICI Bank', 'details': 'XXXX XXXX 6485'},
+    {'name': 'ICICI Bank', 'details': 'XXXX XXXX 6485'},
+    {'name': 'ICICI Bank', 'details': 'XXXX XXXX 6485'},
     {'name': 'ICICI Bank', 'details': 'XXXX XXXX 6485'},
   ];
 
@@ -72,111 +160,135 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
   /// Used for quick amount buttons (+5000, +10000, etc.)
   /// Formats the amount with Indian number formatting (commas)
   void _addAmount(int value) {
-    String currentText = amountController.text.replaceAll(',', '');
+    String currentText =
+        amountController.text.replaceAll(',', '').split('.').first;
     double currentAmount = double.tryParse(currentText) ?? 0.0;
     double newAmount = currentAmount + value;
-    String newAmountStr = newAmount.toStringAsFixed(2);
-    String integerPart = newAmountStr.split('.')[0];
-    String decimalPart = newAmountStr.split('.')[1];
-    String formattedAmount = '';
-    int len = integerPart.length;
 
-    // Format with Indian number system (e.g., 1,23,456.00)
-    if (len <= 3) {
-      formattedAmount = integerPart;
-    } else {
-      formattedAmount = integerPart.substring(len - 3);
-      int remaining = len - 3;
-      int pos = remaining;
-      while (pos > 0) {
-        int groupSize = 2;
-        if (pos < 2) groupSize = pos;
-        formattedAmount =
-            integerPart.substring(pos - groupSize, pos) + "," + formattedAmount;
-        pos -= groupSize;
-      }
+    // Ensure amount doesn't exceed maximum
+    if (newAmount > maxAmount) {
+      newAmount = maxAmount.toDouble();
     }
 
+    String integerPart = newAmount.toInt().toString();
+    String formattedAmount =
+        '${NumberUtils.formatIndianNumber(integerPart)}.00';
+
     setState(() {
-      amountText = formattedAmount + '.' + decimalPart;
-      amountController.text = amountText;
+      amountText = formattedAmount;
+      amountController.text = formattedAmount;
+      _isDecimalMode = false;
+      _decimalPart = '';
+      _validateAmount();
     });
   }
 
   /// Handles keypad digit press
-  /// Appends the pressed digit to current amount and reformats with Indian number formatting
-  void _handleKeypadPress(String digit) {
-    String currentText = amountController.text.replaceAll(',', '');
-    if (currentText == '0' || currentText == '0.00' || currentText.isEmpty) {
-      currentText = digit;
-    } else {
-      currentText = currentText + digit;
+  /// Manages input differently based on whether in decimal mode or not
+  void _handleKeypadPress(String input) {
+    String currentText =
+        amountController.text.replaceAll(',', '').split('.').first;
+
+    // Handle decimal point input
+    if (input == '.') {
+      if (!_isDecimalMode) {
+        setState(() {
+          _isDecimalMode = true;
+          _decimalPart = '00';
+          amountText = '${NumberUtils.formatIndianNumber(currentText)}.00';
+          amountController.text = amountText;
+        });
+      }
+      return;
     }
-    String formattedAmount = formatIndianNumber(currentText);
+
+    // Handle input in decimal mode
+    if (_isDecimalMode) {
+      if (_decimalPart == '00') {
+        _decimalPart = '${input}0';
+      } else if (_decimalPart.length == 2) {
+        _decimalPart = _decimalPart[0] + input;
+      }
+      setState(() {
+        amountText =
+            '${NumberUtils.formatIndianNumber(currentText)}.$_decimalPart';
+        amountController.text = amountText;
+        _validateAmount();
+      });
+    }
+    // Handle input in normal (integer) mode
+    else {
+      String newText = currentText == '0' ? input : currentText + input;
+      if (int.tryParse(newText) != null && int.parse(newText) <= maxAmount) {
+        String formattedAmount =
+            '${NumberUtils.formatIndianNumber(newText)}.00';
+        setState(() {
+          amountText = formattedAmount;
+          amountController.text = formattedAmount;
+          _validateAmount();
+        });
+      }
+    }
+  }
+
+  /// Ensures decimal part is properly formatted before proceeding
+  /// Formats amount as "integer.decimal" with exactly 2 decimal places
+  void _addDecimalPart() {
+    String currentText = amountController.text.replaceAll(',', '');
+    String integerPart = currentText.split('.').first;
+    String decimalPart = _isDecimalMode ? _decimalPart : '00';
+
+    // Validate the amount
+    _validateAmount();
+
+    if (_isDecimalMode && decimalPart.isEmpty) {
+      decimalPart = '00';
+      integerPart = integerPart.isEmpty ? '0' : integerPart;
+    }
+
+    String formattedAmount = '$integerPart.$decimalPart';
+    formattedAmount =
+        '${NumberUtils.formatIndianNumber(integerPart)}.$decimalPart';
+
     setState(() {
       amountText = formattedAmount;
       amountController.text = formattedAmount;
+      _isDecimalMode = false;
+      _decimalPart = '';
+      _validateAmount();
     });
-  }
-
-  /// Adds or ensures decimal part (two digits after decimal point)
-  /// Used when confirming amount to ensure proper format with cents/paise
-  void _addDecimalPart() {
-    String currentText = amountController.text.replaceAll(',', '');
-    if (currentText.isEmpty) currentText = '0';
-    String integerPart = currentText;
-    String decimalPart = '00';
-
-    // Handle existing decimal part if present
-    if (currentText.contains('.')) {
-      var parts = currentText.split('.');
-      integerPart = parts[0];
-      decimalPart = parts.length > 1 ? parts[1] : '00';
-      if (decimalPart.length > 2) decimalPart = decimalPart.substring(0, 2);
-      if (decimalPart.length < 2) decimalPart = decimalPart.padRight(2, '0');
-    }
-
-    String formattedInteger = formatIndianNumber(integerPart);
-    setState(() {
-      amountText = formattedInteger + '.' + decimalPart;
-      amountController.text = amountText;
-    });
-  }
-
-  /// Formats a number string with Indian number formatting (commas)
-  /// Example: 12345678 becomes 1,23,45,678
-  String formatIndianNumber(String number) {
-    if (number.isEmpty) return "0";
-    String integerPart = number.split('.')[0];
-    int len = integerPart.length;
-    if (len <= 3) return integerPart;
-
-    // Apply Indian number system grouping (3 digits, then groups of 2)
-    String result = integerPart.substring(len - 3);
-    int remainingIndex = len - 3;
-    while (remainingIndex > 0) {
-      int groupSize = remainingIndex >= 2 ? 2 : remainingIndex;
-      int startIndex = remainingIndex - groupSize;
-      result = integerPart.substring(startIndex, remainingIndex) + "," + result;
-      remainingIndex -= groupSize;
-    }
-    return result;
   }
 
   /// Handles backspace press on the custom keypad
   /// Removes the last digit and reformats the amount
   void _handleBackspace() {
     String currentText = amountController.text.replaceAll(',', '');
-    if (currentText.length <= 1) {
-      currentText = '0';
-    } else {
-      currentText = currentText.substring(0, currentText.length - 1);
+    String integerPart = currentText.split('.').first;
+
+    // If in decimal mode, exit decimal mode entirely
+    if (_isDecimalMode) {
+      setState(() {
+        _isDecimalMode = false;
+        _decimalPart = '';
+        amountText =
+            '${NumberUtils.formatIndianNumber(integerPart.isEmpty ? '0' : integerPart)}.00';
+        amountController.text = amountText;
+      });
     }
-    String formattedAmount = formatIndianNumber(currentText);
-    setState(() {
-      amountText = formattedAmount;
-      amountController.text = formattedAmount;
-    });
+    // If in integer mode, remove last digit
+    else {
+      if (integerPart.length <= 1) {
+        integerPart = '0';
+      } else {
+        integerPart = integerPart.substring(0, integerPart.length - 1);
+      }
+      String formattedAmount =
+          '${NumberUtils.formatIndianNumber(integerPart)}.00';
+      setState(() {
+        amountText = formattedAmount;
+        amountController.text = formattedAmount;
+      });
+    }
   }
 
   @override
@@ -243,7 +355,7 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 18, right: 10),
             child: Text(
-              formatIndianNumber(maxAmount.toString()) + '.00',
+              NumberUtils.formatIndianNumber(maxAmount.toString()) + '.00',
               style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
@@ -453,70 +565,80 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                       ),
                     ),
                     SizedBox(height: 15.h),
-
-                    // Bank Account Selection Widget
-                    Container(
-                      decoration: BoxDecoration(
-                        color: isDark
-                            ? const Color(0xff121413)
-                            : const Color(0xFFF5F5F5),
-                        borderRadius: BorderRadius.circular(8.r),
-                        border: Border.all(
+                    // Bank Selection Container - Opens bottom sheet on tap
+                    GestureDetector(
+                      onTap: () => _openBankSelectionSheet(context),
+                      child: Container(
+                        decoration: BoxDecoration(
                           color: isDark
-                              ? const Color(0xff2F2F2F)
-                              : Colors.grey.shade300,
-                          width: 1,
+                              ? const Color(0xff121413)
+                              : const Color(0xFFF5F5F5),
+                          borderRadius: BorderRadius.circular(8.r),
+                          border: Border.all(
+                            color: isDark
+                                ? const Color(0xff2F2F2F)
+                                : Colors.grey.shade300,
+                            width: 1,
+                          ),
                         ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.w, vertical: 10.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              "assets/images/icici.png",
-                              width: 24.w,
-                              height: 24.h,
-                            ),
-                            SizedBox(width: 8.w),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'ICICI Bank',
-                                    style: TextStyle(
-                                      color: textColor,
-                                      fontSize: 13.sp,
-                                    ),
-                                  ),
-                                  Text(
-                                    'XXXX XXXX 6485',
-                                    style: TextStyle(
-                                      color: isDark
-                                          ? Colors.grey
-                                          : Colors.grey.shade700,
-                                      fontSize: 10.sp,
-                                    ),
-                                  ),
-                                ],
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16.w, vertical: 10.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                selectedBank == 'bank_1'
+                                    ? "assets/images/kotak.png"
+                                    : "assets/images/icici.png",
+                                width: 24.w,
+                                height: 24.h,
                               ),
-                            ),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              color: textColor,
-                              size: 16.sp,
-                            ),
-                          ],
+                              SizedBox(width: 8.w),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      _getSelectedBankName(),
+                                      style: TextStyle(
+                                        color: textColor,
+                                        fontSize: 13.sp,
+                                      ),
+                                    ),
+                                    Text(
+                                      _getSelectedBankAccountNumber(),
+                                      style: TextStyle(
+                                        color: isDark
+                                            ? Colors.grey
+                                            : Colors.grey.shade700,
+                                        fontSize: 10.sp,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color: textColor,
+                                size: 16.sp,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
 
                     // Custom Number Keypad for amount entry
                     _buildNumberKeypad(),
+                    SizedBox(height: 15.h),
+
+                    // Bank Account Selection Widget
+
+                    // Custom Number Keypad for amount entry
+                    // _buildNumberKeypad(),
 
                     // Withdraw Action Button
                     ElevatedButton(
@@ -606,56 +728,92 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
   Widget _buildBankTile(
       String bankName, String accountNumber, String iconPath, String value) {
     return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          setState(() {
+            selectedBank = value;
+          });
+        },
+        child: ListTile(
+            contentPadding: EdgeInsets.symmetric(horizontal: 16),
+            trailing: Container(
+              width: 20.w,
+              height: 20.h,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: selectedBank == value
+                      ? Colors.green
+                      : Colors.grey.shade700,
+                  width: 2.5.w,
+                ),
+                color:
+                    selectedBank == value ? Colors.green : Colors.transparent,
+              ),
+              child: selectedBank == value
+                  ? Center(
+                      child: Container(
+                        width: 12.w,
+                        height: 12.h,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.black,
+                        ),
+                      ),
+                    )
+                  : null,
+            ),
+            title: Row(
+              children: [
+                Image.asset(iconPath, height: 30.h, width: 30.w),
+                SizedBox(width: 10.w),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(bankName,
+                        style: TextStyle(fontSize: 15.sp, color: Colors.white)),
+                    Text(accountNumber,
+                        style: TextStyle(color: Colors.grey, fontSize: 13.sp)),
+                  ],
+                ),
+              ],
+            )));
+  }
+
+  /// Opens the bank selection bottom sheet
+  /// Uses the centralized bottom sheet component
+  void _openBankSelectionSheet(BuildContext context) {
+    showBankSelectionBottomSheet(
+      context: context,
+      banks: banks,
+      selectedBank: selectedBank,
+      onBankSelected: (String bankId) {
         setState(() {
-          selectedBank = value;
+          selectedBank = bankId;
         });
       },
-      child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 16),
-        trailing: Container(
-          width: 20.w,
-          height: 20.h,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-              color:
-                  selectedBank == value ? Colors.green : Colors.grey.shade700,
-              width: 2.5.w,
-            ),
-            color: selectedBank == value ? Colors.green : Colors.transparent,
-          ),
-          child: selectedBank == value
-              ? Center(
-                  child: Container(
-                    width: 12.w,
-                    height: 12.h,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.black,
-                    ),
-                  ),
-                )
-              : null,
-        ),
-        title: Row(
-          children: [
-            Image.asset(iconPath, height: 30.h, width: 30.w),
-            SizedBox(width: 10.w),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(bankName,
-                    style: TextStyle(fontSize: 15.sp, color: Colors.white)),
-                Text(accountNumber,
-                    style: TextStyle(color: Colors.grey, fontSize: 13.sp)),
-              ],
-            ),
-          ],
-        ),
-      ),
     );
+  }
+
+  /// Gets the name of the currently selected bank
+  /// Returns the bank name based on the selectedBank value
+  String _getSelectedBankName() {
+    if (selectedBank == 'bank_1') {
+      return 'Kotak Mahindra Bank';
+    }
+
+    // For all other cases, return ICICI Bank
+    return 'ICICI Bank';
+  }
+
+  /// Gets the account number of the currently selected bank
+  /// Returns the masked account number based on the selectedBank value
+  String _getSelectedBankAccountNumber() {
+    final int index = int.tryParse(selectedBank?.split('_').last ?? '0') ?? 0;
+    if (index < banks.length) {
+      return banks[index]['details'] ?? '';
+    }
+    return '';
   }
 
   /// Builds the custom number keypad for amount entry

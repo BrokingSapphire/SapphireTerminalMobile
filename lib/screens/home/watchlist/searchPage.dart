@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -91,8 +92,11 @@ class _SearchPageScreenState extends State<SearchPageScreen>
                         height: 42.h,
                         child: TextField(
                           autofocus: true,
+                          inputFormatters: [
+                            UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                          ],
                           decoration: InputDecoration(
-                            hintText: "Search Anything...",
+                            hintText: "Search Instruments to add",
                             hintStyle: TextStyle(
                               color: appColors.secondaryTextColor,
                               fontSize: 14.sp,
@@ -294,7 +298,11 @@ class _SearchPageScreenState extends State<SearchPageScreen>
                                                 "${stock["name"]} added to watchlist!");
                                           },
                                           child: SvgPicture.asset(
-                                            'assets/svgs/Watchlist.svg',
+                                            'assets/svgs/bookmark-x.svg',
+                                            colorFilter: ColorFilter.mode(
+                                              Colors.green,
+                                              BlendMode.srcIn,
+                                            ),
                                             width: 22.w,
                                             height: 22.h,
                                           ),
@@ -352,4 +360,15 @@ class AppColors {
   Color get tabBarColor => isDark ? const Color(0xFF000000) : Colors.white;
   Color get borderColor =>
       isDark ? const Color(0xFF2F2F2F) : const Color(0xFFE0E0E0);
+}
+
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
+    );
+  }
 }

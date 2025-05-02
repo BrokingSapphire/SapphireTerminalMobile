@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:sapphire/utils/constWidgets.dart';
 
 class changeNewPinScreen extends StatefulWidget {
@@ -14,6 +14,18 @@ class _changeNewPinScreenState extends State<changeNewPinScreen> {
 
   TextEditingController newmpin = TextEditingController();
   TextEditingController confirmedmpin = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Add listeners to rebuild UI when text changes
+    newmpin.addListener(() {
+      setState(() {});
+    });
+    confirmedmpin.addListener(() {
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +86,12 @@ class _changeNewPinScreenState extends State<changeNewPinScreen> {
                     SizedBox(
                       height: 54.h,
                       child: TextField(
+                        keyboardType: TextInputType.number,
                         controller: newmpin,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(4),
+                        ],
                         obscureText: _obscureText1,
                         style: TextStyle(
                             color: isDark ? Colors.white : Colors.black),
@@ -140,7 +157,12 @@ class _changeNewPinScreenState extends State<changeNewPinScreen> {
                     SizedBox(
                       height: 54.h,
                       child: TextField(
+                        keyboardType: TextInputType.number,
                         controller: confirmedmpin,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(4),
+                        ],
                         obscureText: _obscureText2,
                         style: TextStyle(
                             color: isDark ? Colors.white : Colors.black),
@@ -192,7 +214,35 @@ class _changeNewPinScreenState extends State<changeNewPinScreen> {
                       ),
                     ),
                     Spacer(),
-                    constWidgets.greenButton("Continue"),
+                    Container(
+                      height: 52.h,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        // Button is enabled only when both MPIN fields have exactly 4 digits
+                        onPressed: (newmpin.text.length == 4 && confirmedmpin.text.length == 4)
+                            ? () {
+                                // Add your navigation or completion logic here
+                                if (newmpin.text == confirmedmpin.text) {
+                                  Navigator.pop(context);
+                                }else{
+                                  constWidgets.snackbar("Pin not matched", Colors.red, context);
+                                }
+                              }
+                            : null,
+                        child: Text(
+                          "Continue",
+                          style:
+                              TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w600),
+                        ),
+                        // Button color changes based on enabled state
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: (newmpin.text.length == 4 && confirmedmpin.text.length == 4)
+                              ? Color(0xFF1DB954)
+                              : Color(0xff2f2f2f),
+                          foregroundColor: Colors.white,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

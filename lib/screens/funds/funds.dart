@@ -69,7 +69,7 @@ class _FundsScreenState extends State<FundsScreen> {
           padding: const EdgeInsets.only(top: 15),
           child: Text(
             "Funds",
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 21.sp),
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
           ),
         ),
         leading: Padding(
@@ -147,7 +147,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                   // Cash Balance section
                                   Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Text(
                                         "Cash Balance",
@@ -155,7 +155,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                             fontSize: 13.sp,
                                             color: Color(0xffc9cacc)),
                                       ),
-                                      Text("₹ 12,532.00",
+                                      Text("₹ 13,834.00",
                                           style: TextStyle(
                                               fontSize: 15.sp,
                                               color: Color(0xffEBEEF5),
@@ -170,7 +170,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                   // Pledge Balance section
                                   Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Text(
                                         "Pledge Balance",
@@ -209,7 +209,9 @@ class _FundsScreenState extends State<FundsScreen> {
                               },
                               child: Container(
                                 child: Center(
-                                  child: Text('Withdraw'),
+                                  child: Text('Withdraw',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600)),
                                 ),
                                 height: 42.h,
                                 decoration: BoxDecoration(
@@ -232,7 +234,9 @@ class _FundsScreenState extends State<FundsScreen> {
                               },
                               child: Container(
                                 child: Center(
-                                  child: Text('Deposit'),
+                                  child: Text('Deposit',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600)),
                                 ),
                                 height: 42.h,
                                 decoration: BoxDecoration(

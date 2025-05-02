@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sapphire/screens/orderWindow/BuyScreens/buyWrapper.dart';
 import 'package:sapphire/screens/orderWindow/SellScreens/sellWrapper.dart';
 import 'package:sapphire/utils/animatedToggles.dart';
 import 'package:sapphire/utils/constWidgets.dart';
+import 'package:sapphire/utils/toggle.dart';
 
 class NormalBuyScreen extends StatefulWidget {
   final String tabName;
@@ -22,11 +24,63 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
   int _selectedIndex = 0;
   int _validityOptionIndex = 0; // 0: Day, 1: IOC, 2: Minutes
   int quantity = 1;
+  String? _selectedMinutes = '1 minute'; // Default value for dropdown
+
+  // Map numbers to words for dropdown
+  final List<String> _minutesOptions = [
+    '1 minute',
+    '2 minutes',
+    '3 minutes',
+    '5 minutes',
+    '10 minutes',
+    '15 minutes',
+    '30 minutes',
+    '45 minutes',
+    '60 minutes',
+    '90 minutes',
+    '120 minutes',
+  ];
 
   TextEditingController priceController =
       TextEditingController(text: "6643.80");
+  TextEditingController stopLossController = TextEditingController(text: "-5");
+  TextEditingController targetController = TextEditingController(text: "+5");
+  bool stoplossToggle = false;
+  bool targetToggle = false;
 
   final List<String> _options = ["Delivery", "Intraday", "MTF"];
+  Widget _buildSwitchTile(
+      {required String title,
+      required String subtitle,
+      required bool value,
+      required Function(bool) onChanged,
+      required bool isDark}) {
+    return SizedBox(
+      height: 60.h,
+      child: ListTile(
+        tileColor: isDark ? Color(0xff121413) : Color(0xffF4F4F9),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16.w),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.r),
+        ),
+        title: Text(
+          title,
+          style: TextStyle(
+              color: isDark ? Colors.white : Colors.black, fontSize: 13.sp),
+        ),
+        subtitle: Text(
+          subtitle,
+          style: TextStyle(
+              color: isDark ? Colors.white70 : Color(0xff6B7280),
+              fontSize: 11.sp),
+        ),
+        trailing: CustomToggleSwitch(
+          initialValue: value,
+          onChanged: onChanged,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,34 +119,71 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: isDark
-                            ? Color(0xff2f2f2f)
-                            : Color(0xff2f2f2f).withOpacity(0.5)),
+                      color: isDark
+                          ? Color(0xff2f2f2f)
+                          : Color(0xff2f2f2f).withOpacity(0.5),
+                    ),
                     borderRadius: BorderRadius.circular(6.r),
                   ),
                   height: 50.h,
-                  width: 185.w,
+                  width: 190.w,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.remove,
-                            color: isDark ? Colors.white : Colors.black),
+                        icon: Icon(
+                          Icons.remove,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
                         onPressed: () {
-                          setState(() {
-                            if (quantity > 1) quantity--;
-                          });
+                          if (quantity > 1) {
+                            setState(() {
+                              quantity--;
+                            });
+                          }
                         },
                       ),
-                      Text(
-                        quantity.toString(),
-                        style: TextStyle(
+                      SizedBox(
+                        width: 80
+                            .w, // Fixed width for TextField to fit within container
+                        child: TextField(
+                          controller: TextEditingController(
+                              text: quantity.toString())
+                            ..selection = TextSelection.fromPosition(
+                              TextPosition(offset: quantity.toString().length),
+                            ),
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
                             fontSize: 15.sp,
-                            color: isDark ? Colors.white : Colors.black),
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            enabledBorder: InputBorder
+                                .none, // Explicitly remove enabled border
+                            focusedBorder: InputBorder
+                                .none, // Explicitly remove focused border
+                          ),
+                          inputFormatters: [
+                            FilteringTextInputFormatter
+                                .digitsOnly, // Restrict to digits
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              // Parse input or default to 1 if empty/invalid
+                              quantity = int.tryParse(value) ?? 1;
+                              if (quantity < 1)
+                                quantity = 1; // Enforce minimum of 1
+                            });
+                          },
+                        ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.add,
-                            color: isDark ? Colors.white : Colors.black),
+                        icon: Icon(
+                          Icons.add,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
                         onPressed: () {
                           setState(() {
                             quantity++;
@@ -124,7 +215,7 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
             Align(
               alignment: Alignment.topLeft,
               child: Text(
-                "Market",
+                "Price",
                 style: TextStyle(
                     fontSize: 15.sp,
                     fontWeight: FontWeight.w400,
@@ -135,38 +226,63 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
 
             // Price Input
             TextField(
+              readOnly: isMarketSelected,
               controller: priceController,
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
               style: TextStyle(
-                  fontSize: 15.sp,
-                  color: isDark ? Color(0xffc9cacc) : Colors.black),
+                fontSize: 15.sp,
+                color: isMarketSelected
+                    ? Colors.grey.shade600 // Grey content color when readOnly
+                    : (isDark
+                        ? Colors.white
+                        : Colors.black), // White/black when not readOnly
+              ),
               decoration: InputDecoration(
                 prefixIcon: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w),
-                  child: Text(
-                    "₹",
-                    style: TextStyle(
-                        fontSize: 18.sp,
-                        color: isDark ? Colors.white : Colors.black),
+                  padding: EdgeInsets.symmetric(horizontal: 15.w),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "₹",
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                      Container(
+                        height: 40.h,
+                        width: 2.w,
+                        decoration: BoxDecoration(
+                          color: isDark ? Color(0xff2f2f2f) : Color(0xff2f2f2f),
+                          borderRadius: BorderRadius.circular(6.r),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 prefixIconConstraints:
                     BoxConstraints(minWidth: 0, minHeight: 0),
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
-                filled: true,
-                fillColor: Colors.transparent,
+                    EdgeInsets.symmetric(horizontal: 0.w, vertical: 15.h),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
                   borderSide: BorderSide(
-                      color: isDark
-                          ? Color(0xff2f2f2f)
-                          : Color(0xff2f2f2f).withOpacity(0.5)),
+                    color: isDark
+                        ? Color(0xff2f2f2f)
+                        : Color(0xff2f2f2f).withOpacity(0.5),
+                  ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
-                  borderSide:
-                      BorderSide(color: isDark ? Colors.white : Colors.black),
+                  borderSide: isMarketSelected
+                      ? BorderSide.none // No focused border when readOnly
+                      : BorderSide(
+                          color: isDark ? Colors.white : Colors.white,
+                          width: 2.0,
+                        ), // White focused border when not readOnly
                 ),
                 hintText: "Enter Price",
                 hintStyle:
@@ -174,134 +290,461 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
               ),
             ),
 
-            SizedBox(height: 16.h),
-
-            // Trigger Price Section
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Trigger Price",
-                  style: TextStyle(
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w400,
-                      color: isDark ? Colors.white : Colors.black),
-                ),
-                Text(
-                  "Qty 1 per leg",
-                  style: TextStyle(
-                      fontSize: 11.sp,
-                      color: isDark ? Color(0xffc9cacc) : Colors.black),
-                ),
-              ],
-            ),
-            SizedBox(height: 5.h),
-            TextField(
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              style: TextStyle(
-                  fontSize: 16.sp, color: isDark ? Colors.white : Colors.black),
-              decoration: InputDecoration(
-                prefixIcon: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w),
-                  child: Text(
-                    "₹",
-                    style: TextStyle(
-                        fontSize: 18.sp,
-                        color: isDark ? Colors.white : Colors.black),
+            SizedBox(height: 8.h),
+            Visibility(
+              visible: _validityOptionIndex != 1 || !isExpanded,
+              child: Row(
+                children: [
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      setState(() {
+                        _stopLoss = !_stopLoss;
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        Checkbox(
+                            value: _stopLoss,
+                            onChanged: (value) {
+                              setState(() {
+                                _stopLoss = value!;
+                              });
+                            }),
+                        SizedBox(width: 0.w),
+                        Text(
+                          "Stoploss",
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: isDark ? Colors.white : Colors.black),
+                        ),
+                        SizedBox(width: 5.w),
+                        Icon(Icons.info_outline,
+                            size: 15,
+                            color: isDark ? Color(0xffc9cacc) : Colors.black),
+                      ],
+                    ),
                   ),
-                ),
-                prefixIconConstraints:
-                    BoxConstraints(minWidth: 0, minHeight: 0),
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.r),
-                  borderSide: BorderSide(
-                      color: isDark
-                          ? Color(0xff2f2f2f)
-                          : Color(0xff2f2f2f).withOpacity(0.5)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.r),
-                  borderSide:
-                      BorderSide(color: isDark ? Colors.white : Colors.black),
-                ),
-                hintStyle: TextStyle(
-                  fontSize: 15.sp,
-                  color: Colors.grey.shade600,
-                ),
+                  SizedBox(width: 35.w),
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      setState(() {
+                        _gtt = !_gtt;
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        Checkbox(
+                            value: _gtt,
+                            onChanged: (value) {
+                              setState(() {
+                                _gtt = value!;
+                              });
+                            }),
+                        Text(
+                          "GTT",
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: isDark ? Colors.white : Colors.black),
+                        ),
+                        SizedBox(width: 5.w),
+                        Icon(Icons.info_outline,
+                            size: 15,
+                            color: isDark ? Color(0xffc9cacc) : Colors.black),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
 
-            SizedBox(height: 15.h),
-
-            // Stoploss and GTT
-            Row(
-              children: [
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    setState(() {
-                      _stopLoss = !_stopLoss;
-                    });
-                  },
-                  child: Row(
-                    children: [
-                      CustomCheckbox(
-                        size: 20,
-                        value: _stopLoss,
-                        onChanged: (_) {
-                          setState(() {
-                            _stopLoss = !_stopLoss;
-                          });
-                        },
-                      ),
-                      SizedBox(width: 10.w),
-                      Text(
-                        "StopLoss",
-                        style: TextStyle(
-                            fontSize: 14.sp,
-                            color: isDark ? Colors.white : Colors.black),
-                      ),
-                      SizedBox(width: 5.w),
-                      Icon(Icons.info_outline,
-                          size: 15,
-                          color: isDark ? Color(0xffc9cacc) : Colors.black),
-                    ],
+            // Trigger Price Section
+            Visibility(
+              visible: (_stopLoss && (_validityOptionIndex != 1 || !isExpanded)),
+              child: Row(
+                children: [
+                  Flexible(
+                    flex: 1, // Equal width for both columns
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Trigger Price",
+                          style: TextStyle(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w400,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
+                        ),
+                        SizedBox(height: 5.h),
+                        TextField(
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
+                          decoration: InputDecoration(
+                            prefixIcon: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10.w),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "₹",
+                                    style: TextStyle(
+                                      fontSize: 18.sp,
+                                      color:
+                                          isDark ? Colors.white : Colors.black,
+                                    ),
+                                  ),
+                                  SizedBox(width: 10.w),
+                                  Container(
+                                    height: 40.h,
+                                    width: 2.w,
+                                    decoration: BoxDecoration(
+                                      color: isDark
+                                          ? Color(0xff2f2f2f)
+                                          : Color(0xff2f2f2f),
+                                      borderRadius: BorderRadius.circular(6.r),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            prefixIconConstraints:
+                                BoxConstraints(minWidth: 0, minHeight: 0),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 15.h),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.r),
+                              borderSide: BorderSide(
+                                color: isDark
+                                    ? Color(0xff2f2f2f)
+                                    : Color(0xff2f2f2f).withOpacity(0.5),
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.r),
+                              borderSide: BorderSide(
+                                color: isDark ? Colors.white : Colors.black,
+                              ),
+                            ),
+                            hintStyle: TextStyle(
+                              fontSize: 15.sp,
+                              color: Colors.grey.shade600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(width: 35.w),
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    setState(() {
-                      _gtt = !_gtt;
-                    });
-                  },
-                  child: Row(
-                    children: [
-                      CustomCheckbox(
-                        size: 20,
-                        value: _gtt,
-                        onChanged: (_) {},
-                      ),
-                      SizedBox(width: 10.w),
-                      Text(
-                        "GTT",
-                        style: TextStyle(
-                            fontSize: 14.sp,
-                            color: isDark ? Colors.white : Colors.black),
-                      ),
-                      SizedBox(width: 5.w),
-                      Icon(Icons.info_outline,
-                          size: 15,
-                          color: isDark ? Color(0xffc9cacc) : Colors.black),
-                    ],
+                  SizedBox(width: 10.w), // Add spacing between columns
+                  Flexible(
+                    flex: 1, // Equal width for both columns
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Limit",
+                          style: TextStyle(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w400,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
+                        ),
+                        SizedBox(height: 5.h),
+                        TextField(
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
+                          decoration: InputDecoration(
+                            prefixIcon: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10.w),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "₹",
+                                    style: TextStyle(
+                                      fontSize: 18.sp,
+                                      color:
+                                          isDark ? Colors.white : Colors.black,
+                                    ),
+                                  ),
+                                  SizedBox(width: 10.w),
+                                  Container(
+                                    height: 40.h,
+                                    width: 2.w,
+                                    decoration: BoxDecoration(
+                                      color: isDark
+                                          ? Color(0xff2f2f2f)
+                                          : Color(0xff2f2f2f),
+                                      borderRadius: BorderRadius.circular(6.r),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            prefixIconConstraints:
+                                BoxConstraints(minWidth: 0, minHeight: 0),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 15.h),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.r),
+                              borderSide: BorderSide(
+                                color: isDark
+                                    ? Color(0xff2f2f2f)
+                                    : Color(0xff2f2f2f).withOpacity(0.5),
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.r),
+                              borderSide: BorderSide(
+                                color: isDark ? Colors.white : Colors.black,
+                              ),
+                            ),
+                            hintStyle: TextStyle(
+                              fontSize: 15.sp,
+                              color: Colors.grey.shade600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
 
+            // Stoploss and GTT
+
+            SizedBox(height: 18.h),
+            Visibility(
+              visible: _gtt,
+              child: Row(
+                children: [
+                  Flexible(
+                    flex: 1, // Equal width for both columns
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Stoploss %",
+                          style: TextStyle(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w400,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
+                        ),
+                        SizedBox(height: 5.h),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6.r),
+                            border: Border.all(
+                              color: Color(0xff2f2f2f),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  child: TextField(
+                                readOnly: !stoplossToggle,
+                                controller: stopLossController,
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: true),
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: isDark
+                                      ? stoplossToggle
+                                          ? Colors.white
+                                          : Colors.grey
+                                      : Colors.black,
+                                ),
+                                decoration: InputDecoration(
+                                  border: InputBorder.none, // No border
+                                  enabledBorder: InputBorder
+                                      .none, // No border when enabled
+                                  focusedBorder: InputBorder
+                                      .none, // No border when focused
+                                  disabledBorder: InputBorder
+                                      .none, // No border when disabled
+                                  errorBorder: InputBorder
+                                      .none, // No border when in error state
+                                  focusedErrorBorder: InputBorder
+                                      .none, // No border when focused with error
+                                  prefixIcon: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10.w),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize
+                                          .min, // Constrain Row to minimum size
+                                      children: [
+                                        Text(
+                                          "%",
+                                          style: TextStyle(
+                                            fontSize: 18.sp,
+                                            color: isDark
+                                                ? Colors.white
+                                                : Colors.black,
+                                          ),
+                                        ),
+                                        SizedBox(width: 10.w),
+                                        Container(
+                                          height: 40.h,
+                                          width: 2.w,
+                                          decoration: BoxDecoration(
+                                            color: isDark
+                                                ? Color(0xff2f2f2f)
+                                                : Color(0xff2f2f2f),
+                                            borderRadius:
+                                                BorderRadius.circular(6.r),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  prefixIconConstraints:
+                                      BoxConstraints(minWidth: 0, minHeight: 0),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 10.w, vertical: 15.h),
+                                  hintStyle: TextStyle(
+                                    fontSize: 15.sp,
+                                    color: Colors.grey.shade600,
+                                  ),
+                                ),
+                              )),
+                              Transform.scale(
+                                scale: 0.7,
+                                child: CustomToggleSwitch(
+                                  initialValue: stoplossToggle,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      stoplossToggle = value;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 10.w), // Add spacing between columns
+                  Flexible(
+                    flex: 1, // Equal width for both columns
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Target %",
+                          style: TextStyle(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w400,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
+                        ),
+                        SizedBox(height: 5.h),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6.r),
+                            border: Border.all(
+                              color: Color(0xff2f2f2f),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  child: TextField(
+                                readOnly: !targetToggle,
+                                controller: targetController,
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: true),
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: isDark
+                                      ? stoplossToggle
+                                          ? Colors.white
+                                          : Colors.grey
+                                      : Colors.black,
+                                ),
+                                decoration: InputDecoration(
+                                  border: InputBorder.none, // No border
+                                  enabledBorder: InputBorder
+                                      .none, // No border when enabled
+                                  focusedBorder: InputBorder
+                                      .none, // No border when focused
+                                  disabledBorder: InputBorder
+                                      .none, // No border when disabled
+                                  errorBorder: InputBorder
+                                      .none, // No border when in error state
+                                  focusedErrorBorder: InputBorder
+                                      .none, // No border when focused with error
+                                  prefixIcon: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10.w),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize
+                                          .min, // Constrain Row to minimum size
+                                      children: [
+                                        Text(
+                                          "%",
+                                          style: TextStyle(
+                                            fontSize: 18.sp,
+                                            color: isDark
+                                                ? Colors.white
+                                                : Colors.black,
+                                          ),
+                                        ),
+                                        SizedBox(width: 10.w),
+                                        Container(
+                                          height: 40.h,
+                                          width: 2.w,
+                                          decoration: BoxDecoration(
+                                            color: isDark
+                                                ? Color(0xff2f2f2f)
+                                                : Color(0xff2f2f2f),
+                                            borderRadius:
+                                                BorderRadius.circular(6.r),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  prefixIconConstraints:
+                                      BoxConstraints(minWidth: 0, minHeight: 0),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 10.w, vertical: 15.h),
+                                  hintStyle: TextStyle(
+                                    fontSize: 15.sp,
+                                    color: Colors.grey.shade600,
+                                  ),
+                                ),
+                              )),
+                              Transform.scale(
+                                scale: 0.7,
+                                child: CustomToggleSwitch(
+                                  initialValue: targetToggle,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      stoplossToggle = value;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Visibility(child: )
             SizedBox(height: 18.h),
 
             // Expandable Section Header
@@ -339,118 +782,221 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
                   Row(
                     children: [
                       CustomRadioButton(
-                          isSelected: _validityOptionIndex == 0,
-                          onTap: () {
-                            setState(() {
-                              _validityOptionIndex = 0;
-                            });
-                          }),
-                      SizedBox(width: 14.w),
-                      Text("Day",
+                        isSelected: _validityOptionIndex == 0,
+                        onTap: () {
+                          setState(() {
+                            _validityOptionIndex = 0;
+                          });
+                        },
+                      ),
+                      SizedBox(width: 6.w),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            _validityOptionIndex = 0;
+                          });
+                        },
+                        child: Text(
+                          "Day",
                           style: TextStyle(
-                              fontSize: 14.sp,
-                              color: isDark ? Colors.white : Colors.black)),
-                      SizedBox(width: 14.w),
+                            fontSize: 14.sp,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 20.w),
                       CustomRadioButton(
-                          isSelected: _validityOptionIndex == 1,
-                          onTap: () {
-                            setState(() {
-                              _validityOptionIndex = 1;
-                            });
-                          }),
-                      SizedBox(width: 14.w),
-                      Text("IOC",
+                        isSelected: _validityOptionIndex == 1,
+                        onTap: () {
+                          setState(() {
+                            _validityOptionIndex = 1;
+                          });
+                        },
+                      ),
+                      SizedBox(width: 6.w),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            _validityOptionIndex = 1;
+                          });
+                        },
+                        child: Text(
+                          "IOC",
                           style: TextStyle(
-                              fontSize: 14.sp,
-                              color: isDark ? Colors.white : Colors.black)),
-                      SizedBox(width: 14.w),
+                            fontSize: 14.sp,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 20.w),
                       CustomRadioButton(
-                          isSelected: _validityOptionIndex == 2,
-                          onTap: () {
-                            setState(() {
-                              _validityOptionIndex = 2;
-                            });
-                          }),
-                      SizedBox(width: 14.w),
-                      Text("Minutes",
+                        isSelected: _validityOptionIndex == 2,
+                        onTap: () {
+                          setState(() {
+                            _validityOptionIndex = 2;
+                          });
+                        },
+                      ),
+                      SizedBox(width: 6.w),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            _validityOptionIndex = 2;
+                          });
+                        },
+                        child: Text(
+                          "Minutes",
                           style: TextStyle(
-                              fontSize: 14.sp,
-                              color: isDark ? Colors.white : Colors.black)),
+                            fontSize: 14.sp,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(height: 24.h),
                   Row(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Disclose Quantity",
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Disclose Quantity",
                               style: TextStyle(
-                                  fontSize: 15.sp,
-                                  color: isDark ? Colors.white : Colors.black)),
-                          SizedBox(height: 6.h),
-                          Container(
-                            height: 50.h,
-                            width: 160.w,
-                            child: TextField(
-                              controller: TextEditingController(text: "0"),
-                              keyboardType: TextInputType.number,
-                              style: TextStyle(
-                                  fontSize: 17.sp,
-                                  color: isDark ? Colors.white : Colors.black),
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 10.w, vertical: 15.h),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(6.r),
-                                  borderSide:
-                                      BorderSide(color: Colors.grey.shade700),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(6.r),
-                                  borderSide: BorderSide(
-                                      color:
-                                          isDark ? Colors.white : Colors.black),
-                                ),
-                                hintText: "Enter value",
-                                hintStyle: TextStyle(
-                                    fontSize: 17.sp,
-                                    color: Colors.grey.shade600),
-                                isDense: true,
+                                fontSize: 15.sp,
+                                color: isDark ? Colors.white : Colors.black,
                               ),
                             ),
-                          ),
-                        ],
+                            SizedBox(height: 6.h),
+                            Container(
+                              height: 50.h,
+                              child: TextField(
+                                readOnly: _validityOptionIndex ==
+                                    1, // Read-only for IOC
+                                controller: TextEditingController(text: "0"),
+                                keyboardType: TextInputType.number,
+                                style: TextStyle(
+                                  fontSize: 17.sp,
+                                  color: _validityOptionIndex == 1
+                                      ? Colors.grey.shade600
+                                      : (isDark ? Colors.white : Colors.black),
+                                ),
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 10.w,
+                                    vertical: 15.h,
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(6.r),
+                                    borderSide:
+                                        BorderSide(color: Colors.grey.shade700),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(6.r),
+                                    borderSide: BorderSide(
+                                      color:
+                                          isDark ? Colors.white : Colors.black,
+                                    ),
+                                  ),
+                                  hintText: "Enter value",
+                                  hintStyle: TextStyle(
+                                    fontSize: 17.sp,
+                                    color: Colors.grey.shade600,
+                                  ),
+                                  isDense: true,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       SizedBox(width: 10.w),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Minutes",
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Minutes",
                               style: TextStyle(
-                                  fontSize: 15.sp,
-                                  color: isDark ? Colors.white : Colors.black)),
-                          SizedBox(height: 6.h),
-                          Container(
-                            height: 50.h,
-                            width: 160.w,
-                            decoration: BoxDecoration(
-                              color: isDark
-                                  ? Color(0xff2f2f2f)
-                                  : Color(0xffF4F4F9),
-                              borderRadius: BorderRadius.circular(6.r),
-                            ),
-                            padding: EdgeInsets.only(left: 8.0),
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "0",
-                              style: TextStyle(
-                                fontSize: 17.sp,
-                                color: Color(0xffc9cacc),
+                                fontSize: 15.sp,
+                                color: isDark ? Colors.white : Colors.black,
                               ),
                             ),
-                          ),
-                        ],
+                            SizedBox(height: 6.h),
+                            Container(
+                              height: 50.h,
+                              child: DropdownButtonFormField<String>(
+                                value: _selectedMinutes,
+                                onChanged: _validityOptionIndex == 2
+                                    ? (String? newValue) {
+                                        setState(() {
+                                          _selectedMinutes = newValue;
+                                        });
+                                      }
+                                    : null, // Disable for Day and IOC
+                                items: _minutesOptions
+                                    .map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: TextStyle(
+                                        fontSize: 17.sp,
+                                        color: _validityOptionIndex == 0 ||
+                                                _validityOptionIndex == 1
+                                            ? Colors.grey.shade600
+                                            : (isDark
+                                                ? Colors.white
+                                                : Colors.black),
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 10.w,
+                                    vertical: 15.h,
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(6.r),
+                                    borderSide:
+                                        BorderSide(color: Colors.grey.shade700),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(6.r),
+                                    borderSide: BorderSide(
+                                      color:
+                                          isDark ? Colors.white : Colors.black,
+                                    ),
+                                  ),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(6.r),
+                                    borderSide:
+                                        BorderSide(color: Colors.grey.shade700),
+                                  ),
+                                  hintText: "Select minutes",
+                                  hintStyle: TextStyle(
+                                    fontSize: 17.sp,
+                                    color: Colors.grey.shade600,
+                                  ),
+                                  isDense: true,
+                                ),
+                                style: TextStyle(
+                                  fontSize: 17.sp,
+                                  color: _validityOptionIndex == 0 ||
+                                          _validityOptionIndex == 1
+                                      ? Colors.grey.shade600
+                                      : (isDark ? Colors.white : Colors.black),
+                                ),
+                                dropdownColor: isDark
+                                    ? Colors.grey.shade800
+                                    : Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -460,7 +1006,7 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
                   ? CrossFadeState.showSecond
                   : CrossFadeState.showFirst,
               duration: Duration(milliseconds: 200),
-            ),
+            )
           ],
         ),
       ),

@@ -7,6 +7,7 @@ import 'package:flutter/services.dart'; // For text input formatting
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:flutter_svg/svg.dart'; // For SVG image rendering
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
+import 'package:sapphire/screens/funds/bankSelectionPopup.dart'; // Bank selection bottom sheet
 
 /// Utility class for number formatting
 /// Provides methods to format numbers in Indian number format (with commas)
@@ -101,7 +102,8 @@ class fundsAddScreen extends StatefulWidget {
 /// State class for the fundsAddScreen widget
 /// Manages the UI display and validation for fund deposits
 class _fundsAddScreenState extends State<fundsAddScreen> {
-  String? selectedBank = 'icici'; // Default selected bank
+  String? selectedBank =
+      'bank_0'; // Default selected bank (first bank in the list)
   String amountText = '0.00'; // Default amount text
   late TextEditingController amountController; // Controller for amount input
   TextEditingController upiId =
@@ -112,6 +114,14 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
   static const int minAmount = 99; // Minimum deposit amount
   static const int maxAmount =
       999999999; // Maximum deposit amount (₹9,99,99,999)
+
+  // List of available bank accounts for deposit
+  final List<Map<String, String>> banks = [
+    {'name': 'ICICI Bank', 'details': 'XXXX XXXX 6485'},
+    {'name': 'Kotak Mahindra Bank', 'details': 'XXXX XXXX 2662'},
+    {'name': 'ICICI Bank', 'details': 'XXXX XXXX 6485'},
+    {'name': 'ICICI Bank', 'details': 'XXXX XXXX 6485'},
+  ];
 
   /// Validates the entered deposit amount
   /// Checks if amount is within allowed min/max range
@@ -140,6 +150,41 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
     return amt >= 100;
   }
 
+  /// Opens the bank selection bottom sheet
+  /// Uses the centralized bottom sheet component
+  void _openBankSelectionSheet(BuildContext context) {
+    showBankSelectionBottomSheet(
+      context: context,
+      banks: banks,
+      selectedBank: selectedBank,
+      onBankSelected: (String bankId) {
+        setState(() {
+          selectedBank = bankId;
+        });
+      },
+    );
+  }
+
+  /// Gets the name of the currently selected bank
+  /// Returns the bank name based on the selectedBank value
+  String _getSelectedBankName() {
+    if (selectedBank == 'bank_1') {
+      return 'Kotak Mahindra Bank';
+    }
+    // For all other banks (default to ICICI)
+    return 'ICICI Bank';
+  }
+
+  /// Gets the account number of the currently selected bank
+  /// Returns the masked account number based on the selectedBank value
+  String _getSelectedBankAccountNumber() {
+    final int index = int.tryParse(selectedBank?.split('_').last ?? '0') ?? 0;
+    if (index < banks.length) {
+      return banks[index]['details'] ?? '';
+    }
+    return '';
+  }
+
   @override
   void initState() {
     super.initState();
@@ -156,9 +201,6 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
   }
 
   // List of available bank accounts for deposit
-  final List<Map<String, String>> banks = [
-    {'name': 'ICICI Bank', 'details': 'XXXX XXXX 6485'},
-  ];
 
   /// Adds a predefined value to the current amount
   /// Used for quick amount buttons (+5000, +10000, etc.)
@@ -439,59 +481,77 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
               _buildAmountButton('+₹20,000', isDark, () => _addAmount(20000)),
             ],
           ),
+          SizedBox(height: 24.h),
+
+          // Bank Selection Container
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Bank Selection Container - Opens bottom sheet on tap
+              ],
+            ),
+          ),
           const Spacer(),
 
           // Bank Account Selection Widget
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 16.w),
-            decoration: BoxDecoration(
-              color: isDark ? const Color(0xff121413) : const Color(0xFFF5F5F5),
-              borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(
-                color: isDark ? const Color(0xff2F2F2F) : Colors.grey.shade300,
-                width: 1,
+          GestureDetector(
+            onTap: () => _openBankSelectionSheet(context),
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 16.w),
+              decoration: BoxDecoration(
+                color:
+                    isDark ? const Color(0xff121413) : const Color(0xFFF5F5F5),
+                borderRadius: BorderRadius.circular(8.r),
+                border: Border.all(
+                  color:
+                      isDark ? const Color(0xff2F2F2F) : Colors.grey.shade300,
+                  width: 1,
+                ),
               ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    "assets/images/icici.png",
-                    width: 24.w,
-                    height: 24.h,
-                  ),
-                  SizedBox(width: 8.w),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'ICICI Bank',
-                          style: TextStyle(
-                            color: textColor,
-                            fontSize: 13.sp,
-                          ),
-                        ),
-                        Text(
-                          'XXXX XXXX 6485',
-                          style: TextStyle(
-                            color: isDark ? Colors.grey : Colors.grey.shade700,
-                            fontSize: 10.sp,
-                          ),
-                        ),
-                      ],
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      "assets/images/icici.png",
+                      width: 24.w,
+                      height: 24.h,
                     ),
-                  ),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    color: textColor,
-                    size: 16.sp,
-                  ),
-                ],
+                    SizedBox(width: 8.w),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'ICICI Bank',
+                            style: TextStyle(
+                              color: textColor,
+                              fontSize: 13.sp,
+                            ),
+                          ),
+                          Text(
+                            'XXXX XXXX 6485',
+                            style: TextStyle(
+                              color:
+                                  isDark ? Colors.grey : Colors.grey.shade700,
+                              fontSize: 10.sp,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      color: textColor,
+                      size: 16.sp,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

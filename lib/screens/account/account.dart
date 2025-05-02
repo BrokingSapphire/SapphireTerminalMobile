@@ -19,6 +19,7 @@ import 'package:sapphire/screens/account/reports/orderBook.dart';
 import 'package:sapphire/screens/account/reports/tradeBook.dart';
 import 'package:sapphire/screens/account/reports/tradesAndCharges.dart';
 import 'package:sapphire/screens/account/reports/verifiedP&L.dart';
+import 'package:sapphire/screens/signUp/loginScreen.dart';
 
 import '../../utils/constWidgets.dart';
 
@@ -213,7 +214,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               // Scrollable Account List
               SizedBox(
-                height: 200.h,
+                // height: 300.h,
                 // Adjust height as needed
 
                 child: SingleChildScrollView(
@@ -235,22 +236,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SizedBox(height: 16.h),
 
               // Fixed "+ Add Account" Button
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.r),
-                  border: Border.all(
-                      color: isDark
-                          ? const Color(0xff2F2F2F)
-                          : const Color(0xffD1D5DB)),
-                ),
-                height: 70.h,
-                child: Center(
-                  child: Text(
-                    "+ Add account",
-                    style: TextStyle(
-                        fontSize: 17.sp,
-                        color: isDark ? Colors.white : Colors.black),
+              InkWell(
+                onTap: () {
+                  navi(LoginScreen(), context);
+                },
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.r),
+                    border: Border.all(
+                        color: isDark
+                            ? const Color(0xff2F2F2F)
+                            : const Color(0xffD1D5DB)),
+                  ),
+                  height: 70.h,
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.add,
+                          color: isDark ? Colors.white : Colors.black,
+                          size: 24.sp,
+                        ),
+                        Text(
+                          " Add account",
+                          style: TextStyle(
+                              fontSize: 17.sp,
+                              color: isDark ? Colors.white : Colors.black),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -263,72 +279,80 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _showLogoutDialog(BuildContext context) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
-    showDialog(
+    showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          backgroundColor: isDark ? Color(0xff121413) : Color(0xffF4F4F9),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 20.h),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  "Log out",
-                  style: TextStyle(
-                      color: isDark ? Colors.white : Colors.black,
-                      fontSize: 21.sp,
-                      fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 11.h),
-                Text(
-                  "Do you really want to log out?",
-                  style: TextStyle(
-                    color: isDark ? Colors.white70 : Color(0xff6B7280),
-                    fontSize: 15.sp,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 20.h),
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    minimumSize: Size(double.infinity, 45.h), // Increased width
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.r),
-                    ),
-                  ),
-                  onPressed: () {},
-                  icon: Icon(Icons.logout, color: Colors.white),
-                  label: Text("Log out", style: TextStyle(color: Colors.white)),
-                ),
-                SizedBox(height: 12.h),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: isDark
-                        ? const Color(0xff121413)
-                        : const Color(0xffF4F4F9),
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                          color: isDark
-                              ? const Color(0xff2F2F2F)
-                              : const Color(0xffD1D5DB)),
-                      borderRadius: BorderRadius.circular(30.r),
-                    ),
-                    minimumSize: Size(double.infinity, 45.h), // Increased width
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text("Cancel",
-                      style: TextStyle(
-                          color: isDark ? Colors.white : Colors.black)),
-                )
-              ],
+        return Container(
+          decoration: BoxDecoration(
+            color: isDark ? Color(0xff121413) : Color(0xffF4F4F9),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.r),
+              topRight: Radius.circular(20.r),
             ),
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Logout",
+                style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 12.h),
+              Text(
+                "Do you really want to log out?",
+                style: TextStyle(
+                  color: isDark ? Colors.white70 : Color(0xff6B7280),
+                  fontSize: 15.sp,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 24.h),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  minimumSize: Size(double.infinity, 48.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.r),
+                  ),
+                ),
+                onPressed: () {
+                  // Logout logic here
+                  Navigator.pop(context);
+                },
+                icon: Icon(Icons.logout, color: Colors.white),
+                label: Text("Log out",
+                    style: TextStyle(color: Colors.white, fontSize: 16.sp)),
+              ),
+              SizedBox(height: 12.h),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: isDark
+                      ? const Color(0xff121413)
+                      : const Color(0xffF4F4F9),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                        color: isDark
+                            ? const Color(0xff2F2F2F)
+                            : const Color(0xffD1D5DB)),
+                    borderRadius: BorderRadius.circular(30.r),
+                  ),
+                  minimumSize: Size(double.infinity, 48.h),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("Cancel",
+                    style: TextStyle(
+                        color: isDark ? Colors.white : Colors.black,
+                        fontSize: 16.sp)),
+              ),
+              SizedBox(height: 8.h), // Bottom padding for safe area
+            ],
           ),
         );
       },
@@ -338,16 +362,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildAccountTile(
       String initials, String name, String id, bool isSelected, bool isDark) {
     return Container(
-      height: 90.h,
+      height: 70.h,
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.r),
-        border: Border.all(
-            color: isSelected
-                ? Colors.green
-                : isDark
-                    ? const Color(0xff2F2F2F)
-                    : const Color(0xffD1D5DB)),
+        border: Border.all(color: Color(0xff2f2f2f)),
         color: isSelected
             ? (isDark ? const Color(0xff121413) : Colors.green.withOpacity(0.2))
             : Colors.transparent,
@@ -567,7 +586,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 title: Text(
                   "Account",
                   style: TextStyle(
-                    fontSize: 21.sp,
+                    fontSize: 15.sp,
                     fontWeight: FontWeight.bold,
                     color: isDark ? Colors.white : Colors.black,
                   ),

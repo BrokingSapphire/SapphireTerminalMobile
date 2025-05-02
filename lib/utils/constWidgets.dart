@@ -61,7 +61,7 @@ class constWidgets {
           width: 1.5, // Slightly thicker border for visibility
         ),
         borderRadius:
-        BorderRadius.circular(8.r), // Larger rounded corners to match image
+            BorderRadius.circular(8.r), // Larger rounded corners to match image
         color: val
             ? isDark
                 ? Color(0xFF26382F)
@@ -179,7 +179,7 @@ class constWidgets {
                   radius: 18.r,
                   backgroundColor: isDark ? Colors.white : Colors.transparent,
                   backgroundImage:
-                  AssetImage("assets/images/reliance logo.png")),
+                      AssetImage("assets/images/reliance logo.png")),
               SizedBox(width: 10.w), // Space between avatar and text
 
               // Column for Title and Subtitle
@@ -222,8 +222,9 @@ class constWidgets {
                     style: TextStyle(
                         fontSize: 13.sp,
                         color: trail2.startsWith('-')
-                            ? Color(0xffe53935)  // Red color for negative values
-                            : Color(0xff22a06b)), // Green color for positive values
+                            ? Color(0xffe53935) // Red color for negative values
+                            : Color(
+                                0xff22a06b)), // Green color for positive values
                   ),
                 ],
               ),
@@ -294,7 +295,7 @@ class constWidgets {
                             fontWeight: FontWeight.w600,
                             fontSize: 17.sp,
                             color: secondValue.contains('-')
-                                ? Colors.red    // Red for negative values
+                                ? Colors.red // Red for negative values
                                 : Colors.green), // Green for positive values
                       ),
                       TextSpan(
@@ -408,7 +409,7 @@ class constWidgets {
                       style: TextStyle(
                           fontSize: 13.sp,
                           color: trail1.startsWith("-")
-                              ? Colors.red     // Red for negative P&L
+                              ? Colors.red // Red for negative P&L
                               : Colors.green), // Green for positive P&L
                     ),
                     SizedBox(
@@ -477,7 +478,8 @@ class constWidgets {
         ),
         style: ButtonStyle(
           foregroundColor: WidgetStateProperty.all(Colors.white),
-          backgroundColor: WidgetStateProperty.all(Color(0xFF1DB954)), // Brand green color
+          backgroundColor:
+              WidgetStateProperty.all(Color(0xFF1DB954)), // Brand green color
         ),
       ),
     );
@@ -487,52 +489,54 @@ class constWidgets {
   /// Used in forms throughout the app, with specialized handling for phone numbers
   static Widget textField(String hintText, TextEditingController controller,
       {bool isPhoneNumber = false,
-        bool isCapital = false,
-        required bool isDark}) {
+      bool isCapital = false,
+      required bool isDark}) {
     return TextFormField(
       textCapitalization:
-      isCapital ? TextCapitalization.characters : TextCapitalization.none,
+          isCapital ? TextCapitalization.characters : TextCapitalization.none,
       controller: controller,
       keyboardType: isPhoneNumber ? TextInputType.phone : TextInputType.text,
       inputFormatters: isPhoneNumber
           ? [
-        FilteringTextInputFormatter.digitsOnly, // Only allow digits for phone numbers
-        LengthLimitingTextInputFormatter(10),  // Limit to 10 digits for Indian phone numbers
-      ]
+              FilteringTextInputFormatter
+                  .digitsOnly, // Only allow digits for phone numbers
+              LengthLimitingTextInputFormatter(
+                  10), // Limit to 10 digits for Indian phone numbers
+            ]
           : [],
       onChanged: isPhoneNumber
           ? (value) {
-        // Validation for Indian phone numbers (must start with 6, 7, 8, or 9)
-        if (value.isNotEmpty && !RegExp(r'^[6789]').hasMatch(value)) {
-          controller.clear();
-          if (navigatorKey.currentContext != null) {
-            ScaffoldMessenger.of(navigatorKey.currentContext!)
-                .showSnackBar(
-              SnackBar(
-                content: Text(
-                  "Phone number must start with 6, 7, 8, or 9",
-                  style: TextStyle(
-                      color: isDark ? Colors.white : Colors.black),
-                ),
-                duration: Duration(seconds: 1),
-                backgroundColor: Colors.red,
-              ),
-            );
-          }
-        }
-      }
+              // Validation for Indian phone numbers (must start with 6, 7, 8, or 9)
+              if (value.isNotEmpty && !RegExp(r'^[6789]').hasMatch(value)) {
+                controller.clear();
+                if (navigatorKey.currentContext != null) {
+                  ScaffoldMessenger.of(navigatorKey.currentContext!)
+                      .showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        "Phone number must start with 6, 7, 8, or 9",
+                        style: TextStyle(
+                            color: isDark ? Colors.white : Colors.black),
+                      ),
+                      duration: Duration(seconds: 1),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              }
+            }
           : null,
       validator: isPhoneNumber
           ? (value) {
-        // Validation logic for phone number fields
-        if (value == null || value.isEmpty) {
-          return 'Please enter your phone number';
-        }
-        if (!RegExp(r'^[6789]\d{9}$').hasMatch(value)) {
-          return 'Enter a valid 10-digit phone number starting with 6, 7, 8, or 9';
-        }
-        return null;
-      }
+              // Validation logic for phone number fields
+              if (value == null || value.isEmpty) {
+                return 'Please enter your phone number';
+              }
+              if (!RegExp(r'^[6789]\d{9}$').hasMatch(value)) {
+                return 'Enter a valid 10-digit phone number starting with 6, 7, 8, or 9';
+              }
+              return null;
+            }
           : null,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -585,7 +589,7 @@ class constWidgets {
               )
             : null,
         prefixIconConstraints:
-        isPhoneNumber ? BoxConstraints(minWidth: 20) : null,
+            isPhoneNumber ? BoxConstraints(minWidth: 20) : null,
       ),
       style: TextStyle(
           color: isDark ? Colors.white : Colors.black, fontSize: 16.sp),
@@ -662,12 +666,12 @@ class constWidgets {
                         itemBuilder: (context, index) {
                           return Padding(
                             padding:
-                            const EdgeInsets.symmetric(horizontal: 10.0),
+                                const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Column(
                               children: [
                                 ExpansionTile(
                                   tilePadding:
-                                  EdgeInsets.symmetric(horizontal: 8),
+                                      EdgeInsets.symmetric(horizontal: 8),
                                   title: Text(
                                     faqList[index]['question']!,
                                     style: TextStyle(
@@ -690,7 +694,7 @@ class constWidgets {
                                 Divider(
                                     color: Colors.grey.shade800,
                                     height:
-                                    1), // Thin separator like your image
+                                        1), // Thin separator like your image
                               ],
                             ),
                           );
@@ -729,7 +733,7 @@ class constWidgets {
                       ListView(
                         shrinkWrap: true, // Prevent infinite height
                         physics:
-                        NeverScrollableScrollPhysics(), // Disable scrolling in this ListView
+                            NeverScrollableScrollPhysics(), // Disable scrolling in this ListView
                         children: [
                           // Support Portal option
                           ListTile(
@@ -856,7 +860,7 @@ class constWidgets {
                 },
                 size: 20.0, // Adjust size as needed
                 checkmarkPadding:
-                4, // Adjust padding around the checkmark (e.g., 2.0, 4.0, or 6.0)
+                    4, // Adjust padding around the checkmark (e.g., 2.0, 4.0, or 6.0)
               )),
           SizedBox(
             width: 5.w,
@@ -883,12 +887,12 @@ class constWidgets {
           width: 1.5, // Slightly thicker border for visibility
         ),
         borderRadius:
-        BorderRadius.circular(8.r), // Larger rounded corners to match image
+            BorderRadius.circular(8.r), // Larger rounded corners to match image
         color: val
             ? Colors.green.withOpacity(0.2)
             : isDark
-            ? Color(0xff121413)
-            : Color(0xffF4F4F9), // Black background to match image
+                ? Color(0xff121413)
+                : Color(0xffF4F4F9), // Black background to match image
       ),
     );
   }
@@ -917,12 +921,12 @@ class constWidgets {
           color: val
               ? Colors.green
               : isDark
-              ? Color(0xff2F2F2F)
-              : Color(0xffD1D5DB), // Gray border to match image
+                  ? Color(0xff2F2F2F)
+                  : Color(0xffD1D5DB), // Gray border to match image
           width: 1.5, // Slightly thicker border for visibility
         ),
         borderRadius:
-        BorderRadius.circular(3.r), // Larger rounded corners to match image
+            BorderRadius.circular(3.r), // Larger rounded corners to match image
         color: val
             ? (isDark ? Colors.green.withOpacity(0.2) : Colors.green.shade100)
             : (isDark ? const Color(0xFF121413) : Colors.grey.shade100),
@@ -968,27 +972,27 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
               color: widget.value
                   ? Colors.green
                   : Colors.grey
-                  .shade800, // Matches 'side: BorderSide(color: Colors.grey.shade800, width: 1)'
+                      .shade800, // Matches 'side: BorderSide(color: Colors.grey.shade800, width: 1)'
               width: 1,
             ),
             borderRadius: BorderRadius.circular(6
                 .r), // Matches 'shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.r))'
             color: Colors.transparent
-          // Matches 'activeColor: Colors.green' and 'fillColor: WidgetStateProperty.all(Colors.transparent)'
-        ),
+            // Matches 'activeColor: Colors.green' and 'fillColor: WidgetStateProperty.all(Colors.transparent)'
+            ),
         child: widget.value
             ? Padding(
-          padding: EdgeInsets.all(
-              widget.checkmarkPadding), // Padding around checkmark
-          child: Icon(
-            Icons.check,
-            color: Colors
-                .green, // Matches 'checkColor: Colors.green' (changed to white for better visibility on green background)
-            size: widget.size -
-                (widget.checkmarkPadding *
-                    2.4), // Adjust size to fit padding
-          ),
-        )
+                padding: EdgeInsets.all(
+                    widget.checkmarkPadding), // Padding around checkmark
+                child: Icon(
+                  Icons.check,
+                  color: Colors
+                      .green, // Matches 'checkColor: Colors.green' (changed to white for better visibility on green background)
+                  size: widget.size -
+                      (widget.checkmarkPadding *
+                          2.4), // Adjust size to fit padding
+                ),
+              )
             : null,
       ),
     );
@@ -1017,13 +1021,13 @@ class CustomRadioButton extends StatelessWidget {
         height: 14.h,
         decoration: isSelected
             ? BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.green, width: 3),
-        )
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.green, width: 3),
+              )
             : BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: Color(0xff2F2F2F), width: 2),
-        ), // Blank when not selected
+                shape: BoxShape.circle,
+                border: Border.all(color: Color(0xff2F2F2F), width: 2),
+              ), // Blank when not selected
       ),
     );
   }
@@ -1083,8 +1087,8 @@ class _CustomTabBarState extends State<CustomTabBar> {
                           color: isSelected
                               ? Color(0xff1DB954)
                               : isDark
-                              ? Color(0xffEBEEF5)
-                              : Colors.black,
+                                  ? Color(0xffEBEEF5)
+                                  : Colors.black,
                         ),
                       ),
                       SizedBox(height: 5.h),
