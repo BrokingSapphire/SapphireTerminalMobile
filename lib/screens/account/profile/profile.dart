@@ -151,7 +151,7 @@ class _AccountScreenState extends State<AccountScreen> {
           "Account",
           style: TextStyle(
               fontWeight: FontWeight.w600,
-              fontSize: 24.sp,
+              fontSize: 15.sp,
               color: isDark ? Colors.white : Colors.black),
         ),
         backgroundColor: isDark ? Colors.black : Colors.white,
@@ -176,7 +176,7 @@ class _AccountScreenState extends State<AccountScreen> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: 10.h,
+                    height: 16.h,
                   ),
                   Container(
                     height: 90.h,
@@ -515,33 +515,30 @@ class _AccountScreenState extends State<AccountScreen> {
                       color: isDark ? Color(0xff121413) : Color(0xFFF4F4F9),
                       borderRadius: BorderRadius.circular(8.r),
                     ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5.w),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: 15.w, top: 16.h, bottom: 16.h),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Brokerage Plan",
-                                  style: TextStyle(
-                                      fontSize: 18.sp,
-                                      color:
-                                          isDark ? Colors.white : Colors.black),
-                                ),
-                                Icon(
-                                  Icons.arrow_forward_ios_outlined,
-                                  size: 17,
-                                )
-                              ],
-                            ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 16.w, top: 16.h, bottom: 16.h, right: 16.w),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Brokerage Plan",
+                                style: TextStyle(
+                                    fontSize: 18.sp,
+                                    color:
+                                        isDark ? Colors.white : Colors.black),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios_outlined,
+                                size: 17,
+                              )
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(
@@ -555,7 +552,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsets.only(left: 15.w, right: 15.w, top: 16.h),
+                          EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [

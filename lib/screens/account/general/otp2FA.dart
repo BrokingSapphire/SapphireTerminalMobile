@@ -198,39 +198,64 @@ class _otp2faScreenState extends State<otp2faScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 40.h),
+                    SizedBox(height: 440.h),
+                    SizedBox(
+                      height: 52.h,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: _isGray
+                            ? null
+                            : () {
+                                // Handle OTP verification or continue action
+                                print('OTP Verified');
+                              },
+                        child: Text("Continue",
+                            style: TextStyle(
+                                fontSize: 17.sp,
+                                fontWeight: FontWeight.w600,
+                                color: _isGray
+                                    ? Color(0xffc9cacc)
+                                    : Colors.white)),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              _isGray ? Color(0xff2f2f2f) : Color(0xFF1DB954),
+                          foregroundColor: Colors.white,
+                          disabledBackgroundColor: Color(0xff2f2f2f),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ]),
           ),
         ),
-        bottomSheet: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15.w),
-          child: SizedBox(
-            height: 52.h,
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: _isGray
-                  ? null
-                  : () {
-                      // Handle OTP verification or continue action
-                      print('OTP Verified');
-                    },
-              child: Text("Continue",
-                  style: TextStyle(
-                      fontSize: 17.sp,
-                      fontWeight: FontWeight.w600,
-                      color: isDark ? Colors.black : Colors.white)),
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    _isGray ? Color(0xff2f2f2f) : Color(0xFF1DB954),
-                foregroundColor: Colors.white,
-                disabledBackgroundColor: Color(0xff2f2f2f),
-              ),
-            ),
-          ),
-        ),
+        // bottomSheet: Padding(
+        //   padding: EdgeInsets.symmetric(horizontal: 15.w),
+        //   child: SizedBox(
+        //     height: 52.h,
+        //     width: double.infinity,
+        //     child: ElevatedButton(
+        //       onPressed: _isGray
+        //           ? null
+        //           : () {
+        //               // Handle OTP verification or continue action
+        //               print('OTP Verified');
+        //             },
+        //       child: Text("Continue",
+        //           style: TextStyle(
+        //               fontSize: 17.sp,
+        //               fontWeight: FontWeight.w600,
+        //               color: isDark ? Colors.black : Colors.white)),
+        //       style: ElevatedButton.styleFrom(
+        //         backgroundColor:
+        //             _isGray ? Color(0xff2f2f2f) : Color(0xFF1DB954),
+        //         foregroundColor: Colors.white,
+        //         disabledBackgroundColor: Color(0xff2f2f2f),
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ),
     );
   }

@@ -69,7 +69,7 @@ class _FundsScreenState extends State<FundsScreen> {
           padding: const EdgeInsets.only(top: 15),
           child: Text(
             "Funds",
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 21.sp),
           ),
         ),
         leading: Padding(
@@ -147,7 +147,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                   // Cash Balance section
                                   Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Cash Balance",
@@ -164,13 +164,13 @@ class _FundsScreenState extends State<FundsScreen> {
                                   ),
                                   Padding(
                                     padding:
-                                    EdgeInsets.symmetric(horizontal: 15.w),
+                                        EdgeInsets.symmetric(horizontal: 15.w),
                                     child: Text("+"),
                                   ),
                                   // Pledge Balance section
                                   Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Pledge Balance",
@@ -204,7 +204,8 @@ class _FundsScreenState extends State<FundsScreen> {
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                navi(fundsWithdrawScreen(), context); // Navigate to withdraw funds screen
+                                navi(fundsWithdrawScreen(),
+                                    context); // Navigate to withdraw funds screen
                               },
                               child: Container(
                                 child: Center(
@@ -215,7 +216,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                     color: Colors.green.withOpacity(0.2),
                                     borderRadius: BorderRadius.circular(4.r),
                                     border:
-                                    Border.all(color: Color(0xff1DB954))),
+                                        Border.all(color: Color(0xff1DB954))),
                               ),
                             ),
                           ),
@@ -226,7 +227,8 @@ class _FundsScreenState extends State<FundsScreen> {
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                navi(fundsAddScreen(), context); // Navigate to add funds screen
+                                navi(fundsAddScreen(),
+                                    context); // Navigate to add funds screen
                               },
                               child: Container(
                                 child: Center(
@@ -237,7 +239,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                     color: Color(0xff1DB954),
                                     borderRadius: BorderRadius.circular(4.r),
                                     border:
-                                    Border.all(color: Color(0xff1DB954))),
+                                        Border.all(color: Color(0xff1DB954))),
                               ),
                             ),
                           ),
@@ -367,7 +369,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             // Balance details header
                                             Row(
@@ -377,7 +379,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                                   style: TextStyle(
                                                       fontSize: 15.sp,
                                                       fontWeight:
-                                                      FontWeight.w600,
+                                                          FontWeight.w600,
                                                       color: Color(0xffEBEEF5)),
                                                 ),
                                                 Spacer(),
@@ -386,7 +388,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                                   style: TextStyle(
                                                       fontSize: 15.sp,
                                                       fontWeight:
-                                                      FontWeight.w600,
+                                                          FontWeight.w600,
                                                       color: Color(0xffEBEEF5)),
                                                 ),
                                               ],
@@ -500,7 +502,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             // Margin details header
                                             Row(
@@ -510,7 +512,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                                   style: TextStyle(
                                                       fontSize: 15.sp,
                                                       fontWeight:
-                                                      FontWeight.w500,
+                                                          FontWeight.w500,
                                                       color: Color(0xffEBEEF5)),
                                                 ),
                                                 Spacer(),
@@ -519,7 +521,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                                   style: TextStyle(
                                                       fontSize: 15.sp,
                                                       fontWeight:
-                                                      FontWeight.w500,
+                                                          FontWeight.w500,
                                                       color: Color(0xffEBEEF5)),
                                                 ),
                                               ],
@@ -615,7 +617,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             // Withdrawable balance details header
                                             Row(
@@ -625,7 +627,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                                   style: TextStyle(
                                                       fontSize: 15.sp,
                                                       fontWeight:
-                                                      FontWeight.w600,
+                                                          FontWeight.w600,
                                                       color: Color(0xffEBEEF5)),
                                                 ),
                                                 Spacer(),
@@ -634,7 +636,7 @@ class _FundsScreenState extends State<FundsScreen> {
                                                   style: TextStyle(
                                                       fontSize: 15.sp,
                                                       fontWeight:
-                                                      FontWeight.w600,
+                                                          FontWeight.w600,
                                                       color: Color(0xffEBEEF5)),
                                                 ),
                                               ],
@@ -732,8 +734,8 @@ class _FundsScreenState extends State<FundsScreen> {
 /// CustomGaugeChart - Widget that displays the balance breakdown as a gauge chart
 /// Visualizes the relationship between total balance and margin utilized
 class CustomGaugeChart extends StatelessWidget {
-  final double totalBalance;    // Total available balance amount
-  final double marginUtilized;  // Amount of margin currently being used
+  final double totalBalance; // Total available balance amount
+  final double marginUtilized; // Amount of margin currently being used
 
   const CustomGaugeChart({
     Key? key,
@@ -789,8 +791,8 @@ class CustomGaugeChart extends StatelessWidget {
 /// GaugeChartPainter - Custom painter for the semi-circular gauge chart
 /// Draws a semi-circular chart showing the proportion of margin utilized to total balance
 class GaugeChartPainter extends CustomPainter {
-  final double totalBalance;    // Total available balance amount
-  final double marginUtilized;  // Amount of margin currently being used
+  final double totalBalance; // Total available balance amount
+  final double marginUtilized; // Amount of margin currently being used
 
   GaugeChartPainter({
     required this.totalBalance,
@@ -809,10 +811,10 @@ class GaugeChartPainter extends CustomPainter {
 
     // Draw background arc (total balance)
     final backgroundPaint = Paint()
-      ..color = Color(0xff38D055)    // Green for total balance
+      ..color = Color(0xff38D055) // Green for total balance
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 30.0           // Thick stroke for visibility
-      ..strokeCap = StrokeCap.butt;  // Flat ends on the arc
+      ..strokeWidth = 30.0 // Thick stroke for visibility
+      ..strokeCap = StrokeCap.butt; // Flat ends on the arc
 
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
@@ -824,15 +826,15 @@ class GaugeChartPainter extends CustomPainter {
 
     // Draw foreground arc (margin utilized)
     final foregroundPaint = Paint()
-      ..color = Color(0xffFFC42E)    // Yellow/orange for margin utilized
+      ..color = Color(0xffFFC42E) // Yellow/orange for margin utilized
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 30.0           // Match background stroke width
-      ..strokeCap = StrokeCap.butt;  // Flat ends on the arc
+      ..strokeWidth = 30.0 // Match background stroke width
+      ..strokeCap = StrokeCap.butt; // Flat ends on the arc
 
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
       startAngle,
-      totalAngle * ratio,            // Only draw arc proportional to usage ratio
+      totalAngle * ratio, // Only draw arc proportional to usage ratio
       false,
       foregroundPaint,
     );

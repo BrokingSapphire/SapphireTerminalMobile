@@ -13,8 +13,20 @@ class SettingsOrderPreference extends StatefulWidget {
 class _SettingsOrderPreferenceState extends State<SettingsOrderPreference> {
   double width = 0;
 
-  Map<String, String> selectedProductType = {};
-  Map<String, String> selectedOrderType = {};
+  // Default chip selections for each section
+  // Keys are section titles, values are default chip labels
+  Map<String, String> selectedProductType = {
+    "Equity Cash": "Delivery", // Default: Delivery
+    "Equity Derivatives": "CarryForward", // Default: CarryForward
+    "Currency Derivatives": "CarryForward", // Default: CarryForward
+    "Commodity Derivatives": "CarryForward", // Default: CarryForward
+  };
+  Map<String, String> selectedOrderType = {
+    "Equity Cash": "Market", // Default: Limit
+    "Equity Derivatives": "Market", // Default: Limit
+    "Currency Derivatives": "Market", // Default: Limit
+    "Commodity Derivatives": "Market", // Default: Limit
+  };
 
   List equityCash = ["Equity Cash", "Delivery", "Intraday", "Retail"];
   List equityDerivatives = [
@@ -222,23 +234,6 @@ class _SettingsOrderPreferenceState extends State<SettingsOrderPreference> {
                     SizedBox(height: 24.h),
                     sections(commDerivatives, isDark),
                     SizedBox(height: 24.h),
-                    Container(
-                      height: 44.h,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Color(0xFF1DB954),
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "SAVE",
-                          style: TextStyle(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w600,
-                              color: isDark ? Colors.white : Colors.white),
-                        ),
-                      ),
-                    )
                   ],
                 ),
               ),
@@ -246,6 +241,25 @@ class _SettingsOrderPreferenceState extends State<SettingsOrderPreference> {
           ),
         ],
       ),
+      persistentFooterButtons: [
+        Container(
+          height: 44.h,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Color(0xFF1DB954),
+            borderRadius: BorderRadius.circular(8.r),
+          ),
+          child: Center(
+            child: Text(
+              "SAVE",
+              style: TextStyle(
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w600,
+                  color: isDark ? Colors.white : Colors.white),
+            ),
+          ),
+        )
+      ],
     );
   }
 }

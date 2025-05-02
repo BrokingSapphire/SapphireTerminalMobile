@@ -104,12 +104,14 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
   String? selectedBank = 'icici'; // Default selected bank
   String amountText = '0.00'; // Default amount text
   late TextEditingController amountController; // Controller for amount input
-  TextEditingController upiId = TextEditingController(); // Controller for UPI ID input
+  TextEditingController upiId =
+      TextEditingController(); // Controller for UPI ID input
   bool _isDecimalMode = false; // Flag for decimal input mode
   String _decimalPart = ''; // Stores decimal part during input
   bool _amountInvalid = false; // Flag for invalid amount
   static const int minAmount = 99; // Minimum deposit amount
-  static const int maxAmount = 999999999; // Maximum deposit amount (₹9,99,99,999)
+  static const int maxAmount =
+      999999999; // Maximum deposit amount (₹9,99,99,999)
 
   /// Validates the entered deposit amount
   /// Checks if amount is within allowed min/max range
@@ -213,7 +215,7 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
       }
       setState(() {
         amountText =
-        '${NumberUtils.formatIndianNumber(currentText)}.$_decimalPart';
+            '${NumberUtils.formatIndianNumber(currentText)}.$_decimalPart';
         amountController.text = amountText;
       });
     }
@@ -266,7 +268,7 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
         _isDecimalMode = false;
         _decimalPart = '';
         amountText =
-        '${NumberUtils.formatIndianNumber(integerPart.isEmpty ? '0' : integerPart)}.00';
+            '${NumberUtils.formatIndianNumber(integerPart.isEmpty ? '0' : integerPart)}.00';
         amountController.text = amountText;
       });
     }
@@ -329,7 +331,7 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
               style: TextStyle(
                 fontSize: 13.sp,
                 color:
-                isDark ? const Color(0xffC9CACC) : const Color(0xff6B7280),
+                    isDark ? const Color(0xffC9CACC) : const Color(0xff6B7280),
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -353,7 +355,7 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
         children: [
           Divider(
               color:
-              isDark ? const Color(0xff2F2F2F) : const Color(0xffD1D5DB)),
+                  isDark ? const Color(0xff2F2F2F) : const Color(0xffD1D5DB)),
           SizedBox(height: 50.h),
 
           // Amount input field with Rupee symbol
@@ -382,17 +384,19 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
                           Flexible(
                             child: TextField(
                               controller: amountController,
-                              readOnly: true, // Use custom keypad instead of system keyboard
+                              readOnly:
+                                  true, // Use custom keypad instead of system keyboard
                               enableInteractiveSelection: false,
                               showCursor: false,
                               style: TextStyle(
                                 fontSize: 32.sp,
                                 fontWeight: FontWeight.w600,
                                 color: amountController.text == "0.00"
-                                    ? const Color(0xffC9CACC) // Gray for empty/zero amounts
+                                    ? const Color(
+                                        0xffC9CACC) // Gray for empty/zero amounts
                                     : _amountInvalid
-                                    ? Colors.red // Red for invalid amounts
-                                    : textColor, // Default text color
+                                        ? Colors.red // Red for invalid amounts
+                                        : textColor, // Default text color
                                 overflow: TextOverflow.ellipsis,
                               ),
                               textAlign: TextAlign.center,
@@ -506,9 +510,12 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
                   backgroundColor: WidgetStatePropertyAll(
                     isAmountValid
                         ? const Color(0xFF00C853) // Green when amount is valid
-                        : const Color(0xff2f2f2f), // Gray when amount is invalid
+                        : const Color(
+                            0xff2f2f2f), // Gray when amount is invalid
                   ),
-                  foregroundColor: const WidgetStatePropertyAll(Colors.white),
+                  foregroundColor: isAmountValid
+                      ? WidgetStatePropertyAll(Colors.white)
+                      : WidgetStatePropertyAll(Color(0xffc9cacc)),
                   shape: WidgetStatePropertyAll(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(25.r),
@@ -517,12 +524,12 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
                 ),
                 onPressed: isAmountValid
                     ? () {
-                  _addDecimalPart();
-                  if (_validateAmount()) {
-                    _selectPaymentMethod(
-                        context, isDark, amountController.text);
-                  }
-                }
+                        _addDecimalPart();
+                        if (_validateAmount()) {
+                          _selectPaymentMethod(
+                              context, isDark, amountController.text);
+                        }
+                      }
                     : null, // Disable button when amount isn't valid
                 child: Text(
                   "Continue",
@@ -558,13 +565,13 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
             child: icon != null
                 ? Icon(icon, color: color ?? textColor, size: 24.sp)
                 : Text(
-              text,
-              style: TextStyle(
-                fontSize: 24.sp,
-                fontWeight: FontWeight.w500,
-                color: color ?? textColor,
-              ),
-            ),
+                    text,
+                    style: TextStyle(
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.w500,
+                      color: color ?? textColor,
+                    ),
+                  ),
           ),
         ),
       );
@@ -623,7 +630,7 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor:
-          isDark ? const Color(0xff121413) : const Color(0xFFF5F5F5),
+              isDark ? const Color(0xff121413) : const Color(0xFFF5F5F5),
           shape: RoundedRectangleBorder(
             side: BorderSide(
               color: isDark ? const Color(0xff2F2F2F) : Colors.grey.shade300,
@@ -648,7 +655,8 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
   /// Displays UPI options, UPI ID input, and Net Banking option
   void _selectPaymentMethod(BuildContext context, bool isDark, String amount) {
     double parsedAmount = double.tryParse(amount.replaceAll(',', '')) ?? 0.0;
-    bool isAboveTwoLakh = parsedAmount > 200000; // Check if amount exceeds ₹2 lakh (for potential regulatory requirements)
+    bool isAboveTwoLakh = parsedAmount >
+        200000; // Check if amount exceeds ₹2 lakh (for potential regulatory requirements)
 
     showModalBottomSheet(
       context: context,
@@ -825,7 +833,7 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
                   borderRadius: BorderRadius.circular(8.r),
                   border: Border.all(
                     color:
-                    isDark ? const Color(0xff2F2F2F) : Colors.grey.shade300,
+                        isDark ? const Color(0xff2F2F2F) : Colors.grey.shade300,
                     width: 1,
                   ),
                 ),

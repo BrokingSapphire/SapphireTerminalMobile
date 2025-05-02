@@ -24,7 +24,7 @@ class _FreezeAccountState extends State<FreezeAccount> {
         title: Padding(
           padding: const EdgeInsets.only(top: 15),
           child: Text(
-            "Gift Securities",
+            "Freeze Demat Account",
             style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 15.sp,
@@ -86,10 +86,7 @@ class _FreezeAccountState extends State<FreezeAccount> {
                       children: [
                         Row(
                           children: [
-                            SvgPicture.asset(
-                              'assets/svgs/image57.svg',
-                              color: isDark ? Colors.white : Colors.black,
-                            ),
+                            Text("🔐", style: TextStyle(fontSize: 12.sp)),
                             SizedBox(width: 8.w),
                             Expanded(
                               child: Text(
@@ -107,10 +104,7 @@ class _FreezeAccountState extends State<FreezeAccount> {
                         SizedBox(height: 5.h),
                         Row(
                           children: [
-                            SvgPicture.asset(
-                              'assets/svgs/image58.svg',
-                              color: isDark ? Colors.white : Colors.black,
-                            ),
+                            Text("🛡️", style: TextStyle(fontSize: 12.sp)),
                             SizedBox(width: 8.w),
                             Expanded(
                               child: Text(
@@ -128,10 +122,7 @@ class _FreezeAccountState extends State<FreezeAccount> {
                         SizedBox(height: 5.h),
                         Row(
                           children: [
-                            SvgPicture.asset(
-                              'assets/svgs/image59.svg',
-                              color: isDark ? Colors.white : Colors.black,
-                            ),
+                            Text("❌", style: TextStyle(fontSize: 12.sp)),
                             SizedBox(width: 8.w),
                             Expanded(
                               child: Text(

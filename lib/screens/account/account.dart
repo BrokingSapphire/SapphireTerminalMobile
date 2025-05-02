@@ -426,23 +426,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             Row(
               children: [
-                Container(
-                  height: 34.h,
-                  width: 2.w,
-                  color: Colors.green,
+                Padding(
+                  padding: const EdgeInsets.only(left: 2.0),
+                  child: Container(
+                    height: 34.h,
+                    width: 2.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(1.r),
+                        bottomRight: Radius.circular(1.r),
+                      ),
+                      color: Color(0xff1DB954),
+                    ),
+                  ),
                 ),
-                SizedBox(
-                  width: 20.w,
-                ),
-                Text(
-                  title,
-                  style: TextStyle(
-                      fontSize: 17.sp,
-                      fontWeight: FontWeight.w500,
-                      color: isDark ? Colors.white : Colors.black),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                        fontSize: 17.sp,
+                        fontWeight: FontWeight.w500,
+                        color: isDark ? Colors.white : Colors.black),
+                  ),
                 )
               ],
             ),
+            SizedBox(height: 4.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Column(
@@ -461,8 +471,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 SvgPicture.asset(
                                   logos[index],
-                                  color:
-                                      isDark ? Colors.white : Color(0xff6B7280),
+                                  color: isDark
+                                      ? Color(0xffc9cacc)
+                                      : Color(0xff6B7280),
                                   width: 24.w,
                                   height: 24.h,
                                 ),
@@ -556,7 +567,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 title: Text(
                   "Account",
                   style: TextStyle(
-                    fontSize: 15.sp,
+                    fontSize: 21.sp,
                     fontWeight: FontWeight.bold,
                     color: isDark ? Colors.white : Colors.black,
                   ),
@@ -582,7 +593,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // Profile card as scrollable
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 16.w),
                 child: GestureDetector(
                   onTap: () {
                     navi(AccountScreen(), context);
@@ -659,20 +670,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: Column(
                     children: [
-                      SizedBox(height: 10.h),
-                      SizedBox(height: 10.h),
+                      SizedBox(height: 12.h),
                       cardWithTitle(
                           'General', general, generalOnTap, generalSvg, isDark),
-                      SizedBox(height: 10.h),
+                      SizedBox(height: 12.h),
                       cardWithTitle(
                           "Manage", manage, manageOnTap, manageSvg, isDark),
-                      SizedBox(height: 10.h),
+                      SizedBox(height: 12.h),
                       cardWithTitle(
                           "Reports", reports, reportsOnTap, reportsSvg, isDark),
-                      SizedBox(height: 10.h),
+                      SizedBox(height: 12.h),
                       cardWithTitle(
                           "Support", support, supportOnTap, supportSvg, isDark),
-                      SizedBox(height: 10.h),
+                      SizedBox(height: 12.h),
                       cardWithTitle(
                           "Others", others, othersOnTap, othersSvg, isDark),
                       SizedBox(height: 20.h),
@@ -687,25 +697,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           FaIcon(FontAwesomeIcons.twitter,
-                              color: Color(0xff9B9B9B)),
+                              size: 18.sp, color: Color(0xff9B9B9B)),
                           SizedBox(width: 10.w),
                           FaIcon(FontAwesomeIcons.linkedin,
-                              color: Color(0xff9B9B9B)),
+                              size: 18.sp, color: Color(0xff9B9B9B)),
                           SizedBox(width: 10.w),
                           FaIcon(FontAwesomeIcons.instagram,
-                              color: Color(0xff9B9B9B)),
+                              size: 18.sp, color: Color(0xff9B9B9B)),
                           SizedBox(width: 10.w),
                           FaIcon(FontAwesomeIcons.youtube,
-                              color: Color(0xff9B9B9B)),
+                              size: 18.sp, color: Color(0xff9B9B9B)),
                           SizedBox(width: 10.w),
                           FaIcon(FontAwesomeIcons.whatsapp,
-                              color: Color(0xff9B9B9B)),
+                              size: 18.sp, color: Color(0xff9B9B9B)),
                           SizedBox(width: 10.w),
                           FaIcon(FontAwesomeIcons.telegram,
-                              color: Color(0xff9B9B9B)),
+                              size: 18.sp, color: Color(0xff9B9B9B)),
                           SizedBox(width: 10.w),
                           FaIcon(FontAwesomeIcons.facebook,
-                              color: Color(0xff9B9B9B)),
+                              size: 18.sp, color: Color(0xff9B9B9B)),
                         ],
                       ),
                       SizedBox(height: 30.h),
@@ -784,16 +794,18 @@ class _PinnedDividerDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
+    // To change the divider color below the Account section app bar, modify the color value below:
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      color: isDark ? const Color(0xff2F2F2F) : const Color(0xffD1D5DB),
+      color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB),
       height: 1.0,
       width: double.infinity,
     );
   }
 
   @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      false;
+  bool shouldRebuild(covariant _PinnedDividerDelegate oldDelegate) =>
+      oldDelegate.isDark != isDark;
 }
 
 // Profile Header Delegate for Pinned Profile Card

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/account/general/manual2FA.dart';
 import 'package:sapphire/screens/account/general/otp2FA.dart';
@@ -96,11 +97,12 @@ class twoFAScreen extends StatelessWidget {
                               fontSize: 13.sp)),
                       SizedBox(height: 10.h),
                       Row(children: [
-                        Icon(
-                          Icons.lock,
-                          color: Colors.green,
-                          size: 14,
-                        ),
+                        // Icon(
+                        //   Icons.lock,
+                        //   color: Colors.green,
+                        //   size: 14,
+                        // ),
+                        Text("🔒", style: TextStyle(fontSize: 12.sp)),
                         SizedBox(width: 5.w),
                         Text("Enhanced Security",
                             style: TextStyle(
@@ -110,11 +112,12 @@ class twoFAScreen extends StatelessWidget {
                                 fontSize: 13.sp))
                       ]),
                       Row(children: [
-                        Icon(
-                          Icons.shield,
-                          color: Colors.green,
-                          size: 14,
-                        ),
+                        // Icon(
+                        //   Icons.shield,
+                        //   color: Colors.green,
+                        //   size: 14,
+                        // ),
+                        Text("🛡️", style: TextStyle(fontSize: 12.sp)),
                         SizedBox(width: 5.w),
                         Text("Reduces Fraud & Identity Theft",
                             style: TextStyle(
@@ -124,11 +127,12 @@ class twoFAScreen extends StatelessWidget {
                                 fontSize: 13.sp))
                       ]),
                       Row(children: [
-                        Icon(
-                          Icons.close,
-                          color: Colors.red,
-                          size: 14,
-                        ),
+                        // Icon(
+                        //   Icons.close,
+                        //   color: Colors.red,
+                        //   size: 14,
+                        // ),
+                        Text("❌", style: TextStyle(fontSize: 12.sp)),
                         SizedBox(width: 5),
                         Text("Prevents Unauthorized Access",
                             style: TextStyle(
@@ -197,10 +201,16 @@ class twoFAScreen extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              Icon(
-                                Icons.verified_sharp,
-                                color: Colors.green,
+                              // Icon(
+                              //   Icons.verified_sharp,
+                              //   color: Colors.green,
+                              // ),
+                              SvgPicture.asset(
+                                'assets/svgs/verified.svg',
+                                height: 18.h,
+                                width: 18.w,
                               ),
+                              SizedBox(width: 6.w),
                               Icon(Icons.arrow_forward_ios,
                                   color:
                                       isDark ? Colors.white : Color(0xff6B7280),

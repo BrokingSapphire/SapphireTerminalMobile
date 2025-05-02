@@ -75,7 +75,7 @@ class _settingsScreenState extends State<settingsScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 15.w),
                 child: Column(
                   children: [
-                    SizedBox(height: 14.h),
+                    SizedBox(height: 16.h),
                     Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
@@ -155,15 +155,25 @@ class _settingsScreenState extends State<settingsScreen> {
                     SizedBox(height: 12.h),
 
                     /// Biometric Authentication Switch
-                    _buildSwitchTile(
-                      title: "Biometric Authentication",
-                      value: biometricAuth,
-                      onChanged: (value) {
-                        setState(() {
-                          biometricAuth = value;
-                        });
-                      },
-                      isDark: isDark,
+                    Container(
+                      width: double.infinity,
+                      height: 60.h,
+                      decoration: BoxDecoration(
+                        color: isDark
+                            ? const Color(0xff121413)
+                            : const Color(0xffF4F4F9),
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: _buildSwitchTile(
+                        title: "Biometric Authentication",
+                        value: biometricAuth,
+                        onChanged: (value) {
+                          setState(() {
+                            biometricAuth = value;
+                          });
+                        },
+                        isDark: isDark,
+                      ),
                     ),
                     SizedBox(height: 12.h),
 
@@ -225,7 +235,7 @@ class _settingsScreenState extends State<settingsScreen> {
                                 )
                               ],
                             ),
-                            SizedBox(height: 15.h),
+                            SizedBox(height: 12.h),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -329,7 +339,7 @@ class _settingsScreenState extends State<settingsScreen> {
                       padding:
                           EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                       decoration: BoxDecoration(
-                        color: isDark ? Colors.black : Color(0xffF4F4F9),
+                        color: isDark ? Color(0xff121413) : Color(0xffF4F4F9),
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       width: double.infinity,
@@ -344,7 +354,7 @@ class _settingsScreenState extends State<settingsScreen> {
                           ),
                           Icon(Icons.arrow_forward_ios_rounded,
                               color: isDark ? Colors.white : Colors.black,
-                              size: 18),
+                              size: 16.sp),
                         ],
                       ),
                     ),
@@ -368,53 +378,61 @@ class _settingsScreenState extends State<settingsScreen> {
   }) {
     return SizedBox(
       height: 60.h,
-      child: ListTile(
-          tileColor: isDark ? Colors.black : Color(0xffF4F4F9),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
-          title: Text(title,
-              style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black,
-                  fontSize: 13.sp)),
-          subtitle: subtitle != null
-              ? Text(subtitle,
-                  style: TextStyle(
-                      color: isDark ? Colors.white70 : Colors.black,
-                      fontSize: 11.sp))
-              : null,
-          trailing: CustomToggleSwitch(
-            initialValue: false,
-            onChanged: (value) {
-              print('Toggle is now: $value');
-            },
-          )),
+      child: Center(
+        child: ListTile(
+            tileColor: isDark ? Colors.black : Color(0xffF4F4F9),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.r)),
+            title: Text(title,
+                style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black,
+                    fontSize: 13.sp)),
+            subtitle: subtitle != null
+                ? Text(subtitle,
+                    style: TextStyle(
+                        color: isDark ? Colors.white70 : Colors.black,
+                        fontSize: 11.sp))
+                : null,
+            trailing: CustomToggleSwitch(
+              initialValue: false,
+              onChanged: (value) {
+                print('Toggle is now: $value');
+              },
+            )),
+      ),
     );
   }
 
   /// Helper Method for List Tiles
   Widget _buildListTile(
       String title, String subtitle, VoidCallback onTap, bool isDark) {
-    return ListTile(
-      tileColor: isDark ? Color(0xff121413) : Color(0xffF4F4F9),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min, // Ensures no extra spacing
-        children: [
-          Text(title,
-              style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black,
-                  fontSize: 13.sp)),
-          SizedBox(height: 2.h), // Ensures they stick together
-          Text(subtitle,
-              style: TextStyle(
-                  color: isDark ? Colors.white70 : Colors.black,
-                  fontSize: 11.sp)),
-        ],
+    return Container(
+      height: 60.h,
+      child: Center(
+        child: ListTile(
+          tileColor: isDark ? Color(0xff121413) : Color(0xffF4F4F9),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min, // Ensures no extra spacing
+            children: [
+              Text(title,
+                  style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black,
+                      fontSize: 13.sp)),
+              SizedBox(height: 2.h), // Ensures they stick together
+              Text(subtitle,
+                  style: TextStyle(
+                      color: isDark ? Colors.white70 : Colors.black,
+                      fontSize: 11.sp)),
+            ],
+          ),
+          trailing: Icon(Icons.arrow_forward_ios,
+              color: isDark ? Colors.white : Colors.black, size: 16.sp),
+          onTap: onTap,
+        ),
       ),
-      trailing: Icon(Icons.arrow_forward_ios,
-          color: isDark ? Colors.white : Colors.black, size: 18),
-      onTap: onTap,
     );
   }
 

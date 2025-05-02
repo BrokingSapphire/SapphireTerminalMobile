@@ -27,7 +27,8 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
   bool _amountInvalid = false; // Flag for invalid amount
   bool _isInstant = true; // Flag for instant withdrawal (vs regular)
   static const int minAmount = 100; // Minimum withdrawal amount
-  static const int maxAmount = 9999999999; // Maximum withdrawal amount (99,99,99,999)
+  static const int maxAmount =
+      12532; // Maximum withdrawal amount (99,99,99,999)
 
   // List of available bank accounts for withdrawal
   final List<Map<String, String>> banks = [
@@ -242,7 +243,7 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 18, right: 10),
             child: Text(
-              '  ₹ 12,532.00',
+              formatIndianNumber(maxAmount.toString()) + '.00',
               style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
@@ -252,7 +253,8 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
         ],
       ),
       body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(), // Dismiss keyboard on tap
+        onTap: () =>
+            FocusScope.of(context).unfocus(), // Dismiss keyboard on tap
         behavior: HitTestBehavior.opaque,
         child: Column(
           children: [
@@ -277,57 +279,60 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                               child: Center(
                                 child: IntrinsicWidth(
                                     child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          '₹',
-                                          style: TextStyle(
-                                            fontSize: 32.sp,
-                                            fontWeight: FontWeight.w600,
-                                            color: textColor,
-                                          ),
-                                        ),
-                                        SizedBox(width: 4.w),
-                                        Flexible(
-                                          child: TextField(
-                                            controller: amountController,
-                                            readOnly: true, // Use custom keypad instead of system keyboard
-                                            enableInteractiveSelection: false,
-                                            showCursor: false,
-                                            style: TextStyle(
-                                              fontSize: 32.sp,
-                                              fontWeight: FontWeight.w600,
-                                              color:
-                                              (amountController.text == "0" ||
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '₹',
+                                      style: TextStyle(
+                                        fontSize: 32.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: textColor,
+                                      ),
+                                    ),
+                                    SizedBox(width: 4.w),
+                                    Flexible(
+                                      child: TextField(
+                                        controller: amountController,
+                                        readOnly:
+                                            true, // Use custom keypad instead of system keyboard
+                                        enableInteractiveSelection: false,
+                                        showCursor: false,
+                                        style: TextStyle(
+                                          fontSize: 32.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: (amountController.text ==
+                                                      "0" ||
                                                   amountController.text ==
                                                       "0.00")
-                                                  ? Color(0xffC9CACC) // Gray for zero/empty
-                                                  : (_amountInvalid
-                                                  ? Colors.red // Red for invalid amounts
+                                              ? Color(
+                                                  0xffC9CACC) // Gray for zero/empty
+                                              : (_amountInvalid
+                                                  ? Colors
+                                                      .red // Red for invalid amounts
                                                   : textColor), // Default text color
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                            decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                              enabledBorder: InputBorder.none,
-                                              focusedBorder: InputBorder.none,
-                                              errorBorder: InputBorder.none,
-                                              disabledBorder: InputBorder.none,
-                                              hintText: '0',
-                                              hintStyle: TextStyle(
-                                                color: textColor.withOpacity(0.5),
-                                                fontSize: 32.sp,
-                                              ),
-                                              isCollapsed: true,
-                                              contentPadding: EdgeInsets.zero,
-                                            ),
-                                            maxLines: 1,
-                                          ),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
-                                      ],
-                                    )),
+                                        textAlign: TextAlign.center,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          enabledBorder: InputBorder.none,
+                                          focusedBorder: InputBorder.none,
+                                          errorBorder: InputBorder.none,
+                                          disabledBorder: InputBorder.none,
+                                          hintText: '0',
+                                          hintStyle: TextStyle(
+                                            color: textColor.withOpacity(0.5),
+                                            fontSize: 32.sp,
+                                          ),
+                                          isCollapsed: true,
+                                          contentPadding: EdgeInsets.zero,
+                                        ),
+                                        maxLines: 1,
+                                      ),
+                                    ),
+                                  ],
+                                )),
                               ),
                             )),
                       ),
@@ -357,7 +362,7 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                       decoration: BoxDecoration(
                         border: Border.all(
                             color:
-                            isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB)),
+                                isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB)),
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: Row(
@@ -377,7 +382,7 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                                       ? Icons.radio_button_checked
                                       : Icons.radio_button_off,
                                   color:
-                                  _isInstant ? Colors.green : Colors.grey,
+                                      _isInstant ? Colors.green : Colors.grey,
                                 ),
                                 SizedBox(width: 6.w),
                                 SvgPicture.asset(
@@ -404,8 +409,8 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                                   color: !_isInstant
                                       ? Colors.green
                                       : isDark
-                                      ? Colors.white
-                                      : Colors.black,
+                                          ? Colors.white
+                                          : Colors.black,
                                 ),
                                 SizedBox(width: 6.w),
                                 Text(
@@ -429,16 +434,18 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                       padding: EdgeInsets.symmetric(
                           horizontal: 15.w, vertical: 10.h),
                       decoration: BoxDecoration(
-                        color: isDark ? Color(0xFF2F2708) : Color(0xFFFEF8E5), // Amber background
+                        color: isDark
+                            ? Color(0xFF2F2708)
+                            : Color(0xFFFEF8E5), // Amber background
                         border: Border.all(
                             color:
-                            isDark ? Color(0xFFB58E00) : Color(0xFFD1D5DB),
+                                isDark ? Color(0xFFB58E00) : Color(0xFFD1D5DB),
                             width: 1.w),
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Text(
                         "Withdrawal requests between 5:00 AM and 5:00 PM are credited the same day. "
-                            "Requests placed after 5:00 PM and before 5:00 AM are processed the next working day.",
+                        "Requests placed after 5:00 PM and before 5:00 AM are processed the next working day.",
                         style: TextStyle(
                             fontSize: 11.sp,
                             fontWeight: FontWeight.w500,
@@ -520,7 +527,14 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF00C853), // Green button color
+                        backgroundColor: (() {
+                          String amtStr =
+                              amountController.text.replaceAll(',', '');
+                          double amt = double.tryParse(amtStr) ?? 0.0;
+                          return (amt < minAmount || amt > maxAmount)
+                              ? Color(0xff2f2f2f)
+                              : Color(0xFF00C853);
+                        })(),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25.r),
                         ),
@@ -529,7 +543,14 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
                       child: Text(
                         'Withdraw',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: (() {
+                            String amtStr =
+                                amountController.text.replaceAll(',', '');
+                            double amt = double.tryParse(amtStr) ?? 0.0;
+                            return (amt < minAmount || amt > maxAmount)
+                                ? Color(0xffc9cacc)
+                                : Colors.white;
+                          })(),
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w500,
                         ),
@@ -600,22 +621,22 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
             shape: BoxShape.circle,
             border: Border.all(
               color:
-              selectedBank == value ? Colors.green : Colors.grey.shade700,
+                  selectedBank == value ? Colors.green : Colors.grey.shade700,
               width: 2.5.w,
             ),
             color: selectedBank == value ? Colors.green : Colors.transparent,
           ),
           child: selectedBank == value
               ? Center(
-            child: Container(
-              width: 12.w,
-              height: 12.h,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.black,
-              ),
-            ),
-          )
+                  child: Container(
+                    width: 12.w,
+                    height: 12.h,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.black,
+                    ),
+                  ),
+                )
               : null,
         ),
         title: Row(
@@ -656,13 +677,13 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
             child: icon != null
                 ? Icon(icon, color: color ?? textColor, size: 24.sp)
                 : Text(
-              text,
-              style: TextStyle(
-                fontSize: 24.sp,
-                fontWeight: FontWeight.w500,
-                color: color ?? textColor,
-              ),
-            ),
+                    text,
+                    style: TextStyle(
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.w500,
+                      color: color ?? textColor,
+                    ),
+                  ),
           ),
         ),
       );
