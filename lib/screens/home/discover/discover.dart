@@ -10,8 +10,6 @@ import 'package:sapphire/screens/account/reports/ledger.dart';
 import 'package:sapphire/screens/account/account.dart';
 import 'package:sapphire/screens/account/reports/profitAndLoss.dart';
 import 'package:sapphire/screens/account/reports/tradesAndCharges.dart';
-import 'package:sapphire/screens/home/discover/auction.dart';
-import 'package:sapphire/screens/home/discover/governmentSecurities.dart';
 import 'package:sapphire/screens/home/discover/ipo.dart';
 import 'package:sapphire/screens/home/discover/pledge.dart';
 import 'package:sapphire/screens/home/discover/createPriceAlerts.dart';
@@ -195,65 +193,6 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                         height: 1,
                         color: Color(0xff2f2f2f),
                       ),
-                      // ListTile(
-                      //   contentPadding: EdgeInsets.symmetric(
-                      //       horizontal: 16.w, vertical: 6.h),
-                      //   leading: SvgPicture.asset(
-                      //     'assets/svgs/landmark.svg',
-                      //     width: 24.w,
-                      //     height: 24.h,
-                      //     color: Color(0xffc9cacc),
-                      //   ),
-                      //   title: Text(
-                      //     'Goverment Securities',
-                      //     style:
-                      //         TextStyle(fontSize: 15.sp, color: Colors.white),
-                      //   ),
-                      //   subtitle: Text(
-                      //     'Invest in secure government securities and earn steady, reliable returns.',
-                      //     style: TextStyle(
-                      //       fontSize: 13.sp,
-                      //       color: Color(0xffc9cacc),
-                      //     ),
-                      //   ),
-                      //   trailing:
-                      //       Icon(Icons.arrow_forward_ios_outlined, size: 15.sp),
-                      //   onTap: () {
-                      //     navi(GovernmentSecurities(), context);
-                      //   },
-                      // ),
-                      // Divider(
-                      //   height: 1,
-                      //   color: Color(0xff2f2f2f),
-                      // ),
-                      // ListTile(
-                      //   contentPadding: EdgeInsets.symmetric(
-                      //       horizontal: 16.w, vertical: 6.h),
-                      //   leading: SvgPicture.asset(
-                      //     'assets/svgs/auctions.svg',
-                      //     width: 24.w,
-                      //     height: 24.h,
-                      //     color: Color(0xffc9cacc),
-                      //   ),
-                      //   title: Text(
-                      //     'Auctions',
-                      //     style:
-                      //         TextStyle(fontSize: 15.sp, color: Colors.white),
-                      //   ),
-                      //   subtitle: Text(
-                      //     'Access primary market auctions and invest at competitive market-discovered rates.',
-                      //     style: TextStyle(
-                      //       fontSize: 13.sp,
-                      //       color: Color(0xffc9cacc),
-                      //     ),
-                      //   ),
-                      //   trailing:
-                      //       Icon(Icons.arrow_forward_ios_outlined, size: 15.sp),
-                      //   onTap: () {
-                      //     navi(Auction(), context);
-                      //     // navi(FundsScreen(), context);
-                      //   },
-                      // ),
                       Divider(
                         height: 1,
                         color: Color(0xff2f2f2f),
