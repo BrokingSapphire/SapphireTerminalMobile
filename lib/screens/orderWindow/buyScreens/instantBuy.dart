@@ -158,7 +158,7 @@ class _BuyScreenTabContentState extends State<BuyScreenTabContent> {
                     ),
                   ],
                 ),
-                SizedBox(height: 16.h),
+                SizedBox(height: 14.h),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(

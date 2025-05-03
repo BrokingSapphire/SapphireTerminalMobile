@@ -206,6 +206,7 @@ class _BuyScreenWrapperState extends State<BuyScreenWrapper>
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             GestureDetector(
                               behavior: HitTestBehavior.opaque,
@@ -219,13 +220,29 @@ class _BuyScreenWrapperState extends State<BuyScreenWrapper>
                                 children: [
                                   Container(
                                     width: 2,
-                                    height: 30.h,
-                                    color: _selectedOrderType == "Buy"
-                                        ? Colors.green
-                                        : Colors.transparent,
+                                    decoration: BoxDecoration(
+                                      color: _selectedOrderType == "Buy"
+                                          ? Colors.green
+                                          : Colors.transparent,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(6.r),
+                                        bottomLeft: Radius.circular(6.r),
+                                      ),
+                                    ),
+                                    height: 35.h,
                                   ),
                                   Expanded(
                                     child: Container(
+                                      height: 35.h,
+                                      decoration: BoxDecoration(
+                                        color: _selectedOrderType == "Buy"
+                                            ? Colors.grey.shade900
+                                            : Colors.transparent,
+                                        borderRadius: BorderRadius.only(
+                                          topRight: Radius.circular(6.r),
+                                          bottomRight: Radius.circular(6.r),
+                                        ),
+                                      ),
                                       child: Padding(
                                         padding: EdgeInsets.only(
                                             left: 15.w, top: 5.h),
@@ -240,10 +257,6 @@ class _BuyScreenWrapperState extends State<BuyScreenWrapper>
                                           ),
                                         ),
                                       ),
-                                      height: 30.h,
-                                      color: _selectedOrderType == "Buy"
-                                          ? Colors.grey.shade900
-                                          : Colors.transparent,
                                     ),
                                   )
                                 ],
@@ -261,13 +274,29 @@ class _BuyScreenWrapperState extends State<BuyScreenWrapper>
                                 children: [
                                   Container(
                                     width: 2,
-                                    height: 30.h,
-                                    color: _selectedOrderType == "Sell"
-                                        ? Color(0xffE53935)
-                                        : Colors.transparent,
+                                    height: 35.h,
+                                    decoration: BoxDecoration(
+                                      color: _selectedOrderType == "Sell"
+                                          ? Color(0xffE53935)
+                                          : Colors.transparent,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(6.r),
+                                        bottomLeft: Radius.circular(6.r),
+                                      ),
+                                    ),
                                   ),
                                   Expanded(
                                     child: Container(
+                                      height: 35.h,
+                                      decoration: BoxDecoration(
+                                        color: _selectedOrderType == "Sell"
+                                            ? Colors.grey.shade900
+                                            : Colors.transparent,
+                                        borderRadius: BorderRadius.only(
+                                          topRight: Radius.circular(6.r),
+                                          bottomRight: Radius.circular(6.r),
+                                        ),
+                                      ),
                                       child: Padding(
                                         padding: EdgeInsets.only(
                                             left: 15.w, top: 5.h),
@@ -282,10 +311,6 @@ class _BuyScreenWrapperState extends State<BuyScreenWrapper>
                                           ),
                                         ),
                                       ),
-                                      height: 30.h,
-                                      color: _selectedOrderType == "Sell"
-                                          ? Colors.grey.shade900
-                                          : Colors.transparent,
                                     ),
                                   )
                                 ],

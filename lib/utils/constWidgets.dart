@@ -166,7 +166,9 @@ class constWidgets {
 
   static Widget searchFieldWithInput(
       BuildContext context, String hintText, String pageKey, bool isDark,
-      {TextEditingController? controller, Function(String)? onChanged}) {
+      {TextEditingController? controller,
+      Function(String)? onChanged,
+      bool showFilter = true}) {
     return Row(
       children: [
         // Expanded ensures TextField takes up full width
@@ -248,36 +250,36 @@ class constWidgets {
             ),
           ),
         ),
-        SizedBox(width: 10.w), // Small spacing
+        if (showFilter) SizedBox(width: 10.w), // Small spacing
 
-        // Square Filter Icon Container wrapped with GestureDetector
-        GestureDetector(
-          onTap: () {
-            // Triggering the filter bottom sheet on tap
-            showFilterBottomSheet(
-              context: context,
-              pageKey: pageKey, // Dynamically pass the pageKey here
-              onApply: (selectedFilters) {
-                // Handle the selected filters if needed
-              },
-              isDark: isDark,
-            );
-          },
-          child: Container(
-            height: 48.h,
-            width: 48.h, // Square (same height & width)
-            decoration: BoxDecoration(
-              color: isDark ? Color(0xFF121413) : Color(0xFFF4F4F9),
-              borderRadius: BorderRadius.circular(6.r),
-            ),
-            child: Center(
-              child: Image.asset(
-                'assets/icons/filter.png',
-                scale: 2,
+        if (showFilter)
+          GestureDetector(
+            onTap: () {
+              // Triggering the filter bottom sheet on tap
+              showFilterBottomSheet(
+                context: context,
+                pageKey: pageKey, // Dynamically pass the pageKey here
+                onApply: (selectedFilters) {
+                  // Handle the selected filters if needed
+                },
+                isDark: isDark,
+              );
+            },
+            child: Container(
+              height: 48.h,
+              width: 48.h, // Square (same height & width)
+              decoration: BoxDecoration(
+                color: isDark ? Color(0xFF121413) : Color(0xFFF4F4F9),
+                borderRadius: BorderRadius.circular(6.r),
+              ),
+              child: Center(
+                child: Image.asset(
+                  'assets/icons/filter.png',
+                  scale: 2,
+                ),
               ),
             ),
           ),
-        ),
       ],
     );
   }

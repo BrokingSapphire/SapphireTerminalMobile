@@ -2,18 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:holdable_button/holdable_button.dart';
 import 'package:holdable_button/utils/utils.dart';
-import 'package:sapphire/screens/orderWindow/BuyScreens/icebergBuy.dart';
-import 'package:sapphire/screens/orderWindow/BuyScreens/coverBuy.dart';
-import 'package:sapphire/screens/orderWindow/BuyScreens/normalBuy.dart';
-import 'package:sapphire/screens/orderWindow/SellScreens/coverSell.dart';
-import 'package:sapphire/screens/orderWindow/SellScreens/icebergSellScreen.dart';
-import 'package:sapphire/screens/orderWindow/SellScreens/instantSellScreen.dart';
-import 'package:sapphire/screens/orderWindow/SellScreens/normalSell.dart';
-import 'package:sapphire/utils/constWidgets.dart';
+import 'package:sapphire/screens/orderWindow/sellScreens/coverSell.dart';
+import 'package:sapphire/screens/orderWindow/sellScreens/instantSell.dart';
 
-import '../BuyScreens/instantBuy.dart';
+import 'package:sapphire/screens/orderWindow/sellScreens/normalSell.dart';
+import 'package:sapphire/screens/orderWindow/sellScreens/icebergSell.dart';
 
 class SellScreenWrapper extends StatefulWidget {
+  const SellScreenWrapper({super.key});
+
   @override
   _SellScreenWrapperState createState() => _SellScreenWrapperState();
 }
@@ -304,8 +301,9 @@ class _SellScreenWrapperState extends State<SellScreenWrapper>
               )
             ],
           ),
-          SizedBox(height: 10.h),
-          Divider(color: isDark ? Color(0xff2f2f2f) : Color(0xffD1D5DB)),
+          Divider(
+              color: isDark ? Color(0xff2f2f2f) : Color(0xffD1D5DB),
+            ),
           SizedBox(height: 16.h),
           Container(
             color: isDark ? Colors.black : Colors.white,
@@ -363,7 +361,7 @@ class _SellScreenWrapperState extends State<SellScreenWrapper>
             ]),
           ),
           SizedBox(
-            height: 14.h,
+            height: 16.h,
           ),
           Expanded(
             child: GestureDetector(

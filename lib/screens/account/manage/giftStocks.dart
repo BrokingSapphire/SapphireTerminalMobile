@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sapphire/main.dart';
+import 'package:sapphire/screens/account/manage/chooseStocktoGift.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class GiftStocks extends StatefulWidget {
@@ -210,7 +212,9 @@ class _GiftStocksState extends State<GiftStocks> {
       ),
       bottomNavigationBar: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-        child: constWidgets.greenButton("Gift"),
+        child: constWidgets.greenButton("Gift", onTap: () {
+          navi(Choosestocktogift(), context);
+        }),
       ),
     );
   }

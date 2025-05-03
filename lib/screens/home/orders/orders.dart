@@ -4,8 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/funds/funds.dart';
 import 'package:sapphire/screens/account/account.dart';
-import 'package:sapphire/screens/home/orders/gtt1Screen.dart';
 import 'package:sapphire/screens/home/discover/priceAlerts.dart';
+import 'package:sapphire/screens/home/orders/gtt1Screen.dart';
+import 'package:sapphire/screens/home/discover/createPriceAlerts.dart';
 import 'package:sapphire/screens/home/orders/basketOrder.dart';
 import 'package:sapphire/screens/orderWindow/buyScreens/buyWrapper.dart';
 import 'package:sapphire/utils/constWidgets.dart';
@@ -277,7 +278,7 @@ class _TabBarHeaderDelegate extends SliverPersistentHeaderDelegate {
                         navi(basketScreen(), context);
                       }),
                       _menuItem(Icons.notifications_active, "Stock Alerts", () {
-                        navi(alertScreen(), context);
+                        navi(PriceAlerts(), context);
                       }),
                     ],
                   ).then((value) {

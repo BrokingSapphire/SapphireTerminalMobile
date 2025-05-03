@@ -1,298 +1,194 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sapphire/main.dart';
+import 'package:sapphire/screens/home/discover/createPriceAlerts.dart';
+import '../../../utils/naviWithoutAnimation.dart';
 
-import '../../../utils/constWidgets.dart';
+class PriceAlerts extends StatefulWidget {
+  const PriceAlerts({super.key});
 
-class alertScreen extends StatefulWidget {
   @override
-  _alertScreenState createState() => _alertScreenState();
+  State<PriceAlerts> createState() => _PriceAlertsState();
 }
 
-class _alertScreenState extends State<alertScreen> {
-  String selectedPriceType = "Last price";
-  String selectedCondition = "Greater than or equal to (>=)";
-  final TextEditingController priceController = TextEditingController();
-  final TextEditingController percentageController = TextEditingController();
+class _PriceAlertsState extends State<PriceAlerts> {
+  // Sample data for alerts
+  final List<Map<String, dynamic>> alerts = [
+    {
+      'symbol': 'NIFTY 50',
+      'condition': 'Last price of NIFTY 50(INDICES) >= 25,000.00',
+      'isActive': true,
+    },
+    {
+      'symbol': 'NIFTY 50',
+      'condition': 'Last price of NIFTY 50(INDICES) >= 25,000.00',
+      'isActive': true,
+    },
+    {
+      'symbol': 'NIFTY 50',
+      'condition': 'Last price of NIFTY 50(INDICES) >= 25,000.00',
+      'isActive': true,
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 15.w),
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            leadingWidth: 38.w,
-            title: Text("Create New Alert",
-                style: TextStyle(color: Colors.white, fontSize: 15.sp)),
-            bottom: PreferredSize(
-              preferredSize: Size.fromHeight(1.h),
-              child: Divider(
-                color: Colors.grey.shade800,
-                thickness: 1.h,
-                height: 1.h,
-              ),
-            ),
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Scaffold(
+      backgroundColor: isDark ? Colors.black : Colors.white,
+      appBar: AppBar(
+        leadingWidth: 38.w,
+        backgroundColor: isDark ? Colors.black : Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back,
+              color: isDark ? Colors.white : Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text(
+          "Price Alerts",
+          style: TextStyle(
+            fontSize: 18.sp,
+            fontWeight: FontWeight.bold,
+            color: Color(0xffC9CACC),
           ),
-          body: SingleChildScrollView(
-            child: Column(
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              navi(createAlertScreen(), context);
+            },
+            icon: Icon(Icons.add, color: isDark ? Colors.white : Colors.black),
+          )
+        ],
+      ),
+      body: alerts.isEmpty
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.notifications_off,
+                    size: 48.sp,
+                    color: Colors.grey,
+                  ),
+                  SizedBox(height: 16.h),
+                  Text(
+                    "No alerts created yet",
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? Colors.white : Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 8.h),
+                  Text(
+                    "Create alerts to get notified when stocks reach your target price",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: 11.h,
+                Divider(
+                  color: Color(0xFF2F2F2F),
+                  thickness: 1.h,
+                  height: 1.h,
                 ),
-                Container(
-                  height: 48.h,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Color(0xFF121413),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search Stock',
-                      hintStyle: TextStyle(color: Colors.grey, fontSize: 16.sp),
-                      border: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 12.h, horizontal: 10.w),
-                      prefixIcon:
-                          Icon(Icons.search, color: Colors.grey, size: 22.sp),
-                      prefixIconConstraints:
-                          BoxConstraints(minWidth: 40.w, minHeight: 20.h),
-                    ),
-                    style: TextStyle(color: Colors.white, fontSize: 16.sp),
-                  ),
+                SizedBox(height: 16.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Text("Alerts (${alerts.length})",
+                      style: TextStyle(fontSize: 13.sp, color: Colors.white)),
                 ),
-                SizedBox(
-                  height: 16.h,
-                ),
-                Text("NIFTY 50",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Color(0xffC9CACC))),
-                SizedBox(height: 13.h),
-                Card(
-                  elevation: 3,
-                  color: Color(0xff121413),
-                  child: Padding(
-                    padding: EdgeInsets.all(16.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Create alert",
-                            style: TextStyle(fontWeight: FontWeight.w700)),
-                        SizedBox(height: 22.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("If"),
-                                SizedBox(
-                                  height: 6.h,
-                                ),
-                                Container(
-                                  height: 50.h,
-                                  width: 150.w,
-                                  child: DropdownButtonFormField<String>(
-                                    value: selectedPriceType,
-                                    items: [
-                                      "Last price",
-                                      "Open price",
-                                      "Close price"
-                                    ]
-                                        .map((item) => DropdownMenuItem(
-                                              value: item,
-                                              child: Text(item),
-                                            ))
-                                        .toList(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedPriceType = value!;
-                                      });
-                                    },
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 10.w),
+                Expanded(
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      for (int i = 0; i < alerts.length; i++) ...[
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 16.h, horizontal: 16.w),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      alerts[i]['symbol'],
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        color: Colors.white,
+                                      ),
                                     ),
+                                    SizedBox(height: 4.h),
+                                    Text(
+                                      alerts[i]['condition'],
+                                      style: TextStyle(
+                                        fontSize: 11.sp,
+                                        color: Color(0xffC9CACC),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 6.w,
+                                    height: 6.h,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.amber,
+                                    ),
+                                  ),
+                                  SizedBox(width: 4.w),
+                                  Text(
+                                    "Active",
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 16.sp),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("of"),
-                                SizedBox(
-                                  height: 6.h,
-                                ),
-                                Container(
-                                  height: 50.h,
-                                  width: 150.w,
-                                  child: TextField(
-                                    readOnly: false,
-                                    style: TextStyle(color: Color(0xffC9CACC)),
-                                    decoration: InputDecoration(
-                                      hintText: "NIFTY 50",
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.r),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.r),
-                                        borderSide:
-                                            BorderSide(color: Colors.grey),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.r),
-                                        borderSide:
-                                            BorderSide(color: Colors.grey),
-                                      ),
+                                      fontSize: 10.sp,
+                                      color: Color(0xffC9CACC),
                                     ),
                                   ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                        SizedBox(height: 12.h),
-                        Text("is"),
-                        SizedBox(
-                          height: 6.h,
-                        ),
-                        Container(
-                          height: 48.h,
-                          child: DropdownButtonFormField<String>(
-                            value: selectedCondition,
-                            items: [
-                              "Greater than or equal to (>=)",
-                              "Less than or equal to (<=)",
-                              "Equal to (==)"
-                            ]
-                                .map((item) => DropdownMenuItem(
-                                      value: item,
-                                      child: Text(item),
-                                    ))
-                                .toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                selectedCondition = value!;
-                              });
-                            },
-                            decoration: InputDecoration(
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 10.w),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.r),
+                                ],
                               ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.r),
-                                borderSide: BorderSide(color: Colors.grey),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.r),
-                                borderSide: BorderSide(color: Colors.grey),
-                              ),
-                            ),
+                            ],
                           ),
                         ),
-                        SizedBox(height: 12.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("than"),
-                                SizedBox(
-                                  height: 6.h,
-                                ),
-                                SizedBox(
-                                  height: 48.h,
-                                  width: 150.w,
-                                  child: TextField(
-                                    controller: priceController,
-                                    style: TextStyle(color: Color(0xffC9CACC)),
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.r),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.r),
-                                        borderSide:
-                                            BorderSide(color: Colors.grey),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.r),
-                                        borderSide:
-                                            BorderSide(color: Colors.grey),
-                                      ),
-                                      hintText: '22913.15',
-                                    ),
-                                    keyboardType: TextInputType.number,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("% of last price"),
-                                SizedBox(
-                                  height: 6.h,
-                                ),
-                                SizedBox(
-                                  height: 48.h,
-                                  width: 150.w,
-                                  child: TextField(
-                                    controller: percentageController,
-                                    style: TextStyle(color: Color(0xffC9CACC)),
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.r),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.r),
-                                        borderSide:
-                                            BorderSide(color: Colors.grey),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(8.r),
-                                        borderSide:
-                                            BorderSide(color: Colors.grey),
-                                      ),
-                                      hintText: '0.0',
-                                    ),
-                                    keyboardType: TextInputType.number,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        )
+                        // Add divider after each item except the last one
+                        Divider(
+                          height: 1,
+                          color: Color(0xFF2F2F2F),
+                        ),
                       ],
-                    ),
+                    ],
                   ),
                 ),
-                SizedBox(height: 20.h),
-                // Spacer(),
+                Divider(
+                  height: 1,
+                  color: Color(0xFF2F2F2F),
+                ),
               ],
             ),
-          ),
-          bottomNavigationBar: constWidgets.greenButton("Create"),
-        ),
-      ),
+      floatingActionButton: alerts.isEmpty
+          ? FloatingActionButton(
+              onPressed: () {
+                navi(createAlertScreen(), context);
+              },
+              backgroundColor: Colors.green,
+              child: Icon(Icons.add),
+            )
+          : null,
     );
   }
 }

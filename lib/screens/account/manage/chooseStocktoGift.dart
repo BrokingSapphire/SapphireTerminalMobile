@@ -1,29 +1,269 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:pinput/pinput.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
-class Pledge extends StatefulWidget {
-  const Pledge({super.key});
+class Choosestocktogift extends StatefulWidget {
+  const Choosestocktogift({super.key});
 
   @override
-  State<Pledge> createState() => _PledgeState();
+  State<Choosestocktogift> createState() => _ChoosestocktogiftState();
 }
 
-class _PledgeState extends State<Pledge> with SingleTickerProviderStateMixin {
+class _ChoosestocktogiftState extends State<Choosestocktogift>
+    with SingleTickerProviderStateMixin {
   late TabController tabController;
-  final options = ['Pledge', 'Unpledge', 'History'];
+  final options = ['Pledge'];
   List<String> stocks = [];
   bool checked = false;
 
   String _selectedOrderType = "Buy";
   int _selectedIndex = 0;
   late PageController _pageController;
+  bool _canResendOtp = false;
+  int _remainingSeconds = 2;
 
   // Track selected stocks and total amount across tabs
   Map<String, bool> selectedStocks = {};
   double totalSelectedAmount = 0.0;
   String formattedAmount = "";
+  void _startResendTimer(StateSetter setModalState) {
+    _canResendOtp = false;
+    _remainingSeconds = 2;
+
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      if (_remainingSeconds > 0) {
+        setModalState(() {
+          _remainingSeconds--;
+        });
+      } else {
+        setModalState(() {
+          _canResendOtp = true;
+        });
+        timer.cancel();
+      }
+    });
+  }
+
+  // Method to show the forget MPIN bottom sheet with OTP fields
+  void showOtpPopup(BuildContext context, bool isDark) {
+    // Reset timer state and OTP field
+    _canResendOtp = false;
+    _remainingSeconds = 2;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Color(0xff121413),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setModalState) {
+          // Start the timer when the modal is first shown
+          if (_remainingSeconds == 2) {
+            _startResendTimer(setModalState);
+          }
+
+          return Padding(
+            // Add padding to account for keyboard
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: Container(
+              // Use constraints instead of fixed height to allow content to adjust with keyboard
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * 0.7,
+                minHeight: MediaQuery.of(context).size.height * 0.4,
+              ),
+              decoration: BoxDecoration(
+                color: Color(0xff121413),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.r),
+                  topRight: Radius.circular(20.r),
+                ),
+              ),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(16.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Header with close button
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Verify OTP',
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.bold,
+                              color: isDark ? Colors.white : Colors.black,
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.close,
+                              color: isDark ? Colors.white : Colors.black,
+                            ),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 12.h),
+
+                      // Info text
+                      Container(
+                        padding: EdgeInsets.all(10.w),
+                        decoration: BoxDecoration(
+                          color: isDark ? Color(0xFF1E1E1E) : Color(0xFFF5F5F5),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.info_outline,
+                              size: 18.sp,
+                              color: isDark ? Colors.white70 : Colors.black54,
+                            ),
+                            SizedBox(width: 8.w),
+                            Expanded(
+                              child: Text(
+                                'OTP has been sent to your registered phone number',
+                                style: TextStyle(
+                                  fontSize: 13.sp,
+                                  color:
+                                      isDark ? Colors.white70 : Colors.black54,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 20.h),
+
+                      // Phone OTP section
+                      Text(
+                        'Enter 6-digit OTP',
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w500,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 6.h),
+                      Pinput(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        length: 6,
+                        defaultPinTheme: PinTheme(
+                          width: 48.w,
+                          height: 48.h,
+                          textStyle: TextStyle(
+                            fontSize: 15.sp,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: isDark
+                                  ? Color(0xff2F2F2F)
+                                  : Color(0xffD1D5DB),
+                            ),
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                        ),
+                        focusedPinTheme: PinTheme(
+                          width: 40.w,
+                          height: 40.h,
+                          textStyle: TextStyle(
+                            fontSize: 15.sp,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Color(0xFF1DB954),
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16.h),
+
+                      // Resend OTP with timer
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Didn\'t receive OTP? ',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: isDark ? Colors.white70 : Colors.black54,
+                            ),
+                          ),
+                          _canResendOtp
+                              ? InkWell(
+                                  onTap: () {
+                                    // Resend OTP logic
+                                    constWidgets.snackbar(
+                                        "OTP resent successfully",
+                                        Colors.green,
+                                        context);
+                                    // Restart timer
+                                    _startResendTimer(setModalState);
+                                  },
+                                  child: Text(
+                                    'Resend',
+                                    style: TextStyle(
+                                      color: Color(0xFF1DB954),
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                )
+                              : Text(
+                                  'Resend in ${_remainingSeconds}s',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                        ],
+                      ),
+                      SizedBox(height: 16.h),
+
+                      // Verify button
+                      Container(
+                        height: 48.h,
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          // onPressed: _phoneOtpController.text.length == 6
+                          //     ? () {
+                          //         // Close bottom sheet and navigate to change new PIN screen
+                          //         Navigator.pop(context);
+                          //         navi(changeNewPinScreen(), context);
+                          //       }
+                          //     : null,
+                          onPressed: () {},
+                          child: Text(
+                            "Verify",
+                            style: TextStyle(
+                                fontSize: 16.sp, fontWeight: FontWeight.w600),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF1DB954),
+                            foregroundColor: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
 
   // Method to update selected stocks (will be passed to child widgets)
   void updateSelectedStock(String stockName, bool isSelected, double amount) {
@@ -78,36 +318,40 @@ class _PledgeState extends State<Pledge> with SingleTickerProviderStateMixin {
       child: Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
-          leadingWidth: 38.w,
-          backgroundColor: Colors.black,
+          backgroundColor: isDark ? Colors.black : Colors.white,
           elevation: 0,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+          scrolledUnderElevation: 0,
+          surfaceTintColor: Colors.transparent,
+          leadingWidth: 32.w,
+          title: Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: Text(
+              "Choose Stocks to Gift",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15.sp,
+                  color: isDark ? Colors.white : Colors.black),
+              softWrap: true,
+            ),
           ),
-          title: Text(
-            "Pledge",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
+          leading: Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back,
+                  color: isDark ? Colors.white : Colors.black),
             ),
           ),
         ),
         body: Column(
           children: [
             Divider(
-              height: 1,
+              height: 1.h,
               color: const Color(0xFF2F2F2F),
             ),
-            SizedBox(height: 12.h),
             // Tab bar
-            CustomTabBar(
-              tabController: tabController,
-              options: options,
-            ),
 
             Expanded(
               child: TabBarView(
@@ -115,10 +359,6 @@ class _PledgeState extends State<Pledge> with SingleTickerProviderStateMixin {
                 children: [
                   // Pledge Tab
                   PledgeContent(updateSelectedStock: updateSelectedStock),
-                  // Unpledge Tab
-                  UnpledgeContent(),
-                  // History Tab
-                  HistoryContent(),
                 ],
               ),
             ),
@@ -177,6 +417,9 @@ class _PledgeState extends State<Pledge> with SingleTickerProviderStateMixin {
                           padding: EdgeInsets.symmetric(horizontal: 16.w),
                           child: constWidgets.greenButton(
                             "Continue",
+                            onTap: () {
+                              showOtpPopup(context, isDark);
+                            },
                           ),
                         ),
                       ],
@@ -424,6 +667,11 @@ class _PledgeListItemState extends State<_PledgeListItem> {
         setState(() {
           checked = !checked; // Toggle the checkbox
         });
+
+        // Notify parent about checkbox change
+        if (widget.onCheckChanged != null) {
+          widget.onCheckChanged!(widget.stockName, checked);
+        }
         print('Tapped on ${widget.stockName}');
       },
       behavior: HitTestBehavior.opaque,
@@ -465,7 +713,7 @@ class _PledgeListItemState extends State<_PledgeListItem> {
                       SizedBox(height: 6.h),
                       RichText(
                         text: TextSpan(
-                          text: 'Haircut  ',
+                          text: 'Tata Motors  ',
                           style: TextStyle(
                               color: Colors.grey,
                               fontWeight: FontWeight.w400,
@@ -547,7 +795,6 @@ class _PledgeListItemState extends State<_PledgeListItem> {
                                 ),
                                 Container(
                                   height: 25.h,
-                           
                                   padding:
                                       EdgeInsets.symmetric(horizontal: 4.w),
                                   decoration: BoxDecoration(
@@ -558,7 +805,8 @@ class _PledgeListItemState extends State<_PledgeListItem> {
                                     ),
                                   ),
                                   child: Padding(
-                                    padding: EdgeInsets.only(right: 6.w,top: 5.h),
+                                    padding:
+                                        EdgeInsets.only(right: 6.w, top: 5.h),
                                     child: Text('/ ${widget.totalQty}',
                                         style: TextStyle(
                                             color: Colors.white,
@@ -575,7 +823,7 @@ class _PledgeListItemState extends State<_PledgeListItem> {
                     SizedBox(height: 6.h),
                     RichText(
                       text: TextSpan(
-                        text: 'Margin  ',
+                        text: 'Invested Value  ',
                         style: TextStyle(
                             color: Colors.grey,
                             fontWeight: FontWeight.w400,
