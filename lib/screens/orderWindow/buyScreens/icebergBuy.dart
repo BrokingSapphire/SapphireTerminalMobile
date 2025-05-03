@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sapphire/screens/orderWindow/BuyScreens/buyWrapper.dart';
+import 'package:sapphire/screens/orderWindow/buyScreens/buyWrapper.dart';
 import 'package:sapphire/utils/animatedToggles.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -60,14 +61,13 @@ class _IcebergbuyscreenState extends State<Icebergbuyscreen> {
               selectedIndex: _selectedIndex,
               onToggle: (index) {
                 if (index == 2) {
+                  constWidgets.snackbar("MTF is not available for Cover Order",
+                      Colors.red, context);
+                } else if (index == 0) {
                   constWidgets.snackbar(
-                      "MTF is not available for Iceberg Order",
+                      "Delivery is not available for Cover Order",
                       Colors.red,
                       context);
-                } else {
-                  setState(() {
-                    _selectedIndex = index;
-                  });
                 }
               },
             ),
@@ -324,10 +324,13 @@ class _IcebergbuyscreenState extends State<Icebergbuyscreen> {
             SizedBox(height: 15.h),
 
             // Stoploss and GTT
-            Visibility(
-              visible: (_selectedIndex != 1) &&
-                  (_validityOptionIndex != 1 || !isExpanded),
-              child: Row(
+            AnimatedCrossFade(
+              crossFadeState: ((_selectedIndex != 1) && (_validityOptionIndex != 1 || !isExpanded))
+                  ? CrossFadeState.showSecond
+                  : CrossFadeState.showFirst,
+              duration: Duration(milliseconds: 300),
+              firstChild: SizedBox.shrink(),
+              secondChild: Row(
                 children: [
                   GestureDetector(
                     behavior: HitTestBehavior.opaque,
@@ -364,9 +367,11 @@ class _IcebergbuyscreenState extends State<Icebergbuyscreen> {
             ),
 
             SizedBox(height: 12.h),
-            Visibility(
-              visible: _stopLoss,
-              child: Row(
+            AnimatedCrossFade(
+              crossFadeState: _stopLoss ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+              duration: Duration(milliseconds: 300),
+              firstChild: SizedBox.shrink(),
+              secondChild: Row(
                 children: [
                   Flexible(
                     flex: 1, // Equal width for both columns
@@ -787,6 +792,256 @@ class _IcebergbuyscreenState extends State<Icebergbuyscreen> {
             )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class buyScreenToggle extends StatelessWidget {
+  // Required parameters
+  final bool isFirstOptionSelected;
+  final Function(bool) onToggle;
+  final String firstOption;
+  final String secondOption;
+
+  // Optional customization parameters
+  final Color? backgroundColor; // Background color of the toggle
+  final Color? selectedColor; // Color of the selected tab
+  final Color? textColor; // Text color for selected option
+  final Color? unselectedTextColor; // Text color for unselected option
+  final double height; // Height of the toggle
+  final double borderRadius; // Border radius of the toggle corners
+
+  buyScreenToggle({
+    Key? key,
+    required this.isFirstOptionSelected,
+    required this.onToggle,
+    required this.firstOption,
+    required this.secondOption,
+    this.backgroundColor, // Remove default values to allow theme-based colors
+    this.selectedColor,
+    this.textColor,
+    this.unselectedTextColor,
+    this.height = 50,
+    this.borderRadius = 8,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // Check if we're in dark mode
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // Define theme-specific colors
+    final Color actualBackgroundColor = backgroundColor ??
+        (isDark ? const Color(0xff2f2f2f) : const Color(0xfff5f5f5));
+
+    final Color actualSelectedColor = selectedColor ??
+        (isDark ? const Color(0xff1db954) : const Color(0xff1db954));
+
+    final Color actualTextColor = textColor ?? Colors.white;
+
+    final Color actualUnselectedTextColor = unselectedTextColor ??
+        (isDark ? const Color(0xffebeef5) : const Color(0xff6B7280));
+
+    return Container(
+      height: height.h,
+      // Apply theme-specific background color
+      decoration: BoxDecoration(
+        color: actualBackgroundColor,
+        borderRadius: BorderRadius.circular(borderRadius.r),
+      ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Calculate width for each segment
+          final segmentWidth = constraints.maxWidth / 2;
+
+          return Stack(
+            children: [
+              // Animated selection indicator
+              AnimatedPositioned(
+                duration: Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+                left: isFirstOptionSelected ? 0 : segmentWidth,
+                top: 0,
+                child: Container(
+                  height: height.h,
+                  width: segmentWidth,
+                  // Apply theme-specific selected color
+                  decoration: BoxDecoration(
+                    color: actualSelectedColor,
+                    borderRadius: BorderRadius.circular(borderRadius.r),
+                  ),
+                ),
+              ),
+
+              // Option texts
+              Row(
+                children: [
+                  // First option (e.g., Market)
+                  Expanded(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => onToggle(true),
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.symmetric(vertical: 10.h),
+                        child: Text(
+                          firstOption,
+                          style: TextStyle(
+                            // Apply appropriate text color based on selection state
+                            color: isFirstOptionSelected
+                                ? actualTextColor
+                                : actualUnselectedTextColor,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  // Second option (e.g., Limit)
+                  Expanded(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => onToggle(false),
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.symmetric(vertical: 10.h),
+                        child: Text(
+                          secondOption,
+                          style: TextStyle(
+                            // Use consistent text color logic for second option
+                            color: !isFirstOptionSelected
+                                ? actualTextColor
+                                : actualUnselectedTextColor,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class buyAnimatedToggle extends StatefulWidget {
+  // Required parameters
+  final List<String> options;
+  final int selectedIndex;
+  final Function(int) onToggle;
+
+  // Optional customization parameters that can be theme-aware
+  final Color? backgroundColor; // Background color of the entire toggle
+  final Color? selectedBackgroundColor; // Background color of the selected tab
+  final Color? selectedTextColor; // Text color for the selected option
+  final Color? unselectedTextColor; // Text color for unselected options
+  final double height; // Height of the toggle
+  final double borderRadius; // Border radius of the toggle corners
+
+  const buyAnimatedToggle({
+    Key? key,
+    required this.options,
+    required this.selectedIndex,
+    required this.onToggle,
+    this.backgroundColor, // Remove default values to be theme-aware
+    this.selectedBackgroundColor,
+    this.selectedTextColor,
+    this.unselectedTextColor,
+    this.height = 40,
+    this.borderRadius = 20,
+  }) : super(key: key);
+
+  @override
+  State<buyAnimatedToggle> createState() => _buyAnimatedToggleState();
+}
+
+class _buyAnimatedToggleState extends State<buyAnimatedToggle> {
+  @override
+  Widget build(BuildContext context) {
+    // Check if we're in dark mode
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // Define theme-specific colors
+    final Color actualBackgroundColor = widget.backgroundColor ??
+        (isDark ? const Color(0xff121413) : const Color(0xffF0F0F0));
+
+    final Color actualSelectedBackgroundColor =
+        widget.selectedBackgroundColor ??
+            (isDark ? const Color(0xff2f2f2f) : Colors.white);
+
+    final Color actualSelectedTextColor = widget.selectedTextColor ??
+        (isDark ? const Color(0xff1db954) : const Color(0xff1db954));
+
+    final Color actualUnselectedTextColor = widget.unselectedTextColor ??
+        (isDark ? Colors.grey : const Color(0xff6B7280));
+
+    return Container(
+      height: widget.height.h,
+      width: double.infinity,
+      // Apply theme-specific background color
+      decoration: BoxDecoration(
+        color: actualBackgroundColor,
+        borderRadius: BorderRadius.circular(widget.borderRadius),
+      ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Calculate width for each segment based on number of options
+          final segmentWidth = constraints.maxWidth / widget.options.length;
+
+          return Stack(
+            children: [
+              // Animated selection indicator
+              AnimatedPositioned(
+                duration: Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+                left: widget.selectedIndex * segmentWidth + 4,
+                top: 4,
+                child: Container(
+                  height: widget.height.h - 8,
+                  width: segmentWidth - 8,
+                  // Apply theme-specific selected background color
+                  decoration: BoxDecoration(
+                    color: actualSelectedBackgroundColor,
+                    borderRadius:
+                        BorderRadius.circular(widget.borderRadius - 4),
+                  ),
+                ),
+              ),
+
+              // Option texts
+              Row(
+                children: List.generate(widget.options.length, (index) {
+                  return Expanded(
+                    child: GestureDetector(
+                      onTap: () => widget.onToggle(index),
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          widget.options[index],
+                          style: TextStyle(
+                            // Apply appropriate text color based on selection state
+                            color: widget.selectedIndex == index
+                                ? actualSelectedTextColor
+                                : actualUnselectedTextColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 11.sp,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

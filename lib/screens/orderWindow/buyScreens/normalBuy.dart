@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sapphire/screens/orderWindow/BuyScreens/buyWrapper.dart';
-import 'package:sapphire/screens/orderWindow/SellScreens/sellWrapper.dart';
+import 'package:sapphire/screens/orderWindow/buyScreens/buyWrapper.dart';
+import 'package:sapphire/screens/orderWindow/sellScreens/sellWrapper.dart';
 import 'package:sapphire/utils/animatedToggles.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 import 'package:sapphire/utils/toggle.dart';
@@ -291,6 +291,7 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
             ),
 
             SizedBox(height: 8.h),
+            // Checkboxes for Stoploss and GTT
             Visibility(
               visible: _validityOptionIndex != 1 || !isExpanded,
               child: Row(
@@ -360,9 +361,14 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
             ),
 
             // Trigger Price Section
-            Visibility(
-              visible: (_stopLoss && (_validityOptionIndex != 1 || !isExpanded)),
-              child: Row(
+            AnimatedCrossFade(
+              crossFadeState:
+                  (_stopLoss && (_validityOptionIndex != 1 || !isExpanded))
+                      ? CrossFadeState.showSecond
+                      : CrossFadeState.showFirst,
+              duration: Duration(milliseconds: 300),
+              firstChild: SizedBox.shrink(),
+              secondChild: Row(
                 children: [
                   Flexible(
                     flex: 1, // Equal width for both columns
@@ -522,9 +528,12 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
             // Stoploss and GTT
 
             SizedBox(height: 18.h),
-            Visibility(
-              visible: _gtt,
-              child: Row(
+            AnimatedCrossFade(
+              crossFadeState:
+                  _gtt ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+              duration: Duration(milliseconds: 300),
+              firstChild: SizedBox.shrink(),
+              secondChild: Row(
                 children: [
                   Flexible(
                     flex: 1, // Equal width for both columns

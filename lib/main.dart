@@ -3,7 +3,6 @@ import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sapphire/screens/funds/withdrawal/withdrawal.dart';
-
 import 'package:sapphire/screens/home/orders/gtt1Screen.dart';
 import 'package:sapphire/screens/home/orders/gtt2Screen.dart';
 import 'package:sapphire/screens/home/discover/priceAlerts.dart';
@@ -35,7 +34,6 @@ import 'package:sapphire/screens/signUp/mobileOtpVerification.dart';
 import 'package:sapphire/screens/signUp/nomineeDetailsScreen.dart';
 import 'package:sapphire/screens/signUp/panDetails.dart';
 import 'package:sapphire/screens/signUp/personalDetails.dart';
-import 'package:sapphire/screens/signUp/signUpPaymentScreen.dart';
 import 'package:sapphire/screens/signUp/signatureVerificationScreen.dart';
 import 'package:sapphire/screens/signUp/otherDetails.dart';
 import 'package:sapphire/screens/signUp/verifyAadharScreen.dart';
