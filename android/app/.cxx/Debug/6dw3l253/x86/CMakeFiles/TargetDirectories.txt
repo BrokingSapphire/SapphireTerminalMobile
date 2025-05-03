@@ -1,0 +1,2 @@
+/Users/nakulthakur/IdeaProjects/SapphireTerminalMobile/android/app/.cxx/Debug/6dw3l253/x86/CMakeFiles/edit_cache.dir
+/Users/nakulthakur/IdeaProjects/SapphireTerminalMobile/android/app/.cxx/Debug/6dw3l253/x86/CMakeFiles/rebuild_cache.dir

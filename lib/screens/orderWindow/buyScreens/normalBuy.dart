@@ -9,6 +9,7 @@ import 'package:sapphire/utils/toggle.dart';
 
 class NormalBuyScreen extends StatefulWidget {
   final String tabName;
+
   NormalBuyScreen(this.tabName);
 
   @override
@@ -49,6 +50,7 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
   bool targetToggle = false;
 
   final List<String> _options = ["Delivery", "Intraday", "MTF"];
+
   Widget _buildSwitchTile(
       {required String title,
       required String subtitle,
@@ -144,8 +146,8 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
                         },
                       ),
                       SizedBox(
-                        width: 80
-                            .w, // Fixed width for TextField to fit within container
+                        width: 80.w,
+                        // Fixed width for TextField to fit within container
                         child: TextField(
                           controller: TextEditingController(
                               text: quantity.toString())
@@ -573,23 +575,24 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
                                       : Colors.black,
                                 ),
                                 decoration: InputDecoration(
-                                  border: InputBorder.none, // No border
-                                  enabledBorder: InputBorder
-                                      .none, // No border when enabled
-                                  focusedBorder: InputBorder
-                                      .none, // No border when focused
-                                  disabledBorder: InputBorder
-                                      .none, // No border when disabled
-                                  errorBorder: InputBorder
-                                      .none, // No border when in error state
-                                  focusedErrorBorder: InputBorder
-                                      .none, // No border when focused with error
+                                  border: InputBorder.none,
+                                  // No border
+                                  enabledBorder: InputBorder.none,
+                                  // No border when enabled
+                                  focusedBorder: InputBorder.none,
+                                  // No border when focused
+                                  disabledBorder: InputBorder.none,
+                                  // No border when disabled
+                                  errorBorder: InputBorder.none,
+                                  // No border when in error state
+                                  focusedErrorBorder: InputBorder.none,
+                                  // No border when focused with error
                                   prefixIcon: Padding(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 10.w),
                                     child: Row(
-                                      mainAxisSize: MainAxisSize
-                                          .min, // Constrain Row to minimum size
+                                      mainAxisSize: MainAxisSize.min,
+                                      // Constrain Row to minimum size
                                       children: [
                                         Text(
                                           "%",
@@ -681,23 +684,24 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
                                       : Colors.black,
                                 ),
                                 decoration: InputDecoration(
-                                  border: InputBorder.none, // No border
-                                  enabledBorder: InputBorder
-                                      .none, // No border when enabled
-                                  focusedBorder: InputBorder
-                                      .none, // No border when focused
-                                  disabledBorder: InputBorder
-                                      .none, // No border when disabled
-                                  errorBorder: InputBorder
-                                      .none, // No border when in error state
-                                  focusedErrorBorder: InputBorder
-                                      .none, // No border when focused with error
+                                  border: InputBorder.none,
+                                  // No border
+                                  enabledBorder: InputBorder.none,
+                                  // No border when enabled
+                                  focusedBorder: InputBorder.none,
+                                  // No border when focused
+                                  disabledBorder: InputBorder.none,
+                                  // No border when disabled
+                                  errorBorder: InputBorder.none,
+                                  // No border when in error state
+                                  focusedErrorBorder: InputBorder.none,
+                                  // No border when focused with error
                                   prefixIcon: Padding(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 10.w),
                                     child: Row(
-                                      mainAxisSize: MainAxisSize
-                                          .min, // Constrain Row to minimum size
+                                      mainAxisSize: MainAxisSize.min,
+                                      // Constrain Row to minimum size
                                       children: [
                                         Text(
                                           "%",
@@ -881,8 +885,8 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
                             Container(
                               height: 50.h,
                               child: TextField(
-                                readOnly: _validityOptionIndex ==
-                                    1, // Read-only for IOC
+                                readOnly: _validityOptionIndex == 1,
+                                // Read-only for IOC
                                 controller: TextEditingController(text: "0"),
                                 keyboardType: TextInputType.number,
                                 style: TextStyle(
@@ -943,7 +947,8 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
                                           _selectedMinutes = newValue;
                                         });
                                       }
-                                    : null, // Disable for Day and IOC
+                                    : null,
+                                // Disable for Day and IOC
                                 items: _minutesOptions
                                     .map<DropdownMenuItem<String>>(
                                         (String value) {

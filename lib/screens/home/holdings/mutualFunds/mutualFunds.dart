@@ -10,9 +10,12 @@ class MutualFundsScreen extends StatefulWidget {
 }
 
 class _MutualFundsScreenState extends State<MutualFundsScreen> {
+  // Text controller for search field
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
   List<Map<String, dynamic>> mutualFundsData = [
     {
-      "title": "MOTILAL OSWAL MIDCAP FUND",
+      "title": "MOTILAL OSWAL MIDCAP FUND ",
       "category": "Regular · Growth · Mid Cap",
       "invested": "₹1,00,000",
       "returns": "-3,979.60 (-12.2%)",
@@ -20,7 +23,7 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
       "icon": Icons.wb_sunny,
     },
     {
-      "title": "ICICI PRUDENTIAL NIFTY 50 INDEX FUND",
+      "title": "ICICI PRUDENTIAL NIFTY 50 INDEX FUND ",
       "category": "Regular · Growth · Large Cap",
       "invested": "₹5,00,000",
       "returns": "+3,979.60 (+12.2%)",
@@ -36,6 +39,28 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
       "icon": Icons.wb_sunny,
     },
   ];
+
+  // Get filtered and sorted mutual funds data
+  List<Map<String, dynamic>> _getFilteredMutualFundsData() {
+    // Sort the mutual funds data alphabetically by name
+    List<Map<String, dynamic>> sortedMutualFundsData =
+        List.from(mutualFundsData);
+    sortedMutualFundsData
+        .sort((a, b) => a["title"].toString().compareTo(b["title"].toString()));
+
+    // Filter based on search query
+    if (_searchQuery.isEmpty) {
+      return sortedMutualFundsData;
+    }
+
+    // Return only funds that start with the search query
+    return sortedMutualFundsData.where((fund) {
+      return fund["title"]
+          .toString()
+          .toUpperCase()
+          .startsWith(_searchQuery.toUpperCase());
+    }).toList();
+  }
 
   Widget mutualFundCard(
       String firtTitle,
@@ -80,7 +105,10 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      secondTitle,
+                      // secondTitle,
+                      secondValue.contains('-')
+                          ? "Overall Loss"
+                          : "Overall Gain",
                       style: TextStyle(
                           fontSize: 13.sp,
                           color: isDark ? Colors.white : Colors.black),
@@ -186,6 +214,8 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    // Get filtered mutual funds data
+    final filteredMutualFundsData = _getFilteredMutualFundsData();
     return GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: RefreshIndicator(
@@ -297,39 +327,52 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
                 ),
                 SizedBox(height: 16.h),
 
-                // 👉 Replace this with your actual custom search bar
+                // Search field with input functionality
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: constWidgets.searchField(context,
-                      "Search Mutual Funds....", "mutual_funds", isDark),
+                  child: constWidgets.searchFieldWithInput(context,
+                      "Search Mutual Funds....", "mutual_funds", isDark,
+                      controller: _searchController, onChanged: (value) {
+                    setState(() {
+                      _searchQuery = value;
+                    });
+                  }),
                 ),
 
                 SizedBox(height: 16.h),
 
-                if (mutualFundsData.isEmpty)
+                if (filteredMutualFundsData.isEmpty)
                   Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(
-                            height: 150.h,
-                            width: 150.w,
-                            child: Image.asset(
-                                "assets/emptyPng/holdingsMutualFunds.png")),
-                        Text(
-                          "No Mutual Fund Investment",
-                          style: TextStyle(
-                              fontSize: 24.sp, fontWeight: FontWeight.bold),
+                        SizedBox(height: 50.h),
+                        Icon(
+                          Icons.search_off,
+                          size: 48.sp,
+                          color: isDark ? Colors.grey : Colors.grey.shade600,
                         ),
+                        SizedBox(height: 16.h),
+                        Text(
+                          _searchQuery.isEmpty
+                              ? "No Mutual Fund Investment"
+                              : "No Mutual Funds starting with '${_searchQuery}' found",
+                          style: TextStyle(
+                              fontSize: 18.sp, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 8.h),
                         SizedBox(
                           width: 250.w,
                           child: Text(
-                            "Invest in mutual funds and grow your wealth over time.",
+                            _searchQuery.isEmpty
+                                ? "Invest in mutual funds and grow your wealth over time."
+                                : "Try a different search term",
                             textAlign: TextAlign.center,
                             style:
-                                TextStyle(fontSize: 18.sp, color: Colors.grey),
+                                TextStyle(fontSize: 16.sp, color: Colors.grey),
                           ),
                         ),
+                        SizedBox(height: 50.h),
                       ],
                     ),
                   )
@@ -341,9 +384,9 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
                         ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: mutualFundsData.length,
+                          itemCount: filteredMutualFundsData.length,
                           itemBuilder: (context, index) {
-                            var data = mutualFundsData[index];
+                            var data = filteredMutualFundsData[index];
                             return _fundTile(
                               title: data['title'],
                               category: data['category'],
@@ -431,11 +474,12 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
                               children: [
                                 Text(title,
                                     style: TextStyle(
-                                        color: isDark
-                                            ? Colors.white
-                                            : Colors.black,
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w400)),
+                                      color:
+                                          isDark ? Colors.white : Colors.black,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w400,
+                                      overflow: TextOverflow.ellipsis,
+                                    )),
                                 SizedBox(height: 4),
                                 Text(category,
                                     style: TextStyle(

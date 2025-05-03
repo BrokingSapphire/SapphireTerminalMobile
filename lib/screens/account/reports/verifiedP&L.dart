@@ -16,6 +16,7 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
 
   // For segment to share selection
   String selectedSegment = "Cash";
+
   // Optionally, you can use this for maintainability:
   // final List<String> segmentOptions = ["Cash", "Futures", "Options", "Commodity"];
   bool livePnL = false;
@@ -488,8 +489,8 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                                 child: Row(
                                   children: [
                                     Container(
-                                      width:
-                                          20, // Checkbox size (improved for visibility)
+                                      width: 20,
+                                      // Checkbox size (improved for visibility)
                                       height: 20,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(
@@ -498,8 +499,8 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
                                           color: displayTrades
                                               ? Color(
                                                   0xFF1DB954) // Green border when selected
-                                              : Color(
-                                                  0xFF434343), // Grey border otherwise
+                                              : Color(0xFF434343),
+                                          // Grey border otherwise
                                           width: 2.0,
                                         ),
                                         color: displayTrades

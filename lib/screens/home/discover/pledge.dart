@@ -178,7 +178,7 @@ class PledgeContent extends StatelessWidget {
         SizedBox(height: 10.h),
         Expanded(
           child: ListView(
-            children:const [
+            children: const [
               _PledgeListItem(
                 checked: false,
                 stockName: 'BAJAJ-AUTO',

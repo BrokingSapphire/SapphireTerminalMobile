@@ -66,17 +66,9 @@ final Map<String, List<FilterOption>> filterConfig = {
         sortDirections: ['Ascending', 'Descending'],
         svgPath: 'assets/svgs/trending-up.svg'),
     FilterOption(
-        label: 'Unrealized P&L (%)',
-        sortDirections: ['Ascending', 'Descending'],
-        svgPath: 'assets/svgs/percent.svg'),
-    FilterOption(
         label: 'Quantity Held',
         sortDirections: ['Ascending', 'Descending'],
         svgPath: 'assets/svgs/box.svg'),
-    FilterOption(
-        label: 'Average Buy Price',
-        sortDirections: ['Ascending', 'Descending'],
-        svgPath: 'assets/svgs/tag.svg'),
     FilterOption(
         label: 'Market Price',
         sortDirections: ['Ascending', 'Descending'],
@@ -89,10 +81,6 @@ final Map<String, List<FilterOption>> filterConfig = {
         label: 'Alphabetical',
         sortDirections: ['A–Z', 'Z–A'],
         svgPath: 'assets/svgs/alphabetical.svg'),
-    FilterOption(
-        label: 'Sector',
-        sortDirections: ['A–Z', 'Z–A'],
-        svgPath: 'assets/svgs/grid-2x2.svg'),
   ],
 
   // Open positions screen filter options
@@ -102,17 +90,9 @@ final Map<String, List<FilterOption>> filterConfig = {
         sortDirections: ['Ascending', 'Descending'],
         svgPath: 'assets/svgs/trending-up.svg'),
     FilterOption(
-        label: 'Net P&L (%)',
-        sortDirections: ['Ascending', 'Descending'],
-        svgPath: 'assets/svgs/percent.svg'),
-    FilterOption(
         label: 'Quantity',
         sortDirections: ['Ascending', 'Descending'],
         svgPath: 'assets/svgs/box.svg'),
-    FilterOption(
-        label: 'Average Price',
-        sortDirections: ['Ascending', 'Descending'],
-        svgPath: 'assets/svgs/tag.svg'),
     FilterOption(
         label: 'Current Market Price',
         sortDirections: ['Ascending', 'Descending'],
@@ -129,10 +109,6 @@ final Map<String, List<FilterOption>> filterConfig = {
         label: 'Symbol',
         sortDirections: ['A–Z', 'Z–A'],
         svgPath: 'assets/svgs/barcode.svg'),
-    FilterOption(
-        label: 'Exchange',
-        sortDirections: ['A–Z', 'Z–A'],
-        svgPath: 'assets/svgs/globe.svg'),
   ],
 
   // Mutual funds screen filter options
@@ -158,17 +134,9 @@ final Map<String, List<FilterOption>> filterConfig = {
         sortDirections: ['Ascending', 'Descending'],
         svgPath: 'assets/svgs/receipt-indian-rupee.svg'),
     FilterOption(
-        label: 'SIP Date (Start Date)',
-        sortDirections: ['Ascending', 'Descending'],
-        svgPath: 'assets/svgs/calendar.svg'),
-    FilterOption(
         label: 'Fund Name',
         sortDirections: ['A–Z', 'Z–A'],
         svgPath: 'assets/svgs/text.svg'),
-    FilterOption(
-        label: 'Category (Equity / Debt / Hybrid / etc.)',
-        sortDirections: ['A–Z', 'Z–A'],
-        svgPath: 'assets/svgs/layers.svg'),
   ],
 
   // Closed trades screen filter options
@@ -262,7 +230,7 @@ void showFilterBottomSheet({
     context: context,
     backgroundColor: isDark ? const Color(0xFF121413) : const Color(0xFFF4F4F9),
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(26.r)),
     ),
     isScrollControlled: true, // Allow the sheet to be scrollable and resizable
     builder: (context) {
@@ -277,8 +245,9 @@ void showFilterBottomSheet({
                   24.h, // Adjust for keyboard
             ),
             child: Container(
-              height: MediaQuery.of(context).size.height *
-                  0.7, // Set height to 70% of the screen height
+              // height: MediaQuery.of(context).size.height *
+              //     0.6, // Set height to 70% of the screen height
+
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,

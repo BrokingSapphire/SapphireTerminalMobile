@@ -180,4 +180,3 @@ class _GttScreenWrapper extends State<GttScreenWrapper>
     );
   }
 }
-

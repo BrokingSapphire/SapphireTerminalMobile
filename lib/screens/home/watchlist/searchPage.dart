@@ -59,10 +59,28 @@ class _SearchPageScreenState extends State<SearchPageScreen>
     super.dispose();
   }
 
+  // Search query state
+  String _searchQuery = '';
+
   List<Map<String, dynamic>> getFilteredStocks() {
     String selected = options[_currentIndex].toLowerCase();
-    if (selected == "all") return stocks;
-    return stocks.where((stock) => stock["type"] == selected).toList();
+
+    // First filter by tab selection
+    List<Map<String, dynamic>> tabFilteredStocks = selected == "all"
+        ? stocks
+        : stocks.where((stock) => stock["type"] == selected).toList();
+
+    // Then filter by search query if it exists
+    if (_searchQuery.isNotEmpty) {
+      return tabFilteredStocks.where((stock) {
+        return stock["name"]
+            .toString()
+            .toUpperCase()
+            .startsWith(_searchQuery.toUpperCase());
+      }).toList();
+    }
+
+    return tabFilteredStocks;
   }
 
   @override
@@ -92,8 +110,14 @@ class _SearchPageScreenState extends State<SearchPageScreen>
                         height: 42.h,
                         child: TextField(
                           autofocus: true,
+                          onChanged: (value) {
+                            setState(() {
+                              _searchQuery = value;
+                            });
+                          },
                           inputFormatters: [
-                            UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                            UpperCaseTextFormatter(),
+                            // Custom formatter to force uppercase
                           ],
                           decoration: InputDecoration(
                             hintText: "Search Instruments to add",
@@ -215,18 +239,45 @@ class _SearchPageScreenState extends State<SearchPageScreen>
                   },
                   itemCount: options.length,
                   itemBuilder: (context, pageIndex) {
-                    // Filter stocks based on current page
-                    String selected = options[pageIndex].toLowerCase();
-                    final filteredStocks = selected == "all"
-                        ? stocks
-                        : stocks
-                            .where((stock) => stock["type"] == selected)
-                            .toList();
+                    // Get filtered stocks based on both tab selection and search query
+                    final filteredStocks = getFilteredStocks();
 
+                    // Get the current tab name for the empty state message
+                    String currentTab = options[_currentIndex].toLowerCase();
                     return filteredStocks.isEmpty
                         ? Center(
-                            child: Text("No ${selected} stocks found",
-                                style: TextStyle(color: appColors.textColor)))
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.search_off,
+                                  size: 48.sp,
+                                  color: appColors.secondaryTextColor,
+                                ),
+                                SizedBox(height: 16.h),
+                                Text(
+                                  _searchQuery.isEmpty
+                                      ? "No ${currentTab} instruments found"
+                                      : "No instruments starting with '${_searchQuery}' found",
+                                  style: TextStyle(
+                                    color: appColors.textColor,
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                SizedBox(height: 8.h),
+                                Text(
+                                  _searchQuery.isEmpty
+                                      ? "Try selecting a different category"
+                                      : "Try a different search term",
+                                  style: TextStyle(
+                                    color: appColors.secondaryTextColor,
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
                         : ListView.builder(
                             itemCount: filteredStocks.length,
                             itemBuilder: (context, index) {
@@ -350,14 +401,20 @@ class AppColors {
   const AppColors({required this.isDark});
 
   Color get backgroundColor => isDark ? const Color(0xFF000000) : Colors.white;
+
   Color get textColor => isDark ? Colors.white : Colors.black;
+
   Color get secondaryTextColor =>
       isDark ? const Color(0xFFC9CACC) : Colors.black54;
+
   Color get searchFieldColor =>
       isDark ? const Color(0xFF2F2F2F) : const Color(0xFFF4F4F9);
+
   Color get dividerColor => const Color(0xFF2F2F2F);
+
   Color get accentColor => const Color(0xFF1DB954); // Green accent color
   Color get tabBarColor => isDark ? const Color(0xFF000000) : Colors.white;
+
   Color get borderColor =>
       isDark ? const Color(0xFF2F2F2F) : const Color(0xFFE0E0E0);
 }

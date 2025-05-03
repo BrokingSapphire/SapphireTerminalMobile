@@ -31,6 +31,7 @@ class _WatchlistScreenState extends State<WatchlistScreen>
   String? _selectedFilterLabel;
   String? _selectedDirection;
   String _searchQuery = '';
+
   //-----------------------------------
   late PageController _pageController;
   List<String> tabNames = ['Watchlist 1'];

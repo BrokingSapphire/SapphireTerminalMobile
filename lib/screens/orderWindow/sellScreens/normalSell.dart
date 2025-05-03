@@ -8,6 +8,7 @@ import 'package:sapphire/utils/toggle.dart';
 
 class NormalSellScreen extends StatefulWidget {
   final String tabName;
+
   NormalSellScreen(this.tabName);
 
   @override

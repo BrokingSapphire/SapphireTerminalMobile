@@ -133,15 +133,16 @@ class _tradesClosedScreenState extends State<tradesClosedScreen>
                                   left: 20.w,
                                   right: 5.w), // Adds space before the icon
                               child: SvgPicture.asset(
-                                'assets/svgs/search-svgrepo-com (1).svg', // Update with your actual SVG path
+                                'assets/svgs/search-svgrepo-com (1).svg',
+                                // Update with your actual SVG path
                                 width: 18.w, // Adjust size
                                 height: 18.h,
                                 color: Colors.grey, // Change color if needed
                               ),
                             ),
                             prefixIconConstraints: BoxConstraints(
-                              minWidth: 36
-                                  .w, // Ensure enough space for padding to take effect
+                              minWidth: 36.w,
+                              // Ensure enough space for padding to take effect
                               minHeight: 36.h,
                             ),
                             border: OutlineInputBorder(
@@ -182,9 +183,10 @@ class _tradesClosedScreenState extends State<tradesClosedScreen>
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8.r),
                         child: ToggleButtons(
-                          renderBorder: false, // Removes vertical divider
-                          borderRadius:
-                              BorderRadius.circular(8.r), // Rounded corners
+                          renderBorder: false,
+                          // Removes vertical divider
+                          borderRadius: BorderRadius.circular(8.r),
+                          // Rounded corners
                           isSelected: [isGridView, !isGridView],
                           onPressed: (index) {
                             setState(() {

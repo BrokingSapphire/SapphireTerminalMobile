@@ -89,8 +89,8 @@ class _closedGridScreenState extends State<closedGridScreen>
                         children: [
                           Text(
                             "Status",
-                            style:
-                                TextStyle(color: Color(0xffEBEEF5), fontSize: 13.sp),
+                            style: TextStyle(
+                                color: Color(0xffEBEEF5), fontSize: 13.sp),
                           ),
                           SizedBox(height: 4.h),
                           Container(
@@ -247,8 +247,8 @@ class _closedGridScreenState extends State<closedGridScreen>
                         children: [
                           Text(
                             "Status",
-                            style:
-                                TextStyle(color: Color(0xffEBEEF5), fontSize: 13.sp),
+                            style: TextStyle(
+                                color: Color(0xffEBEEF5), fontSize: 13.sp),
                           ),
                           SizedBox(height: 4.h),
                           Container(
@@ -404,8 +404,8 @@ class _closedGridScreenState extends State<closedGridScreen>
                         children: [
                           Text(
                             "Status",
-                            style:
-                                TextStyle(color: Color(0xffEBEEF5), fontSize: 13.sp),
+                            style: TextStyle(
+                                color: Color(0xffEBEEF5), fontSize: 13.sp),
                           ),
                           SizedBox(height: 4.h),
                           Container(

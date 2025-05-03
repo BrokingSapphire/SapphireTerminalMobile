@@ -70,7 +70,7 @@ class _IPOState extends State<IPO> with SingleTickerProviderStateMixin {
                     options: options, // Pass the options here
                   ),
                   SizedBox(height: 10.h),
-                  SizedBox(
+                  Container(
                     height: 400.h, // adjust as needed
                     child: TabBarView(
                       controller: _tabController,

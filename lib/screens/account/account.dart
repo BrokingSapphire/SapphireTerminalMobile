@@ -19,7 +19,7 @@ import 'package:sapphire/screens/account/reports/orderBook.dart';
 import 'package:sapphire/screens/account/reports/tradeBook.dart';
 import 'package:sapphire/screens/account/reports/tradesAndCharges.dart';
 import 'package:sapphire/screens/account/reports/verifiedP&L.dart';
-import 'package:sapphire/screens/signUp/loginScreen.dart';
+import 'package:sapphire/screens/auth/login/login.dart';
 
 import '../../utils/constWidgets.dart';
 
@@ -183,6 +183,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     "assets/svgs/referAFriend.svg",
     "assets/svgs/corporateDetails.svg"
   ];
+
   void onTapSwitchAccount() {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     showModalBottomSheet(
@@ -501,8 +502,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 // Title Text
                                 Text(
-                                  list[
-                                      index], // Assuming list[index] is the list of text values
+                                  list[index],
+                                  // Assuming list[index] is the list of text values
                                   style: TextStyle(
                                       fontSize: 16.sp,
                                       color:
@@ -803,10 +804,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 // Pinned Divider Delegate for AppBar
 class _PinnedDividerDelegate extends SliverPersistentHeaderDelegate {
   final bool isDark;
+
   _PinnedDividerDelegate({required this.isDark});
 
   @override
   double get minExtent => 1.0;
+
   @override
   double get maxExtent => 1.0;
 

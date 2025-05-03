@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sapphire/screens/home/holdings/holdingsBottomSheet.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class positionScreen extends StatefulWidget {
@@ -10,6 +11,31 @@ class positionScreen extends StatefulWidget {
 }
 
 class _positionScreenState extends State<positionScreen> {
+  // Text controller for search field
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  // Get filtered and sorted position data
+  List<Map<String, dynamic>> _getFilteredPositionData() {
+    // Sort the position data alphabetically by title
+    List<Map<String, dynamic>> sortedPositionData = List.from(positionData);
+    sortedPositionData
+        .sort((a, b) => a["title"].toString().compareTo(b["title"].toString()));
+
+    // Filter based on search query
+    if (_searchQuery.isEmpty) {
+      return sortedPositionData;
+    }
+
+    // Return only positions that start with the search query
+    return sortedPositionData.where((position) {
+      return position["title"]
+          .toString()
+          .toUpperCase()
+          .startsWith(_searchQuery.toUpperCase());
+    }).toList();
+  }
+
   List<Map<String, dynamic>> positionData = [
     {
       "title": "ALKYLAMINE",
@@ -19,6 +45,7 @@ class _positionScreenState extends State<positionScreen> {
       "trail2": "BUY",
       "trail3": "INTRADAY",
       "isBuy": true,
+      "isOpen": true
     },
     {
       "title": "ALKYLAMINE 1200 CC",
@@ -28,6 +55,7 @@ class _positionScreenState extends State<positionScreen> {
       "trail2": "SELL",
       "trail3": "INTRADAY",
       "isBuy": false,
+      "isOpen": true
     },
     {
       "title": "ALKYLAMINE FUT",
@@ -37,6 +65,7 @@ class _positionScreenState extends State<positionScreen> {
       "trail2": "BUY",
       "trail3": "INTRADAY",
       "isBuy": true,
+      "isOpen": true
     },
     {
       "title": "ALKYLAMINE 1200 CE",
@@ -46,6 +75,7 @@ class _positionScreenState extends State<positionScreen> {
       "trail2": "SELL",
       "trail3": "CARRYFORWARD",
       "isBuy": false,
+      "isOpen": false
     },
     {
       "title": "ALKYLAMINE",
@@ -55,6 +85,7 @@ class _positionScreenState extends State<positionScreen> {
       "trail2": "BUY",
       "trail3": "INTRADAY",
       "isBuy": true,
+      "isOpen": false
     },
     {
       "title": "ALKYLAMINE 1200 CC",
@@ -64,6 +95,7 @@ class _positionScreenState extends State<positionScreen> {
       "trail2": "SELL",
       "trail3": "INTRADAY",
       "isBuy": false,
+      "isOpen": false
     },
     {
       "title": "ALKYLAMINE FUT",
@@ -73,6 +105,7 @@ class _positionScreenState extends State<positionScreen> {
       "trail2": "BUY",
       "trail3": "INTRADAY",
       "isBuy": true,
+      "isOpen": false
     },
     {
       "title": "ALKYLAMINE 1200 CE",
@@ -82,6 +115,7 @@ class _positionScreenState extends State<positionScreen> {
       "trail2": "SELL",
       "trail3": "CARRYFORWARD",
       "isBuy": false,
+      "isOpen": false
     }
   ];
 
@@ -127,14 +161,15 @@ class _positionScreenState extends State<positionScreen> {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  firstTitle,
+                  // firstTitle,
+                  firstValue.contains('-') ? "Total Loss" : "Total Gain",
                   style: TextStyle(
                       fontSize: 13.sp,
                       color: isDark ? Colors.white : Colors.black),
@@ -142,59 +177,67 @@ class _positionScreenState extends State<positionScreen> {
                 SizedBox(
                   height: 5.h,
                 ),
-                Text(
-                  firstValue,
-                  style: TextStyle(
-                      fontSize: 17.sp,
-                      fontWeight: FontWeight.w600,
-                      color:
-                          firstValue.contains('-') ? Colors.red : Colors.green),
-                ),
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  secondTitle,
-                  style: TextStyle(
-                      fontSize: 13.sp,
-                      color: isDark ? Colors.white : Colors.black),
-                ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: secondValue,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 17.sp,
-                            color: secondValue.contains('-')
-                                ? Colors.red
-                                : Colors.green),
-                      ),
-                      TextSpan(
-                        text: "   ", // Adding spaces for width
-                        style: TextStyle(fontSize: 10.sp),
-                      ),
-                      TextSpan(
-                        text: "(-22.51%)",
-                        style: TextStyle(
-                          fontSize: 10.sp,
-                          color: secondValue.contains('-')
+                Row(
+                  children: [
+                    Text(
+                      firstValue,
+                      style: TextStyle(
+                          fontSize: 17.sp,
+                          fontWeight: FontWeight.w600,
+                          color: firstValue.contains('-')
                               ? Colors.red
-                              : Colors.green,
-                        ),
-                      ),
-                    ],
-                  ),
+                              : Colors.green),
+                    ),
+                    SizedBox(
+                      width: 4.w,
+                    ),
+                    Text(
+                      "(-22.51%)",
+                      style: TextStyle(
+                          fontSize: 10.sp,
+                          color: isDark ? Colors.white : Colors.black),
+                    ),
+                  ],
                 ),
               ],
             ),
+            // Column(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   crossAxisAlignment: CrossAxisAlignment.end,
+            //   children: [
+            //     Text(
+            //       secondTitle,
+            //       style: TextStyle(
+            //           fontSize: 13.sp,
+            //           color: isDark ? Colors.white : Colors.black),
+            //     ),
+            //     SizedBox(
+            //       height: 5.h,
+            //     ),
+            //     Row(
+            //       children: [
+            //         Text(
+            //           secondValue,
+            //           style: TextStyle(
+            //               fontWeight: FontWeight.w400,
+            //               fontSize: 17.sp,
+            //               color: secondValue.contains('-')
+            //                   ? Colors.red
+            //                   : Colors.green),
+            //         ),
+            //         SizedBox(
+            //           width: 4.w,
+            //         ),
+            //         Text(
+            //           "(-22.51%)",
+            //           style: TextStyle(
+            //               fontSize: 10.sp,
+            //               color: isDark ? Colors.white : Colors.black),
+            //         ),
+            //       ],
+            //     ),
+            //   ],
+            // ),
           ],
         ),
       ),
@@ -204,6 +247,8 @@ class _positionScreenState extends State<positionScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    // Get filtered position data
+    final filteredPositionData = _getFilteredPositionData();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: RefreshIndicator(
@@ -232,7 +277,7 @@ class _positionScreenState extends State<positionScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        positionCard('₹15,11,750', "-₹45,096", isDark),
+                        positionCard('-₹15,11,750', "-₹45,096", isDark),
                       ],
                     ),
                   ),
@@ -243,35 +288,48 @@ class _positionScreenState extends State<positionScreen> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: constWidgets.searchField(
-                    context, "Search Everything...", "positions", isDark),
+                child: constWidgets.searchFieldWithInput(
+                    context, "Search by name or ticker", "positions", isDark,
+                    controller: _searchController, onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value;
+                  });
+                }),
               ),
               SizedBox(
                 height: 15.h,
               ),
-              if (positionData.isEmpty)
+              if (filteredPositionData.isEmpty)
                 Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
-                          height: 150.h,
-                          width: 150.w,
-                          child: Image.asset(
-                              "assets/emptyPng/holdingsPosition.png")),
-                      Text(
-                        "No Open Positions",
-                        style: TextStyle(
-                            fontSize: 24.sp, fontWeight: FontWeight.bold),
+                      SizedBox(height: 50.h),
+                      Icon(
+                        Icons.search_off,
+                        size: 48.sp,
+                        color: isDark ? Colors.grey : Colors.grey.shade600,
                       ),
+                      SizedBox(height: 16.h),
+                      Text(
+                        _searchQuery.isEmpty
+                            ? "No Open Positions"
+                            : "No positions starting with '${_searchQuery}' found",
+                        style: TextStyle(
+                            fontSize: 18.sp, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 8.h),
                       SizedBox(
                         width: 250.w,
                         child: Text(
-                          "Your active trades will be listed here. Start trading today!",
+                          _searchQuery.isEmpty
+                              ? "Your active trades will be listed here. Start trading today!"
+                              : "Try a different search term",
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 18.sp, color: Colors.grey),
+                          style: TextStyle(fontSize: 16.sp, color: Colors.grey),
                         ),
                       ),
+                      SizedBox(height: 50.h),
                     ],
                   ),
                 )
@@ -283,18 +341,36 @@ class _positionScreenState extends State<positionScreen> {
                       ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: positionData.length,
+                          itemCount: filteredPositionData.length,
                           itemBuilder: (context, index) {
-                            var data = positionData[index];
-                            return positionScreenTiles(
-                              data['title'],
-                              data['midtitle'],
-                              data['subtitle'],
-                              data['trail1'],
-                              data['trail2'],
-                              data['trail3'],
-                              data['isBuy'],
-                              isDark,
+                            var data = filteredPositionData[index];
+                            return GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  builder: (context) => holdingsBottomSheet(
+                                    stockName: data['title'] ?? '',
+                                    stockCode: data['code'] ?? '',
+                                    price: data['price'] ?? '',
+                                    change: data['change'] ?? '',
+                                  ),
+                                );
+                              },
+                              child: positionScreenTiles(
+                                  data['title'] ?? '',
+                                  data['midtitle'] ?? '',
+                                  data['subtitle'] ?? '',
+                                  data['trail1'] ?? '',
+                                  data['trail2'] ?? '',
+                                  data['trail3'] ?? '',
+                                  data['isBuy'] ?? false,
+                                  isDark,
+                                  isOpen: data.containsKey('isOpen')
+                                      ? data['isOpen']
+                                      : true),
                             );
                           })
                     ])
@@ -305,18 +381,13 @@ class _positionScreenState extends State<positionScreen> {
     );
   }
 
-  Widget positionScreenTiles(
-    String title,
-    String midtitle,
-    String subtitle,
-    String trail1,
-    String trail2,
-    String trail3,
-    bool isBuy,
-    bool isDark,
-  ) {
+  Widget positionScreenTiles(String title, String midtitle, String subtitle,
+      String trail1, String trail2, String trail3, bool isBuy, bool isDark,
+      {bool isOpen = true}) {
     // Get chip colors for trail3
     final chipColors = _getChipColors(trail3);
+    // Use a default value if isOpen is null
+    // final isOpenValue = isOpen;
 
     return Column(
       children: [
@@ -324,6 +395,7 @@ class _positionScreenState extends State<positionScreen> {
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
           child: Container(
             // height: 95.h,
+            // color: isOpen ? Colors.transparent : Colors.grey.withOpacity(0.1),
             child: Row(
               children: [
                 Container(
@@ -344,7 +416,7 @@ class _positionScreenState extends State<positionScreen> {
                           color: isDark ? Colors.white : Colors.black),
                     ),
                     SizedBox(
-                      height: 6.h,
+                      height: 8.h,
                     ),
                     Text(
                       midtitle,
@@ -353,7 +425,7 @@ class _positionScreenState extends State<positionScreen> {
                           color: isDark ? Colors.white : Colors.black),
                     ),
                     SizedBox(
-                      height: 5.h,
+                      height: 8.h,
                     ),
                     Row(
                       children: [
@@ -415,7 +487,7 @@ class _positionScreenState extends State<positionScreen> {
                               : Colors.green),
                     ),
                     SizedBox(
-                      height: 6.h,
+                      height: 8.h,
                     ),
                     Row(
                       children: [
@@ -426,7 +498,7 @@ class _positionScreenState extends State<positionScreen> {
                               color: isDark ? Colors.grey : Colors.black),
                         ),
                         SizedBox(
-                          width: 5.w,
+                          width: 8.w,
                         ),
                         Text(
                           subtitle,
@@ -437,7 +509,7 @@ class _positionScreenState extends State<positionScreen> {
                       ],
                     ),
                     SizedBox(
-                      height: 1.h,
+                      height: 8.h,
                     ),
                     Row(
                       children: [

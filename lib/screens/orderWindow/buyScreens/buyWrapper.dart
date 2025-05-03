@@ -11,7 +11,9 @@ import 'package:sapphire/utils/constWidgets.dart';
 
 class BuyScreenWrapper extends StatefulWidget {
   final bool isbuy;
+
   BuyScreenWrapper({Key? key, required this.isbuy}) : super(key: key);
+
   @override
   _BuyScreenWrapperState createState() => _BuyScreenWrapperState();
 }

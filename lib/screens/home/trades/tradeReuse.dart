@@ -11,6 +11,7 @@ import 'package:sapphire/screens/home/trades/futures/closedFutures.dart';
 
 class TradesTabContent extends StatefulWidget {
   final String tabType;
+
   const TradesTabContent({super.key, required this.tabType});
 
   @override
@@ -23,7 +24,8 @@ class _TradesTabContentState extends State<TradesTabContent> {
 
   @override
   Widget build(BuildContext context) {
-    print('TradesTabContent: tabType=${widget.tabType}, isEmpty=$isEmpty, isActive=$isActive');
+    print(
+        'TradesTabContent: tabType=${widget.tabType}, isEmpty=$isEmpty, isActive=$isActive');
     if (isEmpty) {
       return Center(
         child: Column(
@@ -57,7 +59,6 @@ class _TradesTabContentState extends State<TradesTabContent> {
               isActive = value;
             });
           }),
-          
           Flexible(
             child: _buildContent(widget.tabType),
           ),

@@ -9,6 +9,7 @@ import '../../../utils/constWidgets.dart';
 
 class MTFBuyScreen extends StatefulWidget {
   final String tabName;
+
   MTFBuyScreen(this.tabName);
 
   @override
@@ -97,8 +98,8 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
                         },
                       ),
                       SizedBox(
-                        width: 80
-                            .w, // Fixed width for TextField to fit within container
+                        width: 80.w,
+                        // Fixed width for TextField to fit within container
                         child: TextField(
                           controller: TextEditingController(
                               text: quantity.toString())
