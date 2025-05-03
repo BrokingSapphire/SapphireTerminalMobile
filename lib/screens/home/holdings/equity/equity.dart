@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sapphire/screens/home/holdings/holdingsBottomSheet.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class EquityScreen extends StatefulWidget {
@@ -10,102 +11,136 @@ class EquityScreen extends StatefulWidget {
 }
 
 class _EquityScreenState extends State<EquityScreen> {
+  // Text controller for search field
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  // Dummy data for equity items
+  final List<Map<String, String>> equityData = [
+    {
+      "name": "ALKYLAMINE",
+      "quantity": "59 Qty × Avg 2,670.84",
+      "loss": "93,979.60 (-12.2%)",
+      "ltp": "LTP 1,731.05 (-1.63%)",
+      "code": "ALKYL",
+      "price": "1,731.05",
+      "change": "-1.63%"
+    },
+    {
+      "name": "RELIANCE",
+      "quantity": "100 Qty × Avg 2,400.50",
+      "loss": "-45,000.00 (-5.0%)",
+      "ltp": "LTP 2,500.50 (+2.0%)",
+      "code": "RELIANCE",
+      "price": "2,500.50",
+      "change": "+2.0%"
+    },
+    {
+      "name": "TCS",
+      "quantity": "80 Qty × Avg 3,000.25",
+      "loss": "25,000.00 (-2.5%)",
+      "ltp": "LTP 3,100.25 (+1.8%)",
+      "code": "TCS",
+      "price": "3,100.25",
+      "change": "+1.8%"
+    },
+    {
+      "name": "INFY",
+      "quantity": "120 Qty × Avg 1,650.75",
+      "loss": "-22,500.00 (-1.8%)",
+      "ltp": "LTP 1,700.50 (+3.2%)",
+      "code": "INFY",
+      "price": "1,700.50",
+      "change": "+3.2%"
+    },
+    {
+      "name": "HDFC",
+      "quantity": "60 Qty × Avg 2,500.10",
+      "loss": "-15,000.00 (-2.0%)",
+      "ltp": "LTP 2,550.20 (+1.5%)",
+      "code": "HDFC",
+      "price": "2,550.20",
+      "change": "+1.5%"
+    },
+    {
+      "name": "ICICIBANK",
+      "quantity": "75 Qty × Avg 700.80",
+      "loss": "8,500.00 (-1.2%)",
+      "ltp": "LTP 720.50 (+1.3%)"
+    },
+    {
+      "name": "SBIN",
+      "quantity": "90 Qty × Avg 400.20",
+      "loss": "6,000.00 (-1.0%)",
+      "ltp": "LTP 410.50 (+1.5%)"
+    },
+    {
+      "name": "BAJFINANCE",
+      "quantity": "50 Qty × Avg 6,000.10",
+      "loss": "-10,000.00 (-1.5%)",
+      "ltp": "LTP 6,100.20 (+2.0%)"
+    },
+    {
+      "name": "TATAMOTORS",
+      "quantity": "110 Qty × Avg 460.00",
+      "loss": "-7,500.00 (-2.0%)",
+      "ltp": "LTP 470.25 (+1.5%)"
+    },
+    {
+      "name": "HUL",
+      "quantity": "70 Qty × Avg 2,100.75",
+      "loss": "-5,500.00 (-1.0%)",
+      "ltp": "LTP 2,150.30 (+2.1%)"
+    },
+    {
+      "name": "ITC",
+      "quantity": "95 Qty × Avg 220.60",
+      "loss": "3,000.00 (-1.5%)",
+      "ltp": "LTP 225.50 (+1.2%)"
+    },
+    {
+      "name": "MARUTI",
+      "quantity": "40 Qty × Avg 8,200.25",
+      "loss": "-15,000.00 (-3.0%)",
+      "ltp": "LTP 8,400.30 (+2.5%)"
+    },
+    {
+      "name": "LT",
+      "quantity": "85 Qty × Avg 1,700.50",
+      "loss": "10,000.00 (-1.2%)",
+      "ltp": "LTP 1,730.80 (+2.0%)"
+    },
+    {
+      "name": "WIPRO",
+      "quantity": "110 Qty × Avg 600.50",
+      "loss": "-6,500.00 (-1.1%)",
+      "ltp": "LTP 615.80 (+1.5%)"
+    },
+    {
+      "name": "M&M",
+      "quantity": "90 Qty × Avg 900.20",
+      "loss": "5,500.00 (-0.8%)",
+      "ltp": "LTP 920.50 (+2.3%)"
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    // Dummy data for equity items
-    List<Map<String, String>> equityData = [
-      {
-        "name": "ALKYLAMINE",
-        "quantity": "59 Qty × Avg 2,670.84",
-        "loss": "93,979.60 (-12.2%)",
-        "ltp": "LTP 1,731.05 (-1.63%)"
-      },
-      {
-        "name": "RELIANCE",
-        "quantity": "100 Qty × Avg 2,400.50",
-        "loss": "-45,000.00 (-5.0%)",
-        "ltp": "LTP 2,500.50 (+2.0%)"
-      },
-      {
-        "name": "TCS",
-        "quantity": "80 Qty × Avg 3,000.25",
-        "loss": "25,000.00 (-2.5%)",
-        "ltp": "LTP 3,100.25 (+1.8%)"
-      },
-      {
-        "name": "INFY",
-        "quantity": "120 Qty × Avg 1,650.75",
-        "loss": "-22,500.00 (-1.8%)",
-        "ltp": "LTP 1,700.50 (+3.2%)"
-      },
-      {
-        "name": "HDFC",
-        "quantity": "60 Qty × Avg 2,500.10",
-        "loss": "-15,000.00 (-2.0%)",
-        "ltp": "LTP 2,550.20 (+1.5%)"
-      },
-      {
-        "name": "ICICIBANK",
-        "quantity": "75 Qty × Avg 700.80",
-        "loss": "8,500.00 (-1.2%)",
-        "ltp": "LTP 720.50 (+1.3%)"
-      },
-      {
-        "name": "SBIN",
-        "quantity": "90 Qty × Avg 400.20",
-        "loss": "6,000.00 (-1.0%)",
-        "ltp": "LTP 410.50 (+1.5%)"
-      },
-      {
-        "name": "BAJFINANCE",
-        "quantity": "50 Qty × Avg 6,000.10",
-        "loss": "-10,000.00 (-1.5%)",
-        "ltp": "LTP 6,100.20 (+2.0%)"
-      },
-      {
-        "name": "TATAMOTORS",
-        "quantity": "110 Qty × Avg 460.00",
-        "loss": "-7,500.00 (-2.0%)",
-        "ltp": "LTP 470.25 (+1.5%)"
-      },
-      {
-        "name": "HUL",
-        "quantity": "70 Qty × Avg 2,100.75",
-        "loss": "-5,500.00 (-1.0%)",
-        "ltp": "LTP 2,150.30 (+2.1%)"
-      },
-      {
-        "name": "ITC",
-        "quantity": "95 Qty × Avg 220.60",
-        "loss": "3,000.00 (-1.5%)",
-        "ltp": "LTP 225.50 (+1.2%)"
-      },
-      {
-        "name": "MARUTI",
-        "quantity": "40 Qty × Avg 8,200.25",
-        "loss": "-15,000.00 (-3.0%)",
-        "ltp": "LTP 8,400.30 (+2.5%)"
-      },
-      {
-        "name": "LT",
-        "quantity": "85 Qty × Avg 1,700.50",
-        "loss": "10,000.00 (-1.2%)",
-        "ltp": "LTP 1,730.80 (+2.0%)"
-      },
-      {
-        "name": "WIPRO",
-        "quantity": "110 Qty × Avg 600.50",
-        "loss": "-6,500.00 (-1.1%)",
-        "ltp": "LTP 615.80 (+1.5%)"
-      },
-      {
-        "name": "M&M",
-        "quantity": "90 Qty × Avg 900.20",
-        "loss": "5,500.00 (-0.8%)",
-        "ltp": "LTP 920.50 (+2.3%)"
-      },
-    ];
+
+    // Sort the equity data alphabetically by name
+    List<Map<String, String>> sortedEquityData = List.from(equityData);
+    sortedEquityData.sort((a, b) => a["name"]!.compareTo(b["name"]!));
+
+    // Filter the sorted equity data based on search query
+    List<Map<String, String>> filteredEquityData = sortedEquityData;
+    if (_searchQuery.isNotEmpty) {
+      filteredEquityData = sortedEquityData.where((stock) {
+        return stock["name"]!
+            .toUpperCase()
+            .startsWith(_searchQuery.toUpperCase());
+      }).toList();
+    }
 
     if (equityData.isEmpty) {
       return Center(
@@ -132,7 +167,6 @@ class _EquityScreenState extends State<EquityScreen> {
         ),
       );
     }
-    // adding comment
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -183,26 +217,85 @@ class _EquityScreenState extends State<EquityScreen> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: constWidgets.searchField(
-                    context, "Search Everything...", "equity", isDark),
+                child: constWidgets.searchFieldWithInput(
+                    context, "Search by name or ticker", "equity", isDark,
+                    controller: _searchController, onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value;
+                  });
+                }),
               ),
               SizedBox(
                 height: 12.h,
               ),
-              // ListView.builder to render the equity data
-              ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return constWidgets.equityScreenTiles(
-                      equityData[index]["name"]!,
-                      equityData[index]["quantity"]!,
-                      equityData[index]["loss"]!,
-                      equityData[index]["ltp"]!,
-                      isDark);
-                },
-                itemCount: equityData.length,
-                shrinkWrap: true,
-              )
+              // Show empty state if no results found
+              if (filteredEquityData.isEmpty)
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 50.h),
+                      Icon(
+                        Icons.search_off,
+                        size: 48.sp,
+                        color: isDark ? Colors.grey : Colors.grey.shade600,
+                      ),
+                      SizedBox(height: 16.h),
+                      Text(
+                        _searchQuery.isEmpty
+                            ? "No Equity Investments"
+                            : "No stocks starting with '${_searchQuery}' found",
+                        style: TextStyle(
+                            fontSize: 18.sp, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 8.h),
+                      SizedBox(
+                        width: 250.w,
+                        child: Text(
+                          _searchQuery.isEmpty
+                              ? "Invest in stocks to build your equity portfolio."
+                              : "Try a different search term",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16.sp, color: Colors.grey),
+                        ),
+                      ),
+                      SizedBox(height: 50.h),
+                    ],
+                  ),
+                )
+              else
+                // ListView.builder to render the filtered equity data
+                ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (context) => holdingsBottomSheet(
+                            stockName: filteredEquityData[index]["name"]!,
+                            stockCode:
+                                filteredEquityData[index]["code"] ?? "NSE",
+                            price: filteredEquityData[index]["price"] ?? "0.00",
+                            change:
+                                filteredEquityData[index]["change"] ?? "0.00%",
+                          ),
+                        );
+                      },
+                      child: constWidgets.equityScreenTiles(
+                          filteredEquityData[index]["name"]!,
+                          filteredEquityData[index]["quantity"]!,
+                          filteredEquityData[index]["loss"]!,
+                          filteredEquityData[index]["ltp"]!,
+                          isDark),
+                    );
+                  },
+                  shrinkWrap: true,
+                  itemCount: filteredEquityData.length,
+                )
             ],
           ),
         ),

@@ -129,143 +129,164 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                     height: 1,
                     color: Color(0xff2f2f2f),
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Column(
-                      children: [
-                        SizedBox(height: 10.h),
-                        ListTile(
-                          leading: SvgPicture.asset(
-                            'assets/svgs/ipo.svg',
-                            width: 36.w,
-                            height: 36.h,
-                            color: Colors.white,
-                          ),
-                          title: Text(
-                            'IPO',
-                            style:
-                                TextStyle(fontSize: 16.sp, color: Colors.white),
-                          ),
-                          subtitle: Text(
-                            'Apply for upcoming IPOs seamlessly and stay ahead in the market.',
-                            style:
-                                TextStyle(fontSize: 12.sp, color: Colors.white),
-                          ),
-                          trailing: Icon(Icons.arrow_forward_ios_outlined,
-                              size: 15.sp),
-                          onTap: () {
-                            navi(IPO(), context);
-                          },
+                  Column(
+                    children: [
+                      SizedBox(height: 16.h),
+                      ListTile(
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 6.h),
+                        leading: SvgPicture.asset(
+                          'assets/svgs/ipo.svg',
+                          width: 24.w,
+                          height: 24.h,
+                          color: Color(0xffc9cacc),
                         ),
-                        Divider(
-                          height: 1,
-                          color: Color(0xff2f2f2f),
+                        title: Text(
+                          'IPO',
+                          style:
+                              TextStyle(fontSize: 15.sp, color: Colors.white),
                         ),
-                        ListTile(
-                          leading: SvgPicture.asset(
-                            'assets/svgs/pledge.svg',
-                            width: 36.w,
-                            height: 36.h,
-                            color: Colors.white,
+                        subtitle: Text(
+                          'Apply for upcoming IPOs seamlessly and stay ahead in the market.',
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            color: Color(0xffc9cacc),
                           ),
-                          title: Text(
-                            'Pledge',
-                            style:
-                                TextStyle(fontSize: 16.sp, color: Colors.white),
-                          ),
-                          subtitle: Text(
-                            'Pledge your holdings instantly to unlock margin for trading opportunities.',
-                            style:
-                                TextStyle(fontSize: 12.sp, color: Colors.white),
-                          ),
-                          trailing: Icon(Icons.arrow_forward_ios_outlined,
-                              size: 15.sp),
-                          onTap: () {
-                            navi(Pledge(), context);
-                          },
                         ),
-                        Divider(
-                          height: 1,
-                          color: Color(0xff2f2f2f),
+                        trailing:
+                            Icon(Icons.arrow_forward_ios_outlined, size: 15.sp),
+                        onTap: () {
+                          navi(IPO(), context);
+                        },
+                      ),
+                      Divider(
+                        height: 1,
+                        color: Color(0xff2f2f2f),
+                      ),
+                      ListTile(
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 6.h),
+                        leading: SvgPicture.asset(
+                          'assets/svgs/pledge.svg',
+                          width: 24.w,
+                          height: 24.h,
+                          color: Color(0xffc9cacc),
                         ),
-                        ListTile(
-                          leading: SvgPicture.asset(
-                            'assets/svgs/landmark.svg',
-                            width: 36.w,
-                            height: 36.h,
-                            color: Colors.white,
-                          ),
-                          title: Text(
-                            'Goverment Securities',
-                            style:
-                                TextStyle(fontSize: 16.sp, color: Colors.white),
-                          ),
-                          subtitle: Text(
-                            'Invest in secure government securities and earn steady, reliable returns.',
-                            style:
-                                TextStyle(fontSize: 12.sp, color: Colors.white),
-                          ),
-                          trailing: Icon(Icons.arrow_forward_ios_outlined,
-                              size: 15.sp),
-                          onTap: () {
-                            navi(GovernmentSecurities(), context);
-                          },
+                        title: Text(
+                          'Pledge',
+                          style:
+                              TextStyle(fontSize: 15.sp, color: Colors.white),
                         ),
-                        Divider(
-                          height: 1,
-                          color: Color(0xff2f2f2f),
+                        subtitle: Text(
+                          'Pledge your holdings instantly to unlock margin for trading opportunities.',
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            color: Color(0xffc9cacc),
+                          ),
                         ),
-                        ListTile(
-                          leading: SvgPicture.asset(
-                            'assets/svgs/auctions.svg',
-                            width: 36.w,
-                            height: 36.h,
-                            color: Colors.white,
-                          ),
-                          title: Text(
-                            'Auctions',
-                            style:
-                                TextStyle(fontSize: 16.sp, color: Colors.white),
-                          ),
-                          subtitle: Text(
-                            'Access primary market auctions and invest at competitive market-discovered rates.',
-                            style:
-                                TextStyle(fontSize: 12.sp, color: Colors.white),
-                          ),
-                          trailing: Icon(Icons.arrow_forward_ios_outlined,
-                              size: 15.sp),
-                          onTap: () {
-                            navi(Auction(), context);
-                            // navi(FundsScreen(), context);
-                          },
+                        trailing:
+                            Icon(Icons.arrow_forward_ios_outlined, size: 15.sp),
+                        onTap: () {
+                          navi(Pledge(), context);
+                        },
+                      ),
+                      Divider(
+                        height: 1,
+                        color: Color(0xff2f2f2f),
+                      ),
+                      ListTile(
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 6.h),
+                        leading: SvgPicture.asset(
+                          'assets/svgs/landmark.svg',
+                          width: 24.w,
+                          height: 24.h,
+                          color: Color(0xffc9cacc),
                         ),
-                        Divider(
-                          height: 1,
-                          color: Color(0xff2f2f2f),
+                        title: Text(
+                          'Goverment Securities',
+                          style:
+                              TextStyle(fontSize: 15.sp, color: Colors.white),
                         ),
-                        ListTile(
-                          leading: SvgPicture.asset(
-                            'assets/svgs/priceAlerts.svg',
-                            width: 36.w,
-                            height: 36.h,
-                            color: Colors.white,
+                        subtitle: Text(
+                          'Invest in secure government securities and earn steady, reliable returns.',
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            color: Color(0xffc9cacc),
                           ),
-                          title: Text(
-                            'Price Alerts',
-                            style:
-                                TextStyle(fontSize: 16.sp, color: Colors.white),
-                          ),
-                          subtitle: Text(
-                            'Set custom stock alerts and stay informed on key changes instantly.',
-                            style:
-                                TextStyle(fontSize: 12.sp, color: Colors.white),
-                          ),
-                          trailing: Icon(Icons.arrow_forward_ios_outlined,
-                              size: 15.sp),
-                          onTap: () => navi(alertScreen(), context),
                         ),
-                      ],
-                    ),
+                        trailing:
+                            Icon(Icons.arrow_forward_ios_outlined, size: 15.sp),
+                        onTap: () {
+                          navi(GovernmentSecurities(), context);
+                        },
+                      ),
+                      Divider(
+                        height: 1,
+                        color: Color(0xff2f2f2f),
+                      ),
+                      ListTile(
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 6.h),
+                        leading: SvgPicture.asset(
+                          'assets/svgs/auctions.svg',
+                          width: 24.w,
+                          height: 24.h,
+                          color: Color(0xffc9cacc),
+                        ),
+                        title: Text(
+                          'Auctions',
+                          style:
+                              TextStyle(fontSize: 15.sp, color: Colors.white),
+                        ),
+                        subtitle: Text(
+                          'Access primary market auctions and invest at competitive market-discovered rates.',
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            color: Color(0xffc9cacc),
+                          ),
+                        ),
+                        trailing:
+                            Icon(Icons.arrow_forward_ios_outlined, size: 15.sp),
+                        onTap: () {
+                          navi(Auction(), context);
+                          // navi(FundsScreen(), context);
+                        },
+                      ),
+                      Divider(
+                        height: 1,
+                        color: Color(0xff2f2f2f),
+                      ),
+                      ListTile(
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 6.h),
+                        leading: SvgPicture.asset(
+                          'assets/svgs/priceAlerts.svg',
+                          width: 24.w,
+                          height: 24.h,
+                          color: Color(0xffc9cacc),
+                        ),
+                        title: Text(
+                          'Price Alerts',
+                          style:
+                              TextStyle(fontSize: 15.sp, color: Colors.white),
+                        ),
+                        subtitle: Text(
+                          'Set custom stock alerts and stay informed on key changes instantly.',
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            color: Color(0xffc9cacc),
+                          ),
+                        ),
+                        trailing:
+                            Icon(Icons.arrow_forward_ios_outlined, size: 15.sp),
+                        onTap: () => navi(alertScreen(), context),
+                      ),
+                      Divider(
+                        height: 1,
+                        color: Color(0xff2f2f2f),
+                      ),
+                    ],
                   ),
                 ],
               ),

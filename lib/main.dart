@@ -35,7 +35,6 @@ import 'package:sapphire/screens/auth/signUp/contactDetails/mobileOTPVerificatio
 import 'package:sapphire/screens/auth/signUp/nomineeDetails/nomineeDetails.dart';
 import 'package:sapphire/screens/auth/signUp/panDetails/panDetails.dart';
 import 'package:sapphire/screens/auth/signUp/tradingAccountDetails/personalDetails.dart';
-import 'package:sapphire/screens/auth/signUp/signature/signature.dart';
 import 'package:sapphire/screens/auth/signUp/tradingAccountDetails/otherDetails.dart';
 import 'package:sapphire/screens/auth/signUp/aadharDetails/aadharDetails.dart';
 import 'package:sapphire/utils/appTheme.dart';

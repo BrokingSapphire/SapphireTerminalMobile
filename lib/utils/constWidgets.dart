@@ -11,6 +11,20 @@ import 'package:sapphire/utils/filters.dart'; // Filter utility for search and f
 
 import '../main.dart'; // App-wide utilities and navigation
 
+/// Custom text formatter to convert all input to uppercase
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
+
+      // No decoration
+    );
+  }
+}
+
 /// constWidgets - Static class containing reusable widgets used throughout the app
 /// Note: Class name should be capitalized as per Dart conventions (ConstWidgets)
 class constWidgets {
@@ -113,6 +127,124 @@ class constWidgets {
                   ),
                 ],
               ),
+            ),
+          ),
+        ),
+        SizedBox(width: 10.w), // Small spacing
+
+        // Square Filter Icon Container wrapped with GestureDetector
+        GestureDetector(
+          onTap: () {
+            // Triggering the filter bottom sheet on tap
+            showFilterBottomSheet(
+              context: context,
+              pageKey: pageKey, // Dynamically pass the pageKey here
+              onApply: (selectedFilters) {
+                // Handle the selected filters if needed
+              },
+              isDark: isDark,
+            );
+          },
+          child: Container(
+            height: 48.h,
+            width: 48.h, // Square (same height & width)
+            decoration: BoxDecoration(
+              color: isDark ? Color(0xFF121413) : Color(0xFFF4F4F9),
+              borderRadius: BorderRadius.circular(6.r),
+            ),
+            child: Center(
+              child: Image.asset(
+                'assets/icons/filter.png',
+                scale: 2,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  static Widget searchFieldWithInput(
+      BuildContext context, String hintText, String pageKey, bool isDark,
+      {TextEditingController? controller, Function(String)? onChanged}) {
+    return Row(
+      children: [
+        // Expanded ensures TextField takes up full width
+        Expanded(
+          child: Container(
+            height: 48.h,
+            decoration: BoxDecoration(
+              color: isDark ? Color(0xFF121413) : Color(0xFFF4F4F9),
+              // border: Border.all(
+              //     color: isDark ? Colors.transparent : Colors.grey),
+              borderRadius: BorderRadius.circular(6.r),
+            ),
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.w),
+                  child: Icon(
+                    Icons.search,
+                    color: Colors.grey,
+                    size: 22.sp,
+                  ),
+                ),
+                Expanded(
+                  child: Theme(
+                      data: Theme.of(context).copyWith(
+                        textSelectionTheme: TextSelectionThemeData(
+                          selectionColor: Colors.grey.withOpacity(0.3),
+                          cursorColor: isDark ? Colors.white : Colors.black,
+                          selectionHandleColor: Colors.transparent,
+                        ),
+                        // This removes the underline from the text selection
+                        inputDecorationTheme: InputDecorationTheme(
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          focusedErrorBorder: InputBorder.none,
+                        ),
+                      ),
+                      child: TextField(
+                        autofocus: false,
+                        controller: controller,
+                        onChanged: onChanged,
+                        inputFormatters: [
+                          UpperCaseTextFormatter(),
+                        ],
+                        style: TextStyle(
+                          color: isDark ? Colors.white : Colors.black,
+                          fontSize: 16.sp,
+                          decoration: TextDecoration.none,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: hintText,
+                          hintStyle: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 16.sp,
+                          ),
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          focusedErrorBorder: InputBorder.none,
+                          isDense: true,
+                          contentPadding: EdgeInsets.zero,
+                          filled: true,
+                          fillColor: Colors.transparent,
+                          // Add these specific properties to remove any potential underlines
+                          focusColor: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                        ),
+                        cursorColor: isDark ? Colors.white : Colors.black,
+                        showCursor: true,
+                        enableInteractiveSelection: false,
+                      )),
+                ),
+              ],
             ),
           ),
         ),
@@ -278,7 +410,8 @@ class constWidgets {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  secondTitle,
+                  // secondTitle,
+                  secondValue.contains('-') ? "Overall Loss" : "Overall Gain",
                   style: TextStyle(
                       fontSize: 13.sp,
                       color: isDark ? Colors.white : Colors.black),
@@ -286,31 +419,30 @@ class constWidgets {
                 SizedBox(
                   height: 4.h,
                 ),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: secondValue,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 17.sp,
-                            color: secondValue.contains('-')
-                                ? Colors.red // Red for negative values
-                                : Colors.green), // Green for positive values
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      secondValue,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17.sp,
+                          color: secondValue.contains('-')
+                              ? Colors.red // Red for negative values
+                              : Colors.green), // Green for positive values
+                    ),
+                    SizedBox(
+                      width: 4.w,
+                    ),
+                    Text(
+                      "(-22.51%)",
+                      style: TextStyle(
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.w400,
+                        color: isDark ? Colors.white : Colors.black,
                       ),
-                      TextSpan(
-                        text: " ", // Adding spaces for width
-                        style: TextStyle(fontSize: 10.sp),
-                      ),
-                      TextSpan(
-                        text: "(-22.51%)",
-                        style: TextStyle(
-                          fontSize: 10.sp,
-                          color: isDark ? Colors.white : Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -352,7 +484,7 @@ class constWidgets {
                           color: isDark ? Colors.white : Colors.black),
                     ),
                     SizedBox(
-                      height: 6.h,
+                      height: 8.h,
                     ),
                     Row(
                       children: [
@@ -374,6 +506,9 @@ class constWidgets {
                               color: isDark ? Colors.white : Colors.black),
                         ),
                       ],
+                    ),
+                    SizedBox(
+                      height: 2.h,
                     ),
                     Row(
                       children: [
@@ -413,7 +548,7 @@ class constWidgets {
                               : Colors.green), // Green for positive P&L
                     ),
                     SizedBox(
-                      height: 6.h,
+                      height: 8.h,
                     ),
                     Row(
                       children: [
@@ -433,7 +568,7 @@ class constWidgets {
                       ],
                     ),
                     SizedBox(
-                      height: 1.h,
+                      height: 2.h,
                     ),
                     Row(
                       children: [
