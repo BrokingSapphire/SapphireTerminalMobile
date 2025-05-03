@@ -10,11 +10,12 @@ import 'package:flutter/material.dart';
 class CustomToggleSwitch extends StatefulWidget {
   final bool initialValue;         // Initial state of the toggle (on/off)
   final ValueChanged<bool> onChanged; // Callback when toggle state changes
-
-  const CustomToggleSwitch({
+Color selectedColor;
+  CustomToggleSwitch({
     super.key,
     this.initialValue = false,     // Default to off state
     required this.onChanged,       // Required callback for state changes
+    this.selectedColor=Colors.green,
   });
 
   @override
@@ -80,7 +81,7 @@ class _CustomToggleSwitchState extends State<CustomToggleSwitch>
             decoration: BoxDecoration(
               // Change background color based on toggle state and theme
               color: isChecked
-                  ? Colors.green         // Green when checked
+                  ? widget.selectedColor         // Green when checked
                   : isDark
                   ? const Color(0xFF2E2E2E) // Dark gray in dark mode
                   : const Color(0xFFD1D5DB), // Light gray in light mode

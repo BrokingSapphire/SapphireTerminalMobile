@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sapphire/screens/orderWindow/SellScreens/sellWrapper.dart';
 import 'package:sapphire/utils/animatedToggles.dart';
@@ -17,6 +18,8 @@ class _SellScreenTabContentState extends State<SellScreenTabContent> {
   int quantity = 1;
   TextEditingController priceController =
       TextEditingController(text: "6643.80");
+  FocusNode priceFocusNode = FocusNode();
+
   final List<String> _options = ["Delivery", "Intraday", "MTF"];
 
   @override
@@ -52,70 +55,100 @@ class _SellScreenTabContentState extends State<SellScreenTabContent> {
               ),
             ),
             SizedBox(height: 6.h),
-            Row(children: [
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
+            Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
                       color: isDark
                           ? Color(0xff2f2f2f)
-                          : Color(0xff2f2f2f).withOpacity(0.5)),
-                  borderRadius: BorderRadius.circular(6.r),
-                ),
-                height: 50.h,
-                width: 185.w,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.remove,
-                          color: isDark ? Colors.white : Colors.black),
-                      onPressed: () {
-                        if (quantity > 1) {
-                          setState(() {
-                            quantity--;
-                          });
-                        }
-                      },
+                          : Color(0xff2f2f2f).withOpacity(0.5),
                     ),
-                    Text(
-                      quantity.toString(),
-                      style: TextStyle(
-                          fontSize: 15.sp,
-                          color: isDark ? Colors.white : Colors.black),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.add,
-                          color: isDark ? Colors.white : Colors.black),
-                      onPressed: () {
-                        setState(() {
-                          quantity++;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(width: 10.w),
-              Expanded(
-                child: Container(
+                    borderRadius: BorderRadius.circular(6.r),
+                  ),
                   height: 50.h,
-                  child: Row(children: [
-                    Expanded(
-                      child: sellScreenToggle(
-                        isFirstOptionSelected: isMarketSelected,
-                        onToggle: (value) {
+                  width: 190.w,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.remove,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                        onPressed: () {
+                          if (quantity > 1) {
+                            setState(() {
+                              quantity--;
+                            });
+                          }
+                        },
+                      ),
+                      SizedBox(
+                        width: 80
+                            .w, // Fixed width for TextField to fit within container
+                        child: TextField(
+                          controller: TextEditingController(
+                              text: quantity.toString())
+                            ..selection = TextSelection.fromPosition(
+                              TextPosition(offset: quantity.toString().length),
+                            ),
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 15.sp,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            enabledBorder: InputBorder
+                                .none, // Explicitly remove enabled border
+                            focusedBorder: InputBorder
+                                .none, // Explicitly remove focused border
+                          ),
+                          inputFormatters: [
+                            FilteringTextInputFormatter
+                                .digitsOnly, // Restrict to digits
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              // Parse input or default to 1 if empty/invalid
+                              quantity = int.tryParse(value) ?? 1;
+                              if (quantity < 1)
+                                quantity = 1; // Enforce minimum of 1
+                            });
+                          },
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.add,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                        onPressed: () {
                           setState(() {
-                            isMarketSelected = value;
+                            quantity++;
                           });
                         },
-                        firstOption: "Market",
-                        secondOption: "Limit",
                       ),
-                    ),
-                  ]),
+                    ],
+                  ),
                 ),
-              )
-            ]),
+                SizedBox(width: 20.w),
+                Expanded(
+                  child: sellScreenToggle(
+                    isFirstOptionSelected: isMarketSelected,
+                    onToggle: (value) {
+                      setState(() {
+                        isMarketSelected = value;
+                      });
+                    },
+                    firstOption: "Market",
+                    secondOption: "Limit",
+                  ),
+                ),
+              ],
+            ),
             SizedBox(height: 16.h),
             Align(
               alignment: Alignment.topLeft,
@@ -128,51 +161,78 @@ class _SellScreenTabContentState extends State<SellScreenTabContent> {
             ),
             SizedBox(height: 5.h),
             TextField(
+              readOnly: isMarketSelected,
               controller: priceController,
+              focusNode: priceFocusNode,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
+              onTap: () {
+                if (!isMarketSelected) {
+                  // Ensure the field is visible when keyboard appears
+                  Future.delayed(Duration(milliseconds: 100), () {
+                    if (priceFocusNode.hasFocus) {
+                      // This will scroll to make the field visible
+                      Scrollable.ensureVisible(
+                        context,
+                        alignment: 0.0, // Align to the top
+                        duration: Duration(milliseconds: 300),
+                      );
+                    }
+                  });
+                }
+              },
               style: TextStyle(
-                  fontSize: 15.sp,
-                  color: isDark ? Color(0xffc9cacc) : Colors.black),
+                fontSize: 15.sp,
+                color: isMarketSelected
+                    ? Colors.grey.shade600 // Grey content color when readOnly
+                    : (isDark
+                        ? Colors.white
+                        : Colors.black), // White/black when not readOnly
+              ),
               decoration: InputDecoration(
                 prefixIcon: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w),
+                  padding: EdgeInsets.symmetric(horizontal: 15.w),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         "₹",
                         style: TextStyle(
-                            fontSize: 18.sp,
-                            color: isDark ? Colors.white : Colors.black),
+                          fontSize: 18.sp,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
                       ),
-                      SizedBox(
+                      SizedBox(width: 10.w),
+                      Container(
+                        height: 40.h,
                         width: 2.w,
+                        decoration: BoxDecoration(
+                          color: isDark ? Color(0xff2f2f2f) : Color(0xff2f2f2f),
+                          borderRadius: BorderRadius.circular(6.r),
+                        ),
                       ),
-                      // Container(
-                      //   height: 26.h,
-                      //   width: 2.w,
-                      //   color: Color(0xff2f2f2f),
-                      // )
                     ],
                   ),
                 ),
                 prefixIconConstraints:
                     BoxConstraints(minWidth: 0, minHeight: 0),
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
-                filled: true,
-                fillColor: Colors.transparent,
+                    EdgeInsets.symmetric(horizontal: 0.w, vertical: 15.h),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
                   borderSide: BorderSide(
-                      color: isDark
-                          ? Color(0xff2f2f2f)
-                          : Color(0xff2f2f2f).withOpacity(0.5)),
+                    color: isDark
+                        ? Color(0xff2f2f2f)
+                        : Color(0xff2f2f2f).withOpacity(0.5),
+                  ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.r),
-                  borderSide:
-                      BorderSide(color: isDark ? Colors.white : Colors.black),
+                  borderSide: isMarketSelected
+                      ? BorderSide.none // No focused border when readOnly
+                      : BorderSide(
+                          color: isDark ? Colors.white : Colors.white,
+                          width: 2.0,
+                        ), // White focused border when not readOnly
                 ),
                 hintText: "Enter Price",
                 hintStyle:

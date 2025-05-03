@@ -22,24 +22,7 @@ class _MTFBuyScreenState extends State<MTFBuyScreen> {
   bool isExpanded = false;
   bool isMarketSelected = true;
   int _selectedIndex = 1;
-  int _validityOptionIndex = 0; // 0: Day, 1: IOC, 2: Minutes
   int quantity = 1;
-  String? _selectedMinutes = '1 minute'; // Default value for dropdown
-
-  // Map numbers to words for dropdown
-  final List<String> _minutesOptions = [
-    '1 minute',
-    '2 minutes',
-    '3 minutes',
-    '5 minutes',
-    '10 minutes',
-    '15 minutes',
-    '30 minutes',
-    '45 minutes',
-    '60 minutes',
-    '90 minutes',
-    '120 minutes',
-  ];
 
   TextEditingController priceController =
       TextEditingController(text: "6643.80");
