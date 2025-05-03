@@ -20,30 +20,46 @@ class SellScreenWrapper extends StatefulWidget {
 
 class _SellScreenWrapperState extends State<SellScreenWrapper>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
   bool isNSE = true;
   String _selectedOrderType = "Sell";
+  int _selectedIndex = 0;
+  late PageController _pageController;
 
   List<String> list = ["Instant", "Normal", "Iceberg", "Cover"];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _pageController = PageController(initialPage: _selectedIndex);
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
+    _pageController.dispose();
     super.dispose();
+  }
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _selectedIndex = index; // Update tab bar instantly on swipe
+    });
+  }
+
+  void _onTabTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      _pageController.jumpToPage(index); // Instant switch for taps
+    });
   }
 
   void _onSwipe(bool isLeftSwipe) {
     setState(() {
-      if (isLeftSwipe && _tabController.index < _tabController.length - 1) {
-        _tabController.animateTo(_tabController.index + 1);
-      } else if (!isLeftSwipe && _tabController.index > 0) {
-        _tabController.animateTo(_tabController.index - 1);
+      if (isLeftSwipe && _pageController.page! < list.length - 1) {
+        _pageController.animateTo(_pageController.page! + 1,
+            duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+      } else if (!isLeftSwipe && _pageController.page! > 0) {
+        _pageController.animateTo(_pageController.page! - 1,
+            duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
       }
     });
   }
@@ -53,6 +69,8 @@ class _SellScreenWrapperState extends State<SellScreenWrapper>
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
+      // This is the key setting that ensures the bottom nav bar moves up with keyboard
+      resizeToAvoidBottomInset: true,
       backgroundColor: isDark ? Colors.black : Colors.white,
       body: Column(
         children: [
@@ -288,29 +306,62 @@ class _SellScreenWrapperState extends State<SellScreenWrapper>
           ),
           SizedBox(height: 10.h),
           Divider(color: isDark ? Color(0xff2f2f2f) : Color(0xffD1D5DB)),
-          // Container(
-          //   color: Colors.black,
-          //   child: TabBar(
-          //     controller: _tabController,
-          //     labelColor: Colors.green,
-          //     unselectedLabelColor: Colors.grey,
-          //     indicatorColor: Colors.green,
-          //     tabs: [
-          //       Tab(text: "Instant"),
-          //       Tab(text: "Normal"),
-          //       Tab(text: "Iceberg"),
-          //       Tab(text: "Cover"),
-          //     ],
-          //   ),
-          // ),
           SizedBox(height: 16.h),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 15,
-            ),
-            child: SellTabBar(tabController: _tabController, options: list),
+          Container(
+            color: isDark ? Colors.black : Colors.white,
+            child: Stack(children: [
+              Positioned.fill(
+                child: Container(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    height: 1,
+                    color: const Color(0xff2f2f2f),
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: List.generate(list.length, (index) {
+                  final isSelected = index == _selectedIndex;
+                  return Expanded(
+                    child: GestureDetector(
+                      onTap: () => _onTabTapped(index),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: isSelected
+                                  ? const Color(0xffE53935)
+                                  : Colors.transparent,
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 8.h),
+                            child: Text(
+                              list[index],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: isSelected
+                                    ? Colors.red
+                                    : isDark
+                                        ? Colors.white
+                                        : Colors.black,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ]),
           ),
-
           SizedBox(
             height: 14.h,
           ),
@@ -323,127 +374,141 @@ class _SellScreenWrapperState extends State<SellScreenWrapper>
                   _onSwipe(false);
                 }
               },
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  SellScreenTabContent("Instant"),
-                  NormalSellScreen("Normal"),
-                  IcebergSellScreen("Iceberg"),
-                  MTFSellScreen("Cover"),
-                ],
+              child: PageView.builder(
+                controller: _pageController,
+                onPageChanged: _onPageChanged,
+                itemCount: list.length,
+                itemBuilder: (context, index) {
+                  switch (index) {
+                    case 0:
+                      return SellScreenTabContent("Instant");
+                    case 1:
+                      return NormalSellScreen("Normal");
+                    case 2:
+                      return IcebergSellScreen("Iceberg");
+                    case 3:
+                      return MTFSellScreen("Cover");
+                    default:
+                      return const SizedBox.shrink();
+                  }
+                },
               ),
+            ),
+          ),
+          Container(
+            color: isDark ? Colors.black : Colors.white,
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Margin Required",
+                          style: TextStyle(
+                              fontSize: 11.sp,
+                              color: isDark
+                                  ? Color(0xffC9CACC)
+                                  : Color(0xff6B7280)),
+                        ),
+                        Text(
+                          "₹75.68",
+                          style: TextStyle(
+                              fontSize: 13.sp,
+                              color: isDark ? Colors.white : Colors.black),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Total Charges",
+                          style: TextStyle(
+                              fontSize: 11.sp,
+                              color: isDark
+                                  ? Color(0xffC9CACC)
+                                  : Color(0xff6B7280)),
+                        ),
+                        Text(
+                          "₹75.68",
+                          style: TextStyle(
+                              fontSize: 13.sp,
+                              color: isDark ? Colors.white : Colors.black),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Available Margin",
+                          style: TextStyle(
+                              fontSize: 11.sp,
+                              color: isDark
+                                  ? Color(0xffC9CACC)
+                                  : Color(0xff6B7280)),
+                        ),
+                        Text(
+                          "₹2,56,897.89",
+                          style: TextStyle(
+                              fontSize: 13.sp,
+                              color: isDark ? Colors.white : Colors.black),
+                        ),
+                      ],
+                    ),
+                    Icon(
+                      Icons.refresh,
+                      color: Color(0xffE53935),
+                      size: 22,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10.h),
+                HoldableButton(
+                  width: double.infinity,
+                  height: 54.h,
+                  loadingType: LoadingType.fillingLoading,
+                  buttonColor: Color(0xffE53935),
+                  loadingColor: Colors.white,
+                  radius: 30.r,
+                  duration: 1,
+                  onConfirm: () {
+                    print("Buy action confirmed!");
+                  },
+                  strokeWidth: 2,
+                  beginFillingPoint: Alignment.centerLeft,
+                  endFillingPoint: Alignment.centerRight,
+                  edgeLoadingStartPoint: 0.0,
+                  hasVibrate: true,
+                  child: Container(
+                    height: 40.h,
+                    decoration: BoxDecoration(
+                      color: Color(0xffE53935),
+                      borderRadius: BorderRadius.circular(30.r),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Hold to Sell",
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
-      bottomNavigationBar: Container(
-        color: isDark ? Colors.black : Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Margin Required",
-                      style: TextStyle(
-                          fontSize: 11.sp,
-                          color:
-                              isDark ? Color(0xffC9CACC) : Color(0xff6B7280)),
-                    ),
-                    Text(
-                      "₹75.68",
-                      style: TextStyle(
-                          fontSize: 13.sp,
-                          color: isDark ? Colors.white : Colors.black),
-                    ),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Total Charges",
-                      style: TextStyle(
-                          fontSize: 11.sp,
-                          color:
-                              isDark ? Color(0xffC9CACC) : Color(0xff6B7280)),
-                    ),
-                    Text(
-                      "₹75.68",
-                      style: TextStyle(
-                          fontSize: 13.sp,
-                          color: isDark ? Colors.white : Colors.black),
-                    ),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Available Margin",
-                      style: TextStyle(
-                          fontSize: 11.sp,
-                          color:
-                              isDark ? Color(0xffC9CACC) : Color(0xff6B7280)),
-                    ),
-                    Text(
-                      "₹2,56,897.89",
-                      style: TextStyle(
-                          fontSize: 13.sp,
-                          color: isDark ? Colors.white : Colors.black),
-                    ),
-                  ],
-                ),
-                Icon(
-                  Icons.refresh,
-                  color: Color(0xffE53935),
-                  size: 22,
-                ),
-              ],
-            ),
-            SizedBox(height: 10.h),
-            HoldableButton(
-              width: double.infinity,
-              height: 54.h,
-              loadingType: LoadingType.fillingLoading,
-              buttonColor: Color(0xffE53935),
-              loadingColor: Colors.white,
-              radius: 30.r,
-              duration: 1,
-              onConfirm: () {
-                print("Buy action confirmed!");
-              },
-              strokeWidth: 2,
-              beginFillingPoint: Alignment.centerLeft,
-              endFillingPoint: Alignment.centerRight,
-              edgeLoadingStartPoint: 0.0,
-              hasVibrate: true,
-              child: Container(
-                height: 40.h,
-                decoration: BoxDecoration(
-                  color: Color(0xffE53935),
-                  borderRadius: BorderRadius.circular(30.r),
-                ),
-                child: Center(
-                  child: Text(
-                    "Hold to Sell",
-                    style: TextStyle(
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      // bottomNavigationBar:
     );
   }
 }

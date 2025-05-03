@@ -1113,7 +1113,7 @@ class _CustomTabBarState extends State<CustomTabBar> {
                   ),
                   // Animated green indicator
                   AnimatedPositioned(
-                    duration: Duration(milliseconds: 300),
+                    duration: Duration(milliseconds: 0),
                     left: widget.tabController.index * segmentWidth,
                     child: Container(
                       height: 2.h,
