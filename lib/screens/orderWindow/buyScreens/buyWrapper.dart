@@ -20,6 +20,8 @@ class _BuyScreenWrapperState extends State<BuyScreenWrapper>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   bool isNSE = true;
+  String _selectedOrderType = "Buy";
+
   List<String> list = ["Instant", "Normal", "Iceberg", "Cover"];
 
   @override
@@ -163,81 +165,124 @@ class _BuyScreenWrapperState extends State<BuyScreenWrapper>
               ),
               GestureDetector(
                 onTap: () {
+                  print("object");
                   showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                            backgroundColor:
-                                isDark ? Color(0xff2F2F2F) : Colors.white,
-                            title: Text(
-                              "Order Type",
-                              style: TextStyle(
-                                  color: isDark ? Colors.white : Colors.black),
-                            ),
-                            content: Container(
-                              
-                              height: 80.h,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(6.r), // Reduced border radius
+                      ),
+                      backgroundColor:
+                          isDark ? Color(0xff121413) : Colors.white,
+                      title: Text(
+                        "Order Type",
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w500,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                      content: Container(
+                        height: 80.h,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                setState(() {
+                                  _selectedOrderType = "Buy";
+                                });
+                                Navigator.of(context).pop("Buy");
+                              },
+                              child: Row(
                                 children: [
-                                  GestureDetector(
-                                    behavior: HitTestBehavior.opaque,
-                                    onTap: () {},
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: 2,
-                                          height: 30.h,
-                                          color: Colors.green,
-                                        ),
-                                        SizedBox(
-                                          width: 20.w,
-                                        ),
-                                        Text(
+                                  Container(
+                                    width: 2,
+                                    height: 30.h,
+                                    color: _selectedOrderType == "Buy"
+                                        ? Colors.green
+                                        : Colors.transparent,
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 15.w, top: 5.h),
+                                        child: Text(
                                           "Buy",
                                           style: TextStyle(
-                                              fontSize: 20.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: isDark
-                                                  ? Colors.white
-                                                  : Colors.black),
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: isDark
+                                                ? Colors.white
+                                                : Colors.black,
+                                          ),
                                         ),
-                                      ],
+                                      ),
+                                      height: 30.h,
+                                      color: _selectedOrderType == "Buy"
+                                          ? Colors.grey.shade900
+                                          : Colors.transparent,
                                     ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {},
-                                    behavior: HitTestBehavior.opaque,
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: 2,
-                                          height: 30.h,
-                                          // color: Color(0xffE53935),
-                                        ),
-                                        SizedBox(
-                                          width: 20.w,
-                                        ),
-                                        Text(
-                                          "Sell",
-                                          style: TextStyle(
-                                              fontSize: 20.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: isDark
-                                                  ? Colors.white
-                                                  : Colors.black),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  )
                                 ],
                               ),
                             ),
-                          ));
+                            GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                setState(() {
+                                  _selectedOrderType = "Sell";
+                                });
+                                Navigator.of(context).pop("Sell");
+                              },
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 2,
+                                    height: 30.h,
+                                    color: _selectedOrderType == "Sell"
+                                        ? Color(0xffE53935)
+                                        : Colors.transparent,
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 15.w, top: 5.h),
+                                        child: Text(
+                                          "Sell",
+                                          style: TextStyle(
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: isDark
+                                                ? Colors.white
+                                                : Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                      height: 30.h,
+                                      color: _selectedOrderType == "Sell"
+                                          ? Colors.grey.shade900
+                                          : Colors.transparent,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
                 },
-                child: Icon(Icons.more_vert_rounded,
-                    color: isDark ? Colors.white : Colors.black),
+                child: Icon(
+                  Icons.more_vert_rounded,
+                  color: isDark ? Colors.white : Colors.black,
+                ),
               )
             ],
           ),

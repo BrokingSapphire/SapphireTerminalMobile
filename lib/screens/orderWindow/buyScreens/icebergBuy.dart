@@ -325,7 +325,8 @@ class _IcebergbuyscreenState extends State<Icebergbuyscreen> {
 
             // Stoploss and GTT
             AnimatedCrossFade(
-              crossFadeState: ((_selectedIndex != 1) && (_validityOptionIndex != 1 || !isExpanded))
+              crossFadeState: ((_selectedIndex != 1) &&
+                      (_validityOptionIndex != 1 || !isExpanded))
                   ? CrossFadeState.showSecond
                   : CrossFadeState.showFirst,
               duration: Duration(milliseconds: 300),
@@ -368,7 +369,9 @@ class _IcebergbuyscreenState extends State<Icebergbuyscreen> {
 
             SizedBox(height: 12.h),
             AnimatedCrossFade(
-              crossFadeState: _stopLoss ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+              crossFadeState: _stopLoss
+                  ? CrossFadeState.showSecond
+                  : CrossFadeState.showFirst,
               duration: Duration(milliseconds: 300),
               firstChild: SizedBox.shrink(),
               secondChild: Row(
