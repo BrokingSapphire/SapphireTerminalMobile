@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sapphire/screens/orderWindow/buyScreens/buyWrapper.dart';
-import 'package:sapphire/screens/orderWindow/sellScreens/sellWrapper.dart';
+import 'package:sapphire/screens/orderWindow/BuyScreens/buyWrapper.dart';
+import 'package:sapphire/screens/orderWindow/buyWindow/buyWrapper.dart';
 import 'package:sapphire/utils/animatedToggles.dart';
-import 'package:sapphire/utils/constWidgets.dart';
-import 'package:sapphire/utils/toggle.dart';
+import 'package:flutter/cupertino.dart';
 
-class NormalBuyScreen extends StatefulWidget {
+import '../../../utils/constWidgets.dart';
+
+class Icebergbuyscreen extends StatefulWidget {
   final String tabName;
 
-  NormalBuyScreen(this.tabName);
+  Icebergbuyscreen(this.tabName);
 
   @override
-  State<NormalBuyScreen> createState() => _NormalBuyScreenState();
+  State<Icebergbuyscreen> createState() => _IcebergbuyscreenState();
 }
 
-class _NormalBuyScreenState extends State<NormalBuyScreen> {
+class _IcebergbuyscreenState extends State<Icebergbuyscreen> {
   bool _stopLoss = false;
   bool _gtt = false;
 
@@ -44,45 +45,8 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
 
   TextEditingController priceController =
       TextEditingController(text: "6643.80");
-  TextEditingController stopLossController = TextEditingController(text: "-5");
-  TextEditingController targetController = TextEditingController(text: "+5");
-  bool stoplossToggle = false;
-  bool targetToggle = false;
 
   final List<String> _options = ["Delivery", "Intraday", "MTF"];
-
-  Widget _buildSwitchTile(
-      {required String title,
-      required String subtitle,
-      required bool value,
-      required Function(bool) onChanged,
-      required bool isDark}) {
-    return SizedBox(
-      height: 60.h,
-      child: ListTile(
-        tileColor: isDark ? Color(0xff121413) : Color(0xffF4F4F9),
-        contentPadding: EdgeInsets.symmetric(horizontal: 16.w),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.r),
-        ),
-        title: Text(
-          title,
-          style: TextStyle(
-              color: isDark ? Colors.white : Colors.black, fontSize: 13.sp),
-        ),
-        subtitle: Text(
-          subtitle,
-          style: TextStyle(
-              color: isDark ? Colors.white70 : Color(0xff6B7280),
-              fontSize: 11.sp),
-        ),
-        trailing: CustomToggleSwitch(
-          initialValue: value,
-          onChanged: onChanged,
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,9 +61,15 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
               options: _options,
               selectedIndex: _selectedIndex,
               onToggle: (index) {
-                setState(() {
-                  _selectedIndex = index;
-                });
+                if (index == 2) {
+                  constWidgets.snackbar("MTF is not available for Cover Order",
+                      Colors.red, context);
+                } else if (index == 0) {
+                  constWidgets.snackbar(
+                      "Delivery is not available for Cover Order",
+                      Colors.red,
+                      context);
+                }
               },
             ),
             SizedBox(height: 20.h),
@@ -196,6 +166,8 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
                   ),
                 ),
                 SizedBox(width: 20.w),
+
+                // Market / Limit Toggle
                 Expanded(
                   child: buyScreenToggle(
                     isFirstOptionSelected: isMarketSelected,
@@ -226,7 +198,6 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
             ),
             SizedBox(height: 5.h),
 
-            // Price Input
             TextField(
               readOnly: isMarketSelected,
               controller: priceController,
@@ -292,11 +263,76 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
               ),
             ),
 
-            SizedBox(height: 8.h),
-            // Checkboxes for Stoploss and GTT
-            Visibility(
-              visible: _validityOptionIndex != 1 || !isExpanded,
-              child: Row(
+            SizedBox(
+              height: 16.h,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Number of legs",
+                  style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w400,
+                      color: isDark ? Colors.white : Colors.black),
+                ),
+                Text(
+                  "1 Qty per Leg",
+                  style: TextStyle(
+                      fontSize: 11.sp,
+                      color: isDark ? Color(0xffc9cacc) : Colors.black),
+                ),
+              ],
+            ),
+            SizedBox(height: 5.h),
+            TextField(
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              style: TextStyle(
+                  fontSize: 16.sp, color: isDark ? Colors.white : Colors.black),
+              decoration: InputDecoration(
+                prefixIcon: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.w),
+                  child: Text(
+                    "",
+                    style: TextStyle(
+                        fontSize: 18.sp,
+                        color: isDark ? Colors.white : Colors.black),
+                  ),
+                ),
+                prefixIconConstraints:
+                    BoxConstraints(minWidth: 0, minHeight: 0),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.r),
+                  borderSide: BorderSide(
+                      color: isDark
+                          ? Color(0xff2f2f2f)
+                          : Color(0xff2f2f2f).withOpacity(0.5)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.r),
+                  borderSide:
+                      BorderSide(color: isDark ? Colors.white : Colors.black),
+                ),
+                hintStyle: TextStyle(
+                  fontSize: 15.sp,
+                  color: Colors.grey.shade600,
+                ),
+              ),
+            ),
+
+            SizedBox(height: 15.h),
+
+            // Stoploss and GTT
+            AnimatedCrossFade(
+              crossFadeState: ((_selectedIndex != 1) &&
+                      (_validityOptionIndex != 1 || !isExpanded))
+                  ? CrossFadeState.showSecond
+                  : CrossFadeState.showFirst,
+              duration: Duration(milliseconds: 300),
+              firstChild: SizedBox.shrink(),
+              secondChild: Row(
                 children: [
                   GestureDetector(
                     behavior: HitTestBehavior.opaque,
@@ -314,7 +350,6 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
                                 _stopLoss = value!;
                               });
                             }),
-                        SizedBox(width: 0.w),
                         Text(
                           "Stoploss",
                           style: TextStyle(
@@ -325,36 +360,7 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
                         Icon(Icons.info_outline,
                             size: 15,
                             color: isDark ? Color(0xffc9cacc) : Colors.black),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 35.w),
-                  GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {
-                      setState(() {
-                        _gtt = !_gtt;
-                      });
-                    },
-                    child: Row(
-                      children: [
-                        Checkbox(
-                            value: _gtt,
-                            onChanged: (value) {
-                              setState(() {
-                                _gtt = value!;
-                              });
-                            }),
-                        Text(
-                          "GTT",
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              color: isDark ? Colors.white : Colors.black),
-                        ),
-                        SizedBox(width: 5.w),
-                        Icon(Icons.info_outline,
-                            size: 15,
-                            color: isDark ? Color(0xffc9cacc) : Colors.black),
+                        SizedBox(width: 35.w),
                       ],
                     ),
                   ),
@@ -362,12 +368,11 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
               ),
             ),
 
-            // Trigger Price Section
+            SizedBox(height: 12.h),
             AnimatedCrossFade(
-              crossFadeState:
-                  (_stopLoss && (_validityOptionIndex != 1 || !isExpanded))
-                      ? CrossFadeState.showSecond
-                      : CrossFadeState.showFirst,
+              crossFadeState: _stopLoss
+                  ? CrossFadeState.showSecond
+                  : CrossFadeState.showFirst,
               duration: Duration(milliseconds: 300),
               firstChild: SizedBox.shrink(),
               secondChild: Row(
@@ -527,238 +532,7 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
               ),
             ),
 
-            // Stoploss and GTT
-
-            SizedBox(height: 18.h),
-            AnimatedCrossFade(
-              crossFadeState:
-                  _gtt ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-              duration: Duration(milliseconds: 300),
-              firstChild: SizedBox.shrink(),
-              secondChild: Row(
-                children: [
-                  Flexible(
-                    flex: 1, // Equal width for both columns
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Stoploss %",
-                          style: TextStyle(
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.w400,
-                            color: isDark ? Colors.white : Colors.black,
-                          ),
-                        ),
-                        SizedBox(height: 5.h),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6.r),
-                            border: Border.all(
-                              color: Color(0xff2f2f2f),
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                  child: TextField(
-                                readOnly: !stoplossToggle,
-                                controller: stopLossController,
-                                keyboardType: TextInputType.numberWithOptions(
-                                    decimal: true),
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: isDark
-                                      ? stoplossToggle
-                                          ? Colors.white
-                                          : Colors.grey
-                                      : Colors.black,
-                                ),
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  // No border
-                                  enabledBorder: InputBorder.none,
-                                  // No border when enabled
-                                  focusedBorder: InputBorder.none,
-                                  // No border when focused
-                                  disabledBorder: InputBorder.none,
-                                  // No border when disabled
-                                  errorBorder: InputBorder.none,
-                                  // No border when in error state
-                                  focusedErrorBorder: InputBorder.none,
-                                  // No border when focused with error
-                                  prefixIcon: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 10.w),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      // Constrain Row to minimum size
-                                      children: [
-                                        Text(
-                                          "%",
-                                          style: TextStyle(
-                                            fontSize: 18.sp,
-                                            color: isDark
-                                                ? Colors.white
-                                                : Colors.black,
-                                          ),
-                                        ),
-                                        SizedBox(width: 10.w),
-                                        Container(
-                                          height: 40.h,
-                                          width: 2.w,
-                                          decoration: BoxDecoration(
-                                            color: isDark
-                                                ? Color(0xff2f2f2f)
-                                                : Color(0xff2f2f2f),
-                                            borderRadius:
-                                                BorderRadius.circular(6.r),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  prefixIconConstraints:
-                                      BoxConstraints(minWidth: 0, minHeight: 0),
-                                  contentPadding: EdgeInsets.symmetric(
-                                      horizontal: 10.w, vertical: 15.h),
-                                  hintStyle: TextStyle(
-                                    fontSize: 15.sp,
-                                    color: Colors.grey.shade600,
-                                  ),
-                                ),
-                              )),
-                              Transform.scale(
-                                scale: 0.7,
-                                child: CustomToggleSwitch(
-                                  initialValue: stoplossToggle,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      stoplossToggle = value;
-                                    });
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 10.w), // Add spacing between columns
-                  Flexible(
-                    flex: 1, // Equal width for both columns
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Target %",
-                          style: TextStyle(
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.w400,
-                            color: isDark ? Colors.white : Colors.black,
-                          ),
-                        ),
-                        SizedBox(height: 5.h),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6.r),
-                            border: Border.all(
-                              color: Color(0xff2f2f2f),
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                  child: TextField(
-                                readOnly: !targetToggle,
-                                controller: targetController,
-                                keyboardType: TextInputType.numberWithOptions(
-                                    decimal: true),
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: isDark
-                                      ? stoplossToggle
-                                          ? Colors.white
-                                          : Colors.grey
-                                      : Colors.black,
-                                ),
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  // No border
-                                  enabledBorder: InputBorder.none,
-                                  // No border when enabled
-                                  focusedBorder: InputBorder.none,
-                                  // No border when focused
-                                  disabledBorder: InputBorder.none,
-                                  // No border when disabled
-                                  errorBorder: InputBorder.none,
-                                  // No border when in error state
-                                  focusedErrorBorder: InputBorder.none,
-                                  // No border when focused with error
-                                  prefixIcon: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 10.w),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      // Constrain Row to minimum size
-                                      children: [
-                                        Text(
-                                          "%",
-                                          style: TextStyle(
-                                            fontSize: 18.sp,
-                                            color: isDark
-                                                ? Colors.white
-                                                : Colors.black,
-                                          ),
-                                        ),
-                                        SizedBox(width: 10.w),
-                                        Container(
-                                          height: 40.h,
-                                          width: 2.w,
-                                          decoration: BoxDecoration(
-                                            color: isDark
-                                                ? Color(0xff2f2f2f)
-                                                : Color(0xff2f2f2f),
-                                            borderRadius:
-                                                BorderRadius.circular(6.r),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  prefixIconConstraints:
-                                      BoxConstraints(minWidth: 0, minHeight: 0),
-                                  contentPadding: EdgeInsets.symmetric(
-                                      horizontal: 10.w, vertical: 15.h),
-                                  hintStyle: TextStyle(
-                                    fontSize: 15.sp,
-                                    color: Colors.grey.shade600,
-                                  ),
-                                ),
-                              )),
-                              Transform.scale(
-                                scale: 0.7,
-                                child: CustomToggleSwitch(
-                                  initialValue: targetToggle,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      stoplossToggle = value;
-                                    });
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Visibility(child: )
-            SizedBox(height: 18.h),
+            SizedBox(height: 12.h),
 
             // Expandable Section Header
             GestureDetector(
@@ -1023,6 +797,256 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
             )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class buyScreenToggle extends StatelessWidget {
+  // Required parameters
+  final bool isFirstOptionSelected;
+  final Function(bool) onToggle;
+  final String firstOption;
+  final String secondOption;
+
+  // Optional customization parameters
+  final Color? backgroundColor; // Background color of the toggle
+  final Color? selectedColor; // Color of the selected tab
+  final Color? textColor; // Text color for selected option
+  final Color? unselectedTextColor; // Text color for unselected option
+  final double height; // Height of the toggle
+  final double borderRadius; // Border radius of the toggle corners
+
+  buyScreenToggle({
+    Key? key,
+    required this.isFirstOptionSelected,
+    required this.onToggle,
+    required this.firstOption,
+    required this.secondOption,
+    this.backgroundColor, // Remove default values to allow theme-based colors
+    this.selectedColor,
+    this.textColor,
+    this.unselectedTextColor,
+    this.height = 50,
+    this.borderRadius = 8,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // Check if we're in dark mode
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // Define theme-specific colors
+    final Color actualBackgroundColor = backgroundColor ??
+        (isDark ? const Color(0xff2f2f2f) : const Color(0xfff5f5f5));
+
+    final Color actualSelectedColor = selectedColor ??
+        (isDark ? const Color(0xff1db954) : const Color(0xff1db954));
+
+    final Color actualTextColor = textColor ?? Colors.white;
+
+    final Color actualUnselectedTextColor = unselectedTextColor ??
+        (isDark ? const Color(0xffebeef5) : const Color(0xff6B7280));
+
+    return Container(
+      height: height.h,
+      // Apply theme-specific background color
+      decoration: BoxDecoration(
+        color: actualBackgroundColor,
+        borderRadius: BorderRadius.circular(borderRadius.r),
+      ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Calculate width for each segment
+          final segmentWidth = constraints.maxWidth / 2;
+
+          return Stack(
+            children: [
+              // Animated selection indicator
+              AnimatedPositioned(
+                duration: Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+                left: isFirstOptionSelected ? 0 : segmentWidth,
+                top: 0,
+                child: Container(
+                  height: height.h,
+                  width: segmentWidth,
+                  // Apply theme-specific selected color
+                  decoration: BoxDecoration(
+                    color: actualSelectedColor,
+                    borderRadius: BorderRadius.circular(borderRadius.r),
+                  ),
+                ),
+              ),
+
+              // Option texts
+              Row(
+                children: [
+                  // First option (e.g., Market)
+                  Expanded(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => onToggle(true),
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.symmetric(vertical: 10.h),
+                        child: Text(
+                          firstOption,
+                          style: TextStyle(
+                            // Apply appropriate text color based on selection state
+                            color: isFirstOptionSelected
+                                ? actualTextColor
+                                : actualUnselectedTextColor,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  // Second option (e.g., Limit)
+                  Expanded(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => onToggle(false),
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.symmetric(vertical: 10.h),
+                        child: Text(
+                          secondOption,
+                          style: TextStyle(
+                            // Use consistent text color logic for second option
+                            color: !isFirstOptionSelected
+                                ? actualTextColor
+                                : actualUnselectedTextColor,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class buyAnimatedToggle extends StatefulWidget {
+  // Required parameters
+  final List<String> options;
+  final int selectedIndex;
+  final Function(int) onToggle;
+
+  // Optional customization parameters that can be theme-aware
+  final Color? backgroundColor; // Background color of the entire toggle
+  final Color? selectedBackgroundColor; // Background color of the selected tab
+  final Color? selectedTextColor; // Text color for the selected option
+  final Color? unselectedTextColor; // Text color for unselected options
+  final double height; // Height of the toggle
+  final double borderRadius; // Border radius of the toggle corners
+
+  const buyAnimatedToggle({
+    Key? key,
+    required this.options,
+    required this.selectedIndex,
+    required this.onToggle,
+    this.backgroundColor, // Remove default values to be theme-aware
+    this.selectedBackgroundColor,
+    this.selectedTextColor,
+    this.unselectedTextColor,
+    this.height = 40,
+    this.borderRadius = 20,
+  }) : super(key: key);
+
+  @override
+  State<buyAnimatedToggle> createState() => _buyAnimatedToggleState();
+}
+
+class _buyAnimatedToggleState extends State<buyAnimatedToggle> {
+  @override
+  Widget build(BuildContext context) {
+    // Check if we're in dark mode
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // Define theme-specific colors
+    final Color actualBackgroundColor = widget.backgroundColor ??
+        (isDark ? const Color(0xff121413) : const Color(0xffF0F0F0));
+
+    final Color actualSelectedBackgroundColor =
+        widget.selectedBackgroundColor ??
+            (isDark ? const Color(0xff2f2f2f) : Colors.white);
+
+    final Color actualSelectedTextColor = widget.selectedTextColor ??
+        (isDark ? const Color(0xff1db954) : const Color(0xff1db954));
+
+    final Color actualUnselectedTextColor = widget.unselectedTextColor ??
+        (isDark ? Colors.grey : const Color(0xff6B7280));
+
+    return Container(
+      height: widget.height.h,
+      width: double.infinity,
+      // Apply theme-specific background color
+      decoration: BoxDecoration(
+        color: actualBackgroundColor,
+        borderRadius: BorderRadius.circular(widget.borderRadius),
+      ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Calculate width for each segment based on number of options
+          final segmentWidth = constraints.maxWidth / widget.options.length;
+
+          return Stack(
+            children: [
+              // Animated selection indicator
+              AnimatedPositioned(
+                duration: Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+                left: widget.selectedIndex * segmentWidth + 4,
+                top: 4,
+                child: Container(
+                  height: widget.height.h - 8,
+                  width: segmentWidth - 8,
+                  // Apply theme-specific selected background color
+                  decoration: BoxDecoration(
+                    color: actualSelectedBackgroundColor,
+                    borderRadius:
+                        BorderRadius.circular(widget.borderRadius - 4),
+                  ),
+                ),
+              ),
+
+              // Option texts
+              Row(
+                children: List.generate(widget.options.length, (index) {
+                  return Expanded(
+                    child: GestureDetector(
+                      onTap: () => widget.onToggle(index),
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          widget.options[index],
+                          style: TextStyle(
+                            // Apply appropriate text color based on selection state
+                            color: widget.selectedIndex == index
+                                ? actualSelectedTextColor
+                                : actualUnselectedTextColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 11.sp,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

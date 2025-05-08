@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:holdable_button/holdable_button.dart';
 import 'package:holdable_button/utils/utils.dart';
-import 'package:sapphire/screens/orderWindow/sellScreens/coverSell.dart';
-import 'package:sapphire/screens/orderWindow/sellScreens/instantSell.dart';
+import 'package:sapphire/screens/orderWindow/sellWindow/coverSell.dart';
+import 'package:sapphire/screens/orderWindow/sellWindow/instantSell.dart';
 
-import 'package:sapphire/screens/orderWindow/sellScreens/normalSell.dart';
-import 'package:sapphire/screens/orderWindow/sellScreens/icebergSell.dart';
+import 'package:sapphire/screens/orderWindow/sellWindow/normalSell.dart';
+import 'package:sapphire/screens/orderWindow/sellWindow/icebergSell.dart';
 
 class SellScreenWrapper extends StatefulWidget {
   const SellScreenWrapper({super.key});

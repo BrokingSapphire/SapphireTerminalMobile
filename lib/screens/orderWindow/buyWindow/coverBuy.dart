@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sapphire/screens/orderWindow/buyScreens/buyWrapper.dart';
+import 'package:sapphire/screens/orderWindow/buyWindow/buyWrapper.dart';
 import 'package:sapphire/utils/animatedToggles.dart';
 import 'package:flutter/cupertino.dart';
 
