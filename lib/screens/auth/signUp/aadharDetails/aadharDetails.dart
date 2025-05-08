@@ -1,3 +1,7 @@
+// File: aadharDetails.dart
+// Description: Aadhar verification introduction screen in the Sapphire Trading application.
+// This screen is part of the KYC flow and informs users about the Aadhar verification requirement.
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:flutter_svg/flutter_svg.dart'; // For SVG rendering support
@@ -20,9 +24,11 @@ class VerifyAadharScreen extends StatefulWidget {
 class _VerifyAadharScreenState extends State<VerifyAadharScreen> {
   @override
   Widget build(BuildContext context) {
+    // Determine if dark mode is enabled for theming
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
+      // App bar with back button
       appBar: AppBar(
         leadingWidth: 46,
         leading: Padding(
@@ -44,8 +50,10 @@ class _VerifyAadharScreenState extends State<VerifyAadharScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 8.h),
+            // Progress indicator showing user is on step 1 of 2 in the KYC flow
             constWidgets.topProgressBar(1, 2, context),
             SizedBox(height: 24.h),
+            // Main screen title
             Text(
               "Verify your Aadhar",
               style: TextStyle(
@@ -55,8 +63,10 @@ class _VerifyAadharScreenState extends State<VerifyAadharScreen> {
               ),
             ),
             SizedBox(height: 16.h),
+            // Aadhar card illustration image
             Image.asset('assets/images/aadharcard.png'),
-            Spacer(),
+            Spacer(), // Pushes remaining content to bottom of screen
+            // Security assurance information container
             Container(
               decoration: BoxDecoration(
                 color: isDark ? Colors.grey.shade900 : Color(0xffEDEEEF),
@@ -67,12 +77,14 @@ class _VerifyAadharScreenState extends State<VerifyAadharScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
+                    // Information icon
                     SvgPicture.asset(
                       "assets/images/Info.svg",
                       width: 24.w,
                       height: 24.h,
                     ),
                     SizedBox(width: 12.w),
+                    // Security assurance text
                     Text(
                       "Your details are 100% safe with us",
                       style: TextStyle(
@@ -85,11 +97,13 @@ class _VerifyAadharScreenState extends State<VerifyAadharScreen> {
               ),
             ),
             SizedBox(height: 20.h),
+            // Primary action button to proceed with KYC verification
             constWidgets.greenButton("Proceed for KYC", onTap: () {
-              // Navigate to segment selection screen
+              // Navigate to segment selection screen (next step in KYC flow)
               navi(SegmentSelectionScreen(), context);
             }),
             SizedBox(height: 10.h),
+            // Help button for users who need assistance
             Center(child: constWidgets.needHelpButton(context)),
           ],
         ),

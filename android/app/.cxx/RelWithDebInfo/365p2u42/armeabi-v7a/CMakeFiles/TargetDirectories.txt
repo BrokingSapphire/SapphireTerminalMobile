@@ -1,0 +1,2 @@
+/Users/nakulthakur/IdeaProjects/SapphireTerminalMobile/android/app/.cxx/RelWithDebInfo/365p2u42/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/nakulthakur/IdeaProjects/SapphireTerminalMobile/android/app/.cxx/RelWithDebInfo/365p2u42/armeabi-v7a/CMakeFiles/rebuild_cache.dir

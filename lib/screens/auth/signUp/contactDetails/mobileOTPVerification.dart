@@ -1,3 +1,7 @@
+// File: mobileOTPVerification.dart
+// Description: Dual-purpose OTP verification screen for Sapphire Trading application.
+// This screen handles verification of both email and mobile numbers using the same UI but different logic paths.
+
 import 'dart:async'; // For timer functionality
 import 'package:flutter/gestures.dart'; // For advanced gesture handling
 import 'package:flutter/material.dart';
@@ -19,7 +23,7 @@ class MobileOtpVerification extends StatefulWidget {
   final bool isEmail; // Flag to determine verification type (email vs mobile)
   final String email; // Email address is always required in both flows
   final String
-      mobileOrEmail; // Contains either email or mobile number based on isEmail flag
+  mobileOrEmail; // Contains either email or mobile number based on isEmail flag
 
   MobileOtpVerification({
     super.key,
@@ -32,11 +36,13 @@ class MobileOtpVerification extends StatefulWidget {
   State<MobileOtpVerification> createState() => _MobileOtpVerificationState();
 }
 
+/// State class for the MobileOtpVerification widget
+/// Manages OTP input, verification, countdown timer, and UI states
 class _MobileOtpVerificationState extends State<MobileOtpVerification> {
-  TextEditingController otpController = TextEditingController();
+  TextEditingController otpController = TextEditingController(); // Controls OTP input
   int _timerSeconds = 59; // Initial countdown timer value (59 seconds)
   late Timer _timer; // Timer instance for countdown
-  bool _isOtpIncorrect = false;
+  bool _isOtpIncorrect = false; // Tracks if entered OTP is invalid
 
   @override
   void initState() {
@@ -44,11 +50,13 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
     startTimer(); // Begin the resend countdown timer when screen initializes
   }
 
+  /// Starts the countdown timer for OTP resend functionality
+  /// Updates UI every second and stops when countdown reaches zero
   void startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_timerSeconds > 0) {
         setState(() {
-          _timerSeconds--;
+          _timerSeconds--; // Decrement timer every second
         });
       } else {
         _timer.cancel(); // Stop timer when countdown reaches zero
@@ -63,7 +71,11 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
     super.dispose();
   }
 
+  /// Handles OTP verification process for both email and mobile paths
+  /// Validates OTP and navigates to appropriate next screen on success
+  /// Note: API verification is currently commented out in favor of direct navigation
   Future<void> verifyOtp() async {
+    // Original API verification implementation (currently disabled)
     // if (otpController.text.length != 6) {
     //   constWidgets.snackbar('Enter a valid 6-digit OTP', Colors.red, context);
     //   return;
@@ -78,9 +90,12 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
     //         widget.email); // Mobile verification (includes email)
 
     // if (isOtpVerified) {
+
+    // Temporary simplified implementation - bypasses API verification
+    // TODO: Restore original implementation with proper API verification when ready
     widget.isEmail
         ? navi(MobileOtp(email: widget.email),
-            context) // Email flow -> Mobile OTP screen
+        context) // Email flow -> Mobile OTP screen
         : navi(PanDetails(), context); // Mobile flow -> PAN details screen
     //   constWidgets.snackbar("OTP verified successfully", Colors.green,
     //       navigatorKey.currentContext!);
@@ -91,6 +106,9 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
     // }
   }
 
+  /// Handles the resend OTP functionality
+  /// Only active when timer reaches zero
+  /// Resets timer and clears error state when invoked
   void resendOtp() {
     if (_timerSeconds == 0) {
       // TODO: Implement actual resend OTP API call
@@ -104,9 +122,11 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
 
   @override
   Widget build(BuildContext context) {
+    // Determine if dark mode is enabled for theming
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
+      // App bar with back button
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back,
@@ -115,9 +135,10 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
         ),
         backgroundColor: isDark ? Colors.black : Colors.white,
       ),
+      // Main body with gesture detection to dismiss keyboard on tap outside
       body: GestureDetector(
         onTap: () {
-          FocusScope.of(context).unfocus();
+          FocusScope.of(context).unfocus(); // Dismiss keyboard when tapping outside
         },
         behavior: HitTestBehavior.opaque,
         child: Padding(
@@ -125,6 +146,7 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Dynamic screen title based on verification type
               Text(
                 widget.isEmail ? "Email Verification" : "Mobile Verification",
                 style: TextStyle(
@@ -134,18 +156,20 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
                 ),
               ),
               SizedBox(height: 24.h),
+              // Dynamic instruction text with partially masked contact info
               Text(
                 widget.isEmail
-                    ? "Enter OTP sent to ${widget.mobileOrEmail.substring(0, 3)}*****@${widget.mobileOrEmail.split('@').last}"
-                    : "Enter OTP sent to ******${widget.mobileOrEmail.substring(widget.mobileOrEmail.length - 4)}",
+                    ? "Enter OTP sent to ${widget.mobileOrEmail.substring(0, 3)}*****@${widget.mobileOrEmail.split('@').last}" // Masked email
+                    : "Enter OTP sent to ******${widget.mobileOrEmail.substring(widget.mobileOrEmail.length - 4)}", // Masked phone number
                 style: TextStyle(
                     fontSize: 16.sp,
                     color: isDark ? Colors.white70 : Colors.black54),
               ),
               SizedBox(height: 16.h),
+              // OTP input field with 6 separate boxes
               Pinput(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                length: 6,
+                length: 6, // 6-digit OTP
                 controller: otpController,
                 defaultPinTheme: PinTheme(
                   width: 50.w,
@@ -157,20 +181,21 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
                     borderRadius: BorderRadius.circular(10.r),
                     border: Border.all(
                         color: _isOtpIncorrect
-                            ? Colors.red
+                            ? Colors.red // Red border when OTP is incorrect
                             : isDark
-                                ? Colors.white54
-                                : Colors.black38),
+                            ? Colors.white54 // Normal border in dark mode
+                            : Colors.black38), // Normal border in light mode
                   ),
                 ),
                 onChanged: (value) {
-                  setState(() {});
+                  setState(() {}); // Update UI on OTP input change
                 },
                 onCompleted: (otp) async {
-                  await verifyOtp();
+                  await verifyOtp(); // Auto-verify when all 6 digits entered
                 },
               ),
               SizedBox(height: 16.h),
+              // Resend OTP button - only active when timer reaches zero
               InkWell(
                 onTap: _timerSeconds == 0 ? resendOtp : null,
                 child: Text(
@@ -178,13 +203,14 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: _timerSeconds == 0
-                          ? Colors.green
+                          ? Colors.green // Active color when timer is zero
                           : isDark
-                              ? Color(0xffc9cacc)
-                              : Colors.grey),
+                          ? Color(0xffc9cacc) // Inactive color in dark mode
+                          : Colors.grey), // Inactive color in light mode
                 ),
               ),
               SizedBox(height: 24.h),
+              // Countdown timer display
               Center(
                 child: RichText(
                   text: TextSpan(
@@ -195,7 +221,7 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
                       const TextSpan(text: "Resend in "),
                       TextSpan(
                         text:
-                            "${(_timerSeconds ~/ 60).toString().padLeft(2, '0')}:${(_timerSeconds % 60).toString().padLeft(2, '0')} ",
+                        "${(_timerSeconds ~/ 60).toString().padLeft(2, '0')}:${(_timerSeconds % 60).toString().padLeft(2, '0')} ", // MM:SS format
                         style: TextStyle(color: Colors.green),
                       ),
                       const TextSpan(text: "seconds"),
@@ -203,16 +229,18 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
                   ),
                 ),
               ),
-              const Expanded(child: SizedBox()),
+              const Expanded(child: SizedBox()), // Pushes content to top
             ],
           ),
         ),
       ),
+      // Bottom area with terms acceptance text and verify button
       bottomNavigationBar: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.w),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Terms and conditions acceptance text with clickable links
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w),
               child: RichText(
@@ -224,6 +252,7 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
                   children: [
                     TextSpan(
                         text: "By continuing to Verify, I agree to Sapphire "),
+                    // Clickable Terms & Conditions link
                     TextSpan(
                       text: "Terms & Conditions ",
                       style: TextStyle(color: Colors.green),
@@ -237,6 +266,7 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
                         },
                     ),
                     TextSpan(text: "and "),
+                    // Clickable Privacy Policy link
                     TextSpan(
                       text: "Privacy Policy.",
                       style: TextStyle(color: Colors.green),
@@ -254,12 +284,13 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
               ),
             ),
             SizedBox(height: 30.h),
+            // Verify button - conditionally styled based on OTP completion
             Container(
               height: 52.h,
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  otpController.text.length == 6 ? verifyOtp() : null;
+                  otpController.text.length == 6 ? verifyOtp() : null; // Only verify if OTP is complete
                 },
                 child: Text(
                   "Verify",
@@ -270,15 +301,16 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: otpController.text.length == 6
-                      ? Color(0xFF1DB954)
+                      ? Color(0xFF1DB954) // Green when OTP is complete
                       : isDark
-                          ? Color(0xff2f2f2f)
-                          : Colors.grey[300],
+                      ? Color(0xff2f2f2f) // Dark gray in dark mode when incomplete
+                      : Colors.grey[300], // Light gray in light mode when incomplete
                   foregroundColor: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
             SizedBox(height: 10.h),
+            // Help button for user assistance
             Center(child: constWidgets.needHelpButton(context)),
             SizedBox(height: 10.h),
           ],
@@ -287,6 +319,9 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
     );
   }
 
+  /// Resets timer to 10 minutes
+  /// Used for extended verification time if needed
+  /// Currently not used in main flow but available for future implementation
   void restartTimer() {
     setState(() {
       _timerSeconds = 600; // Reset to 10 minutes (600 seconds)

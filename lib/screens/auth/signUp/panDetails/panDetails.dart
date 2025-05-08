@@ -1,3 +1,8 @@
+// File: panDetails.dart
+// Description: PAN card details collection screen for Sapphire Trading application.
+// This screen collects and validates the user's PAN (Permanent Account Number) card information,
+// which is required by SEBI regulations for opening a trading account in India.
+
 import 'dart:convert'; // For JSON encoding/decoding
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
@@ -21,58 +26,71 @@ class PanDetails extends StatefulWidget {
 /// State class for the PanDetails widget
 /// Manages PAN input, validation, API calls, and confirmation process
 class _PanDetailsState extends State<PanDetails> {
-  TextEditingController panNumber = TextEditingController();
-  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
-  bool isLoading = false;
+  TextEditingController panNumber = TextEditingController(); // Controls PAN input field
+  final FlutterSecureStorage secureStorage = FlutterSecureStorage(); // Secure storage for auth token
+  bool isLoading = false; // Tracks loading state for API operations
 
   @override
   void dispose() {
-    panNumber.dispose(); // Clean up controller
+    panNumber.dispose(); // Clean up controller when widget is removed
     super.dispose();
   }
 
+  /// Validates PAN number format using regex pattern
+  /// Valid PAN format: 5 uppercase letters + 4 digits + 1 uppercase letter
   bool _isValidPAN(String pan) {
     RegExp panRegex = RegExp(r'^[A-Z]{5}[0-9]{4}[A-Z]$');
     return panRegex.hasMatch(pan);
   }
 
+  /// Shows loading indicator dialog during API operations
+  /// Prevents user interaction until operation completes
   void showLoadingDialog() {
     showDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: false, // User must wait for operation to complete
       builder: (_) => Center(
         child: CircularProgressIndicator(
-          color: Color(0xFF1DB954),
+          color: Color(0xFF1DB954), // Green spinner matches brand color
         ),
       ),
     );
   }
 
+  /// Hides the loading dialog when API operation completes
+  /// Checks if dialog can be dismissed before attempting to prevent errors
   void hideLoadingDialog() {
     if (Navigator.canPop(context)) {
       Navigator.of(context, rootNavigator: true).pop();
     }
   }
 
+  /// Main verification function - orchestrates the multi-step PAN verification process
+  /// 1. Updates loading state and shows dialog
+  /// 2. Calls API to verify PAN number
+  /// 3. If verified, fetches additional PAN information
   Future<void> verifyPanNumber(String pan) async {
-    String? token = await secureStorage.read(key: 'auth_token');
-    final cleanedPan = pan.trim().toUpperCase();
+    String? token = await secureStorage.read(key: 'auth_token'); // Get auth token
+    final cleanedPan = pan.trim().toUpperCase(); // Normalize PAN format
     setState(() => isLoading = true);
     showLoadingDialog();
     final isVerified = await verifyPanStep(cleanedPan, token);
     if (isVerified) {
-      await fetchPanInfo(token);
+      await fetchPanInfo(token); // Only fetch details if verification succeeded
     } else {
       hideLoadingDialog();
     }
     setState(() => isLoading = false);
   }
 
+  /// First API call to verify the PAN number format and existence
+  /// Returns boolean indicating verification success/failure
   Future<bool> verifyPanStep(String pan, String? token) async {
     final verifyUrl = Uri.parse(
         "https://api.backend.sapphirebroking.com:8443/api/v1/auth/signup/checkpoint");
 
     try {
+      // Send PAN verification request to backend
       final response = await http.post(
         verifyUrl,
         headers: {
@@ -81,7 +99,7 @@ class _PanDetailsState extends State<PanDetails> {
           "Authorization": "Bearer $token",
         },
         body: jsonEncode({
-          "step": "pan",
+          "step": "pan", // Identifies the verification step
           "pan_number": pan,
         }),
       );
@@ -108,11 +126,14 @@ class _PanDetailsState extends State<PanDetails> {
     return false;
   }
 
+  /// Second API call to fetch detailed information associated with the PAN
+  /// Shows confirmation bottom sheet with user's name and DOB if successful
   Future<void> fetchPanInfo(String? token) async {
     final infoUrl = Uri.parse(
         "https://api.backend.sapphirebroking.com:8443/api/v1/auth/signup/checkpoint/pan");
 
     try {
+      // Request additional PAN details from backend
       final response = await http.get(
         infoUrl,
         headers: {
@@ -130,6 +151,7 @@ class _PanDetailsState extends State<PanDetails> {
         final name = data['name'];
         final dob = data['dob'];
         if (name != null && dob != null) {
+          // Show confirmation sheet with retrieved information
           showNameConfirmationBottomSheet(context, name, dob);
         } else {
           constWidgets.snackbar("PAN info is incomplete", Colors.red, context);
@@ -143,13 +165,15 @@ class _PanDetailsState extends State<PanDetails> {
     }
   }
 
+  /// Shows bottom sheet to confirm user's name and DOB retrieved from PAN database
+  /// Allows user to confirm or modify details before continuing
   void showNameConfirmationBottomSheet(
       BuildContext context, String name, String dob) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     showModalBottomSheet(
       context: context,
-      enableDrag: false,
-      isScrollControlled: true,
+      enableDrag: false, // Prevent dismissal by dragging
+      isScrollControlled: true, // Allow bottom sheet to adjust size
       builder: (context) {
         return Container(
           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
@@ -161,6 +185,7 @@ class _PanDetailsState extends State<PanDetails> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
+              // Bottom sheet title
               Text(
                 "Is this your Name?",
                 style: TextStyle(
@@ -170,6 +195,7 @@ class _PanDetailsState extends State<PanDetails> {
                 ),
               ),
               SizedBox(height: 24.h),
+              // User details from PAN verification
               Center(
                 child: Column(
                   children: [
@@ -178,6 +204,7 @@ class _PanDetailsState extends State<PanDetails> {
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
                           children: [
+                            // User's name (highlighted in green)
                             Text(
                               name,
                               style: TextStyle(
@@ -186,6 +213,7 @@ class _PanDetailsState extends State<PanDetails> {
                                   fontWeight: FontWeight.bold),
                             ),
                             SizedBox(height: 5.h),
+                            // User's date of birth
                             Text(
                               dob,
                               style: TextStyle(
@@ -198,6 +226,7 @@ class _PanDetailsState extends State<PanDetails> {
                       ),
                     ),
                     SizedBox(height: 12.h),
+                    // Confirmation prompt
                     Text(
                       "Looks good? Let's move ahead!",
                       style: TextStyle(
@@ -208,6 +237,7 @@ class _PanDetailsState extends State<PanDetails> {
                 ),
               ),
               SizedBox(height: 16.h),
+              // Important notice about PAN details
               Center(
                 child: Container(
                   padding: EdgeInsets.all(8),
@@ -225,16 +255,18 @@ class _PanDetailsState extends State<PanDetails> {
                 ),
               ),
               SizedBox(height: 16.h),
+              // Action buttons (Modify or Continue)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  // Modify button - dismisses sheet to allow user to edit PAN
                   SizedBox(
                     width: 96.w,
                     child: TextButton(
                       onPressed: () => Navigator.pop(context),
                       style: TextButton.styleFrom(
                         backgroundColor:
-                            isDark ? Color(0xff212221) : Colors.grey[200],
+                        isDark ? Color(0xff212221) : Colors.grey[200],
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -248,6 +280,7 @@ class _PanDetailsState extends State<PanDetails> {
                       ),
                     ),
                   ),
+                  // Continue button - proceeds to next screen (Aadhar verification)
                   SizedBox(
                     width: 96.w,
                     child: TextButton(
@@ -284,6 +317,7 @@ class _PanDetailsState extends State<PanDetails> {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
+      // App bar with back button
       appBar: AppBar(
         leadingWidth: 46,
         leading: IconButton(
@@ -294,6 +328,7 @@ class _PanDetailsState extends State<PanDetails> {
         backgroundColor: isDark ? Colors.black : Colors.white,
       ),
       backgroundColor: isDark ? Colors.black : Colors.white,
+      // Main body with gesture detection to dismiss keyboard on tap outside
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         behavior: HitTestBehavior.opaque,
@@ -303,8 +338,10 @@ class _PanDetailsState extends State<PanDetails> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 8.h),
+              // Progress indicator (completion step 1 of 1)
               constWidgets.topProgressBar(1, 1, context),
               SizedBox(height: 24.h),
+              // Screen title
               Text(
                 "PAN Details",
                 style: TextStyle(
@@ -313,6 +350,7 @@ class _PanDetailsState extends State<PanDetails> {
                     color: isDark ? Colors.white : Colors.black),
               ),
               SizedBox(height: 16.h),
+              // Explanatory text about regulatory requirement
               Text(
                 "We need your PAN as per SEBI regulations",
                 style: TextStyle(
@@ -321,9 +359,11 @@ class _PanDetailsState extends State<PanDetails> {
                     color: isDark ? Colors.white70 : Colors.black54),
               ),
               SizedBox(height: 16.h),
+              // PAN input field (auto-capitalized)
               constWidgets.textField("PAN Number", panNumber,
                   isCapital: true, isDark: isDark),
               SizedBox(height: 18.h),
+              // Help link to find PAN number
               InkWell(
                 onTap: () => showFindPanBottomSheet(context),
                 child: Text(
@@ -334,20 +374,23 @@ class _PanDetailsState extends State<PanDetails> {
                       fontWeight: FontWeight.w600),
                 ),
               ),
-              Expanded(child: SizedBox()),
+              Expanded(child: SizedBox()), // Pushes content to top
             ],
           ),
         ),
       ),
+      // Bottom area with verify button and help option
       bottomNavigationBar: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.w),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Verify button - conditionally styled based on PAN input length
             Container(
               height: 52.h,
               width: double.infinity,
               child: ElevatedButton(
+                // Original API verification implementation (currently commented out)
                 // onPressed: panNumber.text.length == 10
                 //     ? () {
                 //         if (panNumber.text.isEmpty ||
@@ -363,16 +406,19 @@ class _PanDetailsState extends State<PanDetails> {
                 //         }
                 //       }
                 //     : null,.
+
+                // Temporary simplified implementation for testing/demo
+                // TODO: Restore original implementation with proper API verification when ready
                 onPressed: () {
                   showNameConfirmationBottomSheet(
                       context, "John Doe", "1990-01-01");
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: panNumber.text.length == 10
-                      ? Color(0xFF1DB954)
+                      ? Color(0xFF1DB954) // Green when PAN has correct length
                       : isDark
-                          ? Color(0xff2f2f2f)
-                          : Colors.grey[300],
+                      ? Color(0xff2f2f2f) // Dark gray in dark mode when invalid
+                      : Colors.grey[300], // Light gray in light mode when invalid
                   foregroundColor: isDark ? Colors.white : Colors.black,
                 ),
                 child: Text(
@@ -385,6 +431,7 @@ class _PanDetailsState extends State<PanDetails> {
               ),
             ),
             SizedBox(height: 10.h),
+            // Help button for user assistance
             Center(child: constWidgets.needHelpButton(context)),
           ],
         ),
@@ -392,23 +439,26 @@ class _PanDetailsState extends State<PanDetails> {
     );
   }
 
+  /// Shows bottom sheet with visual guide on finding PAN number
+  /// Also provides option to get an ePAN for users without physical PAN card
   void showFindPanBottomSheet(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true,
+      isScrollControlled: true, // Allow sheet to adjust for keyboard
       builder: (context) {
         return Padding(
           padding: EdgeInsets.only(
             left: 16.h,
             right: 16.h,
             top: 20,
-            bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 20, // Adjust for keyboard
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Bottom sheet title
               Text(
                 "How to find your PAN number?",
                 style: TextStyle(
@@ -417,6 +467,7 @@ class _PanDetailsState extends State<PanDetails> {
                     fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 5),
+              // Explanatory text
               Text(
                 "Your PAN number will be on your PAN Card as shown below",
                 style: TextStyle(
@@ -425,6 +476,7 @@ class _PanDetailsState extends State<PanDetails> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 15.h),
+              // PAN card sample image with indicator
               Image.asset(
                 "assets/images/pan.png",
                 width: 380.w,
@@ -447,6 +499,7 @@ class _PanDetailsState extends State<PanDetails> {
                 ),
               ),
               SizedBox(height: 15.h),
+              // Option to get ePAN for users without existing PAN
               Row(
                 children: [
                   Text(
@@ -456,6 +509,7 @@ class _PanDetailsState extends State<PanDetails> {
                         fontSize: 12.sp),
                   ),
                   SizedBox(width: 5.w),
+                  // Link to official ePAN application website
                   GestureDetector(
                     onTap: () async {
                       const url =
@@ -470,12 +524,13 @@ class _PanDetailsState extends State<PanDetails> {
                     child: Text(
                       "Get ePAN in few minutes",
                       style:
-                          TextStyle(color: Color(0xFF1DB954), fontSize: 12.sp),
+                      TextStyle(color: Color(0xFF1DB954), fontSize: 12.sp),
                     ),
                   ),
                 ],
               ),
               SizedBox(height: 15),
+              // Button to dismiss the help sheet
               Center(
                 child: SizedBox(
                   width: 100.w,
