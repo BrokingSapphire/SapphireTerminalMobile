@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../utils/constWidgets.dart';
+import '../../../../utils/constWidgets.dart';
 
 class basketSelectScreen extends StatelessWidget {
   final List<Map<String, dynamic>> stocks = [

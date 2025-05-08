@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/home/orders/gtt3Screen.dart';
-import '../../../utils/constWidgets.dart';
+import 'package:sapphire/screens/home/orders/gttOrder/gtt3Screen.dart';
+import '../../../../utils/constWidgets.dart';
 
 class gtt2Screen extends StatefulWidget {
   const gtt2Screen({super.key});

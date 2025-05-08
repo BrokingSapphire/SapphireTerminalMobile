@@ -8,8 +8,8 @@ import 'package:sapphire/screens/home/trades/trades.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 import '../account/account.dart';
 import 'holdings/holdings.dart';
-import 'orders/createGTT.dart';
-import 'orders/gttScreenWrapper.dart';
+import 'orders/gttOrder/createGTT.dart';
+import 'orders/gttOrder/gttScreenWrapper.dart';
 import 'watchlist/watchlist.dart';
 
 class HomeWrapper extends StatefulWidget {

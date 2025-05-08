@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/home/discover/priceAlertSearch.dart';
+import 'package:sapphire/screens/home/discover/priceAlerts/priceAlertSearch.dart';
 
-import '../../../utils/constWidgets.dart';
+import '../../../../utils/constWidgets.dart';
 
 class createAlertScreen extends StatefulWidget {
   @override

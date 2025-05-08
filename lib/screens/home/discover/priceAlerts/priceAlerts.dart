@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/home/discover/createPriceAlerts.dart';
-import '../../../utils/naviWithoutAnimation.dart';
+import 'package:sapphire/screens/home/discover/priceAlerts/createPriceAlerts.dart';
+import '../../../../utils/naviWithoutAnimation.dart';
 
 class PriceAlerts extends StatefulWidget {
   const PriceAlerts({super.key});

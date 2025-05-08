@@ -10,10 +10,10 @@ import 'package:sapphire/screens/account/reports/ledger.dart';
 import 'package:sapphire/screens/account/account.dart';
 import 'package:sapphire/screens/account/reports/profitAndLoss.dart';
 import 'package:sapphire/screens/account/reports/tradesAndCharges.dart';
-import 'package:sapphire/screens/home/discover/ipo.dart';
-import 'package:sapphire/screens/home/discover/pledge.dart';
-import 'package:sapphire/screens/home/discover/createPriceAlerts.dart';
-import 'package:sapphire/screens/home/discover/priceAlerts.dart';
+import 'package:sapphire/screens/home/discover/ipo/ipo.dart';
+import 'package:sapphire/screens/home/discover/pledge/pledge.dart';
+import 'package:sapphire/screens/home/discover/priceAlerts/createPriceAlerts.dart';
+import 'package:sapphire/screens/home/discover/priceAlerts/priceAlerts.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 import 'package:sapphire/utils/naviWithoutAnimation.dart';
 
