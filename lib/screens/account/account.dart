@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/account/general/changePin.dart';
+import 'package:sapphire/screens/account/general/knowYourPartner.dart';
 import 'package:sapphire/screens/account/general/settings.dart';
 import 'package:sapphire/screens/account/profile/profile.dart';
 import 'package:sapphire/screens/account/manage/dematAccount.dart';
@@ -47,10 +48,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // TODO: implement initState
     super.initState();
     generalOnTap = [
-      // () {
-      //   navi(FundsScreen(), context);
-      // },
-      () {},
+     
+      () {
+        navi(KnowYourPartner(), context);
+      },
       () {
         navi(settingsScreen(), context);
       },
@@ -184,7 +185,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         hintText: 'Equity',
                         hintStyle: TextStyle(
                           color: isDark ? Colors.white70 : Colors.black,
-                          fontSize: 13.sp,
+                          fontSize: 10.sp,
                         ),
                         contentPadding: EdgeInsets.symmetric(
                             horizontal: 12.w), // Remove default padding

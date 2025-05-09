@@ -29,7 +29,7 @@ void main() {
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 /// Navigate to a new screen with a slide transition
-/// 
+///
 /// Parameters:
 /// - nextScreen: The widget to navigate to
 /// - context: Current BuildContext for navigation
@@ -57,7 +57,7 @@ void navi(Widget nextScreen, BuildContext context) {
 
 /// Navigate and replace current screen with a slide transition
 /// Used for screen replacements where returning to previous screen isn't desired
-/// 
+///
 /// Parameters:
 /// - nextScreen: The widget to navigate to
 /// - context: Current BuildContext for navigation
@@ -95,7 +95,8 @@ class MyApp extends StatelessWidget {
 
     // Initialize ScreenUtil for responsive UI scaling
     return ScreenUtilInit(
-      designSize: const Size(393, 852), // Base design size for responsive calculations
+      designSize:
+          const Size(393, 852), // Base design size for responsive calculations
       minTextAdapt: true, // Adapt text size based on screen size
       splitScreenMode: true, // Support split screen mode
       builder: (context, child) {
@@ -104,7 +105,8 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false, // Remove debug banner
           theme: AppThemes.lightTheme, // Light theme configuration
           darkTheme: AppThemes.darkTheme, // Dark theme configuration
-          themeMode: themeProvider.themeMode, // Current theme mode (system/light/dark)
+          themeMode:
+              themeProvider.themeMode, // Current theme mode (system/light/dark)
           home: InitialScreen(), // Starting screen of the application
           // home: BuyScreenWrapper(), // Alternate entry point (currently commented out)
         );

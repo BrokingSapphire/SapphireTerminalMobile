@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/account/general/2FA.dart';
+import 'package:sapphire/screens/account/general/deleteAccount.dart';
 import 'package:sapphire/screens/account/general/permission.dart';
 import 'package:sapphire/screens/account/general/sessionManagement.dart';
 import 'package:sapphire/screens/account/general/settingsOrderPreference.dart';
@@ -335,30 +336,36 @@ class _settingsScreenState extends State<settingsScreen> {
                     SizedBox(height: 12.h),
 
                     /// Delete Account
-                    Container(
-                      height: 60.h,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                      decoration: BoxDecoration(
-                        color: isDark ? Color(0xff121413) : Color(0xffF4F4F9),
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      width: double.infinity,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Delete Account",
-                            style: TextStyle(
+                    InkWell(
+                      onTap: () {
+                        navi(const DeleteAccount(), context);
+                      },
+                      child: Container(
+                        height: 60.h,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 15.h),
+                        decoration: BoxDecoration(
+                          color: isDark ? Color(0xff121413) : Color(0xffF4F4F9),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        width: double.infinity,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Delete Account",
+                              style: TextStyle(
+                                  color: isDark ? Colors.white : Colors.black,
+                                  fontSize: 15.sp),
+                            ),
+                            Icon(Icons.arrow_forward_ios_rounded,
                                 color: isDark ? Colors.white : Colors.black,
-                                fontSize: 15.sp),
-                          ),
-                          Icon(Icons.arrow_forward_ios_rounded,
-                              color: isDark ? Colors.white : Colors.black,
-                              size: 16.sp),
-                        ],
+                                size: 16.sp),
+                          ],
+                        ),
                       ),
                     ),
+                    SizedBox(height: 12.h)
                   ],
                 ),
               ),
