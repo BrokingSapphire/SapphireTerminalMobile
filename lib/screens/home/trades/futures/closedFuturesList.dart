@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sapphire/screens/home/trades/trades.dart';
 
 class ClosedFutureListScreen extends StatefulWidget {
   const ClosedFutureListScreen({super.key});
@@ -192,7 +193,12 @@ class _ClosedFutureListScreenState extends State<ClosedFutureListScreen> {
               SizedBox(width: 12.w),
               Expanded(
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => TradesUtils.placeOrderPopup(context),
+                    );
+                  },
                   style: OutlinedButton.styleFrom(
                     backgroundColor: const Color(0xff1db954),
                     shape: RoundedRectangleBorder(

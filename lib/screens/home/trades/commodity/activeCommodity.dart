@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sapphire/screens/home/trades/trades.dart';
 
 class TradesComActiveScreen extends StatefulWidget {
   const TradesComActiveScreen({super.key});
@@ -197,7 +198,12 @@ class _TradesComActiveScreenState extends State<TradesComActiveScreen>
               SizedBox(width: 12.w),
               Expanded(
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => TradesUtils.placeOrderPopup(context),
+                    );
+                  },
                   style: OutlinedButton.styleFrom(
                     backgroundColor: const Color(0xff1db954),
                     shape: RoundedRectangleBorder(

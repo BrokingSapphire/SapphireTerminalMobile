@@ -309,3 +309,68 @@ Widget MarketDataCard(String title, String price, String change) {
     ),
   );
 }
+
+class TradesUtils {
+  static Widget placeOrderPopup(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: const Color(0xff121413), // Dark background
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.r),
+      ),
+      content: Text(
+        "Would you like to proceed with this order?",
+        style: TextStyle(color: Colors.white, fontSize: 16.sp),
+        textAlign: TextAlign.center,
+      ),
+      actions: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              child: TextButton(
+                onPressed: () {
+                  // Handle Cancel action
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.grey[800], // Dark gray for Cancel
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                ),
+              ),
+            ),
+            SizedBox(width: 6.w),
+            Expanded(
+              child: TextButton(
+                onPressed: () {
+                  // Handle Place Order action
+                  Navigator.of(context).pop(); // Close the dialog
+                  // Add your order placement logic here
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.green, // Green for Place Order
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+                child: Text(
+                  "Place Order",
+                  style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
