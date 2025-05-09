@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sapphire/screens/home/trades/commodity/activeCommodity.dart';
-import 'package:sapphire/screens/home/trades/commodity/closedCommodity.dart';
-import 'package:sapphire/screens/home/trades/options/activeOptions.dart';
-import 'package:sapphire/screens/home/trades/options/closedOptions.dart';
-import 'package:sapphire/screens/home/trades/stocks/activeStocks.dart';
-import 'package:sapphire/screens/home/trades/stocks/closedStocks.dart';
-import 'package:sapphire/screens/home/trades/futures/activeFutures.dart';
-import 'package:sapphire/screens/home/trades/futures/closedFutures.dart';
+import 'package:sapphire/screens/home/trades/commodity/activeTrades/activeCommodity.dart';
+import 'package:sapphire/screens/home/trades/commodity/closedTrades/closedCommodity.dart';
+import 'package:sapphire/screens/home/trades/options/activeTrades/activeOptions.dart';
+import 'package:sapphire/screens/home/trades/options/closedTrades/closedOptions.dart';
+import 'package:sapphire/screens/home/trades/stocks/activeTrades/activeStocks.dart';
+import 'package:sapphire/screens/home/trades/stocks/closedTrades/closedStocks.dart';
+import 'package:sapphire/screens/home/trades/futures/activeTrades/activeFutures.dart';
+import 'package:sapphire/screens/home/trades/futures/closedTrades/closedFutures.dart';
 
 class TradesTabContent extends StatefulWidget {
   final String tabType;

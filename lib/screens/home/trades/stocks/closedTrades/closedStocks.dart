@@ -3,23 +3,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:sapphire/screens/home/trades/futures/closedFuturesGrid.dart';
-import 'package:sapphire/screens/home/trades/futures/closedFuturesList.dart';
-import 'package:sapphire/screens/home/trades/options/closedOptionsGrid.dart';
-import 'package:sapphire/screens/home/trades/options/closedOptionsList.dart';
-import 'package:sapphire/screens/home/trades/stocks/closedStocksGrid.dart';
-import 'package:sapphire/screens/home/trades/stocks/closedStocksList.dart';
+import 'package:sapphire/screens/home/trades/stocks/closedTrades/closedStocksGrid.dart';
+import 'package:sapphire/screens/home/trades/stocks/closedTrades/closedStocksList.dart';
 
-class TradesOptionClosedScreen extends StatefulWidget {
-  const TradesOptionClosedScreen({super.key});
+class tradesClosedScreen extends StatefulWidget {
+  const tradesClosedScreen({super.key});
 
   @override
-  State<TradesOptionClosedScreen> createState() => _TradesOptionClosedScreen();
+  State<tradesClosedScreen> createState() => _tradesClosedScreenState();
 }
 
-class _TradesOptionClosedScreen extends State<TradesOptionClosedScreen>
+class _tradesClosedScreenState extends State<tradesClosedScreen>
     with SingleTickerProviderStateMixin {
-  double dynamicPercent = 75.0;
+  double dynamicPercent = 50.0;
   bool isGridView = true; // Default view mode
 
   @override
@@ -119,10 +115,60 @@ class _TradesOptionClosedScreen extends State<TradesOptionClosedScreen>
                   children: [
                     // Search Bar
                     Expanded(
-                        child: Text(
-                      "Closed trades (246)",
-                      style: TextStyle(fontSize: 12.sp),
-                    )),
+                      child: Container(
+                        height: 44.h,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Color(0xff121413),
+                            hintText: "Search Stock",
+                            hintStyle: TextStyle(
+                                color: Color(0xffC9CACC), fontSize: 14.sp),
+                            prefixIcon: Padding(
+                              padding: EdgeInsets.only(
+                                  left: 20.w,
+                                  right: 5.w), // Adds space before the icon
+                              child: SvgPicture.asset(
+                                'assets/svgs/search-svgrepo-com (1).svg',
+                                // Update with your actual SVG path
+                                width: 18.w, // Adjust size
+                                height: 18.h,
+                                color: Colors.grey, // Change color if needed
+                              ),
+                            ),
+                            prefixIconConstraints: BoxConstraints(
+                              minWidth: 36.w,
+                              // Ensure enough space for padding to take effect
+                              minHeight: 36.h,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.r),
+                              borderSide: BorderSide(color: Color(0xff141213)),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.r),
+                              borderSide: BorderSide(color: Color(0xff141213)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.r),
+                              borderSide: BorderSide(color: Color(0xff141213)),
+                            ),
+                            disabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.r),
+                              borderSide: BorderSide(color: Color(0xff141213)),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 10.h,
+                                horizontal: 8.w), // Reduce horizontal padding
+                          ),
+                          style: TextStyle(color: Color(0xffEBEEF5)),
+                        ),
+                      ),
+                    ),
 
                     SizedBox(width: 10.w),
 
@@ -185,10 +231,9 @@ class _TradesOptionClosedScreen extends State<TradesOptionClosedScreen>
 
                 // Display GridView or ListView
                 Container(
-                    height: 400.h, // Ensures the content has enough space
-                    child: isGridView
-                        ? const ClosedOptionListScreen()
-                        : const ClosedOptionGridScreen()),
+                  height: 400.h, // Ensures the content has enough space
+                  child: isGridView ? closedGridScreen() : ClosedListScreen(),
+                ),
               ],
             ),
           ),
