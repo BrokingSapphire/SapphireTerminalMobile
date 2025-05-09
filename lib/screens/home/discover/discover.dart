@@ -10,7 +10,8 @@ import 'package:sapphire/screens/account/reports/ledger.dart';
 import 'package:sapphire/screens/account/account.dart';
 import 'package:sapphire/screens/account/reports/profitAndLoss.dart';
 import 'package:sapphire/screens/account/reports/tradesAndCharges.dart';
-import 'package:sapphire/screens/home/discover/ipo/ipo.dart';
+import 'package:sapphire/screens/home/discover/ipo/ipoOngoing.dart';
+import 'package:sapphire/screens/home/discover/ipo/ipoWrapper.dart';
 import 'package:sapphire/screens/home/discover/pledge/pledge.dart';
 import 'package:sapphire/screens/home/discover/priceAlerts/createPriceAlerts.dart';
 import 'package:sapphire/screens/home/discover/priceAlerts/priceAlerts.dart';
@@ -155,7 +156,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                         trailing:
                             Icon(Icons.arrow_forward_ios_outlined, size: 15.sp),
                         onTap: () {
-                          navi(IPO(), context);
+                          navi(IPOWrapper(), context);
                         },
                       ),
                       Divider(
