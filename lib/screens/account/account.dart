@@ -1,12 +1,17 @@
+import 'dart:math' show min;
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/account/general/changePin.dart';
 import 'package:sapphire/screens/account/general/settings.dart';
 import 'package:sapphire/screens/account/profile/profile.dart';
 import 'package:sapphire/screens/account/manage/dematAccount.dart';
+import 'package:sapphire/screens/account/reports/customCalender.dart';
 import 'package:sapphire/screens/funds/funds.dart';
 import 'package:sapphire/screens/account/reports/ledger.dart';
 import 'package:sapphire/screens/account/manage/segmentActivation.dart';
@@ -105,7 +110,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         navi(VerifiedPnL(), context);
       },
       () {
-        // navi(Downloads(), context);
+        showDownloadSheet(context);
       }
     ];
     supportOnTap = [() {}, () {}, () {}, () {}];
@@ -115,6 +120,282 @@ class _ProfileScreenState extends State<ProfileScreen> {
       },
       () {}
     ];
+  }
+
+  void showDownloadSheet(BuildContext context) {
+    String selectedSegment = 'Equity'; // Default selected value
+    String selectedReportType = 'PDF'; // Default selected value
+    String symbol = '';
+    DateTimeRange? dateRange = DateTimeRange(
+      start: DateTime.now().subtract(const Duration(days: 30)),
+      end: DateTime.now(),
+    );
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(26.r)),
+      ),
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              decoration: BoxDecoration(
+                color: isDark ? Color(0xff121413) : Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(26.r)),
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Downloads Statements",
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black,
+                      fontSize: 17.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    softWrap: true,
+                  ),
+                  SizedBox(height: 8.h),
+                  Divider(
+                      height: 1,
+                      color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB)),
+                  SizedBox(height: 16.h),
+                  Text("Statement",
+                      softWrap: true,
+                      style: TextStyle(
+                        color: isDark ? Colors.white : Colors.black,
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w500,
+                      )),
+                  SizedBox(height: 6.h),
+                  SizedBox(
+                    height: 40.h,
+                    child: DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(6.r),
+                        ),
+                        hintText: 'Equity',
+                        hintStyle: TextStyle(
+                          color: isDark ? Colors.white70 : Colors.black,
+                          fontSize: 13.sp,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 12.w), // Remove default padding
+                      ),
+                      dropdownColor:
+                          isDark ? Colors.grey.shade800 : Color(0xffF4F4F9),
+                      style: TextStyle(color: Colors.white, fontSize: 10.sp),
+                      value: selectedSegment,
+                      selectedItemBuilder: (BuildContext context) {
+                        return <String>['Equity', 'Futures', 'Options']
+                            .map<Widget>(
+                          (String value) {
+                            return Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                  color: isDark ? Colors.white : Colors.black,
+                                  fontSize: 13.sp,
+                                ),
+                                softWrap: true,
+                              ),
+                            );
+                          },
+                        ).toList();
+                      },
+                      items: <String>['Equity', 'Futures', 'Options']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: TextStyle(
+                                color: isDark ? Colors.white : Colors.black,
+                                fontSize: 13.sp),
+                            softWrap: true,
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        if (newValue != null) {
+                          setState(() {
+                            selectedSegment = newValue;
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Text(
+                    'Report Type',
+                    softWrap: true,
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black,
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(height: 6.h),
+                  SizedBox(
+                    height: 40.h,
+                    child: DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(6.r),
+                        ),
+                        hintText: 'XLSX',
+                        hintStyle: TextStyle(
+                          color: isDark ? Colors.white70 : Colors.black,
+                          fontSize: 10.sp,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 12.w), // Remove default padding
+                      ),
+                      dropdownColor:
+                          isDark ? Colors.grey.shade800 : Color(0xffF4F4F9),
+                      style: TextStyle(color: Colors.white, fontSize: 10.sp),
+                      value: selectedReportType,
+                      selectedItemBuilder: (BuildContext context) {
+                        return <String>['PDF', 'XLSX']
+                            .map<Widget>(
+                          (String value) {
+                            return Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                  color: isDark ? Colors.white : Colors.black,
+                                  fontSize: 13.sp,
+                                ),
+                                softWrap: true,
+                              ),
+                            );
+                          },
+                        ).toList();
+                      },
+                      items: <String>['PDF', 'XLSX']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: TextStyle(
+                                color: isDark ? Colors.white : Colors.black,
+                                fontSize: 13.sp),
+                            softWrap: true,
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        if (newValue != null) {
+                          setState(() {
+                            selectedReportType = newValue;
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Text(
+                    'Date range',
+                    softWrap: true,
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black,
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(height: 6.h),
+                  GestureDetector(
+                    onTap: () async {
+                      final pickedDateRange = await showDialog<DateTimeRange>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                            backgroundColor: Colors.transparent,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12.r),
+                              child: BackdropFilter(
+                                filter:
+                                    ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                child: Container(
+                                  width: min(
+                                      0.9 * MediaQuery.of(context).size.width,
+                                      800.w),
+                                  padding: EdgeInsets.all(16.w),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        Colors.grey.shade900.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    border: Border.all(
+                                        color: Colors.white.withOpacity(0.2)),
+                                  ),
+                                  child: CustomDateRangePicker(
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime(2100),
+                                    initialDateRange: dateRange,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                      if (pickedDateRange != null) {
+                        setState(() {
+                          dateRange = pickedDateRange;
+                        });
+                      }
+                    },
+                    child: Container(
+                      height: 40.h,
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 10.h,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Text(
+                        dateRange == null
+                            ? 'Select date range'
+                            : '${DateFormat('dd-MM-yyyy').format(dateRange!.start)} ~ ${DateFormat('dd-MM-yyyy').format(dateRange!.end)}',
+                        style: TextStyle(
+                          color: isDark ? Colors.white70 : Colors.black,
+                          fontSize: 13.sp,
+                        ),
+                        softWrap: true,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 24.h),
+                  constWidgets.greenButton(
+                    "Download",
+                    onTap: (symbol.isNotEmpty && dateRange != null)
+                        ? () {
+                            print(
+                                "Downloading data for Segment: $selectedSegment, Symbol: $symbol, Date Range: ${DateFormat('dd-MM-yyyy').format(dateRange!.start)} - ${DateFormat('dd-MM-yyyy').format(dateRange!.end)}");
+                            Navigator.pop(context);
+                          }
+                        : null,
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   List general = [
