@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:sapphire/screens/account/manage/chooseStocktoGift.dart';
+import 'package:sapphire/screens/home/discover/pledge/pledgeHistory.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class Pledge extends StatefulWidget {
@@ -102,11 +104,14 @@ class _PledgeState extends State<Pledge> with SingleTickerProviderStateMixin {
               height: 1,
               color: const Color(0xFF2F2F2F),
             ),
-            SizedBox(height: 12.h),
+            SizedBox(height: 16.h),
             // Tab bar
-            CustomTabBar(
-              tabController: tabController,
-              options: options,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: CustomTabBar(
+                tabController: tabController,
+                options: options,
+              ),
             ),
 
             Expanded(
@@ -118,7 +123,7 @@ class _PledgeState extends State<Pledge> with SingleTickerProviderStateMixin {
                   // Unpledge Tab
                   UnpledgeContent(),
                   // History Tab
-                  HistoryContent(),
+                  PledgeHistory(),
                 ],
               ),
             ),
@@ -363,15 +368,6 @@ class UnpledgeContent extends StatelessWidget {
   }
 }
 
-// History Content Widget
-class HistoryContent extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: Text('History Content', style: TextStyle(color: Colors.white)));
-  }
-}
-
 class _PledgeListItem extends StatefulWidget {
   final bool checked;
   final String stockName;
@@ -547,7 +543,6 @@ class _PledgeListItemState extends State<_PledgeListItem> {
                                 ),
                                 Container(
                                   height: 25.h,
-                           
                                   padding:
                                       EdgeInsets.symmetric(horizontal: 4.w),
                                   decoration: BoxDecoration(
@@ -558,7 +553,8 @@ class _PledgeListItemState extends State<_PledgeListItem> {
                                     ),
                                   ),
                                   child: Padding(
-                                    padding: EdgeInsets.only(right: 6.w,top: 5.h),
+                                    padding:
+                                        EdgeInsets.only(right: 6.w, top: 5.h),
                                     child: Text('/ ${widget.totalQty}',
                                         style: TextStyle(
                                             color: Colors.white,

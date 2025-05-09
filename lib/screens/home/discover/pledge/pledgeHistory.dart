@@ -1,199 +1,300 @@
+// History Content Widget
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-// // History Content Widget
-// import 'package:flutter/material.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
+class PledgeHistory extends StatelessWidget {
+  const PledgeHistory({super.key});
 
-// class HistoryContent extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Center(
-//         child: Text('History Content', style: TextStyle(color: Colors.white)));
-//   }
-// }
+  Widget _buildHistoryItem(
+      {required String date,
+      required String status,
+      required List<Map<String, dynamic>> stocks}) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 12.h),
+      decoration: BoxDecoration(
+        color: const Color(0xff121413),
+        borderRadius: BorderRadius.circular(6.r),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Date and status row
+          Padding(
+            padding: EdgeInsets.only(
+                right: 16.w, left: 16.w, top: 16.h, bottom: 10.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  date,
+                  style: TextStyle(
+                    color: const Color(0xffEBEEF5),
+                    fontSize: 11.sp,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.h),
+                  decoration: BoxDecoration(
+                    color: _getStatusColor(status).withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(4.r),
+                  ),
+                  child: Text(
+                    status,
+                    style: TextStyle(
+                      color: _getStatusColor(status),
+                      fontSize: 10.sp,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Divider
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Divider(
+              height: 1,
+              color: const Color(0xff2F2F2F),
+            ),
+          ),
+          // Stock items
+          ...stocks.map((stock) => _buildStockItem(
+                stockName: stock['name'],
+                quantity: stock['quantity'],
+                marginApproved: stock['marginApproved'],
+              )),
+        ],
+      ),
+    );
+  }
 
-// class _PledgeListItem extends StatefulWidget {
-//   final bool checked;
-//   final String stockName;
-//   final String haircut;
-//   final String qty;
-//   final String totalQty;
-//   final String margin;
-//   final double amount;
-//   final String? avatarUrl;
-//   final Function(String, bool)? onCheckChanged;
+  // Helper method to get the appropriate color based on status
+  Color _getStatusColor(String status) {
+    if (status.contains('Pending')) {
+      return const Color(0xFFFFD700); // Yellow for pending
+    } else if (status.contains('Completed')) {
+      return Colors.green; // Green for completed
+    } else if (status.contains('Rejected')) {
+      return Colors.red; // Red for rejected
+    }
+    return Colors.green; // Default color
+  }
 
-//   const _PledgeListItem({
-//     required this.checked,
-//     required this.stockName,
-//     required this.haircut,
-//     required this.qty,
-//     required this.totalQty,
-//     required this.margin,
-//     required this.amount,
-//     this.avatarUrl,
-//     this.onCheckChanged,
-//     Key? key,
-//   }) : super(key: key);
+  Widget _buildStockItem({
+    required String stockName,
+    required int quantity,
+    required num marginApproved,
+  }) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 12.h),
+      child: Row(
+        children: [
+          // Stock icon
+          Container(
+            width: 40.w,
+            height: 40.w,
+            decoration: BoxDecoration(
+              color: const Color(0xff1E1E1E),
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Icon(
+                Icons.business,
+                color: Colors.green,
+                size: 20.sp,
+              ),
+            ),
+          ),
+          SizedBox(width: 12.w),
+          // Stock details
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  stockName,
+                  style: TextStyle(
+                    color: const Color(0xffEBEEF5),
+                    fontSize: 13.sp,
+                  ),
+                ),
+                SizedBox(height: 6.h),
+                Text(
+                  'Quantity : $quantity',
+                  style: TextStyle(
+                    color: const Color(0xffC9CACC),
+                    fontSize: 11.sp,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Margin approved
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                'Margin Approved (₹)',
+                style: TextStyle(
+                  color: const Color(0xffC9CACC),
+                  fontSize: 11.sp,
+                ),
+              ),
+              SizedBox(height: 6.h),
+              Text(
+                '₹${marginApproved.toStringAsFixed(0)}',
+                style: TextStyle(
+                  color: const Color(0xffEBEEF5),
+                  fontSize: 11.sp,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
-//   @override
-//   State<_PledgeListItem> createState() => _PledgeListItemState();
-// }
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-// class _PledgeListItemState extends State<_PledgeListItem> {
-//   late bool checked;
+    // Sample data for demonstration
+    final List<Map<String, dynamic>> historyItems = [
+      {
+        'date': '16 April 2025, 03:12 PM',
+        'status': 'Pledge Request Pending',
+        'stocks': [
+          {
+            'name': 'BAJFINANCE',
+            'quantity': 60,
+            'marginApproved': 1053532,
+          },
+          {
+            'name': 'IREDA',
+            'quantity': 60,
+            'marginApproved': 53532,
+          },
+          {
+            'name': 'HDFCBANK',
+            'quantity': 60,
+            'marginApproved': 853532,
+          },
+        ],
+      },
+      {
+        'date': '16 April 2025, 03:12 PM',
+        'status': 'Pledge Request Completed',
+        'stocks': [
+          {
+            'name': 'BAJFINANCE',
+            'quantity': 60,
+            'marginApproved': 1053532,
+          },
+          {
+            'name': 'IREDA',
+            'quantity': 60,
+            'marginApproved': 53532,
+          },
+          {
+            'name': 'HDFCBANK',
+            'quantity': 60,
+            'marginApproved': 853532,
+          },
+        ],
+      },
+      {
+        'date': '16 April 2025, 03:12 PM',
+        'status': 'Pledge Request Rejected',
+        'stocks': [
+          {
+            'name': 'BAJFINANCE',
+            'quantity': 60,
+            'marginApproved': 1053532,
+          },
+          {
+            'name': 'IREDA',
+            'quantity': 60,
+            'marginApproved': 53532,
+          },
+          {
+            'name': 'HDFCBANK',
+            'quantity': 60,
+            'marginApproved': 853532,
+          },
+        ],
+      },
+    ];
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     checked = widget.checked;
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return GestureDetector(
-//       onTap: () {
-//         setState(() {
-//           checked = !checked; // Toggle the checkbox
-//         });
-//         print('Tapped on ${widget.stockName}');
-//       },
-//       behavior: HitTestBehavior.opaque,
-//       child: Column(
-//         children: [
-//           Padding(
-//             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-//             child: Row(
-//               children: [
-//                 Theme(
-//                   data: Theme.of(context).copyWith(
-//                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-//                     visualDensity: VisualDensity(horizontal: -4, vertical: -4),
-//                   ),
-//                   child: Checkbox(
-//                     value: checked,
-//                     onChanged: (value) {
-//                       setState(() {
-//                         checked = value!;
-//                       });
-
-//                       // Notify parent about checkbox change
-//                       if (widget.onCheckChanged != null) {
-//                         widget.onCheckChanged!(widget.stockName, value!);
-//                       }
-//                     },
-//                   ),
-//                 ),
-//                 SizedBox(width: 8.w),
-//                 Expanded(
-//                   child: Column(
-//                     crossAxisAlignment: CrossAxisAlignment.start,
-//                     children: [
-//                       Text(widget.stockName,
-//                           style: TextStyle(
-//                               color: Colors.white,
-//                               fontWeight: FontWeight.w400,
-//                               fontSize: 15.sp)),
-//                       SizedBox(height: 6.h),
-//                       RichText(
-//                         text: TextSpan(
-//                           text: 'Haircut  ',
-//                           style: TextStyle(
-//                               color: Colors.grey,
-//                               fontWeight: FontWeight.w400,
-//                               fontSize: 11.sp),
-//                           children: [
-//                             TextSpan(
-//                               text: widget.haircut,
-//                               style: TextStyle(
-//                                   color: Colors.white,
-//                                   fontWeight: FontWeight.w400,
-//                                   fontSize: 11.sp),
-//                             ),
-//                           ],
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//                 Column(
-//                   crossAxisAlignment: CrossAxisAlignment.end,
-//                   children: [
-//                     Row(
-//                       children: [
-//                         Text('Qty : ',
-//                             style: TextStyle(
-//                                 color: Colors.white,
-//                                 fontSize: 12.sp,
-//                                 fontWeight: FontWeight.w500)),
-//                         Container(
-//                           decoration: BoxDecoration(
-//                               borderRadius: BorderRadius.circular(2.r),
-//                               border: Border.all(
-//                                   width: 0.5, color: Color(0xff2f2f2f))),
-//                           child: Padding(
-//                             padding: EdgeInsets.only(left: 8.w),
-//                             child: Row(
-//                               children: [
-//                                 Padding(
-//                                   padding: EdgeInsets.only(right: 6.w),
-//                                   child: Text(widget.qty,
-//                                       style: TextStyle(
-//                                           color: Colors.white,
-//                                           fontSize: 12.sp,
-//                                           fontWeight: FontWeight.w500)),
-//                                 ),
-//                                 Container(
-//                                   padding: EdgeInsets.symmetric(
-//                                       horizontal: 4.w, vertical: 2.h),
-//                                   decoration: BoxDecoration(
-//                                     color: Color(0xff2f2f2f),
-//                                     borderRadius: BorderRadius.only(
-//                                       topRight: Radius.circular(2.r),
-//                                       bottomRight: Radius.circular(2.r),
-//                                     ),
-//                                   ),
-//                                   child: Padding(
-//                                     padding: EdgeInsets.only(right: 6.w),
-//                                     child: Text('/ ${widget.totalQty}',
-//                                         style: TextStyle(
-//                                             color: Colors.white,
-//                                             fontSize: 12.sp,
-//                                             fontWeight: FontWeight.w500)),
-//                                   ),
-//                                 ),
-//                               ],
-//                             ),
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                     SizedBox(height: 6.h),
-//                     RichText(
-//                       text: TextSpan(
-//                         text: 'Margin  ',
-//                         style: TextStyle(
-//                             color: Colors.grey,
-//                             fontWeight: FontWeight.w400,
-//                             fontSize: 11.sp),
-//                         children: [
-//                           TextSpan(
-//                             text: widget.margin,
-//                             style: TextStyle(
-//                                 color: Colors.white,
-//                                 fontWeight: FontWeight.w400,
-//                                 fontSize: 11.sp),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ],
-//             ),
-//           ),
-//           Divider(color: Color(0xff2f2f2f)),
-//         ],
-//       ),
-//     );
-//   }
-// }
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 12.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "History for",
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                        color: isDark ? Color(0xffc9cacc) : Color(0xff6B7280),
+                      ),
+                    ),
+                    SizedBox(height: 4.h),
+                    Text(
+                      "10 Feb 2025 - 17 Feb 2025",
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+                Icon(
+                  size: 24.sp,
+                  Icons.calendar_today_outlined,
+                  color: Colors.green,
+                ),
+              ],
+            ),
+            SizedBox(height: 12.h),
+            Divider(
+              height: 1,
+              color: const Color(0xFF2F2F2F),
+            ),
+            SizedBox(height: 16.h),
+            Text(
+              "April 2025",
+              style: TextStyle(
+                color: const Color(0xffEBEEF5),
+                fontSize: 15.sp,
+              ),
+            ),
+            SizedBox(height: 12.h),
+            Expanded(
+              child: ListView.builder(
+                itemCount: historyItems.length,
+                itemBuilder: (context, index) {
+                  final item = historyItems[index];
+                  return _buildHistoryItem(
+                    date: item['date'],
+                    status: item['status'],
+                    stocks: item['stocks'],
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
