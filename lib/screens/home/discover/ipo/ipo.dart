@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sapphire/main.dart';
+import 'package:sapphire/screens/home/discover/ipo/ipoApplication.dart';
 import 'package:sapphire/utils/constWidgets.dart'; // Assuming this file contains your custom widgets
 import '../../../../utils/ipoTile.dart'; // Assuming this file contains your ipoTile widget
 
@@ -96,7 +98,9 @@ class _IPOState extends State<IPO> with SingleTickerProviderStateMixin {
                                   subscriptionStatus: "1.4x",
                                   price: "3,21,380.00",
                                   lotSize: "6,789.00",
-                                  onApply: () {},
+                                  onApply: () {
+                                    navi(ipoApplication(), context);
+                                  },
                                 ),
                               ],
                             ),
