@@ -18,7 +18,7 @@ import 'package:sapphire/screens/account/reports/ledger.dart';
 import 'package:sapphire/screens/account/manage/segmentActivation.dart';
 import 'package:sapphire/screens/account/manage/bankAccounts.dart';
 import 'package:sapphire/screens/account/manage/freezeDematAccount.dart';
-import 'package:sapphire/screens/account/manage/giftStocks.dart';
+import 'package:sapphire/screens/account/manage/giftStock/giftStocks.dart';
 import 'package:sapphire/screens/account/reports/profitAndLoss.dart';
 import 'package:sapphire/screens/account/others/referAFriend.dart';
 import 'package:sapphire/screens/account/reports/orderBook.dart';

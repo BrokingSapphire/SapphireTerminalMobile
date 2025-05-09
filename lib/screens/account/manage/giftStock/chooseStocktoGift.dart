@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:pinput/pinput.dart';
 import 'package:sapphire/utils/constWidgets.dart';
@@ -46,6 +47,50 @@ class _ChoosestocktogiftState extends State<Choosestocktogift>
         timer.cancel();
       }
     });
+  }
+
+  void showSuccessPopup(BuildContext context, bool isDark) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.black,
+      builder: (context) {
+        return Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 16),
+          decoration: BoxDecoration(
+            color: isDark ? Color(0xff121413) : Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 35.h),
+              SvgPicture.asset(
+                "assets/svgs/doneMark.svg",
+              ),
+              SizedBox(height: 16.h),
+              Text(
+                "Gift sent succesfully!",
+                style: TextStyle(
+                  fontSize: 21.sp,
+                  color: Color(0xFFEBEEF5),
+                ),
+              ),
+              SizedBox(height: 24.h),
+              Text(
+                "Invest in stocks and track your portfolio here.",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 15.sp,
+                  color: Colors.white,
+                ),
+              ),
+              // Bottom sheet title
+            ],
+          ),
+        );
+      },
+    );
   }
 
   // Method to show the forget MPIN bottom sheet with OTP fields
@@ -242,7 +287,10 @@ class _ChoosestocktogiftState extends State<Choosestocktogift>
                           //         navi(changeNewPinScreen(), context);
                           //       }
                           //     : null,
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pop(context);
+                            showSuccessPopup(context, isDark);
+                          },
                           child: Text(
                             "Verify",
                             style: TextStyle(

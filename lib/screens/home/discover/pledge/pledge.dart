@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import 'package:sapphire/screens/account/manage/chooseStocktoGift.dart';
+import 'package:sapphire/screens/account/manage/giftStock/chooseStocktoGift.dart';
 import 'package:sapphire/screens/home/discover/pledge/pledgeHistory.dart';
 import 'package:sapphire/screens/home/discover/pledge/pledgeStocks.dart';
 import 'package:sapphire/utils/constWidgets.dart';
