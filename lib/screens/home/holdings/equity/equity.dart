@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/screens/home/holdings/holdingsBottomSheet.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
@@ -148,21 +149,21 @@ class _EquityScreenState extends State<EquityScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-                height: 150.h,
-                width: 150.w,
-                child: Image.asset("assets/emptyPng/holdingEquity.png")),
-            Text(
-              "No Holdings Found",
-              style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
-            ),
+                height: 64.h,
+                width: 64.w,
+                child: SvgPicture.asset("assets/svgs/doneMark.svg")),
+            SizedBox(height: 20.h),
+            Text("No Equity Found",
+                style: TextStyle(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.bold,
+                    color: isDark ? Colors.white : Colors.black)),
+            SizedBox(height: 10.h),
             SizedBox(
-              width: 250.w,
-              child: Text(
-                "Invest in stocks and track your portfolio here",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18.sp, color: Colors.grey),
-              ),
-            ),
+                width: 250.w,
+                child: Text("Invest in stocks and track your portfolio here.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 13.sp, color: Colors.grey))),
           ],
         ),
       );
@@ -230,37 +231,31 @@ class _EquityScreenState extends State<EquityScreen> {
               ),
               // Show empty state if no results found
               if (filteredEquityData.isEmpty)
-                Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 50.h),
-                      Icon(
-                        Icons.search_off,
-                        size: 48.sp,
-                        color: isDark ? Colors.grey : Colors.grey.shade600,
-                      ),
-                      SizedBox(height: 16.h),
-                      Text(
-                        _searchQuery.isEmpty
-                            ? "No Equity Investments"
-                            : "No stocks starting with '${_searchQuery}' found",
-                        style: TextStyle(
-                            fontSize: 18.sp, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 8.h),
-                      SizedBox(
-                        width: 250.w,
-                        child: Text(
-                          _searchQuery.isEmpty
-                              ? "Invest in stocks to build your equity portfolio."
-                              : "Try a different search term",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 16.sp, color: Colors.grey),
-                        ),
-                      ),
-                      SizedBox(height: 50.h),
-                    ],
+                Expanded(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                            height: 64.h,
+                            width: 64.w,
+                            child: SvgPicture.asset("assets/svgs/doneMark.svg")),
+                        SizedBox(height: 20.h),
+                        Text("No Equity Found",
+                            style: TextStyle(
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.bold,
+                                color: isDark ? Colors.white : Colors.black)),
+                        SizedBox(height: 10.h),
+                        SizedBox(
+                            width: 250.w,
+                            child: Text(
+                                "Invest in stocks and track your portfolio here.",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 13.sp, color: Colors.grey))),
+                      ],
+                    ),
                   ),
                 )
               else

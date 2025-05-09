@@ -405,7 +405,6 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "change": "(-1.00%)",
             "type": "MTF"
           },
-          // ... Add more entries as needed
         ];
         break;
       case "Executed":
@@ -750,19 +749,20 @@ class _OrderTabContentState extends State<OrderTabContent> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-                height: 150.h,
-                width: 150.w,
-                child: Image.asset("assets/emptyPng/orders.png")),
+                height: 64.h,
+                width: 64.w,
+                child: SvgPicture.asset("assets/svgs/doneMark.svg")),
+            SizedBox(height: 20.h),
             Text(
               "No ${widget.tabType} Orders",
-              style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold),
             ),
             SizedBox(
               width: 250.w,
               child: Text(
                 "Your ${widget.tabType.toLowerCase()} orders will appear here. Start trading now!",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18.sp, color: Colors.grey),
+                style: TextStyle(fontSize: 13.sp, color: Color(0xffC9CACC)),
               ),
             ),
           ],

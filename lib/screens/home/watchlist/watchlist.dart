@@ -416,23 +416,24 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                            height: 150.h,
-                            width: 150.w,
+                            height: 64.h,
+                            width: 64.w,
                             child:
-                                Image.asset("assets/emptyPng/instruments.png")),
-                        Text("Watchlist ${index + 1} is empty",
+                                SvgPicture.asset("assets/svgs/doneMark.svg")),
+                        SizedBox(height: 20.h),
+                        Text("No Instruments Added",
                             style: TextStyle(
-                                fontSize: 24.sp,
+                                fontSize: 15.sp,
                                 fontWeight: FontWeight.bold,
                                 color: isDark ? Colors.white : Colors.black)),
                         SizedBox(height: 10.h),
                         SizedBox(
                             width: 250.w,
                             child: Text(
-                                "Use search bar to find and track favourite stocks here",
+                                "Use the search bar to find and track your favourite stocks here.",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    fontSize: 18.sp, color: Colors.grey))),
+                                    fontSize: 13.sp, color: Colors.grey))),
                       ],
                     ),
                   )

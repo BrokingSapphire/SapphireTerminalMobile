@@ -1,6 +1,7 @@
 // Pledge Content Widget
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class PledgeContentContent extends StatefulWidget {
@@ -105,32 +106,24 @@ class _PledgeContentContentState extends State<PledgeContentContent> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: 50.h),
-                      Icon(
-                        Icons.search_off,
-                        size: 48.sp,
-                        color: isDark ? Colors.grey : Colors.grey.shade600,
-                      ),
-                      SizedBox(height: 16.h),
-                      Text(
-                        _searchQuery.isEmpty
-                            ? "No Equity Investments"
-                            : "No stocks starting with '${_searchQuery}' found",
-                        style: TextStyle(
-                            fontSize: 18.sp, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 8.h),
                       SizedBox(
-                        width: 250.w,
-                        child: Text(
-                          _searchQuery.isEmpty
-                              ? "Invest in stocks to build your equity portfolio."
-                              : "Try a different search term",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 16.sp, color: Colors.grey),
-                        ),
-                      ),
-                      SizedBox(height: 50.h),
+                          height: 64.h,
+                          width: 64.w,
+                          child: SvgPicture.asset("assets/svgs/doneMark.svg")),
+                      SizedBox(height: 20.h),
+                      Text("No Pledgeable Holdings",
+                          style: TextStyle(
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.bold,
+                              color: isDark ? Colors.white : Colors.black)),
+                      SizedBox(height: 10.h),
+                      SizedBox(
+                          width: 250.w,
+                          child: Text(
+                              "Your eligible holdings will appear here. Start investing to pledge!",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 13.sp, color: Colors.grey))),
                     ],
                   ),
                 )

@@ -1,6 +1,7 @@
 // History Content Widget
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 class PledgeHistory extends StatelessWidget {
   const PledgeHistory({super.key});
@@ -279,19 +280,47 @@ class PledgeHistory extends StatelessWidget {
               ),
             ),
             SizedBox(height: 12.h),
-            Expanded(
-              child: ListView.builder(
-                itemCount: historyItems.length,
-                itemBuilder: (context, index) {
-                  final item = historyItems[index];
-                  return _buildHistoryItem(
-                    date: item['date'],
-                    status: item['status'],
-                    stocks: item['stocks'],
-                  );
-                },
+            if (historyItems.isEmpty)
+              Expanded(
+                  child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                        height: 64.h,
+                        width: 64.w,
+                        child: SvgPicture.asset("assets/svgs/doneMark.svg")),
+                    SizedBox(height: 20.h),
+                    Text("No Pledge History",
+                        style: TextStyle(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.bold,
+                            color: isDark ? Colors.white : Colors.black)),
+                    SizedBox(height: 10.h),
+                    SizedBox(
+                        width: 250.w,
+                        child: Text(
+                            "Your pledge and unpledge actions will appear here. Start pledging to build history!",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 13.sp, color: Colors.grey))),
+                  ],
+                ),
+              ))
+            else
+              Expanded(
+                child: ListView.builder(
+                  itemCount: historyItems.length,
+                  itemBuilder: (context, index) {
+                    final item = historyItems[index];
+                    return _buildHistoryItem(
+                      date: item['date'],
+                      status: item['status'],
+                      stocks: item['stocks'],
+                    );
+                  },
+                ),
               ),
-            ),
           ],
         ),
       ),

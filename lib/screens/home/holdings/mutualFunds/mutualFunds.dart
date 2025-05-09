@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class MutualFundsScreen extends StatefulWidget {
@@ -105,7 +106,6 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      // secondTitle,
                       secondValue.contains('-')
                           ? "Overall Loss"
                           : "Overall Gain",
@@ -224,184 +224,185 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
           },
           color: const Color(0xff1DB954), // Green refresh indicator
           backgroundColor: isDark ? const Color(0xff121413) : Colors.white,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(height: 16.h),
-
-                // Summary Card
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Container(
-                    height: 145.h,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6.r),
-                        color: isDark
-                            ? const Color(0xFF121413)
-                            : const Color(0xFFF4F4F9)),
+          child: filteredMutualFundsData.isEmpty
+              ? SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        constWidgets.singleCard("Current Value", '₹15,11,750',
-                            "Overall Loss", "-₹45,096", isDark),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.w),
-                          child: Divider(
-                            color: isDark
-                                ? const Color(0xff2F2F2F)
-                                : const Color(0xffD1D5DB),
-                            thickness: 1,
-                          ),
-                        ),
-                        Container(
-                          height: 120.h / 2,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.w),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Invested Value",
-                                      style: TextStyle(
-                                          fontSize: 13.sp,
-                                          color: isDark
-                                              ? Colors.white
-                                              : Colors.black),
-                                    ),
-                                    SizedBox(
-                                      height: 4.h,
-                                    ),
-                                    Text(
-                                      "₹19,91,071",
-                                      style: TextStyle(
-                                          fontSize: 17.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: isDark
-                                              ? Colors.white
-                                              : Colors.black),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      "XIRR",
-                                      style: TextStyle(
-                                          fontSize: 13.sp,
-                                          color: isDark
-                                              ? Colors.white
-                                              : Colors.black),
-                                    ),
-                                    SizedBox(
-                                      height: 4.h,
-                                    ),
-                                    RichText(
-                                      text: TextSpan(
-                                        children: [
-                                          TextSpan(
-                                            text: "-6.75%",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 17.sp,
-                                                color: Colors.red),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        SizedBox(
+                            height: 64.h,
+                            width: 64.w,
+                            child:
+                                SvgPicture.asset("assets/svgs/doneMark.svg")),
+                        SizedBox(height: 20.h),
+                        Text("No Mutual Fund Investments",
+                            style: TextStyle(
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.bold,
+                                color: isDark ? Colors.white : Colors.black)),
+                        SizedBox(height: 10.h),
+                        SizedBox(
+                            width: 250.w,
+                            child: Text(
+                                "Invest in mutual funds and grow your wealth over time.",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 13.sp, color: Colors.grey))),
                       ],
                     ),
                   ),
-                ),
-                SizedBox(height: 16.h),
+                )
+              : SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 16.h),
 
-                // Search field with input functionality
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: constWidgets.searchFieldWithInput(context,
-                      "Search Mutual Funds....", "mutual_funds", isDark,
-                      controller: _searchController, onChanged: (value) {
-                    setState(() {
-                      _searchQuery = value;
-                    });
-                  }),
-                ),
-
-                SizedBox(height: 16.h),
-
-                if (filteredMutualFundsData.isEmpty)
-                  Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(height: 50.h),
-                        Icon(
-                          Icons.search_off,
-                          size: 48.sp,
-                          color: isDark ? Colors.grey : Colors.grey.shade600,
-                        ),
-                        SizedBox(height: 16.h),
-                        Text(
-                          _searchQuery.isEmpty
-                              ? "No Mutual Fund Investment"
-                              : "No Mutual Funds starting with '${_searchQuery}' found",
-                          style: TextStyle(
-                              fontSize: 18.sp, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 8.h),
-                        SizedBox(
-                          width: 250.w,
-                          child: Text(
-                            _searchQuery.isEmpty
-                                ? "Invest in mutual funds and grow your wealth over time."
-                                : "Try a different search term",
-                            textAlign: TextAlign.center,
-                            style:
-                                TextStyle(fontSize: 16.sp, color: Colors.grey),
+                      // Summary Card
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        child: Container(
+                          height: 145.h,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6.r),
+                              color: isDark
+                                  ? const Color(0xFF121413)
+                                  : const Color(0xFFF4F4F9)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              constWidgets.singleCard("Current Value",
+                                  '₹15,11,750', "Overall Loss", "-₹45,096", isDark),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                                child: Divider(
+                                  color: isDark
+                                      ? const Color(0xff2F2F2F)
+                                      : const Color(0xffD1D5DB),
+                                  thickness: 1,
+                                ),
+                              ),
+                              Container(
+                                height: 120.h / 2,
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 16.w),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Invested Value",
+                                            style: TextStyle(
+                                                fontSize: 13.sp,
+                                                color: isDark
+                                                    ? Colors.white
+                                                    : Colors.black),
+                                          ),
+                                          SizedBox(
+                                            height: 4.h,
+                                          ),
+                                          Text(
+                                            "₹19,91,071",
+                                            style: TextStyle(
+                                                fontSize: 17.sp,
+                                                fontWeight: FontWeight.w600,
+                                                color: isDark
+                                                    ? Colors.white
+                                                    : Colors.black),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            "XIRR",
+                                            style: TextStyle(
+                                                fontSize: 13.sp,
+                                                color: isDark
+                                                    ? Colors.white
+                                                    : Colors.black),
+                                          ),
+                                          SizedBox(
+                                            height: 4.h,
+                                          ),
+                                          RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "-6.75%",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 17.sp,
+                                                      color: Colors.red),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        SizedBox(height: 50.h),
-                      ],
-                    ),
-                  )
-                else
-                  ListView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      children: [
-                        ListView.builder(
+                      ),
+                      SizedBox(height: 16.h),
+
+                      // Search field with input functionality
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        child: constWidgets.searchFieldWithInput(context,
+                            "Search Mutual Funds....", "mutual_funds", isDark,
+                            controller: _searchController, onChanged: (value) {
+                          setState(() {
+                            _searchQuery = value;
+                          });
+                        }),
+                      ),
+
+                      SizedBox(height: 16.h),
+
+                      ListView(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: filteredMutualFundsData.length,
-                          itemBuilder: (context, index) {
-                            var data = filteredMutualFundsData[index];
-                            return _fundTile(
-                              title: data['title'],
-                              category: data['category'],
-                              invested: data['invested'],
-                              returns: data['returns'],
-                              isGain: data['isGain'],
-                              icon: data['icon'],
-                              isDark: isDark,
-                            );
-                          },
-                        )
-                      ]),
-              ],
-            ),
-          ),
+                          children: [
+                            ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: filteredMutualFundsData.length,
+                              itemBuilder: (context, index) {
+                                var data = filteredMutualFundsData[index];
+                                return _fundTile(
+                                  title: data['title'],
+                                  category: data['category'],
+                                  invested: data['invested'],
+                                  returns: data['returns'],
+                                  isGain: data['isGain'],
+                                  icon: data['icon'],
+                                  isDark: isDark,
+                                );
+                              },
+                            )
+                          ]),
+                    ],
+                  ),
+                ),
         ));
   }
 
@@ -491,7 +492,6 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
                           CircleAvatar(
                             radius: 20.r,
                             backgroundColor: const Color(0xFFEDEDED),
-                            // child: Icon(icon, color: Colors.red, size: 16),
                             child: Image.asset(
                               "assets/images/reliance logo.png",
                               fit: BoxFit.fill,

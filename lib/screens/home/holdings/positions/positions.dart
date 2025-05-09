@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/screens/home/holdings/holdingsBottomSheet.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
@@ -37,76 +38,76 @@ class _positionScreenState extends State<positionScreen> {
   }
 
   List<Map<String, dynamic>> positionData = [
-    {
-      "title": "ALKYLAMINE",
-      "midtitle": "Alklyl Amines Chemical Ltd",
-      "subtitle": "1,782 (-2.5%)",
-      "trail1": "+3,20,734.12 (+1.5%)",
-      "trail2": "BUY",
-      "trail3": "INTRADAY",
-      "isBuy": true,
-      "isOpen": true
-    },
-    {
-      "title": "ALKYLAMINE 1200 CC",
-      "midtitle": "24 April 2025",
-      "subtitle": "1,782 (-2.5%)",
-      "trail1": "-3,23,067.14 (-1.5%)",
-      "trail2": "SELL",
-      "trail3": "INTRADAY",
-      "isBuy": false,
-      "isOpen": true
-    },
-    {
-      "title": "ALKYLAMINE FUT",
-      "midtitle": "27 Mar 2025",
-      "subtitle": "1,782 (-2.5%)",
-      "trail1": "+3,20,734.12 (+1.5%)",
-      "trail2": "BUY",
-      "trail3": "INTRADAY",
-      "isBuy": true,
-      "isOpen": true
-    },
-    {
-      "title": "ALKYLAMINE 1200 CE",
-      "midtitle": "24 Apr 2025",
-      "subtitle": "1,782 (-2.5%)",
-      "trail1": "-3,23,067.14 (-1.5%)",
-      "trail2": "SELL",
-      "trail3": "CARRYFORWARD",
-      "isBuy": false,
-      "isOpen": false
-    },
-    {
-      "title": "ALKYLAMINE",
-      "midtitle": "Alklyl Amines Chemical Tech",
-      "subtitle": "1,782 (-2.5%)",
-      "trail1": "+3,20,734.12 (+1.5%)",
-      "trail2": "BUY",
-      "trail3": "INTRADAY",
-      "isBuy": true,
-      "isOpen": false
-    },
-    {
-      "title": "ALKYLAMINE 1200 CC",
-      "midtitle": "24 April 2025",
-      "subtitle": "1,782 (-2.5%)",
-      "trail1": "-3,23,067.14 (-1.5%)",
-      "trail2": "SELL",
-      "trail3": "INTRADAY",
-      "isBuy": false,
-      "isOpen": false
-    },
-    {
-      "title": "ALKYLAMINE FUT",
-      "midtitle": "27 Mar 2025",
-      "subtitle": "1,782 (-2.5%)",
-      "trail1": "+3,20,734.12 (+1.5%)",
-      "trail2": "BUY",
-      "trail3": "INTRADAY",
-      "isBuy": true,
-      "isOpen": false
-    },
+    // {
+    //   "title": "ALKYLAMINE",
+    //   "midtitle": "Alklyl Amines Chemical Ltd",
+    //   "subtitle": "1,782 (-2.5%)",
+    //   "trail1": "+3,20,734.12 (+1.5%)",
+    //   "trail2": "BUY",
+    //   "trail3": "INTRADAY",
+    //   "isBuy": true,
+    //   "isOpen": true
+    // },
+    // {
+    //   "title": "ALKYLAMINE 1200 CC",
+    //   "midtitle": "24 April 2025",
+    //   "subtitle": "1,782 (-2.5%)",
+    //   "trail1": "-3,23,067.14 (-1.5%)",
+    //   "trail2": "SELL",
+    //   "trail3": "INTRADAY",
+    //   "isBuy": false,
+    //   "isOpen": true
+    // },
+    // {
+    //   "title": "ALKYLAMINE FUT",
+    //   "midtitle": "27 Mar 2025",
+    //   "subtitle": "1,782 (-2.5%)",
+    //   "trail1": "+3,20,734.12 (+1.5%)",
+    //   "trail2": "BUY",
+    //   "trail3": "INTRADAY",
+    //   "isBuy": true,
+    //   "isOpen": true
+    // },
+    // {
+    //   "title": "ALKYLAMINE 1200 CE",
+    //   "midtitle": "24 Apr 2025",
+    //   "subtitle": "1,782 (-2.5%)",
+    //   "trail1": "-3,23,067.14 (-1.5%)",
+    //   "trail2": "SELL",
+    //   "trail3": "CARRYFORWARD",
+    //   "isBuy": false,
+    //   "isOpen": false
+    // },
+    // {
+    //   "title": "ALKYLAMINE",
+    //   "midtitle": "Alklyl Amines Chemical Tech",
+    //   "subtitle": "1,782 (-2.5%)",
+    //   "trail1": "+3,20,734.12 (+1.5%)",
+    //   "trail2": "BUY",
+    //   "trail3": "INTRADAY",
+    //   "isBuy": true,
+    //   "isOpen": false
+    // },
+    // {
+    //   "title": "ALKYLAMINE 1200 CC",
+    //   "midtitle": "24 April 2025",
+    //   "subtitle": "1,782 (-2.5%)",
+    //   "trail1": "-3,23,067.14 (-1.5%)",
+    //   "trail2": "SELL",
+    //   "trail3": "INTRADAY",
+    //   "isBuy": false,
+    //   "isOpen": false
+    // },
+    // {
+    //   "title": "ALKYLAMINE FUT",
+    //   "midtitle": "27 Mar 2025",
+    //   "subtitle": "1,782 (-2.5%)",
+    //   "trail1": "+3,20,734.12 (+1.5%)",
+    //   "trail2": "BUY",
+    //   "trail3": "INTRADAY",
+    //   "isBuy": true,
+    //   "isOpen": false
+    // },
     {
       "title": "ALKYLAMINE 1200 CE",
       "midtitle": "24 Apr 2025",
@@ -168,8 +169,7 @@ class _positionScreenState extends State<positionScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  // firstTitle,
-                  firstValue.contains('-') ? "Total Loss" : "Total Gain",
+                  firstTitle,
                   style: TextStyle(
                       fontSize: 13.sp,
                       color: isDark ? Colors.white : Colors.black),
@@ -201,43 +201,6 @@ class _positionScreenState extends State<positionScreen> {
                 ),
               ],
             ),
-            // Column(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   crossAxisAlignment: CrossAxisAlignment.end,
-            //   children: [
-            //     Text(
-            //       secondTitle,
-            //       style: TextStyle(
-            //           fontSize: 13.sp,
-            //           color: isDark ? Colors.white : Colors.black),
-            //     ),
-            //     SizedBox(
-            //       height: 5.h,
-            //     ),
-            //     Row(
-            //       children: [
-            //         Text(
-            //           secondValue,
-            //           style: TextStyle(
-            //               fontWeight: FontWeight.w400,
-            //               fontSize: 17.sp,
-            //               color: secondValue.contains('-')
-            //                   ? Colors.red
-            //                   : Colors.green),
-            //         ),
-            //         SizedBox(
-            //           width: 4.w,
-            //         ),
-            //         Text(
-            //           "(-22.51%)",
-            //           style: TextStyle(
-            //               fontSize: 10.sp,
-            //               color: isDark ? Colors.white : Colors.black),
-            //         ),
-            //       ],
-            //     ),
-            //   ],
-            // ),
           ],
         ),
       ),
@@ -257,126 +220,123 @@ class _positionScreenState extends State<positionScreen> {
         },
         color: const Color(0xff1DB954), // Green refresh indicator
         backgroundColor: isDark ? const Color(0xff121413) : Colors.white,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 15.h,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6.r),
-                      color: isDark
-                          ? const Color(0xFF121413)
-                          : const Color(0xFFF4F4F9)),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 6.h),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        positionCard('-₹15,11,750', "-₹45,096", isDark),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 15.h,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: constWidgets.searchFieldWithInput(
-                    context, "Search by name or ticker", "positions", isDark,
-                    controller: _searchController, onChanged: (value) {
-                  setState(() {
-                    _searchQuery = value;
-                  });
-                }),
-              ),
-              SizedBox(
-                height: 15.h,
-              ),
-              if (filteredPositionData.isEmpty)
-                Center(
+        child: filteredPositionData.isEmpty
+            ? SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: 50.h),
-                      Icon(
-                        Icons.search_off,
-                        size: 48.sp,
-                        color: isDark ? Colors.grey : Colors.grey.shade600,
-                      ),
-                      SizedBox(height: 16.h),
-                      Text(
-                        _searchQuery.isEmpty
-                            ? "No Open Positions"
-                            : "No positions starting with '${_searchQuery}' found",
-                        style: TextStyle(
-                            fontSize: 18.sp, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 8.h),
                       SizedBox(
-                        width: 250.w,
-                        child: Text(
-                          _searchQuery.isEmpty
-                              ? "Your active trades will be listed here. Start trading today!"
-                              : "Try a different search term",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 16.sp, color: Colors.grey),
-                        ),
-                      ),
-                      SizedBox(height: 50.h),
+                          height: 64.h,
+                          width: 64.w,
+                          child: SvgPicture.asset("assets/svgs/doneMark.svg")),
+                      SizedBox(height: 20.h),
+                      Text("No Open Positions",
+                          style: TextStyle(
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.bold,
+                              color: isDark ? Colors.white : Colors.black)),
+                      SizedBox(height: 10.h),
+                      SizedBox(
+                          width: 250.w,
+                          child: Text(
+                              "Your active trades will be listed here. Start Trading Now!",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 13.sp, color: Colors.grey))),
                     ],
                   ),
-                )
-              else
-                ListView(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    children: [
-                      ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: filteredPositionData.length,
-                          itemBuilder: (context, index) {
-                            var data = filteredPositionData[index];
-                            return GestureDetector(
-                              behavior: HitTestBehavior.opaque,
-                              onTap: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
-                                  builder: (context) => holdingsBottomSheet(
-                                    stockName: data['title'] ?? '',
-                                    stockCode: data['code'] ?? '',
-                                    price: data['price'] ?? '',
-                                    change: data['change'] ?? '',
-                                  ),
+                ),
+              )
+            : SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ListView(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        children: [
+                          SizedBox(
+                            height: 15.h,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16.w),
+                            child: Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(6.r),
+                                  color: isDark
+                                      ? const Color(0xFF121413)
+                                      : const Color(0xFFF4F4F9)),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 6.h),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    positionCard(
+                                        '-₹15,11,750', "-₹45,096", isDark),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15.h,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16.w),
+                            child: constWidgets.searchFieldWithInput(context,
+                                "Search by name or ticker", "positions", isDark,
+                                controller: _searchController,
+                                onChanged: (value) {
+                              setState(() {
+                                _searchQuery = value;
+                              });
+                            }),
+                          ),
+                          SizedBox(
+                            height: 15.h,
+                          ),
+                          ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: filteredPositionData.length,
+                              itemBuilder: (context, index) {
+                                var data = filteredPositionData[index];
+                                return GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      builder: (context) => holdingsBottomSheet(
+                                        stockName: data['title'] ?? '',
+                                        stockCode: data['code'] ?? '',
+                                        price: data['price'] ?? '',
+                                        change: data['change'] ?? '',
+                                      ),
+                                    );
+                                  },
+                                  child: positionScreenTiles(
+                                      data['title'] ?? '',
+                                      data['midtitle'] ?? '',
+                                      data['subtitle'] ?? '',
+                                      data['trail1'] ?? '',
+                                      data['trail2'] ?? '',
+                                      data['trail3'] ?? '',
+                                      data['isBuy'] ?? false,
+                                      isDark,
+                                      isOpen: data.containsKey('isOpen')
+                                          ? data['isOpen']
+                                          : true),
                                 );
-                              },
-                              child: positionScreenTiles(
-                                  data['title'] ?? '',
-                                  data['midtitle'] ?? '',
-                                  data['subtitle'] ?? '',
-                                  data['trail1'] ?? '',
-                                  data['trail2'] ?? '',
-                                  data['trail3'] ?? '',
-                                  data['isBuy'] ?? false,
-                                  isDark,
-                                  isOpen: data.containsKey('isOpen')
-                                      ? data['isOpen']
-                                      : true),
-                            );
-                          })
-                    ])
-            ],
-          ),
-        ),
+                              })
+                        ])
+                  ],
+                ),
+              ),
       ),
     );
   }
@@ -386,16 +346,12 @@ class _positionScreenState extends State<positionScreen> {
       {bool isOpen = true}) {
     // Get chip colors for trail3
     final chipColors = _getChipColors(trail3);
-    // Use a default value if isOpen is null
-    // final isOpenValue = isOpen;
 
     return Column(
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
           child: Container(
-            // height: 95.h,
-            // color: isOpen ? Colors.transparent : Colors.grey.withOpacity(0.1),
             child: Row(
               children: [
                 Container(
