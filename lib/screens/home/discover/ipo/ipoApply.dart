@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class IPOApply extends StatefulWidget {
@@ -295,13 +296,98 @@ class _IPOApplyState extends State<IPOApply>
                 ),
                 Padding(
                   padding: EdgeInsets.all(16.h),
-                  child: constWidgets.greenButton("Apply for Ipo"),
+                  child: constWidgets.greenButton("Apply for Ipo", onTap: () {
+                    _showSuccessPopup(context);
+                  }),
                 )
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  void _showSuccessPopup(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isDismissible: true,
+      enableDrag: true,
+      builder: (BuildContext context) {
+        return Container(
+          padding: EdgeInsets.all(24.w),
+          decoration: BoxDecoration(
+            color: isDark ? Color(0xff121413) : Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(24.r),
+              topRight: Radius.circular(24.r),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Success icon
+              SizedBox(height: 24.h),
+              SvgPicture.asset(
+                'assets/svgs/applyIpo.svg',
+                // color: isDark ? Colors.white : Colors.black,
+              ),
+              SizedBox(height: 24.h),
+              // Success text
+              Text(
+                'Successfully Applied for IPO',
+                style: TextStyle(
+                  fontSize: 21.sp,
+                  fontWeight: FontWeight.w600,
+                  color: isDark ? Colors.white : Colors.black,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 12.h),
+              // Description text
+              Text(
+                'The payment mandate will be sent to your UPI application shortly.',
+                style: TextStyle(
+                  fontSize: 15.sp,
+                  color: isDark
+                      ? Colors.white.withOpacity(0.7)
+                      : Colors.black.withOpacity(0.7),
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 24.h),
+              // View Application Status button
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    // Add navigation to application status page if needed
+                  },
+                  child: Text(
+                    'View Application Status',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF1DB954),
+                    padding: EdgeInsets.symmetric(vertical: 12.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
