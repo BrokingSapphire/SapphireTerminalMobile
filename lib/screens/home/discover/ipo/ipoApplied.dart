@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sapphire/screens/home/discover/ipo/applied/ipoApplication.dart';
+import 'package:sapphire/screens/home/discover/ipo/applied/ipoApplicationStatus.dart';
 
 class appliedIpo extends StatefulWidget {
   const appliedIpo({Key? key}) : super(key: key);
