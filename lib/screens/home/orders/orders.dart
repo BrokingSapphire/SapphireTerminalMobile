@@ -167,21 +167,6 @@ class _TabBarHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
   double get maxExtent => 55.h;
 
-  PopupMenuEntry<String> _menuItem(
-      IconData icon, String text, VoidCallback? onTap) {
-    return PopupMenuItem<String>(
-      onTap: onTap,
-      value: text,
-      child: Row(
-        children: [
-          Icon(icon, size: 18.sp, color: Colors.white70),
-          SizedBox(width: 10.w),
-          Text(text, style: TextStyle(fontSize: 14.sp, color: Colors.white)),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
@@ -243,49 +228,72 @@ class _TabBarHeaderDelegate extends SliverPersistentHeaderDelegate {
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
-                  final RenderBox renderBox = _menuButtonKey.currentContext!
-                      .findRenderObject() as RenderBox;
-                  final offset = renderBox.localToGlobal(Offset.zero);
-                  final size = renderBox.size;
-
-                  showMenu<String>(
+                  showModalBottomSheet(
                     context: context,
-                    position: RelativeRect.fromLTRB(
-                      offset.dx,
-                      offset.dy + size.height,
-                      offset.dx + size.width,
-                      offset.dy,
-                    ),
-                    items: [
-                      PopupMenuItem<String>(
-                        enabled: false,
-                        child: Text(
-                          "Explore More Orders",
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white70,
-                          ),
-                        ),
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20.r),
                       ),
-                      _menuItem(Icons.show_chart, "Stock SIP", () {
-                        print('Stock SIP selected');
-                      }),
-                      _menuItem(Icons.timeline, "GTT Order", () {
-                        navi(gtt1Screen(), context);
-                      }),
-                      _menuItem(Icons.shopping_basket, "Basket Order", () {
-                        navi(basketScreen(), context);
-                      }),
-                      _menuItem(Icons.notifications_active, "Stock Alerts", () {
-                        navi(PriceAlerts(), context);
-                      }),
-                    ],
-                  ).then((value) {
-                    if (value != null) {
-                      print('Selected: $value');
-                    }
-                  });
+                    ),
+                    builder: (BuildContext context) {
+                      return Container(
+                        padding: EdgeInsets.symmetric(vertical: 20.h),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16.w),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Explore More Orders",
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  IconButton(
+                                    icon: Icon(Icons.close),
+                                    onPressed: () => Navigator.pop(context),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Divider(
+                              height: 1.h,
+                              color: Color(0xff2f2f2f),
+                            ),
+                            ListTile(
+                              leading: Icon(Icons.show_chart),
+                              title: Text("Stock SIP"),
+                              onTap: () {
+                                Navigator.pop(context);
+                                print('Stock SIP selected');
+                              },
+                            ),
+                            ListTile(
+                              leading: Icon(Icons.timeline),
+                              title: Text("GTT Order"),
+                              onTap: () {
+                                Navigator.pop(context);
+                                navi(gtt1Screen(), context);
+                              },
+                            ),
+                            ListTile(
+                              leading: Icon(Icons.shopping_basket),
+                              title: Text("Basket Order"),
+                              onTap: () {
+                                Navigator.pop(context);
+                                navi(basketScreen(), context);
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
                 },
                 child: Padding(
                   padding: EdgeInsets.only(right: 20.w, top: 16.h),
@@ -868,16 +876,6 @@ Widget contentCard(String title, String quantity, String time, String price,
               ),
               SizedBox(width: 4.w),
 
-              if (orderStatus == "Executed" ||
-                  orderStatus == "Declined" ||
-                  orderStatus == "Cancelled") ...[
-                SizedBox(width: 4.w),
-                _infoChip("Executed"),
-                Text(
-                  " / ",
-                  style: TextStyle(fontSize: 13.sp),
-                ),
-              ],
               _infoChip("NSE-EQ"),
               // Show exchange chip only for executed and declined orders
             ],
@@ -896,6 +894,8 @@ Widget contentCard(String title, String quantity, String time, String price,
         Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
           Row(
             children: [
+              orderType(type),
+              SizedBox(width: 6.w),
               SvgPicture.asset('assets/svgs/clock.svg',
                   height: 12.h,
                   colorFilter: ColorFilter.mode(
@@ -904,8 +904,6 @@ Widget contentCard(String title, String quantity, String time, String price,
               Text(time,
                   style: TextStyle(
                       color: const Color(0xffEBEEF5), fontSize: 10.sp)),
-              SizedBox(width: 6.w),
-              orderType(type),
             ],
           ),
           SizedBox(height: 6.h),
