@@ -1244,7 +1244,7 @@ class _CustomTabBarState extends State<CustomTabBar> {
                 children: [
                   // Background divider
                   Container(
-                    height: 1.h,
+                    height: 2.h,
                     width: double.infinity,
                     color: isDark ? Color(0xff2f2f2f) : Color(0xffD1D5DB),
                   ),

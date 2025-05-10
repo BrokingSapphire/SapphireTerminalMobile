@@ -74,7 +74,7 @@ Widget ipoTile({
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
                       )),
-                  SizedBox(height: 2.h),
+                  SizedBox(height: 8.h),
 
                   // Closing date and minimum investment row
                   Row(
@@ -83,24 +83,24 @@ Widget ipoTile({
                           text: TextSpan(
                               text: "Closes on : ",
                               style: TextStyle(
-                                  color: Color(0xffc9cacc), fontSize: 12.sp),
+                                  color: Color(0xffc9cacc), fontSize: 10.sp),
                               children: [
                             TextSpan(
                                 text: closeDate,
                                 style: TextStyle(
-                                    color: Color(0xFFEBEEF5), fontSize: 12.sp))
+                                    color: Color(0xFFEBEEF5), fontSize: 10.sp))
                           ])),
                       Spacer(),
                       RichText(
                           text: TextSpan(
                               text: "Min Investment : ",
                               style: TextStyle(
-                                  color: Color(0xffc9cacc), fontSize: 12.sp),
+                                  color: Color(0xffc9cacc), fontSize: 10.sp),
                               children: [
                             TextSpan(
                                 text: minInvestment,
                                 style: TextStyle(
-                                    color: Color(0xFFEBEEF5), fontSize: 12.sp))
+                                    color: Color(0xFFEBEEF5), fontSize: 10.sp))
                           ])),
                     ],
                   ),
@@ -112,8 +112,8 @@ Widget ipoTile({
                     children: [
                       // Primary badge (e.g., "Mainboard")
                       Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 4, vertical: 3),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 4.w, vertical: 3.h),
                         decoration: BoxDecoration(
                           color: Color(0xFF491787)
                               .withOpacity(0.5), // Purple background
@@ -123,7 +123,7 @@ Widget ipoTile({
                             style: TextStyle(
                                 color: Color(0xffCBA0FF), fontSize: 10.sp)),
                       ),
-                      SizedBox(width: 8),
+                      SizedBox(width: 8.w),
 
                       // Secondary badge (e.g., "Fresh Issue")
                       Container(
@@ -186,19 +186,20 @@ Widget ipoTile({
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(statusDay,
-                    style: TextStyle(color: Color(0xffD9C544), fontSize: 12)),
+                    style:
+                        TextStyle(color: Color(0xffD9C544), fontSize: 12.sp)),
               ),
               SizedBox(width: 8),
               Text("Subscription status",
-                  style: TextStyle(color: Colors.white, fontSize: 13)),
+                  style: TextStyle(color: Colors.white, fontSize: 13.sp)),
               Spacer(),
               // Subscription rate (e.g., "2.5x")
               Text(subscriptionStatus,
                   style: TextStyle(
-                      color: Color(
-                          0xFF22A06B), // Green text for positive indication
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600)),
+                    color:
+                        Color(0xFF22A06B), // Green text for positive indication
+                    fontSize: 13.sp,
+                  )),
             ],
           ),
         ),
@@ -212,12 +213,12 @@ Widget ipoTile({
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("Price",
-                    style: TextStyle(color: Colors.white70, fontSize: 12)),
+                    style: TextStyle(color: Colors.white70, fontSize: 11.sp)),
                 SizedBox(height: 4.h),
                 Text("₹ $price",
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 15,
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.w500)),
               ],
             ),
@@ -227,12 +228,12 @@ Widget ipoTile({
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text("Lot Size",
-                    style: TextStyle(color: Colors.white70, fontSize: 12)),
+                    style: TextStyle(color: Colors.white70, fontSize: 11.sp)),
                 SizedBox(height: 4.h),
                 Text(lotSize,
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 15,
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.w500)),
               ],
             ),
@@ -242,8 +243,8 @@ Widget ipoTile({
 
         // Apply now button
         SizedBox(
-          width: 150.w,
-          height: 35.h,
+          width: 130.w,
+          height: 38.h,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF1DB954), // Brand green color
@@ -257,7 +258,7 @@ Widget ipoTile({
               "Apply now",
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 16.sp,
+                fontSize: 13.sp,
               ),
             ),
           ),

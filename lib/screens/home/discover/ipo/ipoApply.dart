@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sapphire/main.dart';
+import 'package:sapphire/screens/home/discover/ipo/ipoApplicationStatus.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class IPOApply extends StatefulWidget {
@@ -29,32 +31,31 @@ class _IPOApplyState extends State<IPOApply>
       backgroundColor: isDark ? Colors.black : Colors.white,
       appBar: AppBar(
         backgroundColor: isDark ? Colors.black : Colors.white,
-        elevation: 0,
+        leadingWidth: 28,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,
-              color: isDark ? Colors.white : Colors.black),
+          icon: Icon(
+            Icons.arrow_back,
+            color: isDark ? Colors.white : Colors.black,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Wagons Learning Ltd',
+              "Wagons Learning Ltd",
               style: TextStyle(
-                color: isDark ? Colors.white : Colors.black,
-                fontWeight: FontWeight.w600,
-                fontSize: 16.sp,
-              ),
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w700,
+                  color: isDark ? Colors.white : Colors.black),
             ),
             SizedBox(height: 4.h),
             Text(
-              '\u20B978.89 - \u20B982.89',
+              "₹78.89 - ₹82.89",
               style: TextStyle(
-                color: isDark
-                    ? Colors.white.withOpacity(0.6)
-                    : Colors.black.withOpacity(0.6),
-                fontSize: 12.sp,
-              ),
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w500,
+                  color: isDark ? Colors.white : Color(0xff6B7280)),
             ),
           ],
         ),
@@ -71,7 +72,7 @@ class _IPOApplyState extends State<IPOApply>
               children: [
                 // Investor Type section
                 Container(
-                  padding: EdgeInsets.all(16.w),
+                  padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: isDark ? const Color(0xFF121413) : Color(0xFFF4F4F9),
                     borderRadius: BorderRadius.circular(12.r),
@@ -81,9 +82,10 @@ class _IPOApplyState extends State<IPOApply>
                     children: [
                       Text('Investor type',
                           style: TextStyle(
-                              color: isDark ? Colors.white : Colors.black,
-                              fontWeight: FontWeight.w500)),
-                      SizedBox(height: 12.h),
+                            fontSize: 15.sp,
+                            color: isDark ? Colors.white : Colors.black,
+                          )),
+                      SizedBox(height: 6.h),
                       Row(
                         children: [
                           GestureDetector(
@@ -92,7 +94,7 @@ class _IPOApplyState extends State<IPOApply>
                               'Retail',
                               _selectedInvestor == 0,
                               context,
-                              100.w,
+                              112.w,
                               isDark,
                             ),
                           ),
@@ -103,34 +105,37 @@ class _IPOApplyState extends State<IPOApply>
                               'HNI',
                               _selectedInvestor == 1,
                               context,
-                              100.w,
+                              112.w,
                               isDark,
                             ),
                           )
                         ],
                       ),
-                      SizedBox(height: 20.h),
+                      SizedBox(height: 16.h),
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Number of lots',
                               style: TextStyle(
-                                  color: isDark ? Colors.white : Colors.black,
-                                  fontWeight: FontWeight.w500)),
+                                fontSize: 15.sp,
+                                color: isDark ? Colors.white : Colors.black,
+                              )),
                           Text('Max lots : $_maxLots',
                               style: TextStyle(
                                   color:
                                       isDark ? Colors.white70 : Colors.black54,
-                                  fontSize: 12)),
+                                  fontSize: 11.sp)),
                         ],
                       ),
-                      SizedBox(height: 8.h),
+                      SizedBox(height: 6.h),
                       Container(
+                        height: 48.h,
                         decoration: BoxDecoration(
-                          color: isDark ? Color(0xFF121413) : Colors.white,
-                          borderRadius: BorderRadius.circular(4.r),
+                          borderRadius: BorderRadius.circular(6.r),
                           border: Border.all(
-                              color: isDark ? Colors.white24 : Colors.black12),
+                              color:
+                                  isDark ? Color(0xff2f2f2f) : Colors.black12),
                         ),
                         child: Row(
                           children: [
@@ -145,7 +150,7 @@ class _IPOApplyState extends State<IPOApply>
                               child: Center(
                                 child: Text('$_lots',
                                     style: TextStyle(
-                                        fontSize: 18.sp,
+                                        fontSize: 15.sp,
                                         color: isDark
                                             ? Colors.white
                                             : Colors.black)),
@@ -161,32 +166,55 @@ class _IPOApplyState extends State<IPOApply>
                           ],
                         ),
                       ),
-                      SizedBox(height: 20.h),
+                      SizedBox(height: 16.h),
                       Text('Bid Price',
                           style: TextStyle(
-                              color: isDark ? Colors.white : Colors.black,
-                              fontWeight: FontWeight.w500)),
-                      SizedBox(height: 8.h),
-                      TextField(
-                        controller: _bidPriceController,
-                        keyboardType: TextInputType.number,
-                        style: TextStyle(
-                            color: isDark ? Colors.white : Colors.black),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: isDark ? Color(0xFF121413) : Colors.white,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.r),
-                              borderSide: BorderSide.none),
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 12.w, vertical: 16.h),
+                            fontSize: 15.sp,
+                            color: isDark ? Colors.white : Colors.black,
+                          )),
+                      SizedBox(height: 6.h),
+                      SizedBox(
+                        height: 48.h,
+                        child: TextField(
+                          controller: _bidPriceController,
+                          keyboardType: TextInputType.number,
+                          style: TextStyle(
+                            color: isDark ? Colors.white : Colors.black,
+                            fontSize: 13.sp,
+                          ),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(6.r),
+                              borderSide: BorderSide(
+                                  color: Color(
+                                      0xFF2F2F2F)), // Border color #2F2F2F
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(6.r),
+                              borderSide: BorderSide(
+                                  color: Color(
+                                      0xFF2F2F2F)), // Border color #2F2F2F
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(6.r),
+                              borderSide: BorderSide(
+                                  color: Color(
+                                      0xFF2F2F2F)), // Border color #2F2F2F
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 12.w,
+                              vertical: 16.h,
+                            ),
+                          ),
                         ),
                       ),
+                      SizedBox(height: 12.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Transform.scale(
-                            scale: 0.9,
+                          SizedBox(
+                            width: 16.w,
+                            height: 16.h,
                             child: Checkbox(
                               value: _cutoffChecked,
                               onChanged: (v) =>
@@ -197,15 +225,17 @@ class _IPOApplyState extends State<IPOApply>
                                       isDark ? Colors.white38 : Colors.black38),
                             ),
                           ),
+                          SizedBox(width: 10.w),
                           Text('Cut-off price',
                               style: TextStyle(
+                                  fontSize: 13.sp,
                                   color: isDark ? Colors.white : Colors.black)),
                         ],
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 24.h),
+                SizedBox(height: 12.h),
                 // UPI Section
                 Container(
                   padding: EdgeInsets.all(16.w),
@@ -218,36 +248,60 @@ class _IPOApplyState extends State<IPOApply>
                     children: [
                       Text('Enter UPI ID',
                           style: TextStyle(
-                              color: isDark ? Colors.white : Colors.black,
-                              fontWeight: FontWeight.w500)),
+                            fontSize: 15.sp,
+                            color: isDark ? Colors.white : Colors.black,
+                          )),
                       SizedBox(height: 6.h),
                       Text('Enter UPI ID linked to your bank account',
                           style: TextStyle(
-                              color: isDark ? Colors.white60 : Colors.black54,
-                              fontSize: 12)),
-                      SizedBox(height: 12.h),
-                      TextField(
-                        controller: _upiController,
-                        style: TextStyle(
-                            color: isDark ? Colors.white : Colors.black),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: isDark ? Color(0xFF121413) : Colors.white,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.r),
-                              borderSide: BorderSide.none),
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 12.w, vertical: 16.h),
-                          hintText: 'UPI ID',
-                          hintStyle: TextStyle(
-                              color: isDark ? Colors.white38 : Colors.black38),
+                            fontSize: 13.sp,
+                            color: isDark ? Colors.white : Colors.black54,
+                          )),
+                      SizedBox(height: 6.h),
+                      SizedBox(
+                        height: 48.h,
+                        child: TextField(
+                          controller: _upiController,
+                          style: TextStyle(
+                            color: isDark ? Colors.white : Colors.black,
+                            fontSize: 13.sp,
+                          ),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(
+                                  6.r), // Corner radius set to 6.r
+                              borderSide: BorderSide(
+                                  color: Color(
+                                      0xFF2F2F2F)), // Border color #2F2F2F
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(6.r),
+                              borderSide: BorderSide(
+                                  color: Color(
+                                      0xFF2F2F2F)), // Border color #2F2F2F
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(6.r),
+                              borderSide: BorderSide(
+                                  color: Color(
+                                      0xFF2F2F2F)), // Border color #2F2F2F
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 12.w,
+                              vertical: 16.h,
+                            ),
+                            hintText: 'UPI ID',
+                            hintStyle: TextStyle(
+                              color: isDark ? Colors.white38 : Colors.black38,
+                            ),
+                          ),
                         ),
                       ),
                       SizedBox(height: 12.h),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: TextButton(
-                          onPressed: () {},
+                        child: GestureDetector(
+                          onTap: () {},
                           child: Text('VERIFY UPI',
                               style: TextStyle(
                                   color: Color(0xFFC9CACC),
@@ -268,13 +322,12 @@ class _IPOApplyState extends State<IPOApply>
               mainAxisSize: MainAxisSize.min,
               children: [
                 Divider(
-                  height: 1,
+                  height: 1.h,
                   color: isDark ? const Color(0xFF2F2F2F) : Color(0xFFD1D5DB),
                 ),
-                SizedBox(height: 12.h),
                 Padding(
                   padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                   child: Column(
                     children: [
                       Row(
@@ -282,11 +335,13 @@ class _IPOApplyState extends State<IPOApply>
                         children: [
                           Text('Total Payable Amount',
                               style: TextStyle(
+                                  fontSize: 11.sp,
                                   color: isDark
                                       ? Colors.white60
                                       : Colors.black54)),
                           Text('₹13,46,678.68',
                               style: TextStyle(
+                                  fontSize: 11.sp,
                                   color: isDark ? Colors.white : Colors.black,
                                   fontWeight: FontWeight.bold)),
                         ],
@@ -295,10 +350,13 @@ class _IPOApplyState extends State<IPOApply>
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(16.h),
-                  child: constWidgets.greenButton("Apply for Ipo", onTap: () {
+                  padding: EdgeInsets.symmetric(horizontal: 12.h),
+                  child: constWidgets.greenButton("Apply for IPO", onTap: () {
                     _showSuccessPopup(context);
                   }),
+                ),
+                SizedBox(
+                  height: 20.h,
                 )
               ],
             ),
@@ -332,7 +390,7 @@ class _IPOApplyState extends State<IPOApply>
               // Success icon
               SizedBox(height: 24.h),
               SvgPicture.asset(
-                'assets/svgs/applyIpo.svg',
+                'assets/svgs/doneMark.svg',
                 // color: isDark ? Colors.white : Colors.black,
               ),
               SizedBox(height: 24.h),
@@ -365,6 +423,7 @@ class _IPOApplyState extends State<IPOApply>
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pop();
+                    navi(ipoApplication(), context);
                     // Add navigation to application status page if needed
                   },
                   child: Text(

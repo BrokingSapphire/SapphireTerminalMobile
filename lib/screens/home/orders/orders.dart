@@ -827,6 +827,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
                         orderData[index]["ltp"]!,
                         orderData[index]["change"]!,
                         orderData[index]["type"] ?? "DELIVERY",
+                        orderStatus:
+                            widget.tabType, // Pass the current tab type
                       ),
                       if (index != orderData.length - 1)
                         Divider(color: const Color(0xff2f2f2f)),
@@ -843,7 +845,8 @@ class _OrderTabContentState extends State<OrderTabContent> {
 }
 
 Widget contentCard(String title, String quantity, String time, String price,
-    String ltp, String change, String type) {
+    String ltp, String change, String type,
+    {String? orderStatus}) {
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
     child: Row(
@@ -864,11 +867,19 @@ Widget contentCard(String title, String quantity, String time, String price,
                     style: TextStyle(fontSize: 10.sp, color: Colors.green)),
               ),
               SizedBox(width: 4.w),
-              Text(
-                "•",
-                style: TextStyle(color: Colors.grey),
-              ),
+
+              if (orderStatus == "Executed" ||
+                  orderStatus == "Declined" ||
+                  orderStatus == "Cancelled") ...[
+                SizedBox(width: 4.w),
+                _infoChip("Executed"),
+                Text(
+                  " / ",
+                  style: TextStyle(fontSize: 13.sp),
+                ),
+              ],
               _infoChip("NSE-EQ"),
+              // Show exchange chip only for executed and declined orders
             ],
           ),
           SizedBox(height: 6.h),
@@ -905,11 +916,11 @@ Widget contentCard(String title, String quantity, String time, String price,
               Row(
                 children: [
                   Text("LTP",
-                      style: TextStyle(color: Colors.white70, fontSize: 12.sp)),
-                  SizedBox(width: 4.w),
-                  Text(ltp,
                       style:
                           TextStyle(color: Color(0xffc9cacc), fontSize: 12.sp)),
+                  SizedBox(width: 4.w),
+                  Text(ltp,
+                      style: TextStyle(color: Colors.white, fontSize: 12.sp)),
                 ],
               ),
               SizedBox(width: 4.w),
@@ -927,15 +938,15 @@ Widget contentCard(String title, String quantity, String time, String price,
 
 Widget _infoChip(String text) {
   return Container(
-    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+    padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
     decoration: BoxDecoration(
-      // color: Color(0xff333333),
+      color: Color(0xff303030),
       borderRadius: BorderRadius.circular(4.r),
     ),
     child: Text(
       text,
       style: TextStyle(
-          fontSize: 12.sp, fontWeight: FontWeight.w500, color: Colors.white),
+          fontSize: 10.sp, fontWeight: FontWeight.w500, color: Colors.white),
     ),
   );
 }

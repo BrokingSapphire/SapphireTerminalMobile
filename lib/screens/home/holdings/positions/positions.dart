@@ -38,76 +38,76 @@ class _positionScreenState extends State<positionScreen> {
   }
 
   List<Map<String, dynamic>> positionData = [
-    // {
-    //   "title": "ALKYLAMINE",
-    //   "midtitle": "Alklyl Amines Chemical Ltd",
-    //   "subtitle": "1,782 (-2.5%)",
-    //   "trail1": "+3,20,734.12 (+1.5%)",
-    //   "trail2": "BUY",
-    //   "trail3": "INTRADAY",
-    //   "isBuy": true,
-    //   "isOpen": true
-    // },
-    // {
-    //   "title": "ALKYLAMINE 1200 CC",
-    //   "midtitle": "24 April 2025",
-    //   "subtitle": "1,782 (-2.5%)",
-    //   "trail1": "-3,23,067.14 (-1.5%)",
-    //   "trail2": "SELL",
-    //   "trail3": "INTRADAY",
-    //   "isBuy": false,
-    //   "isOpen": true
-    // },
-    // {
-    //   "title": "ALKYLAMINE FUT",
-    //   "midtitle": "27 Mar 2025",
-    //   "subtitle": "1,782 (-2.5%)",
-    //   "trail1": "+3,20,734.12 (+1.5%)",
-    //   "trail2": "BUY",
-    //   "trail3": "INTRADAY",
-    //   "isBuy": true,
-    //   "isOpen": true
-    // },
-    // {
-    //   "title": "ALKYLAMINE 1200 CE",
-    //   "midtitle": "24 Apr 2025",
-    //   "subtitle": "1,782 (-2.5%)",
-    //   "trail1": "-3,23,067.14 (-1.5%)",
-    //   "trail2": "SELL",
-    //   "trail3": "CARRYFORWARD",
-    //   "isBuy": false,
-    //   "isOpen": false
-    // },
-    // {
-    //   "title": "ALKYLAMINE",
-    //   "midtitle": "Alklyl Amines Chemical Tech",
-    //   "subtitle": "1,782 (-2.5%)",
-    //   "trail1": "+3,20,734.12 (+1.5%)",
-    //   "trail2": "BUY",
-    //   "trail3": "INTRADAY",
-    //   "isBuy": true,
-    //   "isOpen": false
-    // },
-    // {
-    //   "title": "ALKYLAMINE 1200 CC",
-    //   "midtitle": "24 April 2025",
-    //   "subtitle": "1,782 (-2.5%)",
-    //   "trail1": "-3,23,067.14 (-1.5%)",
-    //   "trail2": "SELL",
-    //   "trail3": "INTRADAY",
-    //   "isBuy": false,
-    //   "isOpen": false
-    // },
-    // {
-    //   "title": "ALKYLAMINE FUT",
-    //   "midtitle": "27 Mar 2025",
-    //   "subtitle": "1,782 (-2.5%)",
-    //   "trail1": "+3,20,734.12 (+1.5%)",
-    //   "trail2": "BUY",
-    //   "trail3": "INTRADAY",
-    //   "isBuy": true,
-    //   "isOpen": false
-    // },
+    {
+      "title": "ALKYLAMINE",
+      "midtitle": "Alklyl Amines Chemical Ltd",
+      "subtitle": "1,782 (-2.5%)",
+      "trail1": "+3,20,734.12 (+1.5%)",
+      "trail2": "BUY",
+      "trail3": "INTRADAY",
+      "isBuy": true,
+      "isOpen": true
+    },
+    {
+      "title": "ALKYLAMINE 1200 CC",
+      "midtitle": "24 April 2025",
+      "subtitle": "1,782 (-2.5%)",
+      "trail1": "-3,23,067.14 (-1.5%)",
+      "trail2": "SELL",
+      "trail3": "INTRADAY",
+      "isBuy": false,
+      "isOpen": true
+    },
+    {
+      "title": "ALKYLAMINE FUT",
+      "midtitle": "27 Mar 2025",
+      "subtitle": "1,782 (-2.5%)",
+      "trail1": "+3,20,734.12 (+1.5%)",
+      "trail2": "BUY",
+      "trail3": "INTRADAY",
+      "isBuy": true,
+      "isOpen": true
+    },
+    {
+      "title": "ALKYLAMINE 1200 CE",
+      "midtitle": "24 Apr 2025",
+      "subtitle": "1,782 (-2.5%)",
+      "trail1": "-3,23,067.14 (-1.5%)",
+      "trail2": "SELL",
+      "trail3": "CARRYFORWARD",
+      "isBuy": false,
+      "isOpen": false
+    },
+    {
+      "title": "ALKYLAMINE",
+      "midtitle": "Alklyl Amines Chemical Tech",
+      "subtitle": "1,782 (-2.5%)",
+      "trail1": "+3,20,734.12 (+1.5%)",
+      "trail2": "BUY",
+      "trail3": "INTRADAY",
+      "isBuy": true,
+      "isOpen": false
+    },
+    {
+      "title": "ALKYLAMINE 1200 CC",
+      "midtitle": "24 April 2025",
+      "subtitle": "1,782 (-2.5%)",
+      "trail1": "-3,23,067.14 (-1.5%)",
+      "trail2": "SELL",
+      "trail3": "INTRADAY",
+      "isBuy": false,
+      "isOpen": false
+    },
+    {
+      "title": "ALKYLAMINE FUT",
+      "midtitle": "27 Mar 2025",
+      "subtitle": "1,782 (-2.5%)",
+      "trail1": "+3,20,734.12 (+1.5%)",
+      "trail2": "BUY",
+      "trail3": "INTRADAY",
+      "isBuy": true,
+      "isOpen": false
+    },
     {
       "title": "ALKYLAMINE 1200 CE",
       "midtitle": "24 Apr 2025",
@@ -330,7 +330,8 @@ class _positionScreenState extends State<positionScreen> {
                                       isDark,
                                       isOpen: data.containsKey('isOpen')
                                           ? data['isOpen']
-                                          : true),
+                                          : true,
+                                      index: index),
                                 );
                               })
                         ])
@@ -343,7 +344,9 @@ class _positionScreenState extends State<positionScreen> {
 
   Widget positionScreenTiles(String title, String midtitle, String subtitle,
       String trail1, String trail2, String trail3, bool isBuy, bool isDark,
-      {bool isOpen = true}) {
+      {bool isOpen = true, int? index}) {
+    // Check if this is one of the last 2 items
+    bool shouldFade = index != null && index >= positionData.length - 2;
     // Get chip colors for trail3
     final chipColors = _getChipColors(trail3);
 
@@ -357,7 +360,11 @@ class _positionScreenState extends State<positionScreen> {
                 Container(
                     height: 70.h,
                     width: 2.w,
-                    color: trail1.startsWith("-") ? Colors.red : Colors.green),
+                    color: shouldFade
+                        ? (trail1.startsWith("-")
+                            ? Colors.red.withOpacity(0.5)
+                            : Colors.green.withOpacity(0.5))
+                        : (trail1.startsWith("-") ? Colors.red : Colors.green)),
                 SizedBox(
                   width: 10.w,
                 ),
@@ -369,7 +376,11 @@ class _positionScreenState extends State<positionScreen> {
                       title,
                       style: TextStyle(
                           fontSize: 13.sp,
-                          color: isDark ? Colors.white : Colors.black),
+                          color: shouldFade
+                              ? (isDark
+                                  ? Color(0xffebeef5).withOpacity(0.6)
+                                  : Colors.black.withOpacity(0.5))
+                              : (isDark ? Colors.white : Colors.black)),
                     ),
                     SizedBox(
                       height: 8.h,
@@ -378,7 +389,11 @@ class _positionScreenState extends State<positionScreen> {
                       midtitle,
                       style: TextStyle(
                           fontSize: 12.sp,
-                          color: isDark ? Colors.white : Colors.black),
+                          color: shouldFade
+                              ? (isDark
+                                  ? Color(0xffebeef5).withOpacity(0.6)
+                                  : Colors.black.withOpacity(0.5))
+                              : (isDark ? Colors.white : Colors.black)),
                     ),
                     SizedBox(
                       height: 8.h,
@@ -391,10 +406,14 @@ class _positionScreenState extends State<positionScreen> {
                           decoration: BoxDecoration(
                             color: isBuy
                                 ? (isDark
-                                    ? Color(0xff143520)
+                                    ? shouldFade
+                                        ? Color(0xff143520).withOpacity(.5)
+                                        : Color(0xff143520)
                                     : Colors.green.withOpacity(0.2))
                                 : (isDark
-                                    ? Color(0xff3A0C0C)
+                                    ? shouldFade
+                                        ? Color(0xff3A0C0C).withOpacity(0.5)
+                                        : Color(0xff3a0c0c)
                                     : Color(0xffFF0000).withOpacity(0.2)),
                             borderRadius: BorderRadius.circular(4.r),
                           ),
@@ -402,7 +421,11 @@ class _positionScreenState extends State<positionScreen> {
                             trail2,
                             style: TextStyle(
                               fontSize: 10.sp,
-                              color: isBuy ? Colors.green : Colors.red,
+                              color: shouldFade
+                                  ? (isBuy
+                                      ? Colors.green.withOpacity(0.5)
+                                      : Colors.red.withOpacity(0.5))
+                                  : (isBuy ? Colors.green : Colors.red),
                             ),
                           ),
                         ),
@@ -421,7 +444,11 @@ class _positionScreenState extends State<positionScreen> {
                             style: TextStyle(
                               fontSize: 10.sp,
                               fontWeight: FontWeight.w500,
-                              color: chipColors['text'],
+                              color: shouldFade
+                                  ? (isDark
+                                      ? Color(0xffebeef5).withOpacity(0.6)
+                                      : Colors.black.withOpacity(0.5))
+                                  : chipColors['text'],
                             ),
                           ),
                         ),
@@ -439,8 +466,12 @@ class _positionScreenState extends State<positionScreen> {
                       style: TextStyle(
                           fontSize: 13.sp,
                           color: trail1.startsWith("-")
-                              ? Colors.red
-                              : Colors.green),
+                              ? shouldFade
+                                  ? Colors.red.withOpacity(0.6)
+                                  : Colors.red
+                              : shouldFade
+                                  ? Colors.green.withOpacity(0.6)
+                                  : Colors.green),
                     ),
                     SizedBox(
                       height: 8.h,
@@ -451,16 +482,24 @@ class _positionScreenState extends State<positionScreen> {
                           "LTP :",
                           style: TextStyle(
                               fontSize: 12.sp,
-                              color: isDark ? Colors.grey : Colors.black),
+                              color: shouldFade
+                                  ? (isDark
+                                      ? Colors.grey.withOpacity(0.6)
+                                      : Colors.black.withOpacity(0.5))
+                                  : (isDark ? Colors.grey : Colors.black)),
                         ),
                         SizedBox(
-                          width: 8.w,
+                          width: 4.w,
                         ),
                         Text(
                           subtitle,
                           style: TextStyle(
                               fontSize: 12.sp,
-                              color: isDark ? Colors.white : Colors.black),
+                              color: shouldFade
+                                  ? (isDark
+                                      ? Colors.white.withOpacity(0.6)
+                                      : Colors.black.withOpacity(0.5))
+                                  : (isDark ? Colors.white : Colors.black)),
                         ),
                       ],
                     ),
@@ -473,7 +512,11 @@ class _positionScreenState extends State<positionScreen> {
                           "Quantity :",
                           style: TextStyle(
                               fontSize: 12.sp,
-                              color: isDark ? Colors.grey : Colors.black),
+                              color: shouldFade
+                                  ? (isDark
+                                      ? Colors.grey.withOpacity(0.6)
+                                      : Colors.black.withOpacity(0.5))
+                                  : (isDark ? Colors.grey : Colors.black)),
                         ),
                         SizedBox(
                           width: 5.w,
@@ -482,7 +525,11 @@ class _positionScreenState extends State<positionScreen> {
                           "365",
                           style: TextStyle(
                               fontSize: 12.sp,
-                              color: isDark ? Colors.white : Colors.black),
+                              color: shouldFade
+                                  ? (isDark
+                                      ? Colors.white.withOpacity(0.6)
+                                      : Colors.black.withOpacity(0.5))
+                                  : (isDark ? Colors.white : Colors.black)),
                         ),
                       ],
                     ),
