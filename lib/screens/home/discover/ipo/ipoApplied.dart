@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sapphire/screens/home/discover/ipo/ipoApplicationStatus.dart';
+import 'package:sapphire/screens/home/discover/ipo/applied/ipoApplicationStatus.dart';
 
 class appliedIpo extends StatefulWidget {
   const appliedIpo({Key? key}) : super(key: key);
@@ -41,6 +41,7 @@ class _appliedIpoState extends State<appliedIpo>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Company info row with logo and tags
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -226,17 +227,38 @@ class _appliedIpoState extends State<appliedIpo>
                     ],
                   ),
                   SizedBox(height: 16.h),
+
+                  // Price information row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _buildDetailColumn(
-                          'Invested (₹)', '₹3,21,380.00', isDark),
-                      _buildDetailColumn('Bid Price (₹)', '₹80.00', isDark),
-                      _buildDetailColumn('Quantity', '1', isDark),
-                      _buildDetailColumn('Status', 'Applied', isDark,
-                          isGreen: true),
+                      _buildDetailColumn('Price', '₹3,21,380.00', isDark),
+                      _buildDetailColumn('Bid Price', '₹80.00', isDark),
+                      _buildDetailColumn('Listing On', '12 May 2025', isDark),
                     ],
                   ),
+
+                  SizedBox(height: 16.h),
+
+                  // IPO application status message
+                  Container(
+                    width: double.infinity,
+                    padding:
+                        EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.w),
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? Color(0xFFCBB267).withOpacity(0.2)
+                          : Color(0xFFF8F3D6),
+                      borderRadius: BorderRadius.circular(6.r),
+                    ),
+                    child: Text(
+                      'IPO application submitted. You will receive the payment mandate on your UPI app soon.',
+                      style: TextStyle(
+                        color: isDark ? Color(0xFFC9CACC) : Color(0xFF6B5E11),
+                        fontSize: 12.sp,
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

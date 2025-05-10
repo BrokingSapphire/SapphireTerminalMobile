@@ -3,21 +3,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:sapphire/screens/home/trades/commodity/closedCommodityGrid.dart';
-import 'package:sapphire/screens/home/trades/commodity/closedCommodityList.dart';
-import 'package:sapphire/screens/home/trades/futures/closedFuturesGrid.dart';
-import 'package:sapphire/screens/home/trades/futures/closedFuturesList.dart';
-import 'package:sapphire/screens/home/trades/stocks/closedStocksGrid.dart';
-import 'package:sapphire/screens/home/trades/stocks/closedStocksList.dart';
+import 'package:sapphire/screens/home/trades/futures/closedTrades/closedFuturesGrid.dart';
+import 'package:sapphire/screens/home/trades/futures/closedTrades/closedFuturesList.dart';
+import 'package:sapphire/screens/home/trades/stocks/closedTrades/closedStocksGrid.dart';
+import 'package:sapphire/screens/home/trades/stocks/closedTrades/closedStocksList.dart';
 
-class TradesComClosedScreen extends StatefulWidget {
-  const TradesComClosedScreen({super.key});
+class TradesFutureClosedScreen extends StatefulWidget {
+  const TradesFutureClosedScreen({super.key});
 
   @override
-  State<TradesComClosedScreen> createState() => _TradesComClosedScreen();
+  State<TradesFutureClosedScreen> createState() => _TradesFutureClosedScreen();
 }
 
-class _TradesComClosedScreen extends State<TradesComClosedScreen>
+class _TradesFutureClosedScreen extends State<TradesFutureClosedScreen>
     with SingleTickerProviderStateMixin {
   double dynamicPercent = 75.0;
   bool isGridView = true; // Default view mode
@@ -37,7 +35,7 @@ class _TradesComClosedScreen extends State<TradesComClosedScreen>
               children: [
                 SizedBox(height: 5.h),
 
-                // Stats Container
+                // // Stats Container
                 // Container(
                 //   padding:
                 //       EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
@@ -77,8 +75,8 @@ class _TradesComClosedScreen extends State<TradesComClosedScreen>
                 //                         '${(dynamicPercent ?? 0).toStringAsFixed(1)}%\n',
                 //                     style: GoogleFonts.poppins(
                 //                       color: Colors.white,
-                //                       fontSize: 11.sp,
-                //                       // Larger font size for percentage
+                //                       fontSize: 11
+                //                           .sp, // Larger font size for percentage
                 //                       fontWeight: FontWeight.w500,
                 //                     ),
                 //                   ),
@@ -187,8 +185,8 @@ class _TradesComClosedScreen extends State<TradesComClosedScreen>
                 Container(
                     height: 400.h, // Ensures the content has enough space
                     child: isGridView
-                        ? const ClosedComListScreen()
-                        : const ClosedComGridScreen()),
+                        ? ClosedFutureListScreen()
+                        : ClosedFutureGridScreen()),
               ],
             ),
           ),

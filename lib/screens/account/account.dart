@@ -10,6 +10,7 @@ import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/account/general/changePin.dart';
 import 'package:sapphire/screens/account/general/knowYourPartner.dart';
 import 'package:sapphire/screens/account/general/settings.dart';
+import 'package:sapphire/screens/account/manage/fundSettelmentFrequency.dart';
 import 'package:sapphire/screens/account/profile/profile.dart';
 import 'package:sapphire/screens/account/manage/dematAccount.dart';
 import 'package:sapphire/screens/account/reports/customCalender.dart';
@@ -48,7 +49,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // TODO: implement initState
     super.initState();
     generalOnTap = [
-     
       () {
         navi(KnowYourPartner(), context);
       },
@@ -83,6 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       () {},
       () {
         // navi(Mtf(), context);
+        navi(fundSettelmentFrequency(), context);
       },
       () {
         navi(FreezeAccount(), context);
@@ -265,8 +266,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       style: TextStyle(color: Colors.white, fontSize: 10.sp),
                       value: selectedReportType,
                       selectedItemBuilder: (BuildContext context) {
-                        return <String>['PDF', 'XLSX']
-                            .map<Widget>(
+                        return <String>['PDF', 'XLSX'].map<Widget>(
                           (String value) {
                             return Align(
                               alignment: Alignment.centerLeft,

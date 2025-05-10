@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/home/discover/ipo/ipoApplicationStatus.dart';
+import 'package:sapphire/screens/home/discover/ipo/applied/ipoApplicationStatus.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class IPOApply extends StatefulWidget {
