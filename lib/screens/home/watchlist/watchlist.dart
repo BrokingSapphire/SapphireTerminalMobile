@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sapphire/screens/funds/funds.dart';
 import 'package:sapphire/screens/account/account.dart';
+import 'package:sapphire/screens/home/watchlist/searchPage.dart';
 import 'package:sapphire/screens/orderWindow/buyWindow/buyWrapper.dart';
 import 'package:sapphire/screens/orderWindow/sellWindow/sellWrapper.dart';
 import 'package:sapphire/utils/constWidgets.dart';

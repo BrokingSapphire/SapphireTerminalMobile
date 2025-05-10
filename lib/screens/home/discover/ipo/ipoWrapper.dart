@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sapphire/screens/home/discover/ipo/ipoApplied.dart';
 import 'package:sapphire/screens/home/discover/ipo/ongoing/ipoOngoing.dart';
-import 'package:sapphire/screens/home/discover/ipo/applied/ipoApplied.dart';
-import 'package:sapphire/screens/home/discover/ipo/closed/ipoClosed.dart';
-import 'package:sapphire/screens/home/discover/ipo/ongoing/ipoOngoing.dart';
+import 'package:sapphire/screens/home/discover/ipo/upcoming/ipoUpcoming.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class IPOWrapper extends StatefulWidget {

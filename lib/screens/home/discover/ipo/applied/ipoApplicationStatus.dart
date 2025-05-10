@@ -11,6 +11,22 @@ class ipoApplication extends StatefulWidget {
 }
 
 class _ipoApplicationState extends State<ipoApplication> {
+  // Controller for the RefreshIndicator
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+
+  // Function to refresh data
+  Future<void> _refreshData() async {
+    // Simulate a network request
+    await Future.delayed(Duration(seconds: 2));
+
+    // Here you would typically fetch new data from an API
+    // For now, we'll just update the state to simulate a refresh
+    setState(() {
+      // Update your data here
+    });
+  }
+
   // Show cancel confirmation dialog
   void _showCancelConfirmationDialog(BuildContext context, bool isDark) {
     showModalBottomSheet(
@@ -156,26 +172,139 @@ class _ipoApplicationState extends State<ipoApplication> {
           ),
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.only(
-          bottom: 16,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Company Information Card
-            // Divider(
-            //   height: 1,
-            //   color: isDark ? const Color(0xFF2F2F2F) : Color(0xFFD1D5DB),
-            // ),
-            SizedBox(height: 16.h),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                children: [
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+      body: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        onRefresh: _refreshData,
+        color: Color(0xff9B51E0),
+        backgroundColor: isDark ? Color(0xFF1E1E1E) : Colors.white,
+        displacement: 20.0,
+        strokeWidth: 3.0,
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: 16,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Company Information Card
+                // Divider(
+                //   height: 1,
+                //   color: isDark ? const Color(0xFF2F2F2F) : Color(0xFFD1D5DB),
+                // ),
+                SizedBox(height: 16.h),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 10.0),
+                        decoration: BoxDecoration(
+                          color: isDark ? Color(0xFF1E1E1E) : Color(0xFFF4F4F9),
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Company Logo and Name
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 20,
+                                  backgroundColor: Colors.white,
+                                  backgroundImage: AssetImage(
+                                    "assets/images/reliance logo.png",
+                                  ),
+                                ),
+                                SizedBox(width: 12),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Wagons Learning Ltd.',
+                                      style: TextStyle(
+                                          color: isDark
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    SizedBox(height: 4.h),
+                                    Row(
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 8, vertical: 2),
+                                          decoration: BoxDecoration(
+                                            color: isDark
+                                                ? Color(0xff491787)
+                                                    .withOpacity(0.6)
+                                                : Color(0xE6D1FF)
+                                                    .withOpacity(0.6),
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                          ),
+                                          child: Text('SME',
+                                              style: TextStyle(
+                                                  color: isDark
+                                                      ? Color(0xffCBA0FF)
+                                                      : Color(0xff8B42E3),
+                                                  fontSize: 12)),
+                                        ),
+                                        SizedBox(width: 8.w),
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 8, vertical: 2),
+                                          decoration: BoxDecoration(
+                                            color: isDark
+                                                ? Color(0xff303030)
+                                                : Color(0xffB8DBD9)
+                                                    .withOpacity(0.3),
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                          ),
+                                          child: Text('RETAIL',
+                                              style: TextStyle(
+                                                  color: isDark
+                                                      ? Colors.white
+                                                      : Color(0xff1A1A1A),
+                                                  fontSize: 12)),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 16.h),
+                            // Investment Details
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                _leftBuildDetailColumn(
+                                    'Invested (₹)', '₹3,21,380.00', isDark),
+                                _centerBuildDetailColumn(
+                                    'Bid Price (₹)', '₹80.00', isDark),
+                                _centerBuildDetailColumn(
+                                    'Quantity', '1', isDark),
+                                _rightBuildDetailColumn(
+                                    'Listing On', '12 May 2025', isDark),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 12.h),
+
+                // IPO Status Card
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Container(
+                    padding: EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
                       color: isDark ? Color(0xFF1E1E1E) : Color(0xFFF4F4F9),
                       borderRadius: BorderRadius.circular(12.0),
@@ -183,272 +312,183 @@ class _ipoApplicationState extends State<ipoApplication> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Company Logo and Name
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 20,
-                              backgroundColor: Colors.white,
-                              backgroundImage: AssetImage(
-                                "assets/images/reliance logo.png",
-                              ),
-                            ),
-                            SizedBox(width: 12),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Wagons Learning Ltd.',
-                                  style: TextStyle(
-                                      color:
-                                          isDark ? Colors.white : Colors.black,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(height: 4.h),
-                                Row(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 2),
-                                      decoration: BoxDecoration(
-                                        color: isDark
-                                            ? Color(0xff491787).withOpacity(0.6)
-                                            : Color(0xE6D1FF).withOpacity(0.6),
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                      child: Text('SME',
-                                          style: TextStyle(
-                                              color: isDark
-                                                  ? Color(0xffCBA0FF)
-                                                  : Color(0xff8B42E3),
-                                              fontSize: 12)),
-                                    ),
-                                    SizedBox(width: 8.w),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 2),
-                                      decoration: BoxDecoration(
-                                        color: isDark
-                                            ? Color(0xff303030)
-                                            : Color(0xffB8DBD9)
-                                                .withOpacity(0.3),
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                      child: Text('RETAIL',
-                                          style: TextStyle(
-                                              color: isDark
-                                                  ? Colors.white
-                                                  : Color(0xff1A1A1A),
-                                              fontSize: 12)),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
+                        Text(
+                          'IPO Status',
+                          style: TextStyle(
+                              color: isDark ? Colors.white : Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16),
                         ),
-                        SizedBox(height: 16.h),
-                        // Investment Details
+                        SizedBox(
+                          height: 14.h,
+                        ),
+                        Divider(
+                          height: 1,
+                          color: isDark
+                              ? const Color(0xFF2F2F2F)
+                              : Color(0xFFD1D5DB),
+                        ),
+                        SizedBox(height: 14.h),
+                        _buildStatusItem(Icons.check_circle, Color(0xff9B51E0),
+                            'Applied on 5 May', true, isDark),
+                        _buildStatusItem(
+                            Icons.check_circle,
+                            Color(0xff9B51E0),
+                            'Approved Payment Before 5:00pm on 7 May 2025',
+                            true,
+                            isDark),
+                        _buildStatusItem(Icons.check_circle, Color(0xff9B51E0),
+                            'Allotment on 8 May 2025', true, isDark),
+                        _buildStatusItem(
+                            CupertinoIcons.circle,
+                            Color(0xff9B51E0),
+                            'Refund initiation on 9 May 2025',
+                            true,
+                            isDark,
+                            isCurrentState: true),
+                        _buildStatusItem(
+                            Icons.check_circle,
+                            Color(0xff2f2f2f),
+                            'Credit of shares to demat on 9 May 2025',
+                            false,
+                            isDark),
+                        _buildStatusItem(Icons.check_circle, Color(0xff2f2f2f),
+                            'IPO Listing on 12 May', false, isDark,
+                            isLast: true),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 12.h),
+
+                // Application Details Card
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Container(
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      color: isDark ? Color(0xFF1E1E1E) : Color(0xFFF4F4F9),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Application Details',
+                          style: TextStyle(
+                              color: isDark ? Colors.white : Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16),
+                        ),
+                        SizedBox(
+                          height: 14.h,
+                        ),
+                        Divider(
+                          height: 1,
+                          color: isDark
+                              ? const Color(0xFF2F2F2F)
+                              : Color(0xFFD1D5DB),
+                        ),
+                        SizedBox(height: 14.h),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            _leftBuildDetailColumn(
-                                'Invested (₹)', '₹3,21,380.00', isDark),
-                            _centerBuildDetailColumn(
-                                'Bid Price (₹)', '₹80.00', isDark),
-                            _centerBuildDetailColumn('Quantity', '1', isDark),
-                            _rightBuildDetailColumn(
-                                'Listing On', '12 May 2025', isDark),
+                            _buildDetailRow('Demat Account (BO) ID',
+                                '1294892792132487633', isDark),
+                            _buildDetailRow(
+                                'Application ID', '2792132487633', isDark),
+                          ],
+                        ),
+                        SizedBox(height: 16.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildDetailRow(
+                                'Exchange Order No.', '2792132487633', isDark),
+                            _buildDetailRow('Cut off', 'Yes', isDark),
+                          ],
+                        ),
+                        SizedBox(height: 16.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildDetailRow('UPI ID', 'abcd@yesbank', isDark),
+                            _buildDetailRow(
+                                'Application Status', 'Submitted', isDark,
+                                isGreen: true),
                           ],
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-            SizedBox(height: 12.h),
-
-            // IPO Status Card
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Container(
-                padding: EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  color: isDark ? Color(0xFF1E1E1E) : Color(0xFFF4F4F9),
-                  borderRadius: BorderRadius.circular(12.0),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'IPO Status',
-                      style: TextStyle(
-                          color: isDark ? Colors.white : Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16),
-                    ),
-                    SizedBox(
-                      height: 14.h,
-                    ),
-                    Divider(
-                      height: 1,
-                      color:
-                          isDark ? const Color(0xFF2F2F2F) : Color(0xFFD1D5DB),
-                    ),
-                    SizedBox(height: 14.h),
-                    _buildStatusItem(Icons.check_circle, Color(0xff9B51E0),
-                        'Applied on 5 May', true, isDark),
-                    _buildStatusItem(
-                        Icons.check_circle,
-                        Color(0xff9B51E0),
-                        'Approved Payment Before 5:00pm on 7 May 2025',
-                        true,
-                        isDark),
-                    _buildStatusItem(Icons.check_circle, Color(0xff9B51E0),
-                        'Allotment on 8 May 2025', true, isDark),
-                    _buildStatusItem(CupertinoIcons.circle, Color(0xff9B51E0),
-                        'Refund initiation on 9 May 2025', true, isDark,
-                        isCurrentState: true),
-                    _buildStatusItem(
-                        Icons.check_circle,
-                        Color(0xff2f2f2f),
-                        'Credit of shares to demat on 9 May 2025',
-                        false,
-                        isDark),
-                    _buildStatusItem(Icons.check_circle, Color(0xff2f2f2f),
-                        'IPO Listing on 12 May', false, isDark,
-                        isLast: true),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 12.h),
-
-            // Application Details Card
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Container(
-                padding: EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  color: isDark ? Color(0xFF1E1E1E) : Color(0xFFF4F4F9),
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Application Details',
-                      style: TextStyle(
-                          color: isDark ? Colors.white : Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16),
-                    ),
-                    SizedBox(
-                      height: 14.h,
-                    ),
-                    Divider(
-                      height: 1,
-                      color:
-                          isDark ? const Color(0xFF2F2F2F) : Color(0xFFD1D5DB),
-                    ),
-                    SizedBox(height: 14.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _buildDetailRow('Demat Account (BO) ID',
-                            '1294892792132487633', isDark),
-                        _buildDetailRow(
-                            'Application ID', '2792132487633', isDark),
-                      ],
-                    ),
-                    SizedBox(height: 16.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _buildDetailRow(
-                            'Exchange Order No.', '2792132487633', isDark),
-                        _buildDetailRow('Cut off', 'Yes', isDark),
-                      ],
-                    ),
-                    SizedBox(height: 16.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _buildDetailRow('UPI ID', 'abcd@yesbank', isDark),
-                        _buildDetailRow(
-                            'Application Status', 'Submitted', isDark,
-                            isGreen: true),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            // SizedBox(height: 16.h),
-            Spacer(),
-            // Bottom Buttons
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: SizedBox(
-                      height: 40.h,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          _showCancelConfirmationDialog(context, isDark);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              isDark ? Color(0xFF2F2F2F) : Color(0xFFD1D5DB),
-                          foregroundColor: Colors.white,
-                          padding: EdgeInsets.symmetric(vertical: 12.h),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Cancel',
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w600,
-                              color: isDark ? Colors.white : Colors.black,
+                SizedBox(height: 24.h),
+                // Bottom Buttons
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: 40.h,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              _showCancelConfirmationDialog(context, isDark);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: isDark
+                                  ? Color(0xFF2F2F2F)
+                                  : Color(0xFFD1D5DB),
+                              foregroundColor: Colors.white,
+                              padding: EdgeInsets.symmetric(vertical: 12.h),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Cancel',
+                                style: TextStyle(
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: isDark ? Colors.white : Colors.black,
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
+                      SizedBox(width: 16),
+                      Expanded(
+                        child: SizedBox(
+                          height: 40.h,
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF1DB954),
+                              foregroundColor: Colors.white,
+                              padding: EdgeInsets.symmetric(vertical: 12.h),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Modify',
+                                style: TextStyle(
+                                    fontSize: 13.sp,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: SizedBox(
-                      height: 40.h,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF1DB954),
-                          foregroundColor: Colors.white,
-                          padding: EdgeInsets.symmetric(vertical: 12.h),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Modify',
-                            style: TextStyle(
-                                fontSize: 13.sp, fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
