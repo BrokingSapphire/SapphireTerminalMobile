@@ -20,7 +20,7 @@ class Assets {
   static const String accountSectionProfitAndLoss = 'lib/screens/accountSection/profitAndLoss.dart';
   static const String accountSectionReferAFriend = 'lib/screens/accountSection/referAFriend.dart';
   static const String accountSectionSessionManagement = 'lib/screens/accountSection/sessionManagement.dart';
-  static const String accountSectionSettingsOrderPreference = 'lib/screens/accountSection/settingsOrderPreference.dart';
+  static const String accountSectionSettingsOrderPreference = 'lib/screens/accountSection/orderPreference.dart';
   static const String accountSectionSettingsScreen = 'lib/screens/accountSection/SettingsScreen.dart';
   static const String accountSectionTradesAndCharges = 'lib/screens/accountSection/tradesAndCharges.dart';
   static const String accountSectionVerifiedP&L = 'lib/screens/accountSection/verifiedP&L.dart';

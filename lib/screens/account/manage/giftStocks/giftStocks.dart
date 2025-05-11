@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/account/manage/giftStock/chooseRecipient.dart';
-import 'package:sapphire/screens/account/manage/giftStock/chooseStocktoGift.dart';
+import 'package:sapphire/screens/account/manage/giftStocks/chooseRecipient.dart';
+import 'package:sapphire/screens/account/manage/giftStocks/chooseStockToGift.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class GiftStocks extends StatefulWidget {

@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/account/general/changeNewPin.dart';
+import 'package:sapphire/screens/account/general/changePin/changeNewPin.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class changePinScreen extends StatefulWidget {

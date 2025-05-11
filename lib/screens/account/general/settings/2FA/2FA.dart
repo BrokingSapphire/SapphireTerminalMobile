@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/account/general/manual2FA.dart';
-import 'package:sapphire/screens/account/general/otp2FA.dart';
+import 'package:sapphire/screens/account/general/settings/2FA/authenticator2FA.dart';
+import 'package:sapphire/screens/account/general/settings/2FA/text2FA.dart';
 
 class twoFAScreen extends StatelessWidget {
   @override

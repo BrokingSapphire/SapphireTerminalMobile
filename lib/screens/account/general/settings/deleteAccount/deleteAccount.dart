@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/account/general/confirmDeleteScreen.dart';
+import 'package:sapphire/screens/account/general/settings/deleteAccount/confirmDeleteAccount.dart';
 
 class DeleteAccount extends StatefulWidget {
   const DeleteAccount({super.key});
