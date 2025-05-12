@@ -27,6 +27,7 @@ import 'package:sapphire/screens/account/reports/tradeBook/tradeBook.dart';
 import 'package:sapphire/screens/account/reports/tradesAndCharges/tradesAndCharges.dart';
 import 'package:sapphire/screens/account/reports/verifiedP&L/verifiedP&L.dart';
 import 'package:sapphire/screens/auth/login/login.dart';
+import 'package:sapphire/utils/webviewScreen.dart';
 
 import '../../utils/constWidgets.dart';
 
@@ -80,7 +81,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
         // navi(GiftStocks(), context);
       },
-      () {},
       () {
         // navi(Mtf(), context);
         navi(fundSettelmentFrequency(), context);
@@ -100,13 +100,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         navi(Tradebook(), context);
       },
       () {
-        // navi(Tradebook(), context);
+        navi(ProfitAndLoss(), context);
       },
       () {
         navi(Tradesandcharges(), context);
       },
       () {
-        // navi(TaxPnl(), context);
+        showTaxPnlSheet(context);
       },
       () {
         navi(VerifiedPnL(), context);
@@ -115,17 +115,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
         showDownloadSheet(context);
       }
     ];
-    supportOnTap = [() {}, () {}, () {}, () {}];
+    supportOnTap = [
+      () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => WebViewScreen(
+              url: 'https://www.sapphirebroking.com/contact',
+              title: 'Contact Us',
+            ),
+          ),
+        );
+      },
+      () {},
+      () {},
+      () {}
+    ];
     othersOnTap = [
       () {
         navi(ReferAFriend(), context);
       },
-      () {}
     ];
   }
+
   DateTimeRange? _selectedDateRange;
 
-    Future<void> _showCustomDateRangePicker() async {
+  Future<void> _showCustomDateRangePicker() async {
     final DateTimeRange? picked = await showModalBottomSheet<DateTimeRange>(
       context: context,
       isScrollControlled: true,
@@ -145,6 +160,156 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _selectedDateRange = picked;
       });
     }
+  }
+
+  void showTaxPnlSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(26.r)),
+      ),
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+        // List to track the selected state of each chip
+        List<bool> selectedChips =
+            List.generate(6, (_) => false); // 6 chips in total
+
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            // Helper function to handle chip selection
+            void onChipSelected(int index) {
+              setState(() {
+                // Deselect all chips
+                for (int i = 0; i < selectedChips.length; i++) {
+                  selectedChips[i] = false;
+                }
+                // Select the tapped chip
+                selectedChips[index] = true;
+              });
+            }
+
+            return Container(
+              decoration: BoxDecoration(
+                color: isDark ? const Color(0xff121413) : Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(26.r)),
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Download Tax P&L",
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black,
+                      fontSize: 17.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    softWrap: true,
+                  ),
+                  SizedBox(height: 8.h),
+                  Divider(
+                    height: 1,
+                    color: isDark
+                        ? const Color(0xff2F2F2F)
+                        : const Color(0xffD1D5DB),
+                  ),
+                  SizedBox(height: 16.h),
+                  Text(
+                    "Select a Financial Year",
+                    softWrap: true,
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black,
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(height: 6.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () => onChipSelected(0),
+                        child: constWidgets.choiceChip(
+                          "FY 2025-26",
+                          selectedChips[0],
+                          context,
+                          104.w,
+                          isDark,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => onChipSelected(1),
+                        child: constWidgets.choiceChip(
+                          "FY 2024-25",
+                          selectedChips[1],
+                          context,
+                          104.w,
+                          isDark,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => onChipSelected(2),
+                        child: constWidgets.choiceChip(
+                          "FY 2023-24",
+                          selectedChips[2],
+                          context,
+                          104.w,
+                          isDark,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 6.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () => onChipSelected(3),
+                        child: constWidgets.choiceChip(
+                          "FY 2022-23",
+                          selectedChips[3],
+                          context,
+                          104.w,
+                          isDark,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => onChipSelected(4),
+                        child: constWidgets.choiceChip(
+                          "FY 2021-22",
+                          selectedChips[4],
+                          context,
+                          104.w,
+                          isDark,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => onChipSelected(5),
+                        child: constWidgets.choiceChip(
+                          "FY 2020-21",
+                          selectedChips[5],
+                          context,
+                          104.w,
+                          isDark,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16.h),
+                  constWidgets.greenButton(
+                    "Download",
+                  ),
+                  SizedBox(height: 6.h),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   void showDownloadSheet(BuildContext context) {
@@ -406,7 +571,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     "Segment Activation",
     "Bank Accounts",
     "Demat Account",
-    "MTF",
     "Fund Settlement Frequency",
     "Freeze Demat Account",
   ];
@@ -415,7 +579,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     "assets/svgs/segmentActivation.svg",
     "assets/svgs/bankAccounts.svg",
     "assets/svgs/dematAccountDetails.svg",
-    "assets/svgs/mtf.svg",
     "assets/svgs/fundSettelmentFrequency.svg",
     "assets/svgs/freezeDematAccount.svg"
   ];
@@ -423,8 +586,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     "Ledger",
     "Orderbook",
     "Tradebook",
-    "Profit & Loss",
-    "Trades & Charges",
+    "Profit And Loss",
+    "Trades And Charges",
     "Tax P&L",
     "Verified P&L",
     "Downloads"
@@ -446,10 +609,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     "assets/svgs/supportPortal.svg",
     "assets/svgs/rateOurApp.svg"
   ];
-  List others = ["Refer a Friend", "Corporate Details"];
+  List others = ["Refer a Friend"];
   List othersSvg = [
     "assets/svgs/referAFriend.svg",
-    "assets/svgs/corporateDetails.svg"
   ];
 
   void onTapSwitchAccount() {

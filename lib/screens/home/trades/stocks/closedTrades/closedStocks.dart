@@ -283,7 +283,11 @@ class _tradesClosedScreenState extends State<tradesClosedScreen>
                 SizedBox(height: 16.h),
                 Align(
                     alignment: Alignment.centerLeft,
-                    child: Text("Closed Trade(246)")),
+                    child: Text(
+                      "Closed Trade(246)",
+                      style: TextStyle(
+                          color: const Color(0xffEBEEF5), fontSize: 12.sp),
+                    )),
                 SizedBox(
                   height: 8.h,
                 ),

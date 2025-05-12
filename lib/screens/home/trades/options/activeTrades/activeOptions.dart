@@ -39,7 +39,7 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
     return Container(
       padding: EdgeInsets.all(14.w),
       decoration: BoxDecoration(
-        color: const Color(0xff121413),
+        color: const Color(0xff2f2f2f),
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
@@ -329,6 +329,7 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
       decoration: BoxDecoration(
         color: const Color(0xff1A1A1A),
         borderRadius: BorderRadius.circular(12.r),
+        // border: Border.all(color: const Color(0xff2F2F2F)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -337,13 +338,13 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
           Row(
             children: [
               CircleAvatar(
-                radius: 20.r,
+                radius: 16.r,
                 backgroundColor: const Color(0xff2A2A2A),
                 child: Text(
                   "R",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16.sp,
+                    fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -356,15 +357,14 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
                     "RELIANCE 1200 CE",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 13.sp,
                     ),
                   ),
                   Text(
                     "27 Apr 2025",
                     style: TextStyle(
                       color: const Color(0xffC9CACC),
-                      fontSize: 12.sp,
+                      fontSize: 11.sp,
                     ),
                   ),
                 ],
@@ -372,18 +372,18 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
             ],
           ),
 
-          SizedBox(height: 16.h),
+          SizedBox(height: 11.h),
 
           // Posted date
           Text(
             "Posted 08 May '25 | 09:45 Am",
             style: TextStyle(
               color: const Color(0xffC9CACC),
-              fontSize: 12.sp,
+              fontSize: 11.sp,
             ),
           ),
 
-          SizedBox(height: 16.h),
+          SizedBox(height: 11.h),
 
           // Strategy, Entry, Exit headers
           Row(
@@ -394,7 +394,7 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
                   "Stratergy",
                   style: TextStyle(
                     color: const Color(0xffC9CACC),
-                    fontSize: 14.sp,
+                    fontSize: 15.sp,
                   ),
                 ),
               ),
@@ -403,7 +403,7 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
                   "Entry",
                   style: TextStyle(
                     color: const Color(0xffC9CACC),
-                    fontSize: 14.sp,
+                    fontSize: 15.sp,
                   ),
                 ),
               ),
@@ -412,14 +412,14 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
                   "Exit",
                   style: TextStyle(
                     color: const Color(0xffC9CACC),
-                    fontSize: 14.sp,
+                    fontSize: 15.sp,
                   ),
                 ),
               ),
             ],
           ),
 
-          SizedBox(height: 8.h),
+          SizedBox(height: 12.h),
 
           // BUY row
           Row(
@@ -449,7 +449,7 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
                       "14 Feb 440 CE",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 14.sp,
+                        fontSize: 13.sp,
                       ),
                     ),
                   ],
@@ -460,7 +460,7 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
                   "₹1,580.60",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 14.sp,
+                    fontSize: 13.sp,
                   ),
                 ),
               ),
@@ -469,14 +469,14 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
                   "₹1,580.60",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 14.sp,
+                    fontSize: 13.sp,
                   ),
                 ),
               ),
             ],
           ),
 
-          SizedBox(height: 8.h),
+          SizedBox(height: 12.h),
 
           // SELL row
           Row(
@@ -506,7 +506,7 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
                       "14 Feb 440 CE",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 14.sp,
+                        fontSize: 13.sp,
                       ),
                     ),
                   ],
@@ -517,7 +517,7 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
                   "₹1,580.60",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 14.sp,
+                    fontSize: 13.sp,
                   ),
                 ),
               ),
@@ -526,68 +526,66 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
                   "₹1,580.60",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 14.sp,
+                    fontSize: 13.sp,
                   ),
                 ),
               ),
             ],
           ),
 
-          SizedBox(height: 16.h),
-          Divider(color: const Color(0xff2F2F2F)),
-          SizedBox(height: 16.h),
+          SizedBox(height: 12.h),
+          Divider(height: 1.h, color: const Color(0xff2F2F2F)),
+          SizedBox(height: 10.h),
 
           // Stoploss and Target
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Stoploss amount",
-                      style: TextStyle(
-                        color: const Color(0xffC9CACC),
-                        fontSize: 12.sp,
-                      ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Stoploss amount",
+                    style: TextStyle(
+                      color: const Color(0xffC9CACC),
+                      fontSize: 13.sp,
                     ),
-                    Text(
-                      "-₹1,580.60",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
+                  ),
+                  Text(
+                    "-₹1,580.60",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Target amount",
-                      style: TextStyle(
-                        color: const Color(0xffC9CACC),
-                        fontSize: 12.sp,
-                      ),
+              SizedBox(width: 16.w),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Target amount",
+                    style: TextStyle(
+                      color: const Color(0xffC9CACC),
+                      fontSize: 13.sp,
                     ),
-                    Text(
-                      "₹1,580.60",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
+                  ),
+                  Text(
+                    "₹1,580.60",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           ),
 
-          SizedBox(height: 16.h),
+          SizedBox(height: 12.h),
 
           // Net gain
           Container(
@@ -622,7 +620,7 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
             ),
           ),
 
-          SizedBox(height: 16.h),
+          SizedBox(height: 12.h),
 
           // Action buttons
           Row(
@@ -633,7 +631,7 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
                   child: OutlinedButton(
                     onPressed: () {},
                     style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Color(0xff2F2F2F)),
+                      side: const BorderSide(color: Color(0xff595959)),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.r),
                       ),

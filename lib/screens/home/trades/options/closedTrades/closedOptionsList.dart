@@ -29,7 +29,7 @@ class _ClosedOptionListScreen extends State<ClosedOptionListScreen> {
     );
   }
 
-  Widget buildTradeCard() {
+  Widget buildradeCard() {
     return Container(
       padding: EdgeInsets.all(14.w),
       decoration: BoxDecoration(
@@ -39,6 +39,7 @@ class _ClosedOptionListScreen extends State<ClosedOptionListScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          /// Top Row - Logo + Title + Status
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -137,21 +138,21 @@ class _ClosedOptionListScreen extends State<ClosedOptionListScreen> {
           SizedBox(height: 8.h),
 
           /// Entry Row
-          buildTripleColumnRow("Entry", "₹1,580.60", "14 Feb 2025 | 8:32 pm"),
+          buildTripleColumnRow("Entry", "₹1,580.60", "₹1,580.60"),
 
           SizedBox(height: 8.h),
 
           /// Exit Row
-          buildTripleColumnRow("Exit", "₹1,752.12", "15 Feb 2025 | 9:32 pm"),
+          buildTripleColumnRow("Exit", "₹1,752.12", "₹1,752.12"),
 
           SizedBox(height: 8.h),
           Divider(color: const Color(0xff2F2F2F)),
 
-          SizedBox(height: 8.h),
+          SizedBox(height: 7.h),
 
           /// Stoploss & Target
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,6 +169,7 @@ class _ClosedOptionListScreen extends State<ClosedOptionListScreen> {
                   )
                 ],
               ),
+              SizedBox(width: 24.w),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -196,13 +198,26 @@ class _ClosedOptionListScreen extends State<ClosedOptionListScreen> {
               borderRadius: BorderRadius.circular(6.r),
             ),
             alignment: Alignment.center,
-            child: Text(
-              "Net gain: +6.08%",
-              style: TextStyle(
-                color: Colors.green,
-                fontWeight: FontWeight.w600,
-                fontSize: 13.sp,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Net gain: ",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 13.sp,
+                  ),
+                ),
+                Text(
+                  " +6.08%",
+                  style: TextStyle(
+                    color: Colors.green,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 13.sp,
+                  ),
+                ),
+              ],
             ),
           ),
           SizedBox(height: 12.h),
@@ -211,39 +226,48 @@ class _ClosedOptionListScreen extends State<ClosedOptionListScreen> {
           Row(
             children: [
               Expanded(
-                child: OutlinedButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Color(0xff2F2F2F)),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r)),
-                  ),
-                  child: Text(
-                    "About Trade",
-                    style: TextStyle(
-                        color: const Color(0xffEBEEF5),
-                        fontWeight: FontWeight.w500),
+                child: Container(
+                  height: 34.h,
+                  child: OutlinedButton(
+                    onPressed: () {},
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Color(0xff2F2F2F)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.r)),
+                    ),
+                    child: Text(
+                      "About Trade",
+                      style: TextStyle(
+                          color: const Color(0xffEBEEF5),
+                          fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ),
               ),
               SizedBox(width: 12.w),
               Expanded(
-                child: OutlinedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => TradesUtils.placeOrderPopup(context),
-                    );
-                  },
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: const Color(0xff1db954),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r)),
-                  ),
-                  child: const Text(
-                    "Place Order",
-                    style: TextStyle(
-                        color: Color(0xffEBEEF5), fontWeight: FontWeight.w500),
+                child: Container(
+                  height: 34.h,
+                  child: OutlinedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) =>
+                            TradesUtils.placeOrderPopup(context),
+                      );
+                    },
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: const Color(0xff1db954),
+                      side: const BorderSide(color: Color(0xff1db954)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.r)),
+                    ),
+                    child: const Text(
+                      "Place Order",
+                      style: TextStyle(
+                          color: Color(0xffEBEEF5),
+                          fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ),
               ),
@@ -271,6 +295,422 @@ class _ClosedOptionListScreen extends State<ClosedOptionListScreen> {
           child: Text(val2, style: _valueStyle(), textAlign: TextAlign.end),
         ),
       ],
+    );
+  }
+
+  Widget buildDoubleColumnRow(String title, String val1, String val2) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Text(title, style: _labelStyle()),
+        ),
+        Expanded(
+          flex: 3,
+          child: Text(val1, style: _valueStyle(), textAlign: TextAlign.start),
+        ),
+        Expanded(
+          flex: 3,
+          child: Text(val2, style: _valueStyle(), textAlign: TextAlign.end),
+        ),
+      ],
+    );
+  }
+
+  Widget buildTradeCard() {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: const Color(0xff1A1A1A),
+        borderRadius: BorderRadius.circular(12.r),
+        // border: Border.all(color: const Color(0xff2F2F2F)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header with logo and date
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 16.r,
+                backgroundColor: const Color(0xff2A2A2A),
+                child: Text(
+                  "R",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              SizedBox(width: 12.w),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "RELIANCE 1200 CE",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 13.sp,
+                    ),
+                  ),
+                  Text(
+                    "27 Apr 2025",
+                    style: TextStyle(
+                      color: const Color(0xffC9CACC),
+                      fontSize: 11.sp,
+                    ),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const Text(
+                    "Status",
+                    style: TextStyle(
+                        color: Color(0xffC9CACC),
+                        fontSize: 10,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                    decoration: BoxDecoration(
+                      color: const Color(0xff35332e),
+                      borderRadius: BorderRadius.circular(4.r),
+                    ),
+                    child: Text(
+                      "Target Miss",
+                      style: TextStyle(
+                          color: const Color(0xffffd761), fontSize: 10.sp),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+
+          SizedBox(height: 11.h),
+
+          // Posted date
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Posted 08 May '25 | 09:45 Am",
+                style: TextStyle(
+                  color: const Color(0xffC9CACC),
+                  fontSize: 11.sp,
+                ),
+              ),
+              Text(
+                "Closed 08 May '25 | 09:45 Am",
+                style: TextStyle(
+                  color: const Color(0xffC9CACC),
+                  fontSize: 11.sp,
+                ),
+              ),
+            ],
+          ),
+
+          SizedBox(height: 11.h),
+
+          // Strategy, Entry, Exit headers
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Text(
+                  "Stratergy",
+                  style: TextStyle(
+                    color: const Color(0xffC9CACC),
+                    fontSize: 15.sp,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  "Entry",
+                  style: TextStyle(
+                    color: const Color(0xffC9CACC),
+                    fontSize: 15.sp,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  "Exit",
+                  style: TextStyle(
+                    color: const Color(0xffC9CACC),
+                    fontSize: 15.sp,
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          SizedBox(height: 12.h),
+
+          // BUY row
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Row(
+                  children: [
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                      decoration: BoxDecoration(
+                        color: const Color(0xff22a06b).withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(4.r),
+                      ),
+                      child: Text(
+                        "BUY",
+                        style: TextStyle(
+                          color: const Color(0xff22a06b),
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
+                    Text(
+                      "14 Feb 440 CE",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13.sp,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  "₹1,580.60",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 13.sp,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  "₹1,580.60",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 13.sp,
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          SizedBox(height: 12.h),
+
+          // SELL row
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Row(
+                  children: [
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                      decoration: BoxDecoration(
+                        color: Colors.red.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(4.r),
+                      ),
+                      child: Text(
+                        "SELL",
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
+                    Text(
+                      "14 Feb 440 CE",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13.sp,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  "₹1,580.60",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 13.sp,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  "₹1,580.60",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 13.sp,
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          SizedBox(height: 12.h),
+          Divider(height: 1.h, color: const Color(0xff2F2F2F)),
+          SizedBox(height: 10.h),
+
+          // Stoploss and Target
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Stoploss amount",
+                    style: TextStyle(
+                      color: const Color(0xffC9CACC),
+                      fontSize: 13.sp,
+                    ),
+                  ),
+                  Text(
+                    "-₹1,580.60",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(width: 16.w),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Target amount",
+                    style: TextStyle(
+                      color: const Color(0xffC9CACC),
+                      fontSize: 13.sp,
+                    ),
+                  ),
+                  Text(
+                    "₹1,580.60",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+
+          SizedBox(height: 12.h),
+
+          // Net gain
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(vertical: 10.h),
+            decoration: BoxDecoration(
+              color: const Color(0xff2A2A2A),
+              borderRadius: BorderRadius.circular(6.r),
+            ),
+            alignment: Alignment.center,
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: "Net gain: ",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14.sp,
+                    ),
+                  ),
+                  TextSpan(
+                    text: "+6.08%",
+                    style: TextStyle(
+                      color: const Color(0xff1db954),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14.sp,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          SizedBox(height: 12.h),
+
+          // Action buttons
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  height: 40.h,
+                  child: OutlinedButton(
+                    onPressed: () {},
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Color(0xff595959)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                    ),
+                    child: Text(
+                      "About Trade",
+                      style: TextStyle(
+                        color: const Color(0xffEBEEF5),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: Container(
+                  height: 40.h,
+                  child: OutlinedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) =>
+                            TradesUtils.placeOrderPopup(context),
+                      );
+                    },
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: const Color(0xff1db954),
+                      side: const BorderSide(color: Color(0xff1db954)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                    ),
+                    child: const Text(
+                      "Place Order",
+                      style: TextStyle(
+                        color: Color(0xffEBEEF5),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 

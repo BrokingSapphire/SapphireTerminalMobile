@@ -26,23 +26,19 @@ class _TradesComActiveScreenState extends State<TradesComActiveScreen>
               "Active Trades (246)",
               style: TextStyle(color: const Color(0xffEBEEF5), fontSize: 12.sp),
             ),
-            SizedBox(height: 12.h),
-            buildTradeCard(
-              "+0.55 (1.33%)",
-            ),
-            SizedBox(height: 12.h),
-            buildTradeCard(
-              "-0.55 (1.33%)",
-            ),
+            SizedBox(height: 8.h),
+            activeTradeCard(),
+            SizedBox(height: 12.h), 
+            activeTradeCard(),
           ],
         ),
       ),
     );
   }
 
-  Widget buildTradeCard(String rate) {
+  Widget activeTradeCard() {
     return Container(
-      padding: EdgeInsets.all(14.w),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       decoration: BoxDecoration(
         color: const Color(0xff121413),
         borderRadius: BorderRadius.circular(12.r),
@@ -50,11 +46,10 @@ class _TradesComActiveScreenState extends State<TradesComActiveScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// Top section with logo and status
+          /// Top Row - Logo + Title + Price
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              /// Left: Logo, name, BUY
               Row(
                 children: [
                   CircleAvatar(
@@ -71,10 +66,10 @@ class _TradesComActiveScreenState extends State<TradesComActiveScreen>
                       Row(
                         children: [
                           Text(
-                            'RELIANCE',
+                            "RELIANCE",
                             style: TextStyle(
-                              color: const Color(0xffEBEEF5),
                               fontSize: 13.sp,
+                              color: const Color(0xffEBEEF5),
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -83,59 +78,51 @@ class _TradesComActiveScreenState extends State<TradesComActiveScreen>
                             padding: EdgeInsets.symmetric(
                                 horizontal: 6.w, vertical: 2.h),
                             decoration: BoxDecoration(
-                              color: const Color(0xff143520),
+                              color: const Color(0xff1db954).withOpacity(0.2),
                               borderRadius: BorderRadius.circular(4.r),
                             ),
                             child: Text(
-                              'BUY',
+                              "BUY",
                               style: TextStyle(
-                                  color: const Color(0xff22a06b),
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.w500),
+                                color: const Color(0xff1db954),
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ],
                       ),
                       Text(
-                        'Reliance Industries Ltd.',
+                        "Reliance Industries Ltd.",
                         style: TextStyle(
-                            color: const Color(0xffC9CACC), fontSize: 11.sp),
+                            fontSize: 11.sp, color: const Color(0xffC9CACC)),
                       ),
                     ],
                   ),
                 ],
               ),
-
-              /// Right: Price + change
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
                     "₹580.60",
                     style: TextStyle(
-                        color: const Color(0xffEBEEF5),
-                        fontSize: 13.sp,
-                        fontWeight: FontWeight.w500),
+                      fontSize: 13.sp,
+                      color: const Color(0xffEBEEF5),
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                   Row(
                     children: [
-                      Transform(
-                        alignment: Alignment.center,
-                        transform: rate.startsWith("-")
-                            ? Matrix4.rotationX(math.pi) // Flip vertically
-                            : Matrix4.identity(), // No transformation
-                        child: SvgPicture.asset(
-                          "assets/svgs/icon-park-solid_up-one.svg",
-                          color: rate.contains("+") ? Colors.green : Colors.red,
-                        ),
-                      ),
+                      SvgPicture.asset("assets/svgs/icon-park-solid_up-one.svg",
+                          width: 12.sp, height: 12.sp),
+                      SizedBox(width: 4.w),
                       Text(
-                        rate,
+                        "0.55 (1.33%)",
                         style: TextStyle(
-                            color:
-                                rate.contains("+") ? Colors.green : Colors.red,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400),
+                          fontSize: 11.sp,
+                          color: const Color(0xff1db954),
+                        ),
                       ),
                     ],
                   ),
@@ -143,10 +130,9 @@ class _TradesComActiveScreenState extends State<TradesComActiveScreen>
               ),
             ],
           ),
+          SizedBox(height: 16.h),
 
-          SizedBox(height: 14.h),
-
-          /// Entry Price row
+          /// Entry Price
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -156,34 +142,54 @@ class _TradesComActiveScreenState extends State<TradesComActiveScreen>
           ),
           SizedBox(height: 8.h),
 
-          /// Entry Range row
+          /// Entry Range
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Entry Range", style: _labelStyle()),
-              Text("₹1,198.00 - ₹1,273.00", style: _valueStyle()),
+              Text("₹1,198.00 - 1,273.00", style: _valueStyle()),
             ],
           ),
+          SizedBox(height: 8.h),
+          Divider(
+            color: Color(0xff2F2F2f),
+          ),
 
-          Divider(color: const Color(0xff2F2F2F), height: 24.h),
-
-          /// Posted | Target | Hold Duration
+          /// Posted, Target, Hold Duration in a row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              statsText("Posted by", "15 Feb 2025 | 03:17 pm"),
-              statsText("Target", "1,380.00"),
-              statsText("Margin request", "₹1,380.00"),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Posted", style: _labelStyle()),
+                  Text("15 Feb 2025 | 03:17 pm", style: _valueStyle()),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Target", style: _labelStyle()),
+                  Text("1,380.00", style: _valueStyle()),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Hold Duration", style: _labelStyle()),
+                  Text("1 - 3 months", style: _valueStyle()),
+                ],
+              ),
             ],
           ),
           SizedBox(height: 12.h),
 
-          /// Net gain
+          /// Net Gain
           Container(
             width: double.infinity,
             padding: EdgeInsets.symmetric(vertical: 6.h),
             decoration: BoxDecoration(
-              color: const Color(0xff2A2A2A),
+              color: const Color(0xff3a3a3a).withOpacity(0.5),
               borderRadius: BorderRadius.circular(6.r),
             ),
             alignment: Alignment.center,
@@ -194,7 +200,7 @@ class _TradesComActiveScreenState extends State<TradesComActiveScreen>
                   "Net gain: ",
                   style: TextStyle(
                     color: Colors.white,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w400,
                     fontSize: 13.sp,
                   ),
                 ),
@@ -202,7 +208,7 @@ class _TradesComActiveScreenState extends State<TradesComActiveScreen>
                   " +6.08%",
                   style: TextStyle(
                     color: Colors.green,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w400,
                     fontSize: 13.sp,
                   ),
                 ),
@@ -215,48 +221,56 @@ class _TradesComActiveScreenState extends State<TradesComActiveScreen>
           Row(
             children: [
               Expanded(
-                child: OutlinedButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Color(0xff2F2F2F)),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r)),
-                  ),
-                  child: Text(
-                    "About Trade",
-                    style: TextStyle(
-                        color: const Color(0xffEBEEF5),
-                        fontWeight: FontWeight.w600),
+                child: SizedBox(
+                  height: 34.h,
+                  child: OutlinedButton(
+                    onPressed: () {},
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Color(0xff2F2F2F)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.r)),
+                    ),
+                    child: Text(
+                      "About Trade",
+                      style: TextStyle(
+                          fontSize: 13.sp,
+                          color: const Color(0xffEBEEF5),
+                          fontWeight: FontWeight.w600),
+                    ),
                   ),
                 ),
               ),
               SizedBox(width: 12.w),
               Expanded(
-                child: OutlinedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) =>
-                          TradesUtils.placeOrderPopup(context),
-                    );
-                  },
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Color(0xff2F2F2F)),
-                    backgroundColor: const Color(0xff1db954),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r)),
-                  ),
-                  child: const Text(
-                    "Place Order",
-                    style: TextStyle(
-                      color: Color(0xffEBEEF5),
-                      fontWeight: FontWeight.w600,
+                child: SizedBox(
+                  height: 34.h,
+                  child: OutlinedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) =>
+                            TradesUtils.placeOrderPopup(context),
+                      );
+                    },
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: const Color(0xff1db954),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      side: const BorderSide(color: Color(0xff1db954)),
+                    ),
+                    child: Text(
+                      "Place Order",
+                      style: TextStyle(
+                          fontSize: 13.sp,
+                          color: const Color(0xffEBEEF5),
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
               ),
             ],
-          ),
+          )
         ],
       ),
     );

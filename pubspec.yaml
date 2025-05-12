@@ -39,6 +39,7 @@ dependencies:
   pull_to_refresh: ^2.0.0
   fl_chart: ^0.71.0
   local_auth: ^2.3.0
+  webview_flutter:
   
 
 dev_dependencies:
