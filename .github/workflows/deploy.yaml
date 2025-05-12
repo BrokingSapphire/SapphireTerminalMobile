@@ -1,5 +1,5 @@
-# Debug Build and Host via GitHub Pages
-name: "Build & Publish Debug (Dev)"
+# Debug Build
+name: "Build & Debug (Dev)"
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    name: Build & Publish Debug Builds
+    name: Build & Debug
     runs-on: macos-latest
 
     steps:
@@ -38,22 +38,14 @@ jobs:
           cd ..
           zip -r app-debug.ipa Payload
 
-      - name: Prepare public folder for GitHub Pages
-        run: |
-          mkdir -p public
-          cp build/app/outputs/flutter-apk/app-debug.apk public/
-          cp build/ios/iphoneos/app-debug.ipa public/
-          echo '<html><body><h1>Debug Builds</h1><ul>' > public/index.html
-          echo '<li><a href="app-debug.apk">Download Android APK</a></li>' >> public/index.html
-          echo '<li><a href="app-debug.ipa">Download iOS IPA</a></li>' >> public/index.html
-          echo '</ul></body></html>' >> public/index.html
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload Debug Artifacts
+        uses: actions/upload-artifact@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
-          publish_branch: gh-pages
+          name: debug-builds
+          path: |
+            build/app/outputs/flutter-apk/app-debug.apk
+            build/ios/iphoneos/app-debug.ipa
+
 
 
 # Release Build
