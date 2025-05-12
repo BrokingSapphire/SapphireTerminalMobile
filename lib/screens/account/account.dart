@@ -123,6 +123,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
       () {}
     ];
   }
+  DateTimeRange? _selectedDateRange;
+
+    Future<void> _showCustomDateRangePicker() async {
+    final DateTimeRange? picked = await showModalBottomSheet<DateTimeRange>(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+      ),
+      backgroundColor: Colors.white,
+      builder: (context) => CustomDateRangePickerBottomSheet(
+        firstDate: DateTime(2020),
+        lastDate: DateTime(2030),
+        initialDateRange: _selectedDateRange,
+      ),
+    );
+
+    if (picked != null) {
+      setState(() {
+        _selectedDateRange = picked;
+      });
+    }
+  }
 
   void showDownloadSheet(BuildContext context) {
     String selectedSegment = 'Equity'; // Default selected value
@@ -317,44 +340,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(height: 6.h),
                   GestureDetector(
                     onTap: () async {
-                      final pickedDateRange = await showDialog<DateTimeRange>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Dialog(
-                            backgroundColor: Colors.transparent,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12.r),
-                              child: BackdropFilter(
-                                filter:
-                                    ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                                child: Container(
-                                  width: min(
-                                      0.9 * MediaQuery.of(context).size.width,
-                                      800.w),
-                                  padding: EdgeInsets.all(16.w),
-                                  decoration: BoxDecoration(
-                                    color:
-                                        Colors.grey.shade900.withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(12.r),
-                                    border: Border.all(
-                                        color: Colors.white.withOpacity(0.2)),
-                                  ),
-                                  child: CustomDateRangePicker(
-                                    firstDate: DateTime(2000),
-                                    lastDate: DateTime(2100),
-                                    initialDateRange: dateRange,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                      if (pickedDateRange != null) {
-                        setState(() {
-                          dateRange = pickedDateRange;
-                        });
-                      }
+                      _showCustomDateRangePicker();
                     },
                     child: Container(
                       height: 40.h,
