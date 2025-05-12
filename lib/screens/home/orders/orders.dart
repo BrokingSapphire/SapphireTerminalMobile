@@ -230,69 +230,57 @@ class _TabBarHeaderDelegate extends SliverPersistentHeaderDelegate {
                 onTap: () {
                   showModalBottomSheet(
                     context: context,
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    shape: RoundedRectangleBorder(
+                    backgroundColor: const Color(0xff121413),
+                    shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(20.r),
+                        top: Radius.circular(20),
                       ),
                     ),
-                    builder: (BuildContext context) {
-                      return Container(
-                        padding: EdgeInsets.symmetric(vertical: 20.h),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16.w),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Explore More Orders",
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Spacer(),
-                                  IconButton(
-                                    icon: Icon(Icons.close),
-                                    onPressed: () => Navigator.pop(context),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Divider(
-                              height: 1.h,
-                              color: Color(0xff2f2f2f),
-                            ),
-                            ListTile(
-                              leading: Icon(Icons.show_chart),
-                              title: Text("Stock SIP"),
-                              onTap: () {
-                                Navigator.pop(context);
-                                print('Stock SIP selected');
-                              },
-                            ),
-                            ListTile(
-                              leading: Icon(Icons.timeline),
-                              title: Text("GTT Order"),
-                              onTap: () {
-                                Navigator.pop(context);
-                                navi(gtt1Screen(), context);
-                              },
-                            ),
-                            ListTile(
-                              leading: Icon(Icons.shopping_basket),
-                              title: Text("Basket Order"),
-                              onTap: () {
-                                Navigator.pop(context);
-                                navi(basketScreen(), context);
-                              },
-                            ),
-                          ],
+                    builder: (context) => Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ListTile(
+                          contentPadding: EdgeInsets.only(left: 16.w),
+                          minLeadingWidth: 16.w,
+                          leading: Icon(Icons.show_chart),
+                          title: Text(
+                            "Stock SIP",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onTap: () {
+                            Navigator.pop(context);
+                            print("Stock SIP selected");
+                          },
                         ),
-                      );
-                    },
+                        ListTile(
+                          contentPadding: EdgeInsets.only(left: 16.w),
+                          minLeadingWidth: 16.w,
+                          leading: Icon(Icons.timeline),
+                          title: Text(
+                            "GTT Order",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onTap: () {
+                            Navigator.pop(context);
+                            print("GTT Order selected");
+                          },
+                        ),
+                        ListTile(
+                          contentPadding: EdgeInsets.only(left: 16.w),
+                          minLeadingWidth: 16.w,
+                          leading: Icon(Icons.shopping_basket),
+                          title: Text(
+                            "Basket Order",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onTap: () {
+                            Navigator.pop(context);
+                            print("Basket Order selected");
+                          },
+                        ),
+                      ],
+                    ),
                   );
                 },
                 child: Padding(
