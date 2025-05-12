@@ -67,6 +67,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
                   thickness: 1,
                   color: Color(0xFF2C2C2E),
                 ),
+                SizedBox(height: 8.h),
                 BottomNavigationBar(
                   currentIndex: _selectedIndex,
                   selectedItemColor: const Color(0xff1DB954),
@@ -84,7 +85,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
                         child: SvgPicture.asset(
                           "assets/svgs/Home.svg",
                           width: 22.w,
-                          height: 25.h,
+                          height: 24.h,
                           color: _selectedIndex == 0
                               ? const Color(0xff1DB954)
                               : const Color(0xff959595),
@@ -98,7 +99,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
                         child: SvgPicture.asset(
                           "assets/svgs/order.svg",
                           width: 22.w,
-                          height: 25.h,
+                          height: 24.h,
                           color: _selectedIndex == 1
                               ? const Color(0xff1DB954)
                               : const Color(0xff959595),
@@ -112,7 +113,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
                         child: SvgPicture.asset(
                           "assets/svgs/holdings.svg",
                           width: 22.w,
-                          height: 25.h,
+                          height: 24.h,
                           colorFilter: ColorFilter.mode(
                             _selectedIndex == 2
                                 ? const Color(0xff1DB954)
@@ -129,7 +130,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
                         child: SvgPicture.asset(
                           "assets/svgs/lightbulb.svg",
                           width: 22.w,
-                          height: 25.h,
+                          height: 24.h,
                           color: _selectedIndex == 3
                               ? const Color(0xff1DB954)
                               : const Color(0xff959595),
@@ -143,7 +144,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
                         child: SvgPicture.asset(
                           "assets/svgs/compass.svg",
                           width: 22.w,
-                          height: 25.h,
+                          height: 24.h,
                           color: _selectedIndex == 4
                               ? const Color(0xff1DB954)
                               : const Color(0xff959595),

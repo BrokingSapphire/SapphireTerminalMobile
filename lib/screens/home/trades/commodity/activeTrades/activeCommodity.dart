@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -25,14 +27,20 @@ class _TradesComActiveScreenState extends State<TradesComActiveScreen>
               style: TextStyle(color: const Color(0xffEBEEF5), fontSize: 12.sp),
             ),
             SizedBox(height: 12.h),
-            buildTradeCard(),
+            buildTradeCard(
+              "+0.55 (1.33%)",
+            ),
+            SizedBox(height: 12.h),
+            buildTradeCard(
+              "-0.55 (1.33%)",
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget buildTradeCard() {
+  Widget buildTradeCard(String rate) {
     return Container(
       padding: EdgeInsets.all(14.w),
       decoration: BoxDecoration(
@@ -42,10 +50,11 @@ class _TradesComActiveScreenState extends State<TradesComActiveScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// Top Row - Logo + Title + Status
+          /// Top section with logo and status
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              /// Left: Logo, name, BUY
               Row(
                 children: [
                   CircleAvatar(
@@ -62,10 +71,10 @@ class _TradesComActiveScreenState extends State<TradesComActiveScreen>
                       Row(
                         children: [
                           Text(
-                            "RELIANCE",
+                            'RELIANCE',
                             style: TextStyle(
-                              fontSize: 13.sp,
                               color: const Color(0xffEBEEF5),
+                              fontSize: 13.sp,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -78,100 +87,126 @@ class _TradesComActiveScreenState extends State<TradesComActiveScreen>
                               borderRadius: BorderRadius.circular(4.r),
                             ),
                             child: Text(
-                              "BUY",
+                              'BUY',
                               style: TextStyle(
-                                color: const Color(0xff22a06b),
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w500,
-                              ),
+                                  color: const Color(0xff22a06b),
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w500),
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 4.h),
-                      Row(children: [
-                        SvgPicture.asset("assets/svgs/clock.svg"),
-                        SizedBox(width: 8.w),
-                        Text("14 Feb 2025 | 8:32 pm", style: _valueStyle()),
-                      ])
+                      Text(
+                        'Reliance Industries Ltd.',
+                        style: TextStyle(
+                            color: const Color(0xffC9CACC), fontSize: 11.sp),
+                      ),
                     ],
                   ),
                 ],
               ),
+
+              /// Right: Price + change
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const Text(
-                    "Status",
+                  Text(
+                    "₹580.60",
                     style: TextStyle(
-                        color: Color(0xffC9CACC),
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400),
+                        color: const Color(0xffEBEEF5),
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w500),
                   ),
-                  SizedBox(height: 4.h),
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
-                    decoration: BoxDecoration(
-                      color: const Color(0xff35332e),
-                      borderRadius: BorderRadius.circular(4.r),
-                    ),
-                    child: Text(
-                      "Target Miss",
-                      style: TextStyle(
-                          color: const Color(0xffffd761), fontSize: 10.sp),
-                    ),
+                  Row(
+                    children: [
+                      Transform(
+                        alignment: Alignment.center,
+                        transform: rate.startsWith("-")
+                            ? Matrix4.rotationX(math.pi) // Flip vertically
+                            : Matrix4.identity(), // No transformation
+                        child: SvgPicture.asset(
+                          "assets/svgs/icon-park-solid_up-one.svg",
+                          color: rate.contains("+") ? Colors.green : Colors.red,
+                        ),
+                      ),
+                      Text(
+                        rate,
+                        style: TextStyle(
+                            color:
+                                rate.contains("+") ? Colors.green : Colors.red,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ],
           ),
-          SizedBox(height: 16.h),
 
-          /// Entry Section
+          SizedBox(height: 14.h),
+
+          /// Entry Price row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Entry Price", style: _labelStyle()),
-              Text("₹1,580.60", style: _valueStyle()),
+              Text("₹1,200.00", style: _valueStyle()),
             ],
           ),
           SizedBox(height: 8.h),
 
-          /// Exit Section
+          /// Entry Range row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Exit Range", style: _labelStyle()),
-              Text("407-510", style: _valueStyle()),
+              Text("Entry Range", style: _labelStyle()),
+              Text("₹1,198.00 - ₹1,273.00", style: _valueStyle()),
             ],
           ),
-          SizedBox(height: 8.h),
+
+          Divider(color: const Color(0xff2F2F2F), height: 24.h),
+
+          /// Posted | Target | Hold Duration
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Target", style: _labelStyle()),
-              Text("₹1,752.12", style: _valueStyle()),
+              statsText("Posted by", "15 Feb 2025 | 03:17 pm"),
+              statsText("Target", "1,380.00"),
+              statsText("Margin request", "₹1,380.00"),
             ],
           ),
           SizedBox(height: 12.h),
 
-          /// Net Gain
+          /// Net gain
           Container(
             width: double.infinity,
             padding: EdgeInsets.symmetric(vertical: 6.h),
             decoration: BoxDecoration(
-              color: const Color(0xff3a3a3a).withOpacity(0.5),
+              color: const Color(0xff2A2A2A),
               borderRadius: BorderRadius.circular(6.r),
             ),
             alignment: Alignment.center,
-            child: Text(
-              "Net gain: +6.08%",
-              style: TextStyle(
-                color: Colors.green,
-                fontWeight: FontWeight.w600,
-                fontSize: 13.sp,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Net gain: ",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 13.sp,
+                  ),
+                ),
+                Text(
+                  " +6.08%",
+                  style: TextStyle(
+                    color: Colors.green,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 13.sp,
+                  ),
+                ),
+              ],
             ),
           ),
           SizedBox(height: 12.h),
@@ -191,7 +226,7 @@ class _TradesComActiveScreenState extends State<TradesComActiveScreen>
                     "About Trade",
                     style: TextStyle(
                         color: const Color(0xffEBEEF5),
-                        fontWeight: FontWeight.w500),
+                        fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
@@ -201,10 +236,12 @@ class _TradesComActiveScreenState extends State<TradesComActiveScreen>
                   onPressed: () {
                     showDialog(
                       context: context,
-                      builder: (context) => TradesUtils.placeOrderPopup(context),
+                      builder: (context) =>
+                          TradesUtils.placeOrderPopup(context),
                     );
                   },
                   style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Color(0xff2F2F2F)),
                     backgroundColor: const Color(0xff1db954),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.r)),
@@ -212,14 +249,31 @@ class _TradesComActiveScreenState extends State<TradesComActiveScreen>
                   child: const Text(
                     "Place Order",
                     style: TextStyle(
-                        color: Color(0xffEBEEF5), fontWeight: FontWeight.w500),
+                      color: Color(0xffEBEEF5),
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
             ],
-          )
+          ),
         ],
       ),
+    );
+  }
+
+  Widget statsText(String title, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title,
+            style: TextStyle(color: const Color(0xffC9CACC), fontSize: 10.sp)),
+        Text(value,
+            style: TextStyle(
+                color: const Color(0xffEBEEF5),
+                fontSize: 11.sp,
+                fontWeight: FontWeight.w500)),
+      ],
     );
   }
 

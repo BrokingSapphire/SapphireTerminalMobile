@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ClosedComGridScreen extends StatefulWidget {
   const ClosedComGridScreen({super.key});
@@ -183,7 +184,14 @@ class _ClosedComGridScreen extends State<ClosedComGridScreen> {
           Text(text,
               style: TextStyle(color: Color(0xffC9CACC), fontSize: 13.sp)),
           SizedBox(width: 5.w),
-          Icon(Icons.swap_vert_rounded, color: Color(0xffC9CACC), size: 17.sp),
+          // Icon(Icons.swap_vert_rounded, color: Color(0xffC9CACC), size: 17.sp),
+          SvgPicture.asset(
+            "assets/svgs/arrow-up-down-svgrepo-com 1.svg",
+            colorFilter: ColorFilter.mode(
+              Color(0xffC9CACC),
+              BlendMode.srcIn,
+            ),
+          ),
         ],
       ),
     );
@@ -225,7 +233,8 @@ class _ClosedComGridScreen extends State<ClosedComGridScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 25.w),
       child: Container(
-        width: 85.w,
+        // width: 85.w,
+        padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.h),
         height: 20.h,
         decoration: BoxDecoration(
           color: bg,

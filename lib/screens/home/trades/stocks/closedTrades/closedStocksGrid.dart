@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
-class ClosedListScreen extends StatefulWidget {
-  const ClosedListScreen({super.key});
+class closedGridScreen extends StatefulWidget {
+  final List<Map<String, String>>? filteredStocks;
+
+  const closedGridScreen({super.key, this.filteredStocks});
 
   @override
-  State<ClosedListScreen> createState() => _ClosedListScreenState();
+  State<closedGridScreen> createState() => _closedGridScreenState();
 }
 
-class _ClosedListScreenState extends State<ClosedListScreen> {
+class _closedGridScreenState extends State<closedGridScreen> {
   final ScrollController _scrollController = ScrollController();
 
-  final List<Map<String, String>> data = [
+  // Default data if no filtered stocks are provided
+  final List<Map<String, String>> defaultData = [
     {
       "symbol": "DABUR\nMAR FUT",
       "entry": "₹510.68",
@@ -79,6 +83,27 @@ class _ClosedListScreenState extends State<ClosedListScreen> {
     {"text": "Posted By", "width": 147.w},
     {"text": "Status", "width": 140.w},
   ];
+
+  // Get the data to display - either filtered stocks or default data
+  List<Map<String, String>> get data {
+    if (widget.filteredStocks != null && widget.filteredStocks!.isNotEmpty) {
+      // Map the filtered stocks to the format expected by the grid
+      return widget.filteredStocks!.map((stock) {
+        return {
+          "symbol": "${stock['symbol']}\nMAR FUT",
+          "entry": "₹510.68",
+          "exit": "₹512.00",
+          "quantity": "100",
+          "duration": "1000",
+          "netgain": "₹189",
+          "margin": "₹1,15,678.00",
+          "postedby": "User1",
+          "status": "Target Miss"
+        };
+      }).toList();
+    }
+    return defaultData;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +199,11 @@ class _ClosedListScreenState extends State<ClosedListScreen> {
           Text(text,
               style: TextStyle(color: Color(0xffC9CACC), fontSize: 13.sp)),
           SizedBox(width: 5.w),
-          Icon(Icons.swap_vert_rounded, color: Color(0xffC9CACC), size: 17.sp),
+          // Icon(Icons.swap_vert_rounded, color: Color(0xffC9CACC), size: 17.sp),
+          SvgPicture.asset(
+            "assets/svgs/arrow-up-down-svgrepo-com 1.svg",
+            color: Color(0xffC9CACC),
+          ),
         ],
       ),
     );
@@ -216,7 +245,8 @@ class _ClosedListScreenState extends State<ClosedListScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 25.w),
       child: Container(
-        width: 85.w,
+        padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.h),
+        // width: 85.w,
         height: 20.h,
         decoration:
             BoxDecoration(color: bg, borderRadius: BorderRadius.circular(5.r)),

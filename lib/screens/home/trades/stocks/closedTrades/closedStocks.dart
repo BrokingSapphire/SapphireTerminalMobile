@@ -18,6 +18,34 @@ class _tradesClosedScreenState extends State<tradesClosedScreen>
   double dynamicPercent = 50.0;
   bool isGridView = true; // Default view mode
 
+  // List of stock data for search functionality
+  final List<Map<String, String>> stocksData = [
+    {
+      "symbol": "RELIANCE",
+      "companyName": "Reliance Industries Ltd.",
+      "action": "BUY"
+    },
+    {
+      "symbol": "TCS",
+      "companyName": "Tata Consultancy Services Ltd.",
+      "action": "SELL"
+    },
+    {"symbol": "DABUR", "companyName": "Dabur India Ltd.", "action": "BUY"},
+    {"symbol": "DLF", "companyName": "DLF Limited", "action": "SELL"},
+    {"symbol": "RECLTD", "companyName": "REC Limited", "action": "BUY"},
+    {"symbol": "INFY", "companyName": "Infosys Ltd.", "action": "BUY"}
+  ];
+
+  // Filtered list for search results
+  List<Map<String, String>> filteredStocks = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize filtered list with all stocks
+    filteredStocks = List.from(stocksData);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -122,10 +150,31 @@ class _tradesClosedScreenState extends State<tradesClosedScreen>
                           borderRadius: BorderRadius.circular(8.r),
                         ),
                         child: TextField(
+                          textCapitalization: TextCapitalization.characters,
+                          onChanged: (value) {
+                            setState(() {
+                              // Filter stocks based on search query
+                              if (value.isEmpty) {
+                                // If search is empty, show all stocks
+                                filteredStocks = List.from(stocksData);
+                              } else {
+                                // Filter stocks by symbol or company name
+                                filteredStocks = stocksData.where((stock) {
+                                  final symbolMatch = stock["symbol"]!
+                                      .toLowerCase()
+                                      .startsWith(value.toLowerCase());
+                                  final nameMatch = stock["companyName"]!
+                                      .toLowerCase()
+                                      .contains(value.toLowerCase());
+                                  return symbolMatch || nameMatch;
+                                }).toList();
+                              }
+                            });
+                          },
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Color(0xff121413),
-                            hintText: "Search Stock",
+                            hintText: "Search by name or ticker",
                             hintStyle: TextStyle(
                                 color: Color(0xffC9CACC), fontSize: 14.sp),
                             prefixIcon: Padding(
@@ -213,12 +262,16 @@ class _tradesClosedScreenState extends State<tradesClosedScreen>
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.r),
                               ),
-                              child: Icon(
-                                Icons.filter_list_outlined,
-                                color: !isGridView
-                                    ? Colors.green
-                                    : Colors.white, // Green when selected
-                              ),
+                              // child: Icon(
+                              //   Icons.filter_list_outlined,
+                              //   color: !isGridView
+                              //       ? Colors.green
+                              //       : Colors.white, // Green when selected
+                              // ),
+                              child: SvgPicture.asset("assets/svgs/list.svg",
+                                  color: !isGridView
+                                      ? Colors.green
+                                      : Colors.white),
                             ),
                           ],
                         ),
@@ -227,13 +280,45 @@ class _tradesClosedScreenState extends State<tradesClosedScreen>
                   ],
                 ),
 
-                SizedBox(height: 10.h),
-
-                // Display GridView or ListView
-                Container(
-                  height: 400.h, // Ensures the content has enough space
-                  child: isGridView ? closedGridScreen() : ClosedListScreen(),
+                SizedBox(height: 16.h),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Closed Trade(246)")),
+                SizedBox(
+                  height: 8.h,
                 ),
+
+                // Display search results or message if no results
+                filteredStocks.isEmpty
+                    ? Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 40.h),
+                          child: Column(
+                            children: [
+                              SvgPicture.asset(
+                                'assets/svgs/search-svgrepo-com (1).svg',
+                                width: 50.w,
+                                height: 50.h,
+                                color: Color(0xff2F2F2F),
+                              ),
+                              SizedBox(height: 16.h),
+                              Text(
+                                'No stocks found',
+                                style: TextStyle(
+                                  color: Color(0xffC9CACC),
+                                  fontSize: 16.sp,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : Container(
+                        height: 700.h, // Ensures the content has enough space
+                        child: isGridView
+                            ? closedListScreen()
+                            : closedGridScreen(filteredStocks: filteredStocks),
+                      ),
               ],
             ),
           ),

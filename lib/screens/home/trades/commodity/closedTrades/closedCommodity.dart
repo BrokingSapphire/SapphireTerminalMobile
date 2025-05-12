@@ -115,15 +115,86 @@ class _TradesComClosedScreen extends State<TradesComClosedScreen>
                 // ),
                 SizedBox(height: 16.h),
                 // Search & Toggle View
+
                 Row(
                   children: [
                     // Search Bar
                     Expanded(
-                        child: Text(
-                      "Closed trades (246)",
-                      style: TextStyle(fontSize: 12.sp),
-                    )),
-
+                      child: Container(
+                        height: 44.h,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: TextField(
+                          textCapitalization: TextCapitalization.characters,
+                          onChanged: (value) {
+                            setState(() {
+                              // Filter stocks based on search query
+                              // if (value.isEmpty) {
+                              //   // If search is empty, show all stocks
+                              //   filteredStocks = List.from(stocksData);
+                              // } else {
+                              //   // Filter stocks by symbol or company name
+                              //   filteredStocks = stocksData.where((stock) {
+                              //     final symbolMatch = stock["symbol"]!
+                              //         .toLowerCase()
+                              //         .startsWith(value.toLowerCase());
+                              //     final nameMatch = stock["companyName"]!
+                              //         .toLowerCase()
+                              //         .contains(value.toLowerCase());
+                              //     return symbolMatch || nameMatch;
+                              //   }).toList();
+                              // }
+                            });
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Color(0xff121413),
+                            hintText: "Search by name or ticker",
+                            hintStyle: TextStyle(
+                                color: Color(0xffC9CACC), fontSize: 14.sp),
+                            prefixIcon: Padding(
+                              padding: EdgeInsets.only(
+                                  left: 20.w,
+                                  right: 5.w), // Adds space before the icon
+                              child: SvgPicture.asset(
+                                'assets/svgs/search-svgrepo-com (1).svg',
+                                // Update with your actual SVG path
+                                width: 18.w, // Adjust size
+                                height: 18.h,
+                                color: Colors.grey, // Change color if needed
+                              ),
+                            ),
+                            prefixIconConstraints: BoxConstraints(
+                              minWidth: 36.w,
+                              // Ensure enough space for padding to take effect
+                              minHeight: 36.h,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.r),
+                              borderSide: BorderSide(color: Color(0xff141213)),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.r),
+                              borderSide: BorderSide(color: Color(0xff141213)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.r),
+                              borderSide: BorderSide(color: Color(0xff141213)),
+                            ),
+                            disabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.r),
+                              borderSide: BorderSide(color: Color(0xff141213)),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 10.h,
+                                horizontal: 8.w), // Reduce horizontal padding
+                          ),
+                          style: TextStyle(color: Color(0xffEBEEF5)),
+                        ),
+                      ),
+                    ),
                     SizedBox(width: 10.w),
 
                     // Toggle Buttons
@@ -167,11 +238,17 @@ class _TradesComClosedScreen extends State<TradesComClosedScreen>
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.r),
                               ),
-                              child: Icon(
-                                Icons.filter_list_outlined,
-                                color: !isGridView
-                                    ? Colors.green
-                                    : Colors.white, // Green when selected
+                              // child: Icon(
+                              //   Icons.filter_list_outlined,
+                              //   color: !isGridView
+                              //       ? Colors.green
+                              //       : Colors.white, // Green when selected
+                              // ),
+                              child: SvgPicture.asset(
+                                'assets/svgs/list.svg',
+                                color: isGridView ? Colors.white : Colors.green,
+                                width: 24.w,
+                                height: 24.h,
                               ),
                             ),
                           ],
@@ -181,8 +258,15 @@ class _TradesComClosedScreen extends State<TradesComClosedScreen>
                   ],
                 ),
 
-                SizedBox(height: 10.h),
-
+                SizedBox(height: 16.h),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Closed trades (246)",
+                    style: TextStyle(fontSize: 12.sp),
+                  ),
+                ),
+                SizedBox(height: 8.h),
                 // Display GridView or ListView
                 Container(
                     height: 400.h, // Ensures the content has enough space
