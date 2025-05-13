@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    name: Build & Debug
+    name: Build & Debug (Dev/Debug)
     runs-on: macos-latest
 
     steps:
@@ -25,7 +25,7 @@ jobs:
           channel: stable
           architecture: x64
 
-      - name: Build Android APK (Debug)
+      - name: Build Android App (Debug)
         run: flutter build apk --debug
 
       - name: Build iOS App (Debug)
