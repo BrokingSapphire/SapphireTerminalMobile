@@ -13,46 +13,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-#  lint_and_test:
-#    name: Lint and Test
-#    runs-on: ubuntu-latest
-#    timeout-minutes: 10
-#    steps:
-#      - uses: actions/checkout@v3
-#
-#      - uses: actions/setup-java@v3
-#        with:
-#          distribution: zulu
-#          java-version: 21
-#
-#      - uses: subosito/flutter-action@v2
-#        with:
-#          channel: stable
-#          architecture: x64
-#
-#      - name: Cache Flutter dependencies
-#        uses: actions/cache@v3
-#        with:
-#          path: |
-#            ~/.pub-cache
-#            .dart_tool/
-#            ~/.gradle/caches
-#            ~/.gradle/wrapper
-#          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
-#          restore-keys: ${{ runner.os }}-flutter-
-#
-#      - name: Get Flutter dependencies
-#        run: flutter pub get
-#
-#      - name: Analyze code
-#        run: flutter analyze
-#
-#      - name: Run tests
-#        run: flutter test
-
   build_android:
     name: Build Android (Debug)
-    needs: lint_and_test
+    # Removed dependency on lint_and_test
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -94,7 +57,7 @@ jobs:
 
   build_ios:
     name: Build iOS (Debug)
-    needs: lint_and_test
+    # Removed dependency on lint_and_test
     runs-on: macos-latest
     timeout-minutes: 30
     steps:
