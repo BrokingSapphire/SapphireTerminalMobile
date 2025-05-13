@@ -121,7 +121,7 @@ class _TradesOptionClosedScreen extends State<TradesOptionClosedScreen>
                     Expanded(
                         child: Text(
                       "Closed trades (246)",
-                      style: TextStyle(fontSize: 12.sp),
+                      style: TextStyle(fontSize: 15.sp),
                     )),
 
                     SizedBox(width: 10.w),

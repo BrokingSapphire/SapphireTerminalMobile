@@ -253,8 +253,8 @@ class _TradesFutureClosedScreen extends State<TradesFutureClosedScreen>
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Closed trades (246)",
-                    style: TextStyle(fontSize: 12.sp),
+                    "Closed Trades (246)",
+                    style: TextStyle(fontSize: 15.sp),
                   ),
                 ),
                 SizedBox(

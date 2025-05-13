@@ -81,14 +81,16 @@ class _HomeWrapperState extends State<HomeWrapper> {
                   items: [
                     BottomNavigationBarItem(
                       icon: SizedBox(
-                        // height: 34.h, // 👈 increase height here
-                        child: SvgPicture.asset(
-                          "assets/svgs/Home.svg",
-                          width: 22.w,
-                          height: 24.h,
-                          color: _selectedIndex == 0
-                              ? const Color(0xff1DB954)
-                              : const Color(0xff959595),
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 2.h),
+                          child: SvgPicture.asset(
+                            "assets/svgs/Home.svg",
+                            width: 22.w,
+                            height: 24.h,
+                            color: _selectedIndex == 0
+                                ? const Color(0xff1DB954)
+                                : const Color(0xff959595),
+                          ),
                         ),
                       ),
                       label: 'Watchlist',
@@ -96,29 +98,35 @@ class _HomeWrapperState extends State<HomeWrapper> {
                     BottomNavigationBarItem(
                       icon: SizedBox(
                         // height: 34.h,
-                        child: SvgPicture.asset(
-                          "assets/svgs/order.svg",
-                          width: 22.w,
-                          height: 24.h,
-                          color: _selectedIndex == 1
-                              ? const Color(0xff1DB954)
-                              : const Color(0xff959595),
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 2.h),
+                          child: SvgPicture.asset(
+                            "assets/svgs/order.svg",
+                            width: 22.w,
+                            height: 24.h,
+                            color: _selectedIndex == 1
+                                ? const Color(0xff1DB954)
+                                : const Color(0xff959595),
+                          ),
                         ),
                       ),
-                      label: 'Order',
+                      label: 'Orders',
                     ),
                     BottomNavigationBarItem(
                       icon: SizedBox(
                         // height: 34.h,
-                        child: SvgPicture.asset(
-                          "assets/svgs/holdings.svg",
-                          width: 22.w,
-                          height: 24.h,
-                          colorFilter: ColorFilter.mode(
-                            _selectedIndex == 2
-                                ? const Color(0xff1DB954)
-                                : const Color(0xff959595),
-                            BlendMode.srcIn,
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 2.h),
+                          child: SvgPicture.asset(
+                            "assets/svgs/holdings.svg",
+                            width: 22.w,
+                            height: 24.h,
+                            colorFilter: ColorFilter.mode(
+                              _selectedIndex == 2
+                                  ? const Color(0xff1DB954)
+                                  : const Color(0xff959595),
+                              BlendMode.srcIn,
+                            ),
                           ),
                         ),
                       ),
@@ -127,13 +135,16 @@ class _HomeWrapperState extends State<HomeWrapper> {
                     BottomNavigationBarItem(
                       icon: SizedBox(
                         // height: 34.h,
-                        child: SvgPicture.asset(
-                          "assets/svgs/lightbulb.svg",
-                          width: 22.w,
-                          height: 24.h,
-                          color: _selectedIndex == 3
-                              ? const Color(0xff1DB954)
-                              : const Color(0xff959595),
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 2.h),
+                          child: SvgPicture.asset(
+                            "assets/svgs/lightbulb.svg",
+                            width: 22.w,
+                            height: 24.h,
+                            color: _selectedIndex == 3
+                                ? const Color(0xff1DB954)
+                                : const Color(0xff959595),
+                          ),
                         ),
                       ),
                       label: 'Trades',
@@ -141,19 +152,23 @@ class _HomeWrapperState extends State<HomeWrapper> {
                     BottomNavigationBarItem(
                       icon: SizedBox(
                         // height: 34.h,
-                        child: SvgPicture.asset(
-                          "assets/svgs/compass.svg",
-                          width: 22.w,
-                          height: 24.h,
-                          color: _selectedIndex == 4
-                              ? const Color(0xff1DB954)
-                              : const Color(0xff959595),
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 2.h),
+                          child: SvgPicture.asset(
+                            "assets/svgs/compass.svg",
+                            width: 22.w,
+                            height: 24.h,
+                            color: _selectedIndex == 4
+                                ? const Color(0xff1DB954)
+                                : const Color(0xff959595),
+                          ),
                         ),
                       ),
                       label: 'Discover',
                     ),
                   ],
                 ),
+                SizedBox(height: 8.h),
               ],
             ),
           ),

@@ -1,35 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class closedListScreen extends StatefulWidget {
-  final List<Map<String, String>>? filteredStocks;
+class ClosedListScreen extends StatefulWidget {
+  final List<Map<String, String>>? filteredStocks; // Optional parameter
 
-  const closedListScreen({super.key, this.filteredStocks});
+  const ClosedListScreen({super.key, this.filteredStocks});
 
   @override
-  State<closedListScreen> createState() => _closedListScreenState();
+  State<ClosedListScreen> createState() => _ClosedListScreenState();
 }
 
-class _closedListScreenState extends State<closedListScreen> {
-  // Default stock data
-  final List<Map<String, String>> stockData = [
-    {
-      "symbol": "RELIANCE",
-      "companyName": "Reliance Industries Ltd.",
-      "action": "BUY",
-      "logo": "reliance logo.png"
-    },
-    {
-      "symbol": "TCS",
-      "companyName": "Tata Consultancy Services Ltd.",
-      "action": "SELL",
-      "logo": "tcs logo.png"
-    },
-  ];
+class _ClosedListScreenState extends State<ClosedListScreen> {
+  // Default stock data maintained within the class
+  late List<Map<String, String>> _stocks;
 
-  // Use filtered stocks if available
-  List<Map<String, String>> get displayData {
-    return widget.filteredStocks ?? stockData;
+  @override
+  void initState() {
+    super.initState();
+    // Initialize _stocks with default data if widget.filteredStocks is null
+    _stocks = widget.filteredStocks ?? [];
   }
 
   @override
@@ -39,7 +28,7 @@ class _closedListScreenState extends State<closedListScreen> {
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
         child: Column(
-          children: displayData.map((stock) => buildStockCard(stock)).toList(),
+          children: _stocks.map((stock) => buildStockCard(stock)).toList(),
         ),
       ),
     );
@@ -122,6 +111,7 @@ class _closedListScreenState extends State<closedListScreen> {
                               ),
                             ],
                           ),
+                          SizedBox(height: 4.h),
                           Text(
                             stock["companyName"] ?? "Unknown Company",
                             style: TextStyle(
@@ -224,8 +214,8 @@ class _closedListScreenState extends State<closedListScreen> {
     return Row(
       children: [
         Text(
-          '$title:',
-          style: TextStyle(color: Colors.white, fontSize: 12.sp),
+          title,
+          style: TextStyle(color: Color(0xffc9cacc), fontSize: 13.sp),
         ),
         SizedBox(width: 46.w),
         Text(
@@ -234,11 +224,11 @@ class _closedListScreenState extends State<closedListScreen> {
         ),
         Spacer(),
         Text(
-          '$date',
+          date,
           style: TextStyle(color: Colors.white, fontSize: 12.sp),
         ),
         Text(
-          '$time',
+          time,
           style: TextStyle(color: Color(0xff9B9B9B), fontSize: 12.sp),
         ),
       ],

@@ -23,7 +23,7 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
           children: [
             Text(
               "Active Trades (246)",
-              style: TextStyle(color: const Color(0xffEBEEF5), fontSize: 12.sp),
+              style: TextStyle(color: const Color(0xffEBEEF5), fontSize: 15.sp),
             ),
             SizedBox(height: 8.h),
             buildTradeCard(),
@@ -144,7 +144,7 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
           SizedBox(height: 8.h),
 
           /// Entry Row
-          buildTripleColumnRow("Entry", "₹1,580.60", "₹1,580.60"),
+          buildTripleColumnRow("Entry", "₹1,580.60", "₹1,5800.60"),
 
           SizedBox(height: 8.h),
 
@@ -360,6 +360,7 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
                       fontSize: 13.sp,
                     ),
                   ),
+                  SizedBox(height: 4.h),
                   Text(
                     "27 Apr 2025",
                     style: TextStyle(
@@ -374,12 +375,25 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
 
           SizedBox(height: 11.h),
 
-          // Posted date
-          Text(
-            "Posted 08 May '25 | 09:45 Am",
-            style: TextStyle(
-              color: const Color(0xffC9CACC),
-              fontSize: 11.sp,
+          RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: "Posted ",
+                  style: TextStyle(
+                    color: const Color(0xffC9CACC),
+                    fontSize: 11.sp,
+                  ),
+                ),
+                TextSpan(
+                  text: "08 May '25 | 09:45 Am",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 11.sp,
+                 // Optional: Add bold for emphasis
+                  ),
+                ),
+              ],
             ),
           ),
 
@@ -430,7 +444,7 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
                   children: [
                     Container(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                          EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
                       decoration: BoxDecoration(
                         color: const Color(0xff22a06b).withOpacity(0.2),
                         borderRadius: BorderRadius.circular(4.r),
@@ -455,6 +469,7 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
                   ],
                 ),
               ),
+              SizedBox(width: 15.w),
               Expanded(
                 child: Text(
                   "₹1,580.60",
@@ -464,6 +479,7 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
                   ),
                 ),
               ),
+              SizedBox(width: 15.w),
               Expanded(
                 child: Text(
                   "₹1,580.60",
@@ -487,7 +503,7 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
                   children: [
                     Container(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                          EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.h),
                       decoration: BoxDecoration(
                         color: Colors.red.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(4.r),
@@ -683,7 +699,7 @@ class _TradesOptionActiveScreen extends State<TradesOptionActiveScreen>
   }
 
   TextStyle _labelStyle() =>
-      TextStyle(color: const Color(0xffC9CACC), fontSize: 12.sp);
+      TextStyle(color: const Color(0xffC9CACC), fontSize: 13.sp);
 
   TextStyle _valueStyle() =>
       TextStyle(color: const Color(0xffEBEEF5), fontSize: 12.sp);

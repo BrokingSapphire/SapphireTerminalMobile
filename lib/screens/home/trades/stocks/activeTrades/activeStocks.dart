@@ -3,8 +3,43 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sapphire/screens/home/trades/trades.dart';
 
+// Model class to represent a trade
+class Trade {
+  final String logoPath;
+  final String title;
+  final String companyName;
+  final String action; // e.g., "BUY"
+  final double currentPrice;
+  final double priceChange;
+  final double percentageChange;
+  final double entryPrice;
+  final String entryRange;
+  final String postedDate;
+  final String targetPrice;
+  final String holdDuration;
+  final double netGain;
+
+  Trade({
+    required this.logoPath,
+    required this.title,
+    required this.companyName,
+    required this.action,
+    required this.currentPrice,
+    required this.priceChange,
+    required this.percentageChange,
+    required this.entryPrice,
+    required this.entryRange,
+    required this.postedDate,
+    required this.targetPrice,
+    required this.holdDuration,
+    required this.netGain,
+  });
+}
+
 class TradesActiveScreen extends StatefulWidget {
-  const TradesActiveScreen({super.key});
+  final List<Trade>? trades; // Optional parameter
+
+  const TradesActiveScreen({super.key, this.trades});
 
   @override
   State<TradesActiveScreen> createState() => _TradesActiveScreenState();
@@ -12,232 +47,77 @@ class TradesActiveScreen extends StatefulWidget {
 
 class _TradesActiveScreenState extends State<TradesActiveScreen>
     with SingleTickerProviderStateMixin {
+  late List<Trade> _trades; // Internal list to manage trades
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize _trades with default data if widget.trades is null
+    _trades = widget.trades ?? [
+      Trade(
+        logoPath: 'assets/images/reliance logo.png',
+        title: 'RELIANCE',
+        companyName: 'Reliance Industries Ltd.',
+        action: 'BUY',
+        currentPrice: 580.60,
+        priceChange: 0.55,
+        percentageChange: 1.33,
+        entryPrice: 1200.00,
+        entryRange: '₹1,198.00 - 1,273.00',
+        postedDate: '15 Feb 2025 | 03:17 pm',
+        targetPrice: '1,380.00',
+        holdDuration: '1 - 3 months',
+        netGain: 6.08,
+      ),
+      Trade(
+        logoPath: 'assets/images/reliance logo.png',
+        title: 'TATASTEEL',
+        companyName: 'Tata Steel Ltd.',
+        action: 'SELL',
+        currentPrice: 1450.25,
+        priceChange: -2.10,
+        percentageChange: -0.14,
+        entryPrice: 1400.00,
+        entryRange: '₹1,390.00 - 1,410.00',
+        postedDate: '16 Feb 2025 | 10:00 am',
+        targetPrice: '1,500.00',
+        holdDuration: '2 - 4 months',
+        netGain: 3.45,
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding:
-            EdgeInsets.only(right: 16.w, left: 16.h, top: 16.w, bottom: 8.w),
+        padding: EdgeInsets.only(right: 16.w, left: 16.h, top: 16.w, bottom: 8.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Active Trades (246)",
-              style: TextStyle(color: const Color(0xffEBEEF5), fontSize: 12.sp),
+              "Active Trades (${_trades.length})",
+              style: TextStyle(color: const Color(0xffEBEEF5), fontSize: 15.sp),
             ),
             SizedBox(height: 8.h),
-            activeTradeCard(),
-            SizedBox(
-              height: 12.h,
+            Expanded(
+              child: ListView.builder(
+                itemCount: _trades.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: 12.h),
+                    child: activeTradeCard(_trades[index]),
+                  );
+                },
+              ),
             ),
-            activeTradeCard(),
-            SizedBox(
-              height: 12.h,
-            ),
-            // buildTradeCard()
           ],
         ),
       ),
     );
   }
 
-  Widget buildTradeCard() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      decoration: BoxDecoration(
-        color: const Color(0xff121413),
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          /// Top Row - Logo + Title + Status
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 14.r,
-                    backgroundColor: Colors.white,
-                    child: ClipOval(
-                      child: Image.asset('assets/images/reliance logo.png'),
-                    ),
-                  ),
-                  SizedBox(width: 8.w),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            "RELIANCE",
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              color: const Color(0xffEBEEF5),
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          SizedBox(width: 6.w),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 6.w, vertical: 2.h),
-                            decoration: BoxDecoration(
-                              color: const Color(0xff143520),
-                              borderRadius: BorderRadius.circular(4.r),
-                            ),
-                            child: Text(
-                              "BUY",
-                              style: TextStyle(
-                                color: const Color(0xff22a06b),
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        "Reliance Industries Ltd.",
-                        style: TextStyle(
-                            fontSize: 11.sp, color: const Color(0xffC9CACC)),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  const Text(
-                    "Status",
-                    style: TextStyle(
-                        color: Color(0xffC9CACC),
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400),
-                  ),
-                  SizedBox(height: 4.h),
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.h),
-                    decoration: BoxDecoration(
-                      color: const Color(0xff35332e),
-                      borderRadius: BorderRadius.circular(4.r),
-                    ),
-                    child: Text(
-                      "Target Miss",
-                      style: TextStyle(
-                          color: const Color(0xffffd761), fontSize: 10.sp),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(height: 16.h),
-
-          /// Entry Section
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Entry", style: _labelStyle()),
-              Text("₹1,580.60", style: _valueStyle()),
-              Text("14 Feb 2025 | 8:32 pm", style: _valueStyle()),
-            ],
-          ),
-          SizedBox(height: 8.h),
-
-          /// Exit Section
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Exit", style: _labelStyle()),
-              Text("₹1,752.12", style: _valueStyle()),
-              Text("15 Feb 2025 | 9:32 pm", style: _valueStyle()),
-            ],
-          ),
-          SizedBox(height: 12.h),
-
-          /// Net Gain
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: 6.h),
-            decoration: BoxDecoration(
-              color: const Color(0xff3a3a3a).withOpacity(0.5),
-              borderRadius: BorderRadius.circular(6.r),
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              "Net gain: +6.08%",
-              style: TextStyle(
-                color: Colors.green,
-                fontWeight: FontWeight.w600,
-                fontSize: 13.sp,
-              ),
-            ),
-          ),
-          SizedBox(height: 12.h),
-
-          /// Buttons
-          Row(
-            children: [
-              Expanded(
-                child: SizedBox(
-                  height: 34.h,
-                  child: OutlinedButton(
-                    onPressed: () {},
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Color(0xff2F2F2F)),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.r)),
-                    ),
-                    child: Text(
-                      "About Trade",
-                      style: TextStyle(
-                          fontSize: 13.sp,
-                          color: const Color(0xffEBEEF5),
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: SizedBox(
-                  height: 34.h,
-                  child: OutlinedButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) =>
-                            TradesUtils.placeOrderPopup(context),
-                      );
-                    },
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: const Color(0xff1db954),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      side: const BorderSide(color: Color(0xff1db954)),
-                    ),
-                    child: Text(
-                      "Place Order",
-                      style: TextStyle(
-                          fontSize: 13.sp,
-                          color: Color(0xffEBEEF5),
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget activeTradeCard() {
+  Widget activeTradeCard(Trade trade) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       decoration: BoxDecoration(
@@ -257,7 +137,7 @@ class _TradesActiveScreenState extends State<TradesActiveScreen>
                     radius: 14.r,
                     backgroundColor: Colors.white,
                     child: ClipOval(
-                      child: Image.asset('assets/images/reliance logo.png'),
+                      child: Image.asset(trade.logoPath),
                     ),
                   ),
                   SizedBox(width: 8.w),
@@ -267,7 +147,7 @@ class _TradesActiveScreenState extends State<TradesActiveScreen>
                       Row(
                         children: [
                           Text(
-                            "RELIANCE",
+                            trade.title,
                             style: TextStyle(
                               fontSize: 13.sp,
                               color: const Color(0xffEBEEF5),
@@ -276,14 +156,13 @@ class _TradesActiveScreenState extends State<TradesActiveScreen>
                           ),
                           SizedBox(width: 6.w),
                           Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 6.w, vertical: 2.h),
+                            padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                             decoration: BoxDecoration(
                               color: const Color(0xff1db954).withOpacity(0.2),
                               borderRadius: BorderRadius.circular(4.r),
                             ),
                             child: Text(
-                              "BUY",
+                              trade.action,
                               style: TextStyle(
                                 color: const Color(0xff1db954),
                                 fontSize: 10.sp,
@@ -293,10 +172,10 @@ class _TradesActiveScreenState extends State<TradesActiveScreen>
                           ),
                         ],
                       ),
+                      SizedBox(height: 4.h),
                       Text(
-                        "Reliance Industries Ltd.",
-                        style: TextStyle(
-                            fontSize: 11.sp, color: const Color(0xffC9CACC)),
+                        trade.companyName,
+                        style: TextStyle(fontSize: 11.sp, color: const Color(0xffC9CACC)),
                       ),
                     ],
                   ),
@@ -306,20 +185,24 @@ class _TradesActiveScreenState extends State<TradesActiveScreen>
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    "₹580.60",
+                    "₹${trade.currentPrice.toStringAsFixed(2)}",
                     style: TextStyle(
                       fontSize: 13.sp,
                       color: const Color(0xffEBEEF5),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+                  SizedBox(height: 4.h),
                   Row(
                     children: [
-                      SvgPicture.asset("assets/svgs/icon-park-solid_up-one.svg",
-                          width: 12.sp, height: 12.sp),
+                      SvgPicture.asset(
+                        "assets/svgs/icon-park-solid_up-one.svg",
+                        width: 12.sp,
+                        height: 12.sp,
+                      ),
                       SizedBox(width: 4.w),
                       Text(
-                        "0.55 (1.33%)",
+                        "${trade.priceChange.toStringAsFixed(2)} (${trade.percentageChange.toStringAsFixed(2)}%)",
                         style: TextStyle(
                           fontSize: 11.sp,
                           color: const Color(0xff1db954),
@@ -338,7 +221,7 @@ class _TradesActiveScreenState extends State<TradesActiveScreen>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Entry Price", style: _labelStyle()),
-              Text("₹1,200.00", style: _valueStyle()),
+              Text("₹${trade.entryPrice.toStringAsFixed(2)}", style: _valueStyle()),
             ],
           ),
           SizedBox(height: 8.h),
@@ -348,12 +231,12 @@ class _TradesActiveScreenState extends State<TradesActiveScreen>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Entry Range", style: _labelStyle()),
-              Text("₹1,198.00 - 1,273.00", style: _valueStyle()),
+              Text(trade.entryRange, style: _valueStyle()),
             ],
           ),
           SizedBox(height: 8.h),
           Divider(
-            color: Color(0xff2F2F2f),
+            color: const Color(0xff2F2F2f),
           ),
 
           /// Posted, Target, Hold Duration in a row
@@ -364,21 +247,21 @@ class _TradesActiveScreenState extends State<TradesActiveScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Posted", style: _labelStyle()),
-                  Text("15 Feb 2025 | 03:17 pm", style: _valueStyle()),
+                  Text(trade.postedDate, style: _valueStyle()),
                 ],
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Target", style: _labelStyle()),
-                  Text("1,380.00", style: _valueStyle()),
+                  Text(trade.targetPrice, style: _valueStyle()),
                 ],
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Hold Duration", style: _labelStyle()),
-                  Text("1 - 3 months", style: _valueStyle()),
+                  Text(trade.holdDuration, style: _valueStyle()),
                 ],
               ),
             ],
@@ -406,7 +289,7 @@ class _TradesActiveScreenState extends State<TradesActiveScreen>
                   ),
                 ),
                 Text(
-                  " +6.08%",
+                  "+${trade.netGain.toStringAsFixed(2)}%",
                   style: TextStyle(
                     color: const Color(0xff1db954),
                     fontWeight: FontWeight.w500,
@@ -429,14 +312,16 @@ class _TradesActiveScreenState extends State<TradesActiveScreen>
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: Color(0xff2F2F2F)),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.r)),
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
                     ),
                     child: Text(
                       "About Trade",
                       style: TextStyle(
-                          fontSize: 13.sp,
-                          color: const Color(0xffEBEEF5),
-                          fontWeight: FontWeight.w600),
+                        fontSize: 13.sp,
+                        color: const Color(0xffEBEEF5),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
@@ -449,8 +334,7 @@ class _TradesActiveScreenState extends State<TradesActiveScreen>
                     onPressed: () {
                       showDialog(
                         context: context,
-                        builder: (context) =>
-                            TradesUtils.placeOrderPopup(context),
+                        builder: (context) => TradesUtils.placeOrderPopup(context),
                       );
                     },
                     style: OutlinedButton.styleFrom(
@@ -463,22 +347,23 @@ class _TradesActiveScreenState extends State<TradesActiveScreen>
                     child: Text(
                       "Place Order",
                       style: TextStyle(
-                          fontSize: 13.sp,
-                          color: const Color(0xffEBEEF5),
-                          fontWeight: FontWeight.w600),
+                        fontSize: 13.sp,
+                        color: const Color(0xffEBEEF5),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
   }
 
   TextStyle _labelStyle() =>
-      TextStyle(color: const Color(0xffC9CACC), fontSize: 12.sp);
+      TextStyle(color: const Color(0xffC9CACC), fontSize: 13.sp);
 
   TextStyle _valueStyle() =>
       TextStyle(color: const Color(0xffEBEEF5), fontSize: 12.sp);

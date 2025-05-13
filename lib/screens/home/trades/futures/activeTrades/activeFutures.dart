@@ -24,7 +24,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
           children: [
             Text(
               "Active Trades (246)",
-              style: TextStyle(color: const Color(0xffEBEEF5), fontSize: 12.sp),
+              style: TextStyle(color: const Color(0xffEBEEF5), fontSize: 15.sp),
             ),
             SizedBox(height: 8.h),
             activeTradeCard(),
@@ -289,6 +289,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
                           ),
                         ],
                       ),
+                      SizedBox(height: 4.h),
                       Text(
                         "Reliance Industries Ltd.",
                         style: TextStyle(
@@ -309,6 +310,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
                       fontWeight: FontWeight.w400,
                     ),
                   ),
+                  SizedBox(height: 4.h),
                   Row(
                     children: [
                       SvgPicture.asset("assets/svgs/icon-park-solid_up-one.svg",
@@ -723,7 +725,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
   }
 
   TextStyle _labelStyle() =>
-      TextStyle(color: const Color(0xffC9CACC), fontSize: 12.sp);
+      TextStyle(color: const Color(0xffC9CACC), fontSize: 13.sp);
 
   TextStyle _valueStyle() =>
       TextStyle(color: const Color(0xffEBEEF5), fontSize: 12.sp);

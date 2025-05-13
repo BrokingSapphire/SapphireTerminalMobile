@@ -36,6 +36,20 @@ class _tradesClosedScreenState extends State<tradesClosedScreen>
     {"symbol": "INFY", "companyName": "Infosys Ltd.", "action": "BUY"}
   ];
 
+  final List<Map<String, String>> closedStocksData = [
+    {
+      "symbol": "RELIANCE",
+      "companyName": "Reliance Industries Ltd.",
+      "action": "BUY",
+      "logo": "reliance logo.png",
+    },
+    {
+      "symbol": "TCS",
+      "companyName": "Tata Consultancy Services Ltd.",
+      "action": "SELL",
+      "logo": "tcs logo.png",
+    },
+  ];
   // Filtered list for search results
   List<Map<String, String>> filteredStocks = [];
 
@@ -284,9 +298,9 @@ class _tradesClosedScreenState extends State<tradesClosedScreen>
                 Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "Closed Trade(246)",
+                      "Closed Trade(${closedStocksData.length})",
                       style: TextStyle(
-                          color: const Color(0xffEBEEF5), fontSize: 12.sp),
+                          color: const Color(0xffEBEEF5), fontSize: 15.sp),
                     )),
                 SizedBox(
                   height: 8.h,
@@ -320,7 +334,7 @@ class _tradesClosedScreenState extends State<tradesClosedScreen>
                     : Container(
                         height: 700.h, // Ensures the content has enough space
                         child: isGridView
-                            ? closedListScreen()
+                            ? ClosedListScreen(filteredStocks: closedStocksData)
                             : closedGridScreen(filteredStocks: filteredStocks),
                       ),
               ],

@@ -84,6 +84,7 @@ class _ClosedFutureListScreenState extends State<ClosedFutureListScreen> {
                           ),
                         ],
                       ),
+                      SizedBox(height: 4.h),
                       Text(
                         "Reliance Industries Ltd.",
                         style: TextStyle(
@@ -205,7 +206,7 @@ class _ClosedFutureListScreenState extends State<ClosedFutureListScreen> {
   }
 
   TextStyle _labelStyle() =>
-      TextStyle(color: const Color(0xffC9CACC), fontSize: 12.sp);
+      TextStyle(color: const Color(0xffC9CACC), fontSize: 13.sp);
 
   TextStyle _valueStyle() =>
       TextStyle(color: const Color(0xffEBEEF5), fontSize: 12.sp);

@@ -115,7 +115,7 @@ class _ClosedOptionListScreen extends State<ClosedOptionListScreen> {
                   SizedBox(height: 4.h),
                   Container(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                        EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.h),
                     decoration: BoxDecoration(
                       color: const Color(0xff35332e),
                       borderRadius: BorderRadius.circular(4.r),
@@ -354,6 +354,7 @@ class _ClosedOptionListScreen extends State<ClosedOptionListScreen> {
                       fontSize: 13.sp,
                     ),
                   ),
+                  SizedBox(height: 4.h),
                   Text(
                     "27 Apr 2025",
                     style: TextStyle(
@@ -374,6 +375,7 @@ class _ClosedOptionListScreen extends State<ClosedOptionListScreen> {
                         fontSize: 10,
                         fontWeight: FontWeight.w400),
                   ),
+                  SizedBox(height: 4.h),
                   Container(
                     padding:
                         EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
@@ -398,20 +400,50 @@ class _ClosedOptionListScreen extends State<ClosedOptionListScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "Posted 08 May '25 | 09:45 Am",
-                style: TextStyle(
-                  color: const Color(0xffC9CACC),
-                  fontSize: 11.sp,
+                  RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: "Posted ",
+                  style: TextStyle(
+                    color: const Color(0xffC9CACC),
+                    fontSize: 11.sp,
+                  ),
                 ),
-              ),
-              Text(
-                "Closed 08 May '25 | 09:45 Am",
-                style: TextStyle(
-                  color: const Color(0xffC9CACC),
-                  fontSize: 11.sp,
+                TextSpan(
+                  text: "08 May '25 | 09:45 Am",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 11.sp,
+                 // Optional: Add bold for emphasis
+                  ),
                 ),
-              ),
+              ],
+            ),
+          ),
+
+                 RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: "Closed ",
+                  style: TextStyle(
+                    color: const Color(0xffC9CACC),
+                    fontSize: 11.sp,
+                  ),
+                ),
+                TextSpan(
+                  text: "08 May '25 | 09:45 Am",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 11.sp,
+                 // Optional: Add bold for emphasis
+                  ),
+                ),
+              ],
+            ),
+          ),
+
             ],
           ),
 
@@ -659,7 +691,7 @@ class _ClosedOptionListScreen extends State<ClosedOptionListScreen> {
             children: [
               Expanded(
                 child: Container(
-                  height: 40.h,
+                  height: 34.h,
                   child: OutlinedButton(
                     onPressed: () {},
                     style: OutlinedButton.styleFrom(
@@ -671,8 +703,9 @@ class _ClosedOptionListScreen extends State<ClosedOptionListScreen> {
                     child: Text(
                       "About Trade",
                       style: TextStyle(
+                        fontSize: 13.sp,
                         color: const Color(0xffEBEEF5),
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
@@ -681,7 +714,7 @@ class _ClosedOptionListScreen extends State<ClosedOptionListScreen> {
               SizedBox(width: 12.w),
               Expanded(
                 child: Container(
-                  height: 40.h,
+                  height: 34.h,
                   child: OutlinedButton(
                     onPressed: () {
                       showDialog(
@@ -697,11 +730,12 @@ class _ClosedOptionListScreen extends State<ClosedOptionListScreen> {
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       "Place Order",
                       style: TextStyle(
+                        fontSize: 13.sp,
                         color: Color(0xffEBEEF5),
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
