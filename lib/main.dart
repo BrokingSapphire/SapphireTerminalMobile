@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive U
 import 'package:sapphire/screens/auth/signUp/initialPage.dart'; // Initial landing screen
 import 'package:sapphire/themeProvider.dart'; // Theme state management
 import 'package:provider/provider.dart'; // State management solution
-import 'package:sapphire/utils/appTheme.dart'; // App-wide theme configurations
+import 'package:sapphire/utils/appTheme.dart'; // App-wide theme configurations.
 
 /// Application entry point
 /// Initializes Flutter binding and sets up the theme provider
