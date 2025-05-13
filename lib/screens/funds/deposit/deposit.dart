@@ -111,7 +111,7 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
   bool _isDecimalMode = false; // Flag for decimal input mode
   String _decimalPart = ''; // Stores decimal part during input
   bool _amountInvalid = false; // Flag for invalid amount
-  static const int minAmount = 99; // Minimum deposit amount
+  static const int minAmount = 100; // Minimum deposit amount
   static const int maxAmount =
       999999999; // Maximum deposit amount (₹9,99,99,999)
 
@@ -190,6 +190,12 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
     super.initState();
     // Initialize the amount text controller
     amountController = TextEditingController(text: amountText);
+    // Add listener to validate amount whenever text changes
+    amountController.addListener(() {
+      _validateAmount();
+    });
+    // Initial validation
+    _validateAmount();
   }
 
   @override
@@ -243,6 +249,7 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
           _decimalPart = '00';
           amountText = '${NumberUtils.formatIndianNumber(currentText)}.00';
           amountController.text = amountText;
+          _validateAmount(); // Validate after updating
         });
       }
       return;
@@ -259,6 +266,7 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
         amountText =
             '${NumberUtils.formatIndianNumber(currentText)}.$_decimalPart';
         amountController.text = amountText;
+        _validateAmount(); // Validate after updating
       });
     }
     // Handle input in normal (integer) mode
@@ -270,6 +278,7 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
         setState(() {
           amountText = formattedAmount;
           amountController.text = formattedAmount;
+          _validateAmount(); // Validate after updating
         });
       }
     }
@@ -295,6 +304,7 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
       amountController.text = formattedAmount;
       _isDecimalMode = false;
       _decimalPart = '';
+      _validateAmount(); // Validate after updating
     });
   }
 
@@ -304,29 +314,35 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
     String currentText = amountController.text.replaceAll(',', '');
     String integerPart = currentText.split('.').first;
 
-    // If in decimal mode, exit decimal mode entirely
     if (_isDecimalMode) {
-      setState(() {
-        _isDecimalMode = false;
-        _decimalPart = '';
-        amountText =
-            '${NumberUtils.formatIndianNumber(integerPart.isEmpty ? '0' : integerPart)}.00';
-        amountController.text = amountText;
-      });
-    }
-    // If in integer mode, remove last digit
-    else {
-      if (integerPart.length <= 1) {
-        integerPart = '0';
-      } else {
-        integerPart = integerPart.substring(0, integerPart.length - 1);
+      if (_decimalPart.length == 2) {
+        // If we have two decimal digits, remove the last one
+        _decimalPart = _decimalPart[0] + '0';
+        setState(() {
+          amountText =
+              '${NumberUtils.formatIndianNumber(integerPart)}.$_decimalPart';
+          amountController.text = amountText;
+          _validateAmount(); // Validate after updating
+        });
       }
-      String formattedAmount =
-          '${NumberUtils.formatIndianNumber(integerPart)}.00';
-      setState(() {
-        amountText = formattedAmount;
-        amountController.text = formattedAmount;
-      });
+    } else {
+      // If in integer mode, remove the last digit of the integer part
+      if (integerPart.length > 1) {
+        String newIntegerPart =
+            integerPart.substring(0, integerPart.length - 1);
+        setState(() {
+          amountText = '${NumberUtils.formatIndianNumber(newIntegerPart)}.00';
+          amountController.text = amountText;
+          _validateAmount(); // Validate after updating
+        });
+      } else {
+        // If only one digit left, set to 0
+        setState(() {
+          amountText = '0.00';
+          amountController.text = amountText;
+          _validateAmount(); // Validate after updating
+        });
+      }
     }
   }
 
