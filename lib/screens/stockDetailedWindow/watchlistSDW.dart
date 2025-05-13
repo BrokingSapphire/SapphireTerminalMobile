@@ -1,0 +1,1973 @@
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+
+class watchlistSDW extends StatefulWidget {
+  final String stockName;
+  final String stockCode;
+  String price;
+  String change;
+  final VoidCallback onBuy;
+  final VoidCallback onSell;
+  watchlistSDW(
+      {super.key,
+      required this.stockName,
+      required this.stockCode,
+      required this.price,
+      required this.change,
+      required this.onBuy,
+      required this.onSell});
+
+  @override
+  State<watchlistSDW> createState() => _watchlistSDWState();
+}
+
+class _watchlistSDWState extends State<watchlistSDW> {
+  @override
+  // Tab selection states
+  String selectedEarningsTab = 'Revenue';
+  String earningsPeriod = 'Yearly';
+  String shareholdingPeriod = 'Mar 2025';
+  bool isNSE = true;
+  String selectedRange = '1Y';
+
+  List<FlSpot> getChartData(String range) {
+    switch (range) {
+      case '1M':
+        return List.generate(
+            30, (i) => FlSpot(i.toDouble(), 100 + i.toDouble()));
+      case '1Y':
+        return List.generate(
+            12, (i) => FlSpot(i.toDouble(), 100 + (i * 10 % 30).toDouble()));
+      default:
+        return List.generate(
+            10, (i) => FlSpot(i.toDouble(), 100 + (i * 5).toDouble()));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Get the current theme brightness
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // Show the DraggableScrollableSheet
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          SvgPicture.asset(
+            "assets/svgs/search-svgrepo-com (1).svg",
+            color: isDark ? Colors.white : Colors.black,
+          ),
+          SizedBox(width: 16.w),
+          SvgPicture.asset("assets/svgs/save.svg",
+              width: 22.w,
+              height: 22.h,
+              color: isDark ? Colors.white : Colors.black),
+          SizedBox(width: 16.w),
+          SvgPicture.asset("assets/svgs/chain.svg",
+              width: 22.w,
+              height: 22.h,
+              color: isDark ? Colors.white : Colors.black),
+          SizedBox(width: 16.w),
+          SvgPicture.asset("assets/svgs/notification.svg",
+              width: 22.w,
+              height: 22.h,
+              color: isDark ? Colors.white : Colors.black),
+          SizedBox(width: 16.w),
+        ],
+      ),
+      body: Container(
+        // Style for the bottom sheet with rounded corners at the top
+        decoration: BoxDecoration(
+          color: isDark ? Colors.black : Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 10,
+              spreadRadius: 1,
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            // Drag handle at the top of the sheet
+
+            Padding(
+              padding: EdgeInsets.only(left: 16.h, right: 16.h, top: 12.w),
+              child: _buildHeader(isDark),
+            ),
+            SizedBox(
+              height: 18.h,
+            ),
+            Divider(
+                color:
+                    isDark ? const Color(0xFF2F2F2F) : const Color(0xFFD1D5DB)),
+            // Main content section with ScrollView
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 9.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Header showing stock information
+
+                      SizedBox(height: 12.h),
+
+                      stockChartWidget(
+                        dataPoints: getChartData(selectedRange),
+                        selectedRange: selectedRange,
+                        onRangeSelected: (range) {
+                          setState(() {
+                            selectedRange = range;
+                          });
+                        },
+                      ),
+                      SizedBox(height: 8.h),
+                      Divider(
+                          color: isDark
+                              ? const Color(0xFF2F2F2F)
+                              : const Color(0xFFD1D5DB)),
+
+                      // Market Depth section
+                      _buildSectionHeader(isDark, 'Market Depth'),
+                      SizedBox(height: 16.h),
+                      _buildMarketDepthTable(isDark),
+                      Center(
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            'Show 20 depth',
+                            style: TextStyle(
+                              color: Color(0xff1DB954),
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Divider(
+                          color: isDark
+                              ? const Color(0xFF2F2F2F)
+                              : const Color(0xFFD1D5DB)),
+
+                      // Performance section
+                      _buildSectionHeader(isDark, 'Performance'),
+                      SizedBox(height: 16.h),
+                      _buildPerformanceSection(isDark),
+                      Divider(
+                          color: isDark
+                              ? const Color(0xFF2F2F2F)
+                              : const Color(0xFFD1D5DB)),
+
+                      // Fundamental Ratios grid display
+                      _buildSectionHeader(isDark, 'Fundamental Ratios'),
+                      SizedBox(height: 10.h),
+                      _buildRatiosGrid(isDark),
+                      Divider(
+                          color: isDark
+                              ? const Color(0xFF2F2F2F)
+                              : const Color(0xFFD1D5DB)),
+
+                      // Shareholding Pattern with pie chart
+                      _buildShareholdingHeader(isDark),
+                      SizedBox(height: 16.h),
+                      buildShareholdingChart(isDark),
+                      Divider(
+                          color: isDark
+                              ? const Color(0xFF2F2F2F)
+                              : const Color(0xFFD1D5DB)),
+
+                      // Earnings section with chart
+                      _buildEarningsHeader(isDark),
+                      SizedBox(height: 16.h),
+                      _buildEarningsTabs(isDark),
+                      SizedBox(height: 16.h),
+                      _buildEarningsChart(isDark),
+                      SizedBox(height: 10.h),
+                      Center(
+                        child: Text(
+                          '*All values are in crore',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12.sp,
+                          ),
+                        ),
+                      ),
+                      Divider(
+                          color: isDark
+                              ? const Color(0xFF2F2F2F)
+                              : const Color(0xFFD1D5DB)),
+
+                      // About Company section
+                      _buildSectionHeader(isDark, 'About Company'),
+                      SizedBox(height: 16.h),
+                      Text(
+                        'Reliance Industries Limited (RIL) is India\'s largest private sector company. The company\'s activities span hydrocarbon exploration and production, petroleum refining and marketing, petrochemicals, advanced materials and composites, renewables (solar and hydrogen), retail and digital services. The company\'s products range is from the exploration and production of oil and gas to the manufacture of petroleum products, polyester products, polyester intermediates, plastics, polymer intermediates, chemicals, synthetic textiles and fabrics.',
+                        style: TextStyle(
+                          color: isDark ? Colors.white : Colors.black87,
+                          fontSize: 14.sp,
+                          height: 1.5,
+                        ),
+                      ),
+                      SizedBox(height: 16.h),
+                      _buildCompanyDetailsTable(isDark),
+                      SizedBox(height: 24.h),
+                      Divider(
+                          color: isDark
+                              ? const Color(0xFF2F2F2F)
+                              : const Color(0xFFD1D5DB)),
+                      // Locate Section
+                      SizedBox(height: 24.h),
+                      _buildLocateSection(isDark),
+                      SizedBox(height: 24.h),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      persistentFooterButtons: [
+        _buildBuySellButtons(),
+      ],
+    );
+  }
+
+  // Drag handle widget for visual indication that sheet is draggable
+  Widget _buildDragHandle(bool isDark) {
+    return Container(
+      width: double.infinity,
+      height: 24.h,
+      alignment: Alignment.center,
+      child: Container(
+        width: 40.w,
+        height: 4.h,
+        margin: EdgeInsets.only(top: 12.h),
+        decoration: BoxDecoration(
+          color: isDark ? Colors.grey.shade600 : Colors.grey.shade300,
+          borderRadius: BorderRadius.circular(2.r),
+        ),
+      ),
+    );
+  }
+
+  // Header with stock name, code, price and change information
+  Widget _buildHeader(bool isDark) {
+    return Row(
+      children: [
+        // Company logo
+        CircleAvatar(
+          radius: 18.r,
+          backgroundImage: AssetImage("assets/images/reliance logo.png"),
+        ),
+        SizedBox(width: 12.w),
+        // Stock name and code
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    widget.stockName,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15.sp,
+                      color: isDark ? Colors.white : Colors.black,
+                    ),
+                  ),
+                  SizedBox(width: 6.w),
+                  _infoChip("NSE"),
+                ],
+              ),
+              SizedBox(height: 2.h),
+              Text(
+                widget.stockCode,
+                style: TextStyle(
+                  color: isDark ? Colors.white : Colors.black,
+                  fontSize: 13.sp,
+                ),
+              ),
+              SizedBox(height: 6.h),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    widget.price,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15.sp,
+                      color: isDark ? Colors.white : Colors.black,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 4.w,
+                  ),
+                  Text(
+                    widget.change,
+                    style: TextStyle(
+                      // Green for positive change, would be red for negative
+                      color: widget.change.contains('+')
+                          ? Colors.green
+                          : Colors.red,
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        // Price and change
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Container(
+              margin: EdgeInsets.only(right: 8.w),
+              decoration: BoxDecoration(
+                color: isDark ? Color(0xff2F2F2F) : Color(0xfff4f4f9),
+                borderRadius: BorderRadius.circular(2.r),
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GestureDetector(
+                    onTap: () => setState(() => isNSE = true),
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.easeInOut,
+                      height: 22.h,
+                      width: 40.w,
+                      decoration: BoxDecoration(
+                        color: isNSE
+                            ? Color(0xff1db954)
+                            : isDark
+                                ? Colors.transparent
+                                : Color(0xFFF4F4F9),
+                        borderRadius: BorderRadius.circular(2.r),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'NSE',
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: isNSE
+                                ? Colors.white
+                                : isDark
+                                    ? Colors.white
+                                    : Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 2.h),
+                  GestureDetector(
+                    onTap: () => setState(() => isNSE = false),
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.easeInOut,
+                      height: 22.h,
+                      width: 40.w,
+                      decoration: BoxDecoration(
+                        color: !isNSE
+                            ? Color(0xff1db954)
+                            : isDark
+                                ? Colors.transparent
+                                : Color(0xFFF4F4F9),
+                        borderRadius: BorderRadius.circular(2.r),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'BSE',
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: !isNSE
+                                ? Colors.white
+                                : isDark
+                                    ? Colors.white
+                                    : Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _infoChip(String text) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+      decoration: BoxDecoration(
+        color: Color(0xff303030),
+        borderRadius: BorderRadius.circular(4.r),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+            fontSize: 10.sp, fontWeight: FontWeight.w500, color: Colors.white),
+      ),
+    );
+  }
+
+  // Buy and Sell action buttons
+  Widget _buildBuySellButtons() {
+    return Row(
+      children: [
+        // Buy button
+        Expanded(
+          child: SizedBox(
+            height: 50.h,
+            child: ElevatedButton(
+              onPressed: widget.onBuy,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF22A06B), // Green for buy
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+              ),
+              child: Text(
+                'BUY',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(width: 12.w),
+        // Sell button
+        Expanded(
+          child: SizedBox(
+            height: 50.h,
+            child: ElevatedButton(
+              onPressed: widget.onSell,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFE53935), // Red for sell
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+              ),
+              child: Text(
+                'SELL',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Quick action icons row
+  Widget _buildActionIcons(bool isDark) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildActionItem(
+          isDark,
+          'assets/svgs/setAlert.svg',
+          'Set Alert',
+        ),
+        _buildActionItem(
+          isDark,
+          'assets/svgs/optionChain.svg',
+          'Option Chain',
+        ),
+        _buildActionItem(
+          isDark,
+          'assets/svgs/stockSip.svg',
+          'Stock SIP',
+        ),
+      ],
+    );
+  }
+
+  // Individual action item with icon and label
+  Widget _buildActionItem(bool isDark, String iconPath, String label) {
+    return Column(
+      children: [
+        // SVG icon with proper color based on theme
+        SvgPicture.asset(
+          iconPath,
+          height: 22.h,
+          width: 22.w,
+        ),
+        SizedBox(height: 10.h),
+        // Action label
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w500,
+            color: isDark ? Colors.white : Colors.black87,
+          ),
+        ),
+      ],
+    );
+  }
+
+  // "View Chart" link button
+  Widget _buildViewChartLink() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'View Chart',
+          style: TextStyle(
+            color: Color(0xFF1DB954),
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        SizedBox(width: 5.w),
+        SvgPicture.asset(
+          'assets/svgs/charts.svg',
+          height: 22.h,
+          color: Color(0xFF1DB954),
+          width: 22.w,
+        ),
+      ],
+    );
+  }
+
+  Widget stockChartWidget({
+    required List<FlSpot> dataPoints,
+    required String selectedRange,
+    required void Function(String) onRangeSelected,
+  }) {
+    return Column(
+      children: [
+        // Chart
+        SizedBox(
+          height: 250.h,
+          child: LineChart(
+            LineChartData(
+              backgroundColor: Colors.black,
+              gridData: FlGridData(show: false),
+              titlesData: FlTitlesData(
+                leftTitles:
+                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                rightTitles:
+                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                topTitles:
+                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 30,
+                    getTitlesWidget: (value, meta) {
+                      const months = [
+                        'Jan',
+                        'Feb',
+                        'Mar',
+                        'Apr',
+                        'May',
+                        'Jun',
+                        'Jul',
+                        'Aug',
+                        'Sep',
+                        'Oct',
+                        'Nov',
+                        'Dec'
+                      ];
+                      return Text(
+                        months[value.toInt() % 12],
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 11.sp,
+                        ),
+                      );
+                    },
+                    interval: 1,
+                  ),
+                ),
+              ),
+              borderData: FlBorderData(show: false),
+              lineBarsData: [
+                LineChartBarData(
+                  spots: dataPoints,
+                  isCurved: true,
+                  color: Colors.orangeAccent,
+                  barWidth: 2,
+                  dotData: FlDotData(show: false),
+                  belowBarData: BarAreaData(show: false),
+                )
+              ],
+              lineTouchData: LineTouchData(enabled: true),
+              minY: dataPoints.map((e) => e.y).reduce((a, b) => a < b ? a : b),
+              maxY: dataPoints.map((e) => e.y).reduce((a, b) => a > b ? a : b),
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 12),
+
+        // Time Range Buttons
+        Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 8,
+          children: [
+            for (var range in ['1D', '1W', '1M', '3M', '6M', '1Y', '5Y', 'All'])
+              ChoiceChip(
+                label: Text(range, style: const TextStyle(color: Colors.white)),
+                selected: selectedRange == range,
+                onSelected: (_) => onRangeSelected(range),
+                selectedColor: Colors.grey.shade800,
+                backgroundColor: Colors.black54,
+              ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  // Helper method to show info in a modal bottom sheet
+  void _showInfoDialog(BuildContext context, String title, String content) {
+    // Get the current theme brightness
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return Container(
+          padding: EdgeInsets.all(16.w),
+          decoration: BoxDecoration(
+            color: isDark ? Color(0xff121413) : Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16.r),
+              topRight: Radius.circular(16.r),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 10,
+                spreadRadius: 1,
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header with drag handle and close icon
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(width: 24.w), // For balance
+                  // Drag handle at the top
+
+                  // Close icon
+                ],
+              ),
+
+              // Title
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18.sp,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Container(
+                      padding: EdgeInsets.all(4.w),
+                      child: Icon(
+                        Icons.close,
+                        color: isDark ? Colors.white : Colors.black54,
+                        size: 20.sp,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 12.h),
+
+              // Content
+              Text(
+                content,
+                style: TextStyle(
+                  color:
+                      isDark ? Colors.white.withOpacity(0.9) : Colors.black87,
+                  fontSize: 14.sp,
+                  height: 1.5,
+                ),
+              ),
+              SizedBox(height: 24.h),
+
+              SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  // Section header with title and optional info icon
+  Widget _buildSectionHeader(bool isDark, String title) {
+    // Get the appropriate info content based on the section title
+    String infoContent = '';
+    switch (title) {
+      case 'Market Depth':
+        infoContent =
+            'Market Depth shows the real-time demand and supply for a stock at different price levels. It displays the number of buy and sell orders pending at various prices, helping traders assess liquidity, price movement potential, and the overall sentiment in the market.';
+        break;
+      case 'Performance':
+        infoContent =
+            'Performance reflects how a stock has behaved over various timeframes—daily, weekly, monthly, or annually. It includes price change percentages, comparisons with indices or peers, and helps investors evaluate a stock\'s consistency, volatility, and returns.';
+        break;
+      case 'Fundamental Ratios':
+        infoContent =
+            'Fundamental Ratios provide insights into a company\'s financial health and valuation. Key ratios include Price-to-Earnings (P/E), Debt-to-Equity, Return on Equity (ROE), and Earnings Per Share (EPS), helping investors make informed decisions about the company\'s long-term potential.';
+        break;
+      case 'Shareholding Pattern':
+        infoContent =
+            'The Shareholding Pattern reveals the ownership distribution of a company among promoters, institutional investors, foreign investors, and the public. It offers transparency on who controls the company and signals investor confidence or concern.';
+        break;
+      case 'Earnings':
+        infoContent =
+            'Earnings indicate a company\'s profitability over a specific period, typically quarterly or annually. They include revenue, net profit, earnings per share, and margin data, which are crucial for assessing the company\'s financial performance and growth prospects.';
+        break;
+      case 'About Company':
+        infoContent =
+            'This section provides a brief overview of the company, including its history, core business operations, key products or services, leadership, and market presence. It helps investors understand the company\'s identity, mission, and competitive positioning.';
+        break;
+      default:
+        infoContent = 'Information about $title';
+    }
+
+    return Row(
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            color: isDark ? Colors.white : Colors.black87,
+            fontSize: 13.sp,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        SizedBox(width: 4.w),
+        GestureDetector(
+          onTap: () => _showInfoDialog(context, title, infoContent),
+          child: Icon(
+            Icons.info_outline,
+            color: isDark ? Colors.white : Colors.grey,
+            size: 13.sp,
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Market depth table with bid and offer data
+  Widget _buildMarketDepthTable(bool isDark) {
+    return Column(
+      children: [
+        // Table header and market depth rows
+        Stack(
+          children: [
+            // Content
+            Column(
+              children: [
+                // Table header
+                Row(
+                  children: [
+                    // Bid side
+                    Expanded(
+                      flex: 3,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: Text(
+                              'Bid',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 11.sp,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Text(
+                              'Orders',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 11.sp,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              'Qty.',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 11.sp,
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // Space for divider
+                    SizedBox(width: 16.w),
+
+                    // Offer side
+                    Expanded(
+                      flex: 3,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: Text(
+                              'Offers',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 11.sp,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Text(
+                              'Orders',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 11.sp,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              'Qty.',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 11.sp,
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8.h),
+                // Market depth rows
+                _buildDepthRow(isDark, '777.67', '2', '29', false),
+                _buildDepthRow(isDark, '223.45', '6', '110', false),
+                _buildDepthRow(isDark, '33.57', '8', '126', false),
+                _buildDepthRow(isDark, '22.5', '13', '196', false),
+                _buildDepthRow(isDark, '346.46', '15', '257', false),
+              ],
+            ),
+
+            // Vertical divider
+            Positioned(
+              top: 0,
+              bottom: 0,
+              // Position the divider in the center
+              left: 0,
+              right: 0,
+              child: Center(
+                child: Container(
+                  width: 0.5,
+                  height: 200.h,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.5),
+                    // Add a subtle shadow effect
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 1,
+                        offset: Offset(0.5, 0),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+
+        SizedBox(height: 12.h),
+        Divider(
+            color: isDark ? const Color(0xFF2F2F2F) : const Color(0xFFD1D5DB)),
+        // Totals row
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Total buy: 8,99,356',
+              style: TextStyle(
+                color: isDark ? Colors.grey : Colors.black,
+                fontSize: 11.sp,
+              ),
+            ),
+            Text(
+              'Total Sell: 8,99,356',
+              style: TextStyle(
+                color: isDark ? Colors.grey : Colors.black,
+                fontSize: 11.sp,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  // Individual row in the market depth table
+
+  // Individual row in the market depth table
+  Widget _buildDepthRow(
+      bool isDark, String price, String orders, String qty, bool isHeader) {
+    final TextStyle bidStyle = TextStyle(
+      color: Colors.green,
+      fontSize: 11.sp,
+      fontWeight: isHeader ? FontWeight.normal : FontWeight.w500,
+    );
+
+    final TextStyle offerStyle = TextStyle(
+      color: Colors.red,
+      fontSize: 11.sp,
+      fontWeight: isHeader ? FontWeight.normal : FontWeight.w500,
+    );
+
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 6.h),
+      child: Row(
+        children: [
+          // Bid Side (Left columns)
+          Expanded(
+            flex: 3,
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    price,
+                    style: bidStyle,
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    orders,
+                    style: bidStyle,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Text(
+                    qty,
+                    style: bidStyle,
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Space for the central divider
+          SizedBox(width: 16.w),
+
+          // Offer Side (Right columns)
+          Expanded(
+            flex: 3,
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    price,
+                    style: offerStyle,
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    orders,
+                    style: offerStyle,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Text(
+                    qty,
+                    style: offerStyle,
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Performance metrics section with sliders
+  Widget _buildPerformanceSection(bool isDark) {
+    double todaysLow = 1467.00;
+    double todaysHigh = 1567.00; // Example higher value
+    double currentPrice = 1500.00;
+    return Column(
+      children: [
+        // Today's range
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Today\'s Low',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 11.sp,
+              ),
+            ),
+            Text(
+              'Today\'s High',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 11.sp,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 6.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '1,467.00',
+              style: TextStyle(
+                color: isDark ? Colors.white : Colors.black87,
+                fontSize: 11.sp,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            Text(
+              '1,467.00',
+              style: TextStyle(
+                color: isDark ? Colors.white : Colors.black87,
+                fontSize: 11.sp,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 12.h),
+        // Today's slider
+        Container(
+          height: 4.h,
+          decoration: BoxDecoration(
+            // gradient: LinearGradient(
+            //   colors: [Colors.red, Colors.yellow, Colors.green],
+            // ),
+            color: Color(0xff1DB954),
+            borderRadius: BorderRadius.circular(2.r),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 100.w,
+                // height: 4.h,
+                child: Stack(
+                  alignment: Alignment.centerLeft,
+                  children: [
+                    Icon(
+                      Icons.arrow_drop_up,
+                      color: Colors.white,
+                      size: 24.sp,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 16.h),
+
+        // 52 Week range
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '52 Week Low',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 11.sp,
+              ),
+            ),
+            Text(
+              '52 Week High',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 11.sp,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 8.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '1,467.00',
+              style: TextStyle(
+                color: isDark ? Colors.white : Colors.black87,
+                fontSize: 11.sp,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            Text(
+              '1,467.00',
+              style: TextStyle(
+                color: isDark ? Colors.white : Colors.black87,
+                fontSize: 11.sp,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 8.h),
+        // 52 Week slider
+        Container(
+          height: 4.h,
+          decoration: BoxDecoration(
+            // gradient: LinearGradient(
+            //   colors: [Colors.red, Colors.yellow, Colors.green],
+            // ),
+            color: Color(0xff1DB954),
+            borderRadius: BorderRadius.circular(2.r),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 150.w,
+                height: 4.h,
+                child: Stack(
+                  alignment: Alignment.centerLeft,
+                  children: [
+                    Icon(
+                      Icons.arrow_drop_up,
+                      color: Colors.white,
+                      size: 24.sp,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 16.h),
+
+        // Other performance metrics in grid
+        Row(
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+          children: [
+            // Open price
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Open',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 11.sp,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    '1,467.00',
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black87,
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // High price
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'High',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 11.sp,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    '1,597.00',
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black87,
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Low price
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Low',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 11.sp,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    '1,397.00',
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black87,
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Previous close price
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Prev. Closed',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 11.sp,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    '1,467.00',
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black87,
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 16.h),
+
+        // Additional metrics row
+        Row(
+          children: [
+            // Volume
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Volume',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 11.sp,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    '1,467.00',
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black87,
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Upper Circuit
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Upper Circuit',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 11.sp,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    '1,467.00',
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black87,
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Lower Circuit
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Lower Circuit',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 11.sp,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    '1,467.00',
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black87,
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Market Cap
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Market Cap',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 11.sp,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    '17,61,535 Cr',
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black87,
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 12.h,
+        )
+      ],
+    );
+  }
+
+  // Grid of fundamental financial ratios
+  Widget _buildRatiosGrid(bool isDark) {
+    // Data structure for the ratios grid
+    final List<List<String>> ratiosData = [
+      ['PE Ratio', '7.72', 'Price to Book Value', '7.72'],
+      ['EV to EBIT', '9.06', 'EV to EBITDA', '7.72'],
+      ['EV to Capital Employed', '7.72', 'EV to Sales', '7.72'],
+      ['PG Ratio', '7.72', 'Dividend Yield', '7.72'],
+      ['ROCE (Latest)', '7.72', 'ROC (Latest)', '7.72'],
+    ];
+
+    // The full height divider approach
+    return Container(
+      color: isDark ? Color(0xFF121212) : Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Fundamental Ratios header with info icon
+
+          // Container that wraps the entire grid with a vertical divider
+          Container(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Left column
+                Expanded(
+                  child: Column(
+                    children: ratiosData.map((row) {
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: 16, right: 12),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              row[0],
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              row[1],
+                              style: TextStyle(
+                                color: isDark ? Colors.white : Colors.black87,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+
+                // Vertical divider that spans the whole grid
+                Container(
+                  width: 1,
+                  height: ratiosData.length *
+                      35.0, // Approximate height based on rows
+                  color: isDark ? Color(0xFF2F2F2F) : Color(0xFFECECEC),
+                ),
+
+                // Right column
+                Expanded(
+                  child: Column(
+                    children: ratiosData.map((row) {
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: 16, left: 12),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              row[2],
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              row[3],
+                              style: TextStyle(
+                                color: isDark ? Colors.white : Colors.black87,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Shareholding pattern header with period selector
+  Widget _buildShareholdingHeader(bool isDark) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        // Section title
+        _buildSectionHeader(isDark, 'Shareholding Pattern'),
+        // Period selector dropdown
+        GestureDetector(
+          onTap: () {
+            // Show period selector dialog when implemented
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0xFF2F2F2F) : const Color(0xFFECECEC),
+              borderRadius: BorderRadius.circular(6.r),
+            ),
+            child: Row(
+              children: [
+                Text(
+                  shareholdingPeriod,
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black87,
+                    fontSize: 13.sp,
+                  ),
+                ),
+                SizedBox(width: 4.w),
+                Icon(
+                  Icons.keyboard_arrow_down,
+                  color: isDark ? Colors.white : Colors.black87,
+                  size: 16.sp,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+// Shareholding pie chart with labels
+  Widget buildShareholdingChart(bool isDark) {
+    // Using fl_chart for better pie chart visualization
+    return Container(
+      height: 240,
+      child: Row(
+        children: [
+          // Pie Chart
+          Container(
+            width: 180,
+            height: 180,
+            child: PieChart(
+              PieChartData(
+                centerSpaceRadius: 40,
+                sectionsSpace: 0,
+                startDegreeOffset: 0,
+                sections: [
+                  PieChartSectionData(
+                    value: 25,
+                    color: Colors.orange,
+                    radius: 50,
+                    showTitle: false,
+                  ),
+                  PieChartSectionData(
+                    value: 25,
+                    color: Colors.teal,
+                    radius: 50,
+                    showTitle: false,
+                  ),
+                  PieChartSectionData(
+                    value: 25,
+                    color: Colors.red.shade300,
+                    radius: 50,
+                    showTitle: false,
+                  ),
+                  PieChartSectionData(
+                    value: 25,
+                    color: Colors.amber,
+                    radius: 50,
+                    showTitle: false,
+                  ),
+                  PieChartSectionData(
+                    value: 25,
+                    color: Colors.purple.shade300,
+                    radius: 50,
+                    showTitle: false,
+                  ),
+                  PieChartSectionData(
+                    value: 25,
+                    color: Colors.blue,
+                    radius: 50,
+                    showTitle: false,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // Chart labels with color indicators
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                buildChartLabel(isDark, Colors.orange, 'Promoter - 25%'),
+                buildChartLabel(isDark, Colors.teal, 'FIIs - 25%'),
+                buildChartLabel(
+                    isDark, Colors.red.shade300, 'Mutual Funds - 25%'),
+                buildChartLabel(
+                    isDark, Colors.amber, 'Insurance Companies - 25%'),
+                buildChartLabel(
+                    isDark, Colors.purple.shade300, 'Other DIIs - 25%'),
+                buildChartLabel(isDark, Colors.blue, 'Non Institution - 25%'),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+// Individual chart label with color indicator
+  Widget buildChartLabel(bool isDark, Color color, String label) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2.0),
+      child: Row(
+        children: [
+          // Color indicator circle
+          Container(
+            width: 10.0,
+            height: 10.0,
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 8.0),
+          // Label text
+          Text(
+            label,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: isDark ? Colors.white : Colors.black87,
+              fontSize: 12.0,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Earnings section header with period selector
+  Widget _buildEarningsHeader(bool isDark) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        // Section title
+        _buildSectionHeader(isDark, 'Earnings'),
+        // Period selector dropdown (Yearly/Quarterly)
+        GestureDetector(
+          onTap: () {
+            // Show period selector dialog
+            _showPeriodSelector(context);
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0xFF2F2F2F) : const Color(0xFFECECEC),
+              borderRadius: BorderRadius.circular(6.r),
+            ),
+            child: Row(
+              children: [
+                Text(
+                  earningsPeriod,
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black87,
+                    fontSize: 13.sp,
+                  ),
+                ),
+                SizedBox(width: 4.w),
+                Icon(
+                  Icons.keyboard_arrow_down,
+                  color: isDark ? Colors.white : Colors.black87,
+                  size: 16.sp,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Helper method to show period selector
+  void _showPeriodSelector(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+      builder: (context) => Container(
+        padding: EdgeInsets.all(16.w),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              title: Text('Yearly',
+                  style:
+                      TextStyle(color: isDark ? Colors.white : Colors.black87)),
+              onTap: () {
+                setState(() {
+                  earningsPeriod = 'Yearly';
+                });
+                Navigator.pop(context);
+              },
+              trailing: earningsPeriod == 'Yearly'
+                  ? Icon(Icons.check, color: Colors.green)
+                  : null,
+            ),
+            ListTile(
+              title: Text('Quarterly',
+                  style:
+                      TextStyle(color: isDark ? Colors.white : Colors.black87)),
+              onTap: () {
+                setState(() {
+                  earningsPeriod = 'Quarterly';
+                });
+                Navigator.pop(context);
+              },
+              trailing: earningsPeriod == 'Quarterly'
+                  ? Icon(Icons.check, color: Colors.green)
+                  : null,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Earnings data type selector tabs
+  Widget _buildEarningsTabs(bool isDark) {
+    return Row(
+      children: [
+        // Revenue tab
+        _buildEarningsTab(isDark, 'Revenue', selectedEarningsTab == 'Revenue'),
+        SizedBox(width: 10.w),
+        // Profit tab
+        _buildEarningsTab(isDark, 'Profit', selectedEarningsTab == 'Profit'),
+        SizedBox(width: 10.w),
+        // Net Worth tab
+        _buildEarningsTab(
+            isDark, 'Net Worth', selectedEarningsTab == 'Net Worth'),
+      ],
+    );
+  }
+
+  // Individual earnings tab
+  Widget _buildEarningsTab(bool isDark, String title, bool isSelected) {
+    return GestureDetector(
+      onTap: () {
+        // Update selected tab on tap
+        setState(() {
+          selectedEarningsTab = title;
+        });
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? (isDark ? Colors.grey.shade800 : Colors.grey.shade300)
+              : Colors.transparent,
+          border: Border.all(
+            color: isDark ? Colors.grey.shade700 : Colors.grey.shade400,
+          ),
+          borderRadius: BorderRadius.circular(4.r),
+        ),
+        child: Text(
+          title,
+          style: TextStyle(
+            color: isDark ? Colors.white : Colors.black87,
+            fontSize: 14.sp,
+            fontWeight: isSelected ? FontWeight.w500 : FontWeight.normal,
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Earnings bar chart visualization
+  Widget _buildEarningsChart(bool isDark) {
+    // Bar chart for earnings data
+    return Container(
+      height: 200.h,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          // Year-wise earnings bars
+          _buildBarChartColumn(isDark, '2020', 3246, 9246),
+          _buildBarChartColumn(isDark, '2021', 4246, 9246),
+          _buildBarChartColumn(isDark, '2022', 6246, 9246),
+          _buildBarChartColumn(isDark, '2023', 8246, 9246),
+          _buildBarChartColumn(isDark, '2024', 9246, 9246),
+        ],
+      ),
+    );
+  }
+
+  // Individual bar in the earnings chart
+  Widget _buildBarChartColumn(
+      bool isDark, String year, int value, int maxValue) {
+    // Calculate bar height as percentage of maximum value
+    final double percentage = value / maxValue;
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        // Value label at top of bar
+        Text(
+          value.toString(),
+          style: TextStyle(
+            color: isDark ? Colors.white : Colors.black87,
+            fontSize: 12.sp,
+          ),
+        ),
+        SizedBox(height: 4.h),
+        // Bar visualization
+        Container(
+          width: 30.w,
+          height: 150.h * percentage,
+          decoration: BoxDecoration(
+            color: Color(0xff1DB954),
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(2.r),
+            ),
+          ),
+        ),
+        SizedBox(height: 4.h),
+        // Year label below bar
+        Text(
+          year,
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 12.sp,
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Company details in table format
+  Widget _buildCompanyDetailsTable(bool isDark) {
+    // Company information
+    final Map<String, String> details = {
+      'Company name': 'Reliance Industries Ltd.',
+      'Founded': '1958',
+      'Managing Director': 'Mr. Mukesh Ambani',
+      'Industry': 'Refineries',
+      'Market Cap Category': 'Large Cap',
+    };
+
+    return Column(
+      children: details.entries.map((entry) {
+        return Padding(
+          padding: EdgeInsets.symmetric(vertical: 8.h),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Detail label
+              Expanded(
+                flex: 2,
+                child: Text(
+                  entry.key,
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 14.sp,
+                  ),
+                ),
+              ),
+              // Detail value
+              Expanded(
+                flex: 3,
+                child: Text(
+                  entry.value,
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black87,
+                    fontSize: 14.sp,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  // Locate section with card selectors
+  Widget _buildLocateSection(bool isDark) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        // Section title
+        Text(
+          'Locate',
+          style: TextStyle(
+            color: isDark ? Colors.white : Colors.black87,
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        // Card selector buttons
+        Row(
+          children: [
+            // Card 1 button
+            OutlinedButton(
+              onPressed: () {},
+              style: OutlinedButton.styleFrom(
+                side: BorderSide(color: Colors.grey),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.r),
+                ),
+              ),
+              child: Text(
+                'Card 1',
+                style: TextStyle(
+                  color: isDark ? Colors.white : Colors.black87,
+                  fontSize: 14.sp,
+                ),
+              ),
+            ),
+            SizedBox(width: 8.w),
+            // Card 2 button
+            OutlinedButton(
+              onPressed: () {},
+              style: OutlinedButton.styleFrom(
+                side: BorderSide(color: Colors.grey),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.r),
+                ),
+              ),
+              child: Text(
+                'Card 2',
+                style: TextStyle(
+                  color: isDark ? Colors.white : Colors.black87,
+                  fontSize: 14.sp,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}

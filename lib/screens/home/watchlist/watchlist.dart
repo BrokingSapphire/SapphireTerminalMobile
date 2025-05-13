@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/funds/funds.dart';
 import 'package:sapphire/screens/account/account.dart';
 import 'package:sapphire/screens/home/watchlist/searchPage.dart';
 import 'package:sapphire/screens/orderWindow/buyWindow/buyWrapper.dart';
 import 'package:sapphire/screens/orderWindow/sellWindow/sellWrapper.dart';
+import 'package:sapphire/screens/stockDetailedWindow/watchlistSDW.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sapphire/utils/naviWithoutAnimation.dart';
@@ -627,25 +629,20 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                               child: GestureDetector(
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    backgroundColor: Colors.transparent,
-                                    isScrollControlled: true,
-                                    isDismissible: true,
-                                    enableDrag: true,
-                                    builder: (_) => StockDetailBottomSheet(
-                                      stockName: item['symbol'] ?? '',
-                                      stockCode: item['company'] ?? '',
-                                      price: item['price'] ?? '',
-                                      change: item['change'] ?? '',
-                                      onBuy: () {
-                                        // Handle buy action
-                                      },
-                                      onSell: () {
-                                        // Handle sell action
-                                      },
-                                    ),
-                                  );
+                                  navi(
+                                      watchlistSDW(
+                                        stockName: item['symbol'] ?? '',
+                                        stockCode: item['company'] ?? '',
+                                        price: item['price'] ?? '',
+                                        change: item['change'] ?? '',
+                                        onBuy: () {
+                                          // Handle buy action
+                                        },
+                                        onSell: () {
+                                          // Handle sell action
+                                        },
+                                      ),
+                                      context);
                                 },
                                 child: constWidgets.watchListDataView(
                                   "https://companieslogo.com/img/orig/${item['symbol']}.png?t=1720244493",
