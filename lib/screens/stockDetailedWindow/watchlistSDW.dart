@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class watchlistSDW extends StatefulWidget {
   final String stockName;
@@ -24,13 +25,55 @@ class watchlistSDW extends StatefulWidget {
 }
 
 class _watchlistSDWState extends State<watchlistSDW> {
-  @override
   // Tab selection states
   String selectedEarningsTab = 'Revenue';
   String earningsPeriod = 'Yearly';
   String shareholdingPeriod = 'Mar 2025';
   bool isNSE = true;
   String selectedRange = '1Y';
+
+  List<String> last12Months = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Generate last 12 months starting from Mar 2025
+    DateTime now = DateTime(2025, 3, 1); // Ensure Mar 2025 is first
+
+    // CHANGE THIS NUMBER TO DISPLAY MORE MONTHS (e.g., 24 for 2 years, 36 for 3 years)
+    int numberOfMonthsToShow = 12;
+
+    last12Months = List.generate(numberOfMonthsToShow, (index) {
+      DateTime date = DateTime(now.year, now.month - index, 1);
+      String month = _monthName(date.month);
+      return '$month ${date.year}';
+    });
+
+    // Set initial value to Mar 2025
+    shareholdingPeriod = 'Mar 2025';
+
+    // Debug print to verify list is populated
+    print('DEBUG: last12Months: $last12Months');
+    print('DEBUG: shareholdingPeriod: $shareholdingPeriod');
+  }
+
+  String _monthName(int month) {
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ];
+    return months[month - 1];
+  }
 
   List<FlSpot> getChartData(String range) {
     switch (range) {
@@ -54,6 +97,9 @@ class _watchlistSDWState extends State<watchlistSDW> {
     // Show the DraggableScrollableSheet
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: isDark ? Colors.black : Colors.white,
+        scrolledUnderElevation: 0,
+        elevation: 0,
         actions: [
           SvgPicture.asset(
             "assets/svgs/search-svgrepo-com (1).svg",
@@ -94,16 +140,16 @@ class _watchlistSDWState extends State<watchlistSDW> {
           children: [
             // Drag handle at the top of the sheet
 
-            Padding(
-              padding: EdgeInsets.only(left: 16.h, right: 16.h, top: 12.w),
-              child: _buildHeader(isDark),
-            ),
-            SizedBox(
-              height: 18.h,
-            ),
-            Divider(
-                color:
-                    isDark ? const Color(0xFF2F2F2F) : const Color(0xFFD1D5DB)),
+            // Padding(
+            //   padding: EdgeInsets.only(left: 16.h, right: 16.h, top: 12.w),
+            //   child: _buildHeader(isDark),
+            // ),
+            // SizedBox(
+            //   height: 18.h,
+            // ),
+            // Divider(
+            //     color:
+            //         isDark ? const Color(0xFF2F2F2F) : const Color(0xFFD1D5DB)),
             // Main content section with ScrollView
             Expanded(
               child: SingleChildScrollView(
@@ -114,7 +160,14 @@ class _watchlistSDWState extends State<watchlistSDW> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Header showing stock information
-
+                      _buildHeader(isDark),
+                      SizedBox(
+                        height: 18.h,
+                      ),
+                      Divider(
+                          color: isDark
+                              ? const Color(0xFF2F2F2F)
+                              : const Color(0xFFD1D5DB)),
                       SizedBox(height: 12.h),
 
                       stockChartWidget(
@@ -152,34 +205,42 @@ class _watchlistSDWState extends State<watchlistSDW> {
                           color: isDark
                               ? const Color(0xFF2F2F2F)
                               : const Color(0xFFD1D5DB)),
-
+                      SizedBox(
+                        height: 12.h,
+                      ),
                       // Performance section
                       _buildSectionHeader(isDark, 'Performance'),
-                      SizedBox(height: 16.h),
+                      SizedBox(height: 12.h),
                       _buildPerformanceSection(isDark),
                       Divider(
                           color: isDark
                               ? const Color(0xFF2F2F2F)
                               : const Color(0xFFD1D5DB)),
-
+                      SizedBox(height: 12.h),
                       // Fundamental Ratios grid display
                       _buildSectionHeader(isDark, 'Fundamental Ratios'),
-                      SizedBox(height: 10.h),
+                      SizedBox(height: 16.h),
                       _buildRatiosGrid(isDark),
+                      SizedBox(height: 0.h),
                       Divider(
                           color: isDark
                               ? const Color(0xFF2F2F2F)
                               : const Color(0xFFD1D5DB)),
 
                       // Shareholding Pattern with pie chart
+                      SizedBox(
+                        height: 12.h,
+                      ),
                       _buildShareholdingHeader(isDark),
-                      SizedBox(height: 16.h),
+                      // SizedBox(height: 16.h),
                       buildShareholdingChart(isDark),
                       Divider(
                           color: isDark
                               ? const Color(0xFF2F2F2F)
                               : const Color(0xFFD1D5DB)),
-
+                      SizedBox(
+                        height: 12.h,
+                      ),
                       // Earnings section with chart
                       _buildEarningsHeader(isDark),
                       SizedBox(height: 16.h),
@@ -188,27 +249,32 @@ class _watchlistSDWState extends State<watchlistSDW> {
                       _buildEarningsChart(isDark),
                       SizedBox(height: 10.h),
                       Center(
-                        child: Text(
-                          '*All values are in crore',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12.sp,
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            '*All values are in crore',
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12.sp,
+                            ),
                           ),
                         ),
                       ),
+                      SizedBox(height: 12.h),
                       Divider(
                           color: isDark
                               ? const Color(0xFF2F2F2F)
                               : const Color(0xFFD1D5DB)),
 
                       // About Company section
+                      SizedBox(height: 12.h),
                       _buildSectionHeader(isDark, 'About Company'),
                       SizedBox(height: 16.h),
                       Text(
                         'Reliance Industries Limited (RIL) is India\'s largest private sector company. The company\'s activities span hydrocarbon exploration and production, petroleum refining and marketing, petrochemicals, advanced materials and composites, renewables (solar and hydrogen), retail and digital services. The company\'s products range is from the exploration and production of oil and gas to the manufacture of petroleum products, polyester products, polyester intermediates, plastics, polymer intermediates, chemicals, synthetic textiles and fabrics.',
                         style: TextStyle(
                           color: isDark ? Colors.white : Colors.black87,
-                          fontSize: 14.sp,
+                          fontSize: 13.sp,
                           height: 1.5,
                         ),
                       ),
@@ -426,55 +492,61 @@ class _watchlistSDWState extends State<watchlistSDW> {
 
   // Buy and Sell action buttons
   Widget _buildBuySellButtons() {
-    return Row(
+    return Column(
       children: [
-        // Buy button
-        Expanded(
-          child: SizedBox(
-            height: 50.h,
-            child: ElevatedButton(
-              onPressed: widget.onBuy,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF22A06B), // Green for buy
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-              ),
-              child: Text(
-                'BUY',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(width: 12.w),
-        // Sell button
-        Expanded(
-          child: SizedBox(
-            height: 50.h,
-            child: ElevatedButton(
-              onPressed: widget.onSell,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFE53935), // Red for sell
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-              ),
-              child: Text(
-                'SELL',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w500,
+        SizedBox(height: 8.h),
+        Row(
+          children: [
+            // Buy button
+            Expanded(
+              child: SizedBox(
+                height: 48.h,
+                child: ElevatedButton(
+                  onPressed: widget.onBuy,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF22A06B), // Green for buy
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                  child: Text(
+                    'BUY',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
+            SizedBox(width: 12.w),
+            // Sell button
+            Expanded(
+              child: SizedBox(
+                height: 48.h,
+                child: ElevatedButton(
+                  onPressed: widget.onSell,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFE53935), // Red for sell
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                  child: Text(
+                    'SELL',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
+        SizedBox(height: 16.h),
       ],
     );
   }
@@ -559,84 +631,167 @@ class _watchlistSDWState extends State<watchlistSDW> {
     return Column(
       children: [
         // Chart
-        SizedBox(
-          height: 250.h,
-          child: LineChart(
-            LineChartData(
-              backgroundColor: Colors.black,
-              gridData: FlGridData(show: false),
-              titlesData: FlTitlesData(
-                leftTitles:
-                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                rightTitles:
-                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                topTitles:
-                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                bottomTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    reservedSize: 30,
-                    getTitlesWidget: (value, meta) {
-                      const months = [
-                        'Jan',
-                        'Feb',
-                        'Mar',
-                        'Apr',
-                        'May',
-                        'Jun',
-                        'Jul',
-                        'Aug',
-                        'Sep',
-                        'Oct',
-                        'Nov',
-                        'Dec'
-                      ];
-                      return Text(
-                        months[value.toInt() % 12],
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 11.sp,
-                        ),
-                      );
-                    },
-                    interval: 1,
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: SizedBox(
+            height: 250.h,
+            child: LineChart(
+              LineChartData(
+                backgroundColor: Colors.black,
+                gridData: FlGridData(show: false),
+                titlesData: FlTitlesData(
+                  leftTitles:
+                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  rightTitles:
+                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  topTitles:
+                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      // Adjust reserved size to reduce gap between chart and buttons
+                      reservedSize: 30.h,
+                      interval: 1,
+                      getTitlesWidget: (value, meta) {
+                        const months = [
+                          'Jan',
+                          'Feb',
+                          'Mar',
+                          'Apr',
+                          'May',
+                          'Jun',
+                          'Jul',
+                          'Aug',
+                          'Sep',
+                          'Oct',
+                          'Nov',
+                          'Dec'
+                        ];
+                        return Padding(
+                          padding: EdgeInsets.only(top: 16.h),
+                          child: Text(
+                            months[value.toInt() % 12],
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 11.sp,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
+                borderData: FlBorderData(show: false),
+                lineBarsData: [
+                  LineChartBarData(
+                    spots: dataPoints,
+                    isCurved: true,
+                    color: const Color(0xff1DB954),
+                    barWidth: 2,
+                    dotData: FlDotData(show: false),
+                    belowBarData: BarAreaData(show: false),
+                  )
+                ],
+                lineTouchData: LineTouchData(enabled: true),
+                minY:
+                    dataPoints.map((e) => e.y).reduce((a, b) => a < b ? a : b),
+                maxY:
+                    dataPoints.map((e) => e.y).reduce((a, b) => a > b ? a : b),
               ),
-              borderData: FlBorderData(show: false),
-              lineBarsData: [
-                LineChartBarData(
-                  spots: dataPoints,
-                  isCurved: true,
-                  color: Colors.orangeAccent,
-                  barWidth: 2,
-                  dotData: FlDotData(show: false),
-                  belowBarData: BarAreaData(show: false),
-                )
-              ],
-              lineTouchData: LineTouchData(enabled: true),
-              minY: dataPoints.map((e) => e.y).reduce((a, b) => a < b ? a : b),
-              maxY: dataPoints.map((e) => e.y).reduce((a, b) => a > b ? a : b),
             ),
           ),
         ),
-
-        const SizedBox(height: 12),
-
-        // Time Range Buttons
-        Wrap(
-          alignment: WrapAlignment.center,
-          spacing: 8,
-          children: [
-            for (var range in ['1D', '1W', '1M', '3M', '6M', '1Y', '5Y', 'All'])
-              ChoiceChip(
-                label: Text(range, style: const TextStyle(color: Colors.white)),
-                selected: selectedRange == range,
-                onSelected: (_) => onRangeSelected(range),
-                selectedColor: Colors.grey.shade800,
-                backgroundColor: Colors.black54,
-              ),
-          ],
+        SizedBox(height: 16.h),
+        // Time Range Buttons - reduced vertical spacing
+        Container(
+          width: double.infinity,
+          height: 40.h,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Regular time range options
+                for (var range in [
+                  '1D',
+                  '1W',
+                  '1M',
+                  '3M',
+                  '6M',
+                  '1Y',
+                  '5Y',
+                  'All',
+                ])
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 4.w,
+                    ),
+                    child: ChoiceChip(
+                      // Text label with consistent white color
+                      label: Text(range,
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 13.sp)),
+                      selected: selectedRange == range,
+                      onSelected: (_) => onRangeSelected(range),
+                      // Use #2F2F2F for selected chips
+                      selectedColor: const Color(0xFF2F2F2F),
+                      // Dark background for unselected chips
+                      backgroundColor: Colors.black54,
+                      // Remove checkmark icon
+                      showCheckmark: false,
+                      // Ensure no border is visible
+                      side: BorderSide.none,
+                      elevation: 0,
+                      pressElevation: 0,
+                      shadowColor: Colors.transparent,
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2.r),
+                      ),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h),
+                      labelPadding: const EdgeInsets.symmetric(horizontal: 2),
+                    ),
+                  ),
+                // Expand button with SVG icon
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 6.w,
+                  ),
+                  child: ChoiceChip(
+                    // SVG icon instead of text
+                    label: SvgPicture.asset(
+                      'assets/svgs/expand.svg',
+                      height: 18.h,
+                      width: 18.w,
+                      colorFilter:
+                          ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                    ),
+                    selected: selectedRange == 'Expand',
+                    onSelected: (_) => onRangeSelected('Expand'),
+                    // Use #2F2F2F for selected chips
+                    selectedColor: const Color(0xFF2F2F2F),
+                    // Dark background for unselected chips
+                    backgroundColor: Colors.black54,
+                    // Remove checkmark icon
+                    showCheckmark: false,
+                    // Ensure no border is visible
+                    side: BorderSide.none,
+                    elevation: 0,
+                    pressElevation: 0,
+                    shadowColor: Colors.transparent,
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2.r),
+                    ),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h),
+                    labelPadding: const EdgeInsets.symmetric(horizontal: 2),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ],
     );
@@ -769,7 +924,7 @@ class _watchlistSDWState extends State<watchlistSDW> {
           title,
           style: TextStyle(
             color: isDark ? Colors.white : Colors.black87,
-            fontSize: 13.sp,
+            fontSize: 15.sp,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -1125,7 +1280,7 @@ class _watchlistSDWState extends State<watchlistSDW> {
             ],
           ),
         ),
-        SizedBox(height: 16.h),
+        SizedBox(height: 24.h),
 
         // 52 Week range
         Row(
@@ -1156,7 +1311,7 @@ class _watchlistSDWState extends State<watchlistSDW> {
               style: TextStyle(
                 color: isDark ? Colors.white : Colors.black87,
                 fontSize: 11.sp,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w400,
               ),
             ),
             Text(
@@ -1164,7 +1319,7 @@ class _watchlistSDWState extends State<watchlistSDW> {
               style: TextStyle(
                 color: isDark ? Colors.white : Colors.black87,
                 fontSize: 11.sp,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w400,
               ),
             ),
           ],
@@ -1199,108 +1354,102 @@ class _watchlistSDWState extends State<watchlistSDW> {
             ],
           ),
         ),
-        SizedBox(height: 16.h),
+        SizedBox(height: 24.h),
 
         // Other performance metrics in grid
         Row(
-          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // Open price
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Open',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 11.sp,
-                    ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Open',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 11.sp,
                   ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    '1,467.00',
-                    style: TextStyle(
-                      color: isDark ? Colors.white : Colors.black87,
-                      fontSize: 11.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  '1,467.00',
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black87,
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.w400,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+            SizedBox(width: 24.w),
             // High price
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'High',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 11.sp,
-                    ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'High',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 11.sp,
                   ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    '1,597.00',
-                    style: TextStyle(
-                      color: isDark ? Colors.white : Colors.black87,
-                      fontSize: 11.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  '1,597.00',
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black87,
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.w400,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+            SizedBox(width: 24.w),
             // Low price
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Low',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 11.sp,
-                    ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Low   ',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 11.sp,
                   ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    '1,397.00',
-                    style: TextStyle(
-                      color: isDark ? Colors.white : Colors.black87,
-                      fontSize: 11.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  '1,397.00',
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black87,
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.w400,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+            SizedBox(width: 24.w),
             // Previous close price
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Prev. Closed',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 11.sp,
-                    ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Prev. Closed',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 11.sp,
                   ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    '1,467.00',
-                    style: TextStyle(
-                      color: isDark ? Colors.white : Colors.black87,
-                      fontSize: 11.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  '1,467.00',
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black87,
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.w400,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),
@@ -1308,102 +1457,96 @@ class _watchlistSDWState extends State<watchlistSDW> {
 
         // Additional metrics row
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // Volume
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Volume',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 11.sp,
-                    ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Volume',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 11.sp,
                   ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    '1,467.00',
-                    style: TextStyle(
-                      color: isDark ? Colors.white : Colors.black87,
-                      fontSize: 11.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  '1,467.00',
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black87,
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.w400,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             // Upper Circuit
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Upper Circuit',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 11.sp,
-                    ),
+            // SizedBox(width: 1.w),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Up. Circuit',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 11.sp,
                   ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    '1,467.00',
-                    style: TextStyle(
-                      color: isDark ? Colors.white : Colors.black87,
-                      fontSize: 11.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  '1,467.00',
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black87,
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.w400,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             // Lower Circuit
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Lower Circuit',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 11.sp,
-                    ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'L. Circuit',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 11.sp,
                   ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    '1,467.00',
-                    style: TextStyle(
-                      color: isDark ? Colors.white : Colors.black87,
-                      fontSize: 11.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  '1,467.00',
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black87,
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.w400,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             // Market Cap
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Market Cap',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 11.sp,
-                    ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Market Cap',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 11.sp,
                   ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    '17,61,535 Cr',
-                    style: TextStyle(
-                      color: isDark ? Colors.white : Colors.black87,
-                      fontSize: 11.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  '17,61,535 Cr',
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black87,
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.w400,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),
@@ -1426,129 +1569,188 @@ class _watchlistSDWState extends State<watchlistSDW> {
     ];
 
     // The full height divider approach
-    return Container(
-      color: isDark ? Color(0xFF121212) : Colors.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Fundamental Ratios header with info icon
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Fundamental Ratios header with info icon
 
-          // Container that wraps the entire grid with a vertical divider
-          Container(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Left column
-                Expanded(
-                  child: Column(
-                    children: ratiosData.map((row) {
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: 16, right: 12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              row[0],
-                              style: TextStyle(
+        // Container that wraps the entire grid with a vertical divider
+        Container(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Left column
+              Expanded(
+                child: Column(
+                  children: ratiosData.map((row) {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 12.h, right: 12.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            row[0],
+                            style: TextStyle(
                                 color: Colors.grey,
-                                fontSize: 14,
-                              ),
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          Text(
+                            row[1],
+                            style: TextStyle(
+                              color: isDark ? Colors.white : Colors.black87,
+                              fontSize: 11.sp,
+                              fontWeight: FontWeight.w400,
                             ),
-                            Text(
-                              row[1],
-                              style: TextStyle(
-                                color: isDark ? Colors.white : Colors.black87,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
                 ),
+              ),
 
-                // Vertical divider that spans the whole grid
-                Container(
-                  width: 1,
-                  height: ratiosData.length *
-                      35.0, // Approximate height based on rows
-                  color: isDark ? Color(0xFF2F2F2F) : Color(0xFFECECEC),
-                ),
+              // Vertical divider that spans the whole grid
+              Container(
+                width: 1,
+                height: ratiosData.length *
+                    26.0, // Approximate height based on rows
+                color: isDark ? Color(0xFF2F2F2F) : Color(0xFFECECEC),
+              ),
 
-                // Right column
-                Expanded(
-                  child: Column(
-                    children: ratiosData.map((row) {
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: 16, left: 12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              row[2],
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 14,
-                              ),
+              // Right column
+              Expanded(
+                child: Column(
+                  children: ratiosData.map((row) {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 12.h, left: 12.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            row[2],
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 11.sp,
                             ),
-                            Text(
-                              row[3],
-                              style: TextStyle(
-                                color: isDark ? Colors.white : Colors.black87,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
+                          ),
+                          Text(
+                            row[3],
+                            style: TextStyle(
+                              color: isDark ? Colors.white : Colors.black87,
+                              fontSize: 11.sp,
+                              fontWeight: FontWeight.w400,
                             ),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   // Shareholding pattern header with period selector
   Widget _buildShareholdingHeader(bool isDark) {
+    // Debug print to verify dropdown state at render time
+    print('DEBUG: Rendering dropdown with value: $shareholdingPeriod');
+    print('DEBUG: Available months: $last12Months');
+
+    // Fallback list in case last12Months is empty
+    final displayMonths = last12Months.isEmpty
+        ? ['Mar 2025', 'Feb 2025', 'Jan 2025']
+        : last12Months;
+
+    // ============= COLOR CUSTOMIZATION =============
+    // You can change these colors to customize the dropdown appearance
+    // Container colors
+    final Color containerBackgroundColor =
+        const Color(0xFF1A1A1A); // Darker background
+    final Color containerBorderColor = const Color(0xFF333333); // Subtle border
+
+    // Dropdown colors
+    final Color dropdownBackgroundColor =
+        const Color(0xFF121413); // Dropdown menu background
+    final Color textColor = const Color(0xFFFFFFFF); // Text color
+    final Color iconColor =
+        const Color(0xFF999999); // Icon color (slightly dimmed)
+
+    // Item hover/selection color (when available)
+    final Color hoverColor = const Color(0xFF333333);
+    // =============================================
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         // Section title
         _buildSectionHeader(isDark, 'Shareholding Pattern'),
-        // Period selector dropdown
-        GestureDetector(
-          onTap: () {
-            // Show period selector dialog when implemented
-          },
+        // Period selector dropdown styled to match image
+        Center(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+            height: 32.h,
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
             decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF2F2F2F) : const Color(0xFFECECEC),
-              borderRadius: BorderRadius.circular(6.r),
+              color: containerBackgroundColor, // Custom background color
+              borderRadius: BorderRadius.circular(4.r),
+              border: Border.all(
+                  color: containerBorderColor, width: 1), // Subtle border
             ),
-            child: Row(
-              children: [
-                Text(
-                  shareholdingPeriod,
+            child: Theme(
+              // Apply a theme to try to influence scrollbar color
+              data: Theme.of(context).copyWith(
+                scrollbarTheme: ScrollbarThemeData(
+                  thumbColor: WidgetStateProperty.all(const Color(0xFF2F2F2F)),
+                  trackColor: WidgetStateProperty.all(const Color(0xFF2F2F2F)),
+                  thickness: WidgetStateProperty.all(4.0),
+                  radius: const Radius.circular(10.0),
+                ),
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  value: shareholdingPeriod,
+                  dropdownColor:
+                      dropdownBackgroundColor, // Custom dropdown background
                   style: TextStyle(
-                    color: isDark ? Colors.white : Colors.black87,
-                    fontSize: 13.sp,
+                    color: textColor, // Custom text color
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.w400,
                   ),
+                  icon: Icon(
+                    Icons.keyboard_arrow_down,
+                    color: iconColor, // Custom icon color
+                    size: 16.sp,
+                  ),
+                  // Match the compact look in the image
+                  isDense: true,
+                  // Show more items with a larger height
+                  menuMaxHeight: MediaQuery.of(context).size.height *
+                      0.5, // 50% of screen height
+                  // Use our fallback list
+                  items: displayMonths.map((String month) {
+                    return DropdownMenuItem<String>(
+                      value: month,
+                      child: Text(
+                        month,
+                        style: TextStyle(
+                          color: textColor, // Custom text color for items
+                          fontSize: 11.sp,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    print('DEBUG: Dropdown changed to: $newValue');
+                    setState(() {
+                      shareholdingPeriod = newValue!;
+                    });
+                  },
                 ),
-                SizedBox(width: 4.w),
-                Icon(
-                  Icons.keyboard_arrow_down,
-                  color: isDark ? Colors.white : Colors.black87,
-                  size: 16.sp,
-                ),
-              ],
+              ),
             ),
           ),
         ),
@@ -1556,97 +1758,213 @@ class _watchlistSDWState extends State<watchlistSDW> {
     );
   }
 
-// Shareholding pie chart with labels
+  // Track which section of the pie chart is currently selected
+  int selectedPieSection = -1; // -1 means no section is selected
+
   Widget buildShareholdingChart(bool isDark) {
+    // Define section data for easy reference
+    final List<Map<String, dynamic>> sectionData = [
+      {
+        'title': 'Promoter',
+        'value': 25,
+        'color': Color(0xffff9e42),
+      },
+      {
+        'title': 'FIIs',
+        'value': 25,
+        'color': Color(0xff064d51),
+      },
+      {
+        'title': 'Mutual Funds',
+        'value': 25,
+        'color': Color(0xffff6359),
+      },
+      {
+        'title': 'Insurance Companies',
+        'value': 25,
+        'color': Color(0xfffbbc05),
+      },
+      {
+        'title': 'Other DIIs',
+        'value': 25,
+        'color': Color(0xff9747ff),
+      },
+      {
+        'title': 'Non Institution',
+        'value': 25,
+        'color': Color(0xff0563fb),
+      },
+    ];
+
     // Using fl_chart for better pie chart visualization
     return Container(
-      height: 240,
-      child: Row(
+      height: 240.h,
+      child: Stack(
         children: [
-          // Pie Chart
-          Container(
-            width: 180,
-            height: 180,
-            child: PieChart(
-              PieChartData(
-                centerSpaceRadius: 40,
-                sectionsSpace: 0,
-                startDegreeOffset: 0,
-                sections: [
-                  PieChartSectionData(
-                    value: 25,
-                    color: Colors.orange,
-                    radius: 50,
-                    showTitle: false,
+          // Row containing the pie chart and labels
+          Row(
+            children: [
+              // Pie Chart Container
+              Container(
+                width: 180.h,
+                height: 180.h,
+                child: PieChart(
+                  PieChartData(
+                    // CUSTOMIZATION: Increase this value to make the center hole larger
+                    centerSpaceRadius: 40.r,
+                    // CUSTOMIZATION: Space between sections (0 means no space)
+                    sectionsSpace: 0,
+                    // CUSTOMIZATION: Starting angle offset
+                    startDegreeOffset: 0,
+                    // CUSTOMIZATION: Enable touch interactions
+                    pieTouchData: PieTouchData(
+                      // Enable touch interactions and handle section selection
+                      enabled: true,
+                      touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                        // Handle touch events to highlight sections
+                        setState(() {
+                          if (event is FlTapUpEvent &&
+                              pieTouchResponse?.touchedSection != null) {
+                            // Get the index of the touched section
+                            final touchedIndex = pieTouchResponse!
+                                .touchedSection!.touchedSectionIndex;
+
+                            // If already selected, deselect it (reset to normal state)
+                            if (selectedPieSection == touchedIndex) {
+                              selectedPieSection = -1; // Deselect
+                            } else {
+                              // Select the new section
+                              selectedPieSection = touchedIndex;
+                            }
+                          } else if (event is FlLongPressEnd) {
+                            // Reset selection on long press
+                            selectedPieSection = -1;
+                          }
+                        });
+                      },
+                    ),
+                    // Define the pie chart sections
+                    sections: List.generate(sectionData.length, (i) {
+                      // Apply fading effect to non-selected sections when a section is selected
+                      final bool isSelected = selectedPieSection == i;
+                      final bool shouldFade =
+                          selectedPieSection != -1 && !isSelected;
+
+                      // Get base color
+                      final Color baseColor = sectionData[i]['color'];
+
+                      // Apply fading if needed
+                      final Color sectionColor = shouldFade
+                          ? baseColor.withOpacity(
+                              0.3) // Fade out non-selected sections
+                          : baseColor;
+
+                      return PieChartSectionData(
+                        value: sectionData[i]['value'].toDouble(),
+                        color: sectionColor,
+                        radius: isSelected ? 55 : 45, // Expand selected section
+                        showTitle: false, // Never show title inside the chart
+                        borderSide: BorderSide(width: 0),
+                      );
+                    }),
                   ),
-                  PieChartSectionData(
-                    value: 25,
-                    color: Colors.teal,
-                    radius: 50,
-                    showTitle: false,
-                  ),
-                  PieChartSectionData(
-                    value: 25,
-                    color: Colors.red.shade300,
-                    radius: 50,
-                    showTitle: false,
-                  ),
-                  PieChartSectionData(
-                    value: 25,
-                    color: Colors.amber,
-                    radius: 50,
-                    showTitle: false,
-                  ),
-                  PieChartSectionData(
-                    value: 25,
-                    color: Colors.purple.shade300,
-                    radius: 50,
-                    showTitle: false,
-                  ),
-                  PieChartSectionData(
-                    value: 25,
-                    color: Colors.blue,
-                    radius: 50,
-                    showTitle: false,
-                  ),
-                ],
+                ),
+              ),
+              // Chart labels with color indicators
+              SizedBox(width: 16.w),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: List.generate(sectionData.length, (i) {
+                    final bool isSelected = selectedPieSection == i;
+                    final bool shouldFade =
+                        selectedPieSection != -1 && !isSelected;
+
+                    // Get base color
+                    final Color baseColor = sectionData[i]['color'];
+
+                    // Apply fading if needed
+                    final Color labelColor = shouldFade
+                        ? baseColor
+                            .withOpacity(0.3) // Fade out non-selected labels
+                        : baseColor;
+
+                    // Create label text with percentage
+                    final String labelText =
+                        '${sectionData[i]['title']} - ${sectionData[i]['value']}%';
+
+                    return buildChartLabel(
+                      isDark,
+                      labelColor,
+                      labelText,
+                      isHighlighted: isSelected,
+                    );
+                  }),
+                ),
+              ),
+            ],
+          ),
+          // Floating text label for selected section (similar to reference image)
+          if (selectedPieSection != -1)
+            Positioned(
+              left: 60.w, // Position it over the pie chart
+              top: 70.h,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(4.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 4,
+                      spreadRadius: 1,
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Color dot matching the pie section
+                    Container(
+                      width: 8.w,
+                      height: 8.h,
+                      decoration: BoxDecoration(
+                        color: sectionData[selectedPieSection]['color'],
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    SizedBox(width: 6.w),
+                    // Text showing the section name and value
+                    Text(
+                      '${sectionData[selectedPieSection]['title']}: ${sectionData[selectedPieSection]['value']}%',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          // Chart labels with color indicators
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                buildChartLabel(isDark, Colors.orange, 'Promoter - 25%'),
-                buildChartLabel(isDark, Colors.teal, 'FIIs - 25%'),
-                buildChartLabel(
-                    isDark, Colors.red.shade300, 'Mutual Funds - 25%'),
-                buildChartLabel(
-                    isDark, Colors.amber, 'Insurance Companies - 25%'),
-                buildChartLabel(
-                    isDark, Colors.purple.shade300, 'Other DIIs - 25%'),
-                buildChartLabel(isDark, Colors.blue, 'Non Institution - 25%'),
-              ],
-            ),
-          ),
         ],
       ),
     );
   }
 
 // Individual chart label with color indicator
-  Widget buildChartLabel(bool isDark, Color color, String label) {
+  Widget buildChartLabel(bool isDark, Color color, String label,
+      {bool isHighlighted = false}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2.0),
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: Row(
         children: [
           // Color indicator circle
           Container(
-            width: 10.0,
-            height: 10.0,
+            width: 8.0,
+            height: 8.0,
             decoration: BoxDecoration(
               color: color,
               shape: BoxShape.circle,
@@ -1660,7 +1978,8 @@ class _watchlistSDWState extends State<watchlistSDW> {
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               color: isDark ? Colors.white : Colors.black87,
-              fontSize: 12.0,
+              fontSize: 11.sp,
+              fontWeight: isHighlighted ? FontWeight.bold : FontWeight.normal,
             ),
           ),
         ],
@@ -1670,88 +1989,77 @@ class _watchlistSDWState extends State<watchlistSDW> {
 
   // Earnings section header with period selector
   Widget _buildEarningsHeader(bool isDark) {
+    // Define colors to match the image style
+    final Color containerBackgroundColor = const Color(0xFF1E1E1E);
+    final Color containerBorderColor = const Color(0xFF333333);
+    final Color textColor = Colors.white;
+    final Color iconColor = Colors.white.withOpacity(0.7);
+    final Color dropdownBackgroundColor = const Color(0xFF1E1E1E);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         // Section title
         _buildSectionHeader(isDark, 'Earnings'),
-        // Period selector dropdown (Yearly/Quarterly)
-        GestureDetector(
-          onTap: () {
-            // Show period selector dialog
-            _showPeriodSelector(context);
-          },
+        // Period selector dropdown styled to match image
+        Center(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+            height: 32.h,
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
             decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF2F2F2F) : const Color(0xFFECECEC),
-              borderRadius: BorderRadius.circular(6.r),
+              color: containerBackgroundColor,
+              borderRadius: BorderRadius.circular(4.r),
+              border: Border.all(color: containerBorderColor, width: 1),
             ),
-            child: Row(
-              children: [
-                Text(
-                  earningsPeriod,
+            child: Theme(
+              data: Theme.of(context).copyWith(
+                scrollbarTheme: ScrollbarThemeData(
+                  thumbColor: WidgetStateProperty.all(const Color(0xFF2F2F2F)),
+                  trackColor: WidgetStateProperty.all(const Color(0xFF2F2F2F)),
+                  thickness: WidgetStateProperty.all(4.0),
+                  radius: const Radius.circular(10.0),
+                ),
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  value: earningsPeriod,
+                  dropdownColor: dropdownBackgroundColor,
                   style: TextStyle(
-                    color: isDark ? Colors.white : Colors.black87,
-                    fontSize: 13.sp,
+                    color: textColor,
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.w400,
                   ),
+                  icon: Icon(
+                    Icons.keyboard_arrow_down,
+                    color: iconColor,
+                    size: 16.sp,
+                  ),
+                  isDense: true,
+                  menuMaxHeight: MediaQuery.of(context).size.height * 0.5,
+                  items: <String>['Yearly', 'Quarterly']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: TextStyle(
+                          color: textColor,
+                          fontSize: 11.sp,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      earningsPeriod = newValue!;
+                    });
+                  },
                 ),
-                SizedBox(width: 4.w),
-                Icon(
-                  Icons.keyboard_arrow_down,
-                  color: isDark ? Colors.white : Colors.black87,
-                  size: 16.sp,
-                ),
-              ],
+              ),
             ),
           ),
         ),
       ],
-    );
-  }
-
-  // Helper method to show period selector
-  void _showPeriodSelector(BuildContext context) {
-    final bool isDark = Theme.of(context).brightness == Brightness.dark;
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
-      builder: (context) => Container(
-        padding: EdgeInsets.all(16.w),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              title: Text('Yearly',
-                  style:
-                      TextStyle(color: isDark ? Colors.white : Colors.black87)),
-              onTap: () {
-                setState(() {
-                  earningsPeriod = 'Yearly';
-                });
-                Navigator.pop(context);
-              },
-              trailing: earningsPeriod == 'Yearly'
-                  ? Icon(Icons.check, color: Colors.green)
-                  : null,
-            ),
-            ListTile(
-              title: Text('Quarterly',
-                  style:
-                      TextStyle(color: isDark ? Colors.white : Colors.black87)),
-              onTap: () {
-                setState(() {
-                  earningsPeriod = 'Quarterly';
-                });
-                Navigator.pop(context);
-              },
-              trailing: earningsPeriod == 'Quarterly'
-                  ? Icon(Icons.check, color: Colors.green)
-                  : null,
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -1761,10 +2069,10 @@ class _watchlistSDWState extends State<watchlistSDW> {
       children: [
         // Revenue tab
         _buildEarningsTab(isDark, 'Revenue', selectedEarningsTab == 'Revenue'),
-        SizedBox(width: 10.w),
+        SizedBox(width: 16.w),
         // Profit tab
         _buildEarningsTab(isDark, 'Profit', selectedEarningsTab == 'Profit'),
-        SizedBox(width: 10.w),
+        SizedBox(width: 16.w),
         // Net Worth tab
         _buildEarningsTab(
             isDark, 'Net Worth', selectedEarningsTab == 'Net Worth'),
@@ -1776,27 +2084,35 @@ class _watchlistSDWState extends State<watchlistSDW> {
   Widget _buildEarningsTab(bool isDark, String title, bool isSelected) {
     return GestureDetector(
       onTap: () {
-        // Update selected tab on tap
+        // Update selected tab on tap and reset animation
         setState(() {
           selectedEarningsTab = title;
+          // Generate a new key to force widget rebuild and restart animation
+          _animationKey = UniqueKey();
+          // Reset the visibility state to trigger animation again
+          _earningsChartVisible = true;
         });
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h),
         decoration: BoxDecoration(
           color: isSelected
-              ? (isDark ? Colors.grey.shade800 : Colors.grey.shade300)
+              ? (isDark ? const Color(0xff2f2f2f) : Color(0xFFC9CACC))
               : Colors.transparent,
           border: Border.all(
-            color: isDark ? Colors.grey.shade700 : Colors.grey.shade400,
-          ),
-          borderRadius: BorderRadius.circular(4.r),
+              color: isDark
+                  ? isSelected
+                      ? const Color(0xffEBEEF5)
+                      : const Color(0xffC9CACC)
+                  : const Color(0xffC9CACC),
+              width: isSelected ? 1 : 0.5),
+          borderRadius: BorderRadius.circular(2.r),
         ),
         child: Text(
           title,
           style: TextStyle(
             color: isDark ? Colors.white : Colors.black87,
-            fontSize: 14.sp,
+            fontSize: 11.sp,
             fontWeight: isSelected ? FontWeight.w500 : FontWeight.normal,
           ),
         ),
@@ -1804,29 +2120,54 @@ class _watchlistSDWState extends State<watchlistSDW> {
     );
   }
 
+  // Key for the visibility detector
+  final Key _earningsChartKey = Key('earningsChart');
+
+  // Track if the earnings chart has been seen
+  bool _earningsChartVisible = false;
+
+  // Animation key to force rebuild and restart animation
+  Key _animationKey = UniqueKey();
+
   // Earnings bar chart visualization
   Widget _buildEarningsChart(bool isDark) {
     // Bar chart for earnings data
-    return Container(
-      height: 200.h,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          // Year-wise earnings bars
-          _buildBarChartColumn(isDark, '2020', 3246, 9246),
-          _buildBarChartColumn(isDark, '2021', 4246, 9246),
-          _buildBarChartColumn(isDark, '2022', 6246, 9246),
-          _buildBarChartColumn(isDark, '2023', 8246, 9246),
-          _buildBarChartColumn(isDark, '2024', 9246, 9246),
-        ],
+    return VisibilityDetector(
+      key: _earningsChartKey,
+      onVisibilityChanged: (VisibilityInfo info) {
+        // If more than 30% of the widget is visible, consider it "seen"
+        if (info.visibleFraction > 0.3 && !_earningsChartVisible) {
+          setState(() {
+            _earningsChartVisible = true;
+          });
+        }
+      },
+      child: Container(
+        height: 200.h,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            // Year-wise earnings bars
+            _buildBarChartColumn(
+                isDark, '2020', 3246, 9246, _earningsChartVisible),
+            _buildBarChartColumn(
+                isDark, '2021', 4246, 9246, _earningsChartVisible),
+            _buildBarChartColumn(
+                isDark, '2022', 6246, 9246, _earningsChartVisible),
+            _buildBarChartColumn(
+                isDark, '2023', 8246, 9246, _earningsChartVisible),
+            _buildBarChartColumn(
+                isDark, '2024', 9246, 9246, _earningsChartVisible),
+          ],
+        ),
       ),
     );
   }
 
   // Individual bar in the earnings chart
   Widget _buildBarChartColumn(
-      bool isDark, String year, int value, int maxValue) {
+      bool isDark, String year, int value, int maxValue, bool isVisible) {
     // Calculate bar height as percentage of maximum value
     final double percentage = value / maxValue;
 
@@ -1838,20 +2179,29 @@ class _watchlistSDWState extends State<watchlistSDW> {
           value.toString(),
           style: TextStyle(
             color: isDark ? Colors.white : Colors.black87,
-            fontSize: 12.sp,
+            fontSize: 11.sp,
           ),
         ),
         SizedBox(height: 4.h),
-        // Bar visualization
-        Container(
-          width: 30.w,
-          height: 150.h * percentage,
-          decoration: BoxDecoration(
-            color: Color(0xff1DB954),
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(2.r),
-            ),
-          ),
+        // Bar visualization with animation - using key to force rebuild
+        TweenAnimationBuilder<double>(
+          key:
+              _animationKey, // Using the key to force rebuild and restart animation
+          // Always start from 0 (bottom) and animate to the target percentage if visible
+          tween: Tween<double>(begin: 0, end: isVisible ? percentage : 0),
+          // Animation duration
+          duration: Duration(milliseconds: 1000),
+          // Smoother easing curve
+          curve: Curves.easeOutQuad,
+          builder: (context, animatedPercentage, child) {
+            return Container(
+              width: 20.w,
+              height: 150.h * animatedPercentage,
+              decoration: BoxDecoration(
+                color: Color(0xff1DB954),
+              ),
+            );
+          },
         ),
         SizedBox(height: 4.h),
         // Year label below bar
@@ -1859,7 +2209,7 @@ class _watchlistSDWState extends State<watchlistSDW> {
           year,
           style: TextStyle(
             color: Colors.grey,
-            fontSize: 12.sp,
+            fontSize: 11.sp,
           ),
         ),
       ],
@@ -1880,7 +2230,7 @@ class _watchlistSDWState extends State<watchlistSDW> {
     return Column(
       children: details.entries.map((entry) {
         return Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.h),
+          padding: EdgeInsets.symmetric(vertical: 6.h),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -1897,7 +2247,7 @@ class _watchlistSDWState extends State<watchlistSDW> {
               ),
               // Detail value
               Expanded(
-                flex: 3,
+                flex: 2,
                 child: Text(
                   entry.value,
                   style: TextStyle(
@@ -1913,6 +2263,9 @@ class _watchlistSDWState extends State<watchlistSDW> {
     );
   }
 
+  // Track which card is selected in the locate section
+  String selectedCard = 'Card 1';
+
   // Locate section with card selectors
   Widget _buildLocateSection(bool isDark) {
     return Row(
@@ -1923,51 +2276,57 @@ class _watchlistSDWState extends State<watchlistSDW> {
           'Locate',
           style: TextStyle(
             color: isDark ? Colors.white : Colors.black87,
-            fontSize: 16.sp,
+            fontSize: 15.sp,
             fontWeight: FontWeight.w500,
           ),
         ),
         // Card selector buttons
         Row(
           children: [
-            // Card 1 button
-            OutlinedButton(
-              onPressed: () {},
-              style: OutlinedButton.styleFrom(
-                side: BorderSide(color: Colors.grey),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.r),
-                ),
-              ),
-              child: Text(
-                'Card 1',
-                style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black87,
-                  fontSize: 14.sp,
-                ),
-              ),
-            ),
-            SizedBox(width: 8.w),
-            // Card 2 button
-            OutlinedButton(
-              onPressed: () {},
-              style: OutlinedButton.styleFrom(
-                side: BorderSide(color: Colors.grey),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.r),
-                ),
-              ),
-              child: Text(
-                'Card 2',
-                style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black87,
-                  fontSize: 14.sp,
-                ),
-              ),
-            ),
+            // Card 1 button - using the same style as earnings tabs
+            _buildCardTab(isDark, 'Card 1', selectedCard == 'Card 1'),
+            SizedBox(width: 16.w),
+            // Card 2 button - using the same style as earnings tabs
+            _buildCardTab(isDark, 'Card 2', selectedCard == 'Card 2'),
           ],
         ),
       ],
+    );
+  }
+
+  // Individual card tab with the same design as earnings tabs
+  Widget _buildCardTab(bool isDark, String title, bool isSelected) {
+    return GestureDetector(
+      onTap: () {
+        // Update selected card on tap
+        setState(() {
+          selectedCard = title;
+        });
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? (isDark ? const Color(0xff2f2f2f) : Color(0xFFC9CACC))
+              : Colors.transparent,
+          border: Border.all(
+              color: isDark
+                  ? isSelected
+                      ? const Color(0xffEBEEF5)
+                      : const Color(0xffC9CACC)
+                  : const Color(0xffC9CACC),
+              width: isSelected ? 1 : 0.5),
+          borderRadius: BorderRadius.circular(2.r),
+        ),
+        child: Text(
+          title,
+          style: TextStyle(
+            color: isDark ? Colors.white : Colors.black87,
+            fontSize: 11.sp,
+            fontWeight: isSelected ? FontWeight.w500 : FontWeight.normal,
+          ),
+        ),
+      ),
     );
   }
 }
