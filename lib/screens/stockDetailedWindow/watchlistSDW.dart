@@ -30,13 +30,21 @@ class _watchlistSDWState extends State<watchlistSDW> {
   String earningsPeriod = 'Yearly';
   String shareholdingPeriod = 'Mar 2025';
   bool isNSE = true;
-  String selectedRange = '1Y';
+  String selectedRange = '1D';
+
+  // Scroll controller to track scroll position
+  late ScrollController _scrollController;
+  bool _showAppBarTitle = false;
 
   List<String> last12Months = [];
 
   @override
   void initState() {
     super.initState();
+    // Initialize scroll controller
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+
     // Generate last 12 months starting from Mar 2025
     DateTime now = DateTime(2025, 3, 1); // Ensure Mar 2025 is first
 
@@ -90,6 +98,27 @@ class _watchlistSDWState extends State<watchlistSDW> {
   }
 
   @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  // Scroll listener to update app bar title visibility
+  void _scrollListener() {
+    // Show app bar title after scrolling past a threshold (e.g., 100 pixels)
+    if (_scrollController.offset > 100 && !_showAppBarTitle) {
+      setState(() {
+        _showAppBarTitle = true;
+      });
+    } else if (_scrollController.offset <= 100 && _showAppBarTitle) {
+      setState(() {
+        _showAppBarTitle = false;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     // Get the current theme brightness
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
@@ -99,12 +128,51 @@ class _watchlistSDWState extends State<watchlistSDW> {
       appBar: AppBar(
         backgroundColor: isDark ? Colors.black : Colors.white,
         scrolledUnderElevation: 0,
+        leadingWidth: 24.w,
         elevation: 0,
+        title: _showAppBarTitle
+            ? Column(
+                // mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.stockName,
+                    style: TextStyle(
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
+                      color: isDark ? Colors.white : Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "₹ " + widget.price,
+                        style: TextStyle(
+                          fontSize: 11.sp,
+                          fontWeight: FontWeight.w500,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                      SizedBox(width: 4.h),
+                      Text(
+                        widget.change,
+                        style: TextStyle(
+                          fontSize: 11.sp,
+                          fontWeight: FontWeight.w400,
+                          color: widget.change.contains('+')
+                              ? Colors.green
+                              : Colors.red,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              )
+            : null,
+        centerTitle: false,
         actions: [
-          SvgPicture.asset(
-            "assets/svgs/search-svgrepo-com (1).svg",
-            color: isDark ? Colors.white : Colors.black,
-          ),
           SizedBox(width: 16.w),
           SvgPicture.asset("assets/svgs/save.svg",
               width: 22.w,
@@ -121,6 +189,13 @@ class _watchlistSDWState extends State<watchlistSDW> {
               height: 22.h,
               color: isDark ? Colors.white : Colors.black),
           SizedBox(width: 16.w),
+          SvgPicture.asset(
+            "assets/svgs/search-svgrepo-com (1).svg",
+            color: isDark ? Colors.white : Colors.black,
+          ),
+          SizedBox(
+            width: 16.w,
+          )
         ],
       ),
       body: Container(
@@ -152,148 +227,160 @@ class _watchlistSDWState extends State<watchlistSDW> {
             //         isDark ? const Color(0xFF2F2F2F) : const Color(0xFFD1D5DB)),
             // Main content section with ScrollView
             Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 9.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Header showing stock information
-                      _buildHeader(isDark),
-                      SizedBox(
-                        height: 18.h,
-                      ),
-                      Divider(
-                          color: isDark
-                              ? const Color(0xFF2F2F2F)
-                              : const Color(0xFFD1D5DB)),
-                      SizedBox(height: 12.h),
+              child: RefreshIndicator(
+                color: Color(0xff1db954),
+                backgroundColor: isDark ? Colors.black : Colors.white,
+                onRefresh: () async {
+                  // Add your refresh logic here
+                  // For example, fetch new data from API
+                  await Future.delayed(Duration(seconds: 1));
+                  // You can update state or fetch new data here
+                },
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 9.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Header showing stock information
+                        _buildHeader(isDark),
+                        SizedBox(
+                          height: 18.h,
+                        ),
+                        Divider(
+                            color: isDark
+                                ? const Color(0xFF2F2F2F)
+                                : const Color(0xFFD1D5DB)),
+                        SizedBox(height: 12.h),
 
-                      stockChartWidget(
-                        dataPoints: getChartData(selectedRange),
-                        selectedRange: selectedRange,
-                        onRangeSelected: (range) {
-                          setState(() {
-                            selectedRange = range;
-                          });
-                        },
-                      ),
-                      SizedBox(height: 8.h),
-                      Divider(
-                          color: isDark
-                              ? const Color(0xFF2F2F2F)
-                              : const Color(0xFFD1D5DB)),
+                        stockChartWidget(
+                          dataPoints: getChartData(selectedRange),
+                          selectedRange: selectedRange,
+                          onRangeSelected: (range) {
+                            setState(() {
+                              selectedRange = range;
+                            });
+                          },
+                        ),
+                        SizedBox(height: 8.h),
+                        Divider(
+                            color: isDark
+                                ? const Color(0xFF2F2F2F)
+                                : const Color(0xFFD1D5DB)),
 
-                      // Market Depth section
-                      _buildSectionHeader(isDark, 'Market Depth'),
-                      SizedBox(height: 16.h),
-                      _buildMarketDepthTable(isDark),
-                      Center(
-                        child: TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Show 20 depth',
-                            style: TextStyle(
-                              color: Color(0xff1DB954),
-                              fontSize: 14.sp,
+                        // Market Depth section
+                        _buildSectionHeader(isDark, 'Market Depth'),
+                        SizedBox(height: 16.h),
+                        _buildMarketDepthTable(isDark),
+                        Center(
+                          child: TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              'Show 20 depth',
+                              style: TextStyle(
+                                color: Color(0xff1DB954),
+                                fontSize: 14.sp,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Divider(
-                          color: isDark
-                              ? const Color(0xFF2F2F2F)
-                              : const Color(0xFFD1D5DB)),
-                      SizedBox(
-                        height: 12.h,
-                      ),
-                      // Performance section
-                      _buildSectionHeader(isDark, 'Performance'),
-                      SizedBox(height: 12.h),
-                      _buildPerformanceSection(isDark),
-                      Divider(
-                          color: isDark
-                              ? const Color(0xFF2F2F2F)
-                              : const Color(0xFFD1D5DB)),
-                      SizedBox(height: 12.h),
-                      // Fundamental Ratios grid display
-                      _buildSectionHeader(isDark, 'Fundamental Ratios'),
-                      SizedBox(height: 16.h),
-                      _buildRatiosGrid(isDark),
-                      SizedBox(height: 0.h),
-                      Divider(
-                          color: isDark
-                              ? const Color(0xFF2F2F2F)
-                              : const Color(0xFFD1D5DB)),
+                        Divider(
+                            color: isDark
+                                ? const Color(0xFF2F2F2F)
+                                : const Color(0xFFD1D5DB)),
+                        SizedBox(
+                          height: 12.h,
+                        ),
+                        // Performance section
+                        _buildSectionHeader(isDark, 'Performance'),
+                        SizedBox(height: 12.h),
+                        _buildPerformanceSection(isDark),
+                        Divider(
+                            color: isDark
+                                ? const Color(0xFF2F2F2F)
+                                : const Color(0xFFD1D5DB)),
+                        SizedBox(height: 12.h),
+                        // Fundamental Ratios grid display
+                        _buildSectionHeader(isDark, 'Fundamental Ratios'),
+                        SizedBox(height: 16.h),
+                        _buildRatiosGrid(isDark),
+                        SizedBox(height: 0.h),
+                        Divider(
+                            color: isDark
+                                ? const Color(0xFF2F2F2F)
+                                : const Color(0xFFD1D5DB)),
 
-                      // Shareholding Pattern with pie chart
-                      SizedBox(
-                        height: 12.h,
-                      ),
-                      _buildShareholdingHeader(isDark),
-                      // SizedBox(height: 16.h),
-                      buildShareholdingChart(isDark),
-                      Divider(
-                          color: isDark
-                              ? const Color(0xFF2F2F2F)
-                              : const Color(0xFFD1D5DB)),
-                      SizedBox(
-                        height: 12.h,
-                      ),
-                      // Earnings section with chart
-                      _buildEarningsHeader(isDark),
-                      SizedBox(height: 16.h),
-                      _buildEarningsTabs(isDark),
-                      SizedBox(height: 16.h),
-                      _buildEarningsChart(isDark),
-                      SizedBox(height: 10.h),
-                      Center(
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Text(
-                            '*All values are in crore',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 12.sp,
+                        // Shareholding Pattern with pie chart
+                        SizedBox(
+                          height: 12.h,
+                        ),
+                        _buildShareholdingHeader(isDark),
+                        // SizedBox(height: 16.h),
+                        buildShareholdingChart(isDark),
+                        Divider(
+                            color: isDark
+                                ? const Color(0xFF2F2F2F)
+                                : const Color(0xFFD1D5DB)),
+                        SizedBox(
+                          height: 12.h,
+                        ),
+                        // Earnings section with chart
+                        _buildEarningsHeader(isDark),
+                        SizedBox(height: 16.h),
+                        _buildEarningsTabs(isDark),
+                        SizedBox(height: 16.h),
+                        _buildEarningsChart(isDark),
+                        SizedBox(height: 10.h),
+                        Center(
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              '*All values are in crore',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12.sp,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(height: 12.h),
-                      Divider(
-                          color: isDark
-                              ? const Color(0xFF2F2F2F)
-                              : const Color(0xFFD1D5DB)),
+                        SizedBox(height: 12.h),
+                        Divider(
+                            color: isDark
+                                ? const Color(0xFF2F2F2F)
+                                : const Color(0xFFD1D5DB)),
 
-                      // About Company section
-                      SizedBox(height: 12.h),
-                      _buildSectionHeader(isDark, 'About Company'),
-                      SizedBox(height: 16.h),
-                      Text(
-                        'Reliance Industries Limited (RIL) is India\'s largest private sector company. The company\'s activities span hydrocarbon exploration and production, petroleum refining and marketing, petrochemicals, advanced materials and composites, renewables (solar and hydrogen), retail and digital services. The company\'s products range is from the exploration and production of oil and gas to the manufacture of petroleum products, polyester products, polyester intermediates, plastics, polymer intermediates, chemicals, synthetic textiles and fabrics.',
-                        style: TextStyle(
-                          color: isDark ? Colors.white : Colors.black87,
-                          fontSize: 13.sp,
-                          height: 1.5,
+                        // About Company section
+                        SizedBox(height: 12.h),
+                        _buildSectionHeader(isDark, 'About Company'),
+                        SizedBox(height: 16.h),
+                        Text(
+                          'Reliance Industries Limited (RIL) is India\'s largest private sector company. The company\'s activities span hydrocarbon exploration and production, petroleum refining and marketing, petrochemicals, advanced materials and composites, renewables (solar and hydrogen), retail and digital services. The company\'s products range is from the exploration and production of oil and gas to the manufacture of petroleum products, polyester products, polyester intermediates, plastics, polymer intermediates, chemicals, synthetic textiles and fabrics.',
+                          style: TextStyle(
+                            color: isDark ? Colors.white : Colors.black87,
+                            fontSize: 13.sp,
+                            height: 1.5,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 16.h),
-                      _buildCompanyDetailsTable(isDark),
-                      SizedBox(height: 24.h),
-                      Divider(
-                          color: isDark
-                              ? const Color(0xFF2F2F2F)
-                              : const Color(0xFFD1D5DB)),
-                      // Locate Section
-                      SizedBox(height: 24.h),
-                      _buildLocateSection(isDark),
-                      SizedBox(height: 24.h),
-                    ],
+                        SizedBox(height: 16.h),
+                        _buildCompanyDetailsTable(isDark),
+                        SizedBox(height: 24.h),
+                        Divider(
+                            color: isDark
+                                ? const Color(0xFF2F2F2F)
+                                : const Color(0xFFD1D5DB)),
+                        // Locate Section
+                        SizedBox(height: 24.h),
+                        _buildLocateSection(isDark),
+                        SizedBox(height: 24.h),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),
@@ -355,7 +442,7 @@ class _watchlistSDWState extends State<watchlistSDW> {
                 widget.stockCode,
                 style: TextStyle(
                   color: isDark ? Colors.white : Colors.black,
-                  fontSize: 13.sp,
+                  fontSize: 15.sp,
                 ),
               ),
               SizedBox(height: 6.h),
@@ -510,7 +597,7 @@ class _watchlistSDWState extends State<watchlistSDW> {
                     ),
                   ),
                   child: Text(
-                    'BUY',
+                    'Buy',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18.sp,
@@ -534,7 +621,7 @@ class _watchlistSDWState extends State<watchlistSDW> {
                     ),
                   ),
                   child: Text(
-                    'SELL',
+                    'Sell',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18.sp,
