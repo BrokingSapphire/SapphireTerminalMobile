@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 class CustomToggleSwitch extends StatefulWidget {
   final bool initialValue;         // Initial state of the toggle (on/off)
   final ValueChanged<bool> onChanged; // Callback when toggle state changes
-Color selectedColor;
+  final Color selectedColor;
   CustomToggleSwitch({
     super.key,
     this.initialValue = false,     // Default to off state

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-
-
 // A separate screen to display the WebView
 class WebViewScreen extends StatefulWidget {
   final String url;
@@ -12,10 +10,10 @@ class WebViewScreen extends StatefulWidget {
   const WebViewScreen({Key? key, required this.url, required this.title}) : super(key: key);
 
   @override
-  _WebViewScreenState createState() => _WebViewScreenState();
+  WebViewScreenState createState() => WebViewScreenState(); // ✅ Made public
 }
 
-class _WebViewScreenState extends State<WebViewScreen> {
+class WebViewScreenState extends State<WebViewScreen> { // ✅ Made public
   late final WebViewController _controller;
   bool _isLoading = true;
 
@@ -23,9 +21,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
   void initState() {
     super.initState();
 
-    // Initialize the WebViewController
     _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted) // Enable JavaScript
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (String url) {
@@ -45,21 +42,18 @@ class _WebViewScreenState extends State<WebViewScreen> {
           },
         ),
       )
-      ..loadRequest(Uri.parse(widget.url)); // Load the URL
+      ..loadRequest(Uri.parse(widget.url));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    appBar: AppBar(
+      appBar: AppBar(
         backgroundColor: Colors.black,
-        // or your desired color
         elevation: 0,
         scrolledUnderElevation: 0,
-        // prevent shadow when scrolling
         surfaceTintColor: Colors.transparent,
         leadingWidth: 32.w,
-
         title: Padding(
           padding: const EdgeInsets.only(top: 15),
           child: Text(
@@ -73,7 +67,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Icon(Icons.arrow_back)),
+              icon: const Icon(Icons.arrow_back)),
         ),
       ),
       body: Stack(

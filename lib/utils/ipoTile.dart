@@ -116,7 +116,7 @@ Widget ipoTile({
                             horizontal: 4.w, vertical: 3.h),
                         decoration: BoxDecoration(
                           color: Color(0xFF491787)
-                              .withOpacity(0.5), // Purple background
+                              .withAlpha((255 * 0.5).round()), // Purple background
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(badge1,
@@ -172,7 +172,7 @@ Widget ipoTile({
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           decoration: BoxDecoration(
             color: Color(0xFF3a3a3a)
-                .withOpacity(0.5), // Slightly lighter background
+                .withAlpha((255 * 0.5).round()), // Slightly lighter background
             borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
@@ -182,7 +182,7 @@ Widget ipoTile({
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
                   color:
-                      const Color(0xFFD9C544).withOpacity(0.2), // Golden yellow
+                      const Color(0xFFD9C544).withAlpha((255 * 0.2).round()), // Golden yellow
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(statusDay,
