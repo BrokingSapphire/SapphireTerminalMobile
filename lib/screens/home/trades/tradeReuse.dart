@@ -78,7 +78,7 @@ class _TradesTabContentState extends State<TradesTabContent> {
       case "stocks":
         return isActive
             ? const TradesActiveScreen()
-            : const tradesClosedScreen();
+            : const TradesClosedScreen();
       case "options":
         return isActive
             ? const TradesOptionActiveScreen()
