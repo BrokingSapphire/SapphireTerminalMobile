@@ -13,62 +13,64 @@ class closedGridScreen extends StatefulWidget {
 
 class _closedGridScreenState extends State<closedGridScreen> {
   final ScrollController _scrollController = ScrollController();
+  String? _sortColumn; // Tracks the currently sorted column
+  bool _isAscending = true; // Tracks sort direction
 
   // Default data if no filtered stocks are provided
   final List<Map<String, String>> defaultData = [
     {
       "symbol": "DABUR\nMAR FUT",
-      "entry": "₹510.68",
-      "exit": "₹512.00",
+      "entry": "₹550.25",
+      "exit": "₹560.00",
       "quantity": "100",
-      "duration": "1000",
-      "netgain": "₹189",
-      "margin": "₹1,15,678.00",
-      "postedby": "User1",
-      "status": "Target Miss"
+      "duration": "500",
+      "netgain": "₹975",
+      "margin": "₹1,25,000.00",
+      "postedby": "Alice",
+      "status": "Target Achieved"
     },
     {
-      "symbol": "DABUR\nMAR FUT",
-      "entry": "₹510.68",
-      "exit": "₹510.68",
-      "quantity": "60",
-      "duration": "2778",
-      "netgain": "₹189",
-      "margin": "₹1,15,678.00",
-      "postedby": "{postedby.name}",
+      "symbol": "RECLTD\nAPR FUT",
+      "entry": "₹480.10",
+      "exit": "₹475.50",
+      "quantity": "50",
+      "duration": "2000",
+      "netgain": "-₹460",
+      "margin": "₹95,678.00",
+      "postedby": "Bob",
       "status": "Stoploss Hit"
     },
     {
       "symbol": "DLF\nMAR FUT",
       "entry": "₹510.68",
-      "exit": "₹510.68",
-      "quantity": "270",
-      "duration": "1000",
-      "netgain": "₹189",
+      "exit": "₹512.00",
+      "quantity": "200",
+      "duration": "1500",
+      "netgain": "₹264",
       "margin": "₹1,15,678.00",
-      "postedby": "{postedby.name}",
+      "postedby": "Charlie",
+      "status": "Target Miss"
+    },
+    {
+      "symbol": "HDFC\nMAY FUT",
+      "entry": "₹600.00",
+      "exit": "₹590.00",
+      "quantity": "80",
+      "duration": "3000",
+      "netgain": "-₹800",
+      "margin": "₹2,50,000.00",
+      "postedby": "David",
       "status": "Stoploss Hit"
     },
     {
-      "symbol": "DABUR\nMAR FUT",
-      "entry": "₹510.68",
-      "exit": "₹510.68",
-      "quantity": "90",
-      "duration": "5000",
-      "netgain": "₹189",
-      "margin": "₹1,15,678.00",
-      "postedby": "{postedby.name}",
-      "status": "Target Achieved"
-    },
-    {
-      "symbol": "RECLTD\nMAR FUT",
+      "symbol": "TCS\nJUN FUT",
       "entry": "₹520.50",
       "exit": "₹530.00",
-      "quantity": "200",
-      "duration": "200",
-      "netgain": "₹500",
-      "margin": "₹2,00,000.00",
-      "postedby": "User2",
+      "quantity": "150",
+      "duration": "800",
+      "netgain": "₹1425",
+      "margin": "₹1,80,000.00",
+      "postedby": "Eve",
       "status": "Target Achieved"
     },
   ];
@@ -86,23 +88,55 @@ class _closedGridScreenState extends State<closedGridScreen> {
 
   // Get the data to display - either filtered stocks or default data
   List<Map<String, String>> get data {
+    List<Map<String, String>> dataList;
     if (widget.filteredStocks != null && widget.filteredStocks!.isNotEmpty) {
-      // Map the filtered stocks to the format expected by the grid
-      return widget.filteredStocks!.map((stock) {
+      dataList = widget.filteredStocks!.map((stock) {
         return {
-          "symbol": "${stock['symbol']}\nMAR FUT",
-          "entry": "₹510.68",
-          "exit": "₹512.00",
-          "quantity": "100",
-          "duration": "1000",
-          "netgain": "₹189",
-          "margin": "₹1,15,678.00",
-          "postedby": "User1",
-          "status": "Target Miss"
+          "symbol": "${stock['symbol'] ?? 'UNKNOWN'}\nMAR FUT",
+          "entry": stock['entry'] ?? "₹510.68",
+          "exit": stock['exit'] ?? "₹512.00",
+          "quantity": stock['quantity'] ?? "100",
+          "duration": stock['duration'] ?? "1000",
+          "netgain": stock['netgain'] ?? "₹189",
+          "margin": stock['margin'] ?? "₹1,15,678.00",
+          "postedby": stock['postedby'] ?? "User1",
+          "status": stock['status'] ?? "Target Miss"
         };
       }).toList();
+    } else {
+      dataList = defaultData;
     }
-    return defaultData;
+
+    // Apply sorting if a sort column is selected
+    if (_sortColumn != null) {
+      dataList.sort((a, b) {
+        String aValue = a[_sortColumn] ?? '';
+        String bValue = b[_sortColumn] ?? '';
+
+        // Handle numeric fields (remove ₹ and commas, convert to double)
+        if (['entry', 'exit', 'netgain', 'margin'].contains(_sortColumn)) {
+          double aNum =
+              double.tryParse(aValue.replaceAll(RegExp(r'[₹,]'), '')) ?? 0;
+          double bNum =
+              double.tryParse(bValue.replaceAll(RegExp(r'[₹,]'), '')) ?? 0;
+          return _isAscending ? aNum.compareTo(bNum) : bNum.compareTo(aNum);
+        }
+        // Handle numeric fields (quantity, duration)
+        else if (['quantity', 'duration'].contains(_sortColumn)) {
+          int aNum = int.tryParse(aValue) ?? 0;
+          int bNum = int.tryParse(bValue) ?? 0;
+          return _isAscending ? aNum.compareTo(bNum) : bNum.compareTo(aNum);
+        }
+        // Handle text fields (postedby, status)
+        else {
+          return _isAscending
+              ? aValue.compareTo(bValue)
+              : bValue.compareTo(aValue);
+        }
+      });
+    }
+
+    return dataList;
   }
 
   @override
@@ -188,6 +222,19 @@ class _closedGridScreenState extends State<closedGridScreen> {
   }
 
   Widget _buildHeader(String text, double width) {
+    // Map header text to data key for sorting
+    final Map<String, String> headerToKey = {
+      "Entry Price": "entry",
+      "Exit Price": "exit",
+      "Quantity": "quantity",
+      "Duration": "duration",
+      "Net Gain": "netgain",
+      "Margin": "margin",
+      "Posted By": "postedby",
+      "Status": "status",
+    };
+    String? sortKey = headerToKey[text];
+
     return Container(
       width: width,
       height: 40.h,
@@ -199,10 +246,28 @@ class _closedGridScreenState extends State<closedGridScreen> {
           Text(text,
               style: TextStyle(color: Color(0xffC9CACC), fontSize: 13.sp)),
           SizedBox(width: 5.w),
-          // Icon(Icons.swap_vert_rounded, color: Color(0xffC9CACC), size: 17.sp),
-          SvgPicture.asset(
-            "assets/svgs/arrow-up-down-svgrepo-com 1.svg",
-            color: Color(0xffC9CACC),
+          GestureDetector(
+            onTap: sortKey != null
+                ? () {
+                    setState(() {
+                      if (_sortColumn == sortKey) {
+                        // Toggle sort direction if same column
+                        _isAscending = !_isAscending;
+                      } else {
+                        // Set new sort column and default to ascending
+                        _sortColumn = sortKey;
+                        _isAscending = true;
+                      }
+                    });
+                  }
+                : null,
+            child: SvgPicture.asset(
+              "assets/svgs/arrow-up-down-svgrepo-com 1.svg",
+              colorFilter: ColorFilter.mode(
+                Color(0xffC9CACC),
+                BlendMode.srcIn,
+              ),
+            ),
           ),
         ],
       ),
@@ -246,10 +311,11 @@ class _closedGridScreenState extends State<closedGridScreen> {
       padding: EdgeInsets.symmetric(horizontal: 25.w),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.h),
-        // width: 85.w,
         height: 20.h,
-        decoration:
-            BoxDecoration(color: bg, borderRadius: BorderRadius.circular(5.r)),
+        decoration: BoxDecoration(
+          color: bg,
+          borderRadius: BorderRadius.circular(5.r),
+        ),
         alignment: Alignment.center,
         child: Text(text, style: TextStyle(color: fg, fontSize: 10.sp)),
       ),

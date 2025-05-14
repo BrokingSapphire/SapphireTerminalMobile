@@ -360,9 +360,10 @@ class _TradesClosedScreenState extends State<TradesClosedScreen>
                                     .map((trade) => trade.toMap())
                                     .toList())
                             : closedGridScreen(
-                                filteredStocks: filteredStocks
-                                    .map((trade) => trade.toMap())
-                                    .toList()),
+                                // filteredStocks: filteredStocks
+                                //     .map((trade) => trade.toMap())
+                                //     .toList()
+                                ),
                       ),
               ],
             ),

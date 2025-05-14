@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:sapphire/screens/home/trades/options/closedTrades/closedOptionsGrid.dart';
 import 'package:sapphire/screens/home/trades/options/closedTrades/closedOptionsList.dart';
 
 class TradeModel {
@@ -89,91 +90,12 @@ class TradeModel {
   }
 }
 
-// Sample ClosedOptionGridScreen (replace with your actual implementation)
-class ClosedOptionGridScreen extends StatelessWidget {
-  final List<Map<String, dynamic>> trades;
-
-  const ClosedOptionGridScreen({super.key, required this.trades});
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 12.w,
-        mainAxisSpacing: 12.h,
-        childAspectRatio: 0.75,
-      ),
-      itemCount: trades.length,
-      itemBuilder: (context, index) {
-        final trade = trades[index];
-        return Container(
-          padding: EdgeInsets.all(12.w),
-          decoration: BoxDecoration(
-            color: const Color(0xff121413),
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 14.r,
-                    backgroundColor: Colors.white,
-                    child: ClipOval(
-                      child: Image.asset(trade['logo']),
-                    ),
-                  ),
-                  SizedBox(width: 8.w),
-                  Text(
-                    trade['symbol'],
-                    style: TextStyle(
-                      color: const Color(0xffEBEEF5),
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8.h),
-              Text(
-                trade['company_name'],
-                style: TextStyle(color: const Color(0xffC9CACC), fontSize: 11.sp),
-              ),
-              SizedBox(height: 8.h),
-              Text(
-                trade['option_name'],
-                style: TextStyle(color: const Color(0xffEBEEF5), fontSize: 11.sp),
-              ),
-              Text(
-                'Action: ${trade['action']}',
-                style: TextStyle(color: const Color(0xffEBEEF5), fontSize: 11.sp),
-              ),
-              Text(
-                'Status: ${trade['status']}',
-                style: TextStyle(color: const Color(0xffEBEEF5), fontSize: 11.sp),
-              ),
-              Text(
-                'Net Gain: ${trade['net_gain'] >= 0 ? '+' : ''}${trade['net_gain']}%',
-                style: TextStyle(
-                  color: trade['net_gain'] >= 0 ? Colors.green : Colors.red,
-                  fontSize: 11.sp,
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
-
 class TradesOptionClosedScreen extends StatefulWidget {
   const TradesOptionClosedScreen({super.key});
 
   @override
-  State<TradesOptionClosedScreen> createState() => _TradesOptionClosedScreenState();
+  State<TradesOptionClosedScreen> createState() =>
+      _TradesOptionClosedScreenState();
 }
 
 class _TradesOptionClosedScreenState extends State<TradesOptionClosedScreen>
@@ -457,7 +379,8 @@ class _TradesOptionClosedScreenState extends State<TradesOptionClosedScreen>
                               ),
                               child: SvgPicture.asset(
                                 'assets/svgs/list.svg',
-                                color: !isGridView ? Colors.green : Colors.white,
+                                color:
+                                    !isGridView ? Colors.green : Colors.white,
                                 width: 18.w,
                                 height: 18.h,
                               ),
@@ -513,11 +436,7 @@ class _TradesOptionClosedScreenState extends State<TradesOptionClosedScreen>
                                     .map((trade) => trade.toMap())
                                     .toList(),
                               )
-                            : ClosedOptionGridScreen(
-                                trades: filteredTrades
-                                    .map((trade) => trade.toMap())
-                                    .toList(),
-                              ),
+                            : const ClosedOptionGridScreen(),
                       ),
               ],
             ),
