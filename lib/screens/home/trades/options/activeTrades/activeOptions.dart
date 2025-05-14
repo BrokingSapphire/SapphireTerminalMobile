@@ -1,25 +1,32 @@
+// File: activeOptions.dart
+// Description: Options trading screen for the Sapphire Trading application.
+// This screen displays active options trades with strategy details including buy/sell positions, entry/exit prices, and profit/loss information.
+
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:sapphire/screens/home/trades/trades.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
+import 'package:flutter_svg/svg.dart'; // For SVG image rendering
+import 'package:sapphire/screens/home/trades/trades.dart'; // Trade utilities and shared components
 
+/// TradeModel - Model class to represent an options trade
+/// Contains detailed information about options trade strategies with buy/sell positions
 class TradeModel {
-  final String symbol;
-  final String companyName;
-  final String logo;
-  final String optionName;
-  final String action;
-  final String postedDateTime;
-  final String strategyBuy;
-  final String strategySell;
-  final double entryBuyPrice;
-  final double entrySellPrice;
-  final double exitBuyPrice;
-  final double exitSellPrice;
-  final double stoplossAmount;
-  final double targetAmount;
-  final double netGain;
+  final String symbol; // Stock symbol/ticker
+  final String companyName; // Full company name
+  final String logo; // Path to company logo asset
+  final String optionName; // Option contract details (e.g., "RELIANCE 1200 CE")
+  final String action; // Trade action (BUY/SELL)
+  final String postedDateTime; // When the trade was posted
+  final String strategyBuy; // Buy leg of the options strategy
+  final String strategySell; // Sell leg of the options strategy
+  final double entryBuyPrice; // Entry price for buy leg
+  final double entrySellPrice; // Entry price for sell leg
+  final double exitBuyPrice; // Exit price for buy leg
+  final double exitSellPrice; // Exit price for sell leg
+  final double stoplossAmount; // Maximum loss amount
+  final double targetAmount; // Target profit amount
+  final double netGain; // Current net gain/loss percentage
 
+  /// Constructor to initialize all trade properties
   TradeModel({
     required this.symbol,
     required this.companyName,
@@ -38,6 +45,9 @@ class TradeModel {
     required this.netGain,
   });
 
+  /// Factory constructor to create a TradeModel from JSON data
+  /// @param json - Map containing trade data
+  /// @return TradeModel - Instance created from the JSON data
   factory TradeModel.fromJson(Map<String, dynamic> json) {
     return TradeModel(
       symbol: json['symbol'],
@@ -59,6 +69,8 @@ class TradeModel {
   }
 }
 
+/// TradesOptionActiveScreen - Widget that displays active options trades
+/// Shows detailed options strategy cards with buy/sell positions and price information
 class TradesOptionActiveScreen extends StatefulWidget {
   const TradesOptionActiveScreen({super.key});
 
@@ -67,9 +79,12 @@ class TradesOptionActiveScreen extends StatefulWidget {
       _TradesOptionActiveScreenState();
 }
 
+/// State class for the TradesOptionActiveScreen widget
+/// Manages the display of active options trades and their interactions
 class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
     with SingleTickerProviderStateMixin {
-  // Dummy JSON data defined directly as a List<Map<String, dynamic>>
+  // Sample trade data for demonstration purposes
+  // In a production environment, this would be fetched from an API
   final List<Map<String, dynamic>> tradeData = [
     {
       'symbol': 'RELIANCE',
@@ -107,24 +122,26 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
     },
   ];
 
-  // Convert JSON data to TradeModel objects
+  // Convert JSON data to TradeModel objects for easier handling in the UI
   late final List<TradeModel> trades =
-      tradeData.map((json) => TradeModel.fromJson(json)).toList();
+  tradeData.map((json) => TradeModel.fromJson(json)).toList();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding:
-            EdgeInsets.only(right: 16.w, left: 16.h, top: 16.w, bottom: 8.w),
+        EdgeInsets.only(right: 16.w, left: 16.h, top: 16.w, bottom: 8.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Header showing the count of active trades
             Text(
               "Active Trades (${trades.length})",
               style: TextStyle(color: const Color(0xffEBEEF5), fontSize: 15.sp),
             ),
             SizedBox(height: 8.h),
+            // List of option trade cards
             for (var i = 0; i < trades.length; i++) ...[
               buildTradeCard(trades[i]),
               SizedBox(height: 12.h),
@@ -135,6 +152,9 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
     );
   }
 
+  /// Creates a card widget displaying detailed information about an options trade
+  /// @param trade - The trade model containing all trade details
+  /// @return Widget - A styled card with options trade strategy information and action buttons
   Widget buildTradeCard(TradeModel trade) {
     return Container(
       padding: EdgeInsets.all(16.w),
@@ -145,14 +165,15 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header with logo and date
+          // Header with option details and posting date
           Row(
             children: [
+              // Company logo/initial
               CircleAvatar(
                 radius: 16.r,
                 backgroundColor: const Color(0xff2A2A2A),
                 child: Text(
-                  trade.symbol[0],
+                  trade.symbol[0], // First letter of the stock symbol
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 12.sp,
@@ -161,9 +182,11 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
                 ),
               ),
               SizedBox(width: 12.w),
+              // Option contract name and date information
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Option contract identifier (e.g., "RELIANCE 1200 CE")
                   Text(
                     trade.optionName,
                     style: TextStyle(
@@ -172,8 +195,9 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
                     ),
                   ),
                   SizedBox(height: 4.h),
+                  // Trade date
                   Text(
-                    trade.postedDateTime.split(' | ')[0],
+                    trade.postedDateTime.split(' | ')[0], // Just the date part
                     style: TextStyle(
                       color: const Color(0xffC9CACC),
                       fontSize: 11.sp,
@@ -186,6 +210,7 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
 
           SizedBox(height: 11.h),
 
+          // Posted timestamp with enhanced styling
           RichText(
             text: TextSpan(
               children: [
@@ -209,13 +234,13 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
 
           SizedBox(height: 11.h),
 
-          // Strategy, Entry, Exit headers
+          // Table headers for Strategy, Entry, Exit columns
           Row(
             children: [
               Expanded(
                 flex: 2,
                 child: Text(
-                  "Strategy",
+                  "Strategy", // Strategy column header
                   style: TextStyle(
                     color: const Color(0xffC9CACC),
                     fontSize: 15.sp,
@@ -224,7 +249,7 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
               ),
               Expanded(
                 child: Text(
-                  "Entry",
+                  "Entry", // Entry price column header
                   style: TextStyle(
                     color: const Color(0xffC9CACC),
                     fontSize: 15.sp,
@@ -233,7 +258,7 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
               ),
               Expanded(
                 child: Text(
-                  "Exit",
+                  "Exit", // Exit price column header
                   style: TextStyle(
                     color: const Color(0xffC9CACC),
                     fontSize: 15.sp,
@@ -245,16 +270,17 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
 
           SizedBox(height: 12.h),
 
-          // BUY row
+          // BUY strategy row with entry and exit prices
           Row(
             children: [
               Expanded(
                 flex: 2,
                 child: Row(
                   children: [
+                    // BUY tag with green styling
                     Container(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
+                      EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
                       decoration: BoxDecoration(
                         color: const Color(0xff22a06b).withOpacity(0.2),
                         borderRadius: BorderRadius.circular(4.r),
@@ -269,6 +295,7 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
                       ),
                     ),
                     SizedBox(width: 8.w),
+                    // Buy option contract details (e.g., "14 Feb 440 CE")
                     Text(
                       trade.strategyBuy,
                       style: TextStyle(
@@ -280,6 +307,7 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
                 ),
               ),
               SizedBox(width: 15.w),
+              // Entry price for buy leg
               Expanded(
                 child: Text(
                   "₹${trade.entryBuyPrice.toStringAsFixed(2)}",
@@ -290,6 +318,7 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
                 ),
               ),
               SizedBox(width: 15.w),
+              // Exit price for buy leg
               Expanded(
                 child: Text(
                   "₹${trade.exitBuyPrice.toStringAsFixed(2)}",
@@ -304,16 +333,17 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
 
           SizedBox(height: 12.h),
 
-          // SELL row
+          // SELL strategy row with entry and exit prices
           Row(
             children: [
               Expanded(
                 flex: 2,
                 child: Row(
                   children: [
+                    // SELL tag with red styling
                     Container(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.h),
+                      EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.h),
                       decoration: BoxDecoration(
                         color: Colors.red.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(4.r),
@@ -328,6 +358,7 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
                       ),
                     ),
                     SizedBox(width: 8.w),
+                    // Sell option contract details (e.g., "14 Feb 440 CE")
                     Text(
                       trade.strategySell,
                       style: TextStyle(
@@ -338,6 +369,7 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
                   ],
                 ),
               ),
+              // Entry price for sell leg
               Expanded(
                 child: Text(
                   "₹${trade.entrySellPrice.toStringAsFixed(2)}",
@@ -347,6 +379,7 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
                   ),
                 ),
               ),
+              // Exit price for sell leg
               Expanded(
                 child: Text(
                   "₹${trade.exitSellPrice.toStringAsFixed(2)}",
@@ -363,10 +396,11 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
           Divider(height: 1.h, color: const Color(0xff2F2F2F)),
           SizedBox(height: 10.h),
 
-          // Stoploss and Target
+          // Risk management section - Stoploss and Target amounts
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // Stoploss amount
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -388,6 +422,7 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
                 ],
               ),
               SizedBox(width: 16.w),
+              // Target amount
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -413,7 +448,7 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
 
           SizedBox(height: 12.h),
 
-          // Net gain
+          // Net gain indicator - Shows profit/loss with color coding
           Container(
             width: double.infinity,
             padding: EdgeInsets.symmetric(vertical: 10.h),
@@ -433,13 +468,14 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
                       fontSize: 14.sp,
                     ),
                   ),
+                  // Profit/loss value with appropriate color (green for profit, red for loss)
                   TextSpan(
                     text:
-                        "${trade.netGain >= 0 ? '+' : ''}${trade.netGain.toStringAsFixed(2)}%",
+                    "${trade.netGain >= 0 ? '+' : ''}${trade.netGain.toStringAsFixed(2)}%",
                     style: TextStyle(
                       color: trade.netGain >= 0
-                          ? const Color(0xff1db954)
-                          : Colors.red,
+                          ? const Color(0xff1db954) // Green for profit
+                          : Colors.red, // Red for loss
                       fontWeight: FontWeight.w500,
                       fontSize: 14.sp,
                     ),
@@ -451,14 +487,17 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
 
           SizedBox(height: 12.h),
 
-          // Action buttons
+          // Action buttons - About Trade and Place Order
           Row(
             children: [
+              // About Trade button - Shows trade details
               Expanded(
                 child: Container(
                   height: 40.h,
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      // TODO: Implement trade details view
+                    },
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: Color(0xff595959)),
                       shape: RoundedRectangleBorder(
@@ -476,6 +515,7 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
                 ),
               ),
               SizedBox(width: 12.w),
+              // Place Order button - Shows order confirmation dialog
               Expanded(
                 child: Container(
                   height: 40.h,
@@ -511,7 +551,11 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
     );
   }
 
-  /// Helper for aligned 3-column rows
+  /// Helper method for creating a row with three aligned columns
+  /// @param title - Title text for the first column
+  /// @param val1 - Value text for the second column
+  /// @param val2 - Value text for the third column
+  /// @return Widget - A styled three-column row
   Widget buildTripleColumnRow(String title, String val1, String val2) {
     return Row(
       children: [
@@ -531,6 +575,11 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
     );
   }
 
+  /// Helper method for creating a row with two aligned columns
+  /// @param title - Title text for the first column
+  /// @param val1 - Value text for the second column
+  /// @param val2 - Value text for the third column
+  /// @return Widget - A styled two-column row
   Widget buildDoubleColumnRow(String title, String val1, String val2) {
     return Row(
       children: [
@@ -550,9 +599,13 @@ class _TradesOptionActiveScreenState extends State<TradesOptionActiveScreen>
     );
   }
 
+  /// Helper method for consistent label text style
+  /// @return TextStyle - Style for label texts
   TextStyle _labelStyle() =>
       TextStyle(color: const Color(0xffC9CACC), fontSize: 13.sp);
 
+  /// Helper method for consistent value text style
+  /// @return TextStyle - Style for value texts
   TextStyle _valueStyle() =>
       TextStyle(color: const Color(0xffEBEEF5), fontSize: 12.sp);
 }
