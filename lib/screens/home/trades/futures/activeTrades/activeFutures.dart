@@ -1,27 +1,34 @@
-import 'dart:convert';
+// File: activeFutures.dart
+// Description: Futures trading screen for the Sapphire Trading application.
+// This screen displays active futures trades with detailed price information, entry ranges, targets, and allows users to view trade details or place orders.
+
+import 'dart:convert'; // For JSON parsing
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:sapphire/screens/home/trades/trades.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
+import 'package:flutter_svg/svg.dart'; // For SVG image rendering
+import 'package:sapphire/screens/home/trades/trades.dart'; // Trade utilities and shared components
 
+/// TradeModel - Model class to represent a futures trade
+/// Contains all relevant information about a single futures trade
 class TradeModel {
-  final String symbol;
-  final String companyName;
-  final String logo;
-  final String action;
-  final double currentPrice;
-  final double change;
-  final double percentageChange;
-  final bool isPositive;
-  final double entryPrice;
-  final double entryRangeMin;
-  final double entryRangeMax;
-  final String postedDate;
-  final String postedTime;
-  final double target;
-  final String holdDuration;
-  final double netGain;
+  final String symbol; // Stock symbol/ticker
+  final String companyName; // Full company name
+  final String logo; // Path to company logo asset
+  final String action; // Trade action (BUY/SELL)
+  final double currentPrice; // Current market price
+  final double change; // Price change amount
+  final double percentageChange; // Percentage change in price
+  final bool isPositive; // Whether the price change is positive
+  final double entryPrice; // Recommended entry price
+  final double entryRangeMin; // Minimum recommended entry price
+  final double entryRangeMax; // Maximum recommended entry price
+  final String postedDate; // Date when the trade was posted
+  final String postedTime; // Time when the trade was posted
+  final double target; // Target price for the trade
+  final String holdDuration; // Recommended holding period
+  final double netGain; // Current net gain/loss percentage
 
+  /// Constructor to initialize all trade properties
   TradeModel({
     required this.symbol,
     required this.companyName,
@@ -41,6 +48,9 @@ class TradeModel {
     required this.netGain,
   });
 
+  /// Factory constructor to create a TradeModel from JSON data
+  /// @param json - Map containing trade data
+  /// @return TradeModel - Instance created from the JSON data
   factory TradeModel.fromJson(Map<String, dynamic> json) {
     return TradeModel(
       symbol: json['symbol'],
@@ -63,6 +73,8 @@ class TradeModel {
   }
 }
 
+/// TradesFutureActiveScreen - Widget that displays active futures trades
+/// Shows trade cards with detailed information and action buttons
 class TradesFutureActiveScreen extends StatefulWidget {
   const TradesFutureActiveScreen({super.key});
 
@@ -71,10 +83,16 @@ class TradesFutureActiveScreen extends StatefulWidget {
       _TradesFutureActiveScreenState();
 }
 
+/// State class for the TradesFutureActiveScreen widget
+/// Manages the display of active futures trades and their interactions
 class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
     with SingleTickerProviderStateMixin {
+
+  /// Loads trade data from a simulated JSON source
+  /// In a production environment, this would fetch data from an API
+  /// @return Future<List<TradeModel>> - A Future that resolves to a list of trade models
   Future<List<TradeModel>> loadTrades() async {
-    // Dummy JSON data embedded in the file
+    // Dummy JSON data embedded in the file for demonstration purposes
     const jsonString = '''
     [
       {
@@ -115,6 +133,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
       }
     ]
     ''';
+    // Parse JSON data and convert to TradeModel objects
     final List<dynamic> jsonData = jsonDecode(jsonString);
     return jsonData.map((json) => TradeModel.fromJson(json)).toList();
   }
@@ -124,28 +143,35 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
     return Scaffold(
       body: Padding(
         padding:
-            EdgeInsets.only(right: 16.w, left: 16.h, top: 16.w, bottom: 8.w),
+        EdgeInsets.only(right: 16.w, left: 16.h, top: 16.w, bottom: 8.w),
         child: FutureBuilder<List<TradeModel>>(
-          future: loadTrades(),
+          future: loadTrades(), // Load trade data asynchronously
           builder: (context, snapshot) {
+            // Handle different states of the Future
             if (snapshot.connectionState == ConnectionState.waiting) {
+              // Show loading indicator while data is being fetched
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
+              // Show error message if data fetching fails
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              // Show message if no trades are available
               return const Center(child: Text('No trades available'));
             }
 
+            // Display trades when data is available
             final trades = snapshot.data!;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Header showing the count of active trades
                 Text(
                   "Active Trades (${trades.length})",
                   style: TextStyle(
                       color: const Color(0xffEBEEF5), fontSize: 15.sp),
                 ),
                 SizedBox(height: 8.h),
+                // Trade cards - showing one with positive gain and one with loss
                 activeTradeCard(trades[0]), // First trade (gain)
                 SizedBox(height: 12.h),
                 activeLossTradeCard(trades[1]), // Second trade (loss)
@@ -157,6 +183,9 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
     );
   }
 
+  /// Creates a card widget displaying detailed information about a futures trade with positive gain
+  /// @param trade - The trade model containing all trade details
+  /// @return Widget - A styled card with trade information and action buttons
   Widget activeTradeCard(TradeModel trade) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
@@ -171,8 +200,10 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // Company logo, name and action tag
               Row(
                 children: [
+                  // Company logo
                   CircleAvatar(
                     radius: 14.r,
                     backgroundColor: Colors.white,
@@ -181,11 +212,13 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
                     ),
                   ),
                   SizedBox(width: 8.w),
+                  // Company name and ticker with action tag
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
+                          // Stock ticker/symbol
                           Text(
                             trade.symbol,
                             style: TextStyle(
@@ -195,6 +228,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
                             ),
                           ),
                           SizedBox(width: 6.w),
+                          // Action tag (BUY/SELL)
                           Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 6.w, vertical: 2.h),
@@ -214,6 +248,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
                         ],
                       ),
                       SizedBox(height: 4.h),
+                      // Full company name
                       Text(
                         trade.companyName,
                         style: TextStyle(
@@ -223,9 +258,11 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
                   ),
                 ],
               ),
+              // Current price and change information
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
+                  // Current price
                   Text(
                     "₹${trade.currentPrice.toStringAsFixed(2)}",
                     style: TextStyle(
@@ -235,6 +272,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
                     ),
                   ),
                   SizedBox(height: 4.h),
+                  // Price change with indicator (up arrow for positive)
                   Row(
                     children: [
                       SvgPicture.asset(
@@ -259,7 +297,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
           ),
           SizedBox(height: 16.h),
 
-          /// Entry Price
+          /// Entry Price - Recommended entry price for the trade
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -270,7 +308,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
           ),
           SizedBox(height: 8.h),
 
-          /// Entry Range
+          /// Entry Range - Recommended price range for entry
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -283,10 +321,11 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
           SizedBox(height: 8.h),
           const Divider(color: Color(0xff2F2F2f)),
 
-          /// Posted, Target, Hold Duration in a row
+          /// Posted, Target, Hold Duration in a row - Additional trade details
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // Posted date and time information
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -295,6 +334,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
                       style: _valueStyle()),
                 ],
               ),
+              // Target price information
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -303,6 +343,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
                       style: _valueStyle()),
                 ],
               ),
+              // Recommended holding duration
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -314,7 +355,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
           ),
           SizedBox(height: 12.h),
 
-          /// Net Gain
+          /// Net Gain - Current performance indicator
           Container(
             width: double.infinity,
             padding: EdgeInsets.symmetric(vertical: 6.h),
@@ -334,6 +375,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
                     fontSize: 13.sp,
                   ),
                 ),
+                // Positive gain displayed in green with + sign
                 Text(
                   "+${trade.netGain.toStringAsFixed(2)}%",
                   style: TextStyle(
@@ -347,14 +389,17 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
           ),
           SizedBox(height: 12.h),
 
-          /// Buttons
+          /// Action Buttons - About Trade and Place Order
           Row(
             children: [
+              // About Trade button - Shows detailed trade information
               Expanded(
                 child: SizedBox(
                   height: 34.h,
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      // TODO: Implement trade details view
+                    },
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: Color(0xff2F2F2F)),
                       shape: RoundedRectangleBorder(
@@ -371,6 +416,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
                 ),
               ),
               SizedBox(width: 12.w),
+              // Place Order button - Shows order confirmation dialog
               Expanded(
                 child: SizedBox(
                   height: 34.h,
@@ -406,6 +452,10 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
     );
   }
 
+  /// Creates a card widget displaying detailed information about a futures trade with negative gain (loss)
+  /// Similar to activeTradeCard but with different styling for negative values
+  /// @param trade - The trade model containing all trade details
+  /// @return Widget - A styled card with trade information and action buttons showing loss indicators
   Widget activeLossTradeCard(TradeModel trade) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
@@ -420,8 +470,10 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // Company logo, name and action tag
               Row(
                 children: [
+                  // Company logo
                   CircleAvatar(
                     radius: 14.r,
                     backgroundColor: Colors.white,
@@ -430,11 +482,13 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
                     ),
                   ),
                   SizedBox(width: 8.w),
+                  // Company name and ticker with action tag
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
+                          // Stock ticker/symbol
                           Text(
                             trade.symbol,
                             style: TextStyle(
@@ -444,6 +498,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
                             ),
                           ),
                           SizedBox(width: 6.w),
+                          // Action tag (BUY/SELL)
                           Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 6.w, vertical: 2.h),
@@ -471,9 +526,11 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
                   ),
                 ],
               ),
+              // Current price and change information
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
+                  // Current price
                   Text(
                     "₹${trade.currentPrice.toStringAsFixed(2)}",
                     style: TextStyle(
@@ -482,17 +539,18 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
                       fontWeight: FontWeight.w400,
                     ),
                   ),
+                  // Price change with indicator (down arrow for negative, flipped up arrow)
                   Row(
                     children: [
                       Transform(
                         alignment: Alignment.center,
                         transform:
-                            Matrix4.rotationX(3.1416), // 180° flip on X-axis
+                        Matrix4.rotationX(3.1416), // 180° flip on X-axis to create down arrow
                         child: SvgPicture.asset(
                           "assets/svgs/icon-park-solid_up-one.svg",
                           width: 12.sp,
                           height: 12.sp,
-                          color: const Color(0xffe53935),
+                          color: const Color(0xffe53935), // Red for negative change
                         ),
                       ),
                       SizedBox(width: 4.w),
@@ -500,7 +558,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
                         "${trade.change.toStringAsFixed(2)} (${trade.percentageChange.toStringAsFixed(2)}%)",
                         style: TextStyle(
                           fontSize: 11.sp,
-                          color: const Color(0xffe53935),
+                          color: const Color(0xffe53935), // Red for negative change
                         ),
                       ),
                     ],
@@ -511,7 +569,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
           ),
           SizedBox(height: 16.h),
 
-          /// Entry Price
+          /// Entry Price - Recommended entry price for the trade
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -522,7 +580,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
           ),
           SizedBox(height: 8.h),
 
-          /// Entry Range
+          /// Entry Range - Recommended price range for entry
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -535,10 +593,11 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
           SizedBox(height: 8.h),
           const Divider(color: Color(0xff2F2F2f)),
 
-          /// Posted, Target, Hold Duration in a row
+          /// Posted, Target, Hold Duration in a row - Additional trade details
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // Posted date and time information
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -547,6 +606,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
                       style: _valueStyle()),
                 ],
               ),
+              // Target price information
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -555,6 +615,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
                       style: _valueStyle()),
                 ],
               ),
+              // Recommended holding duration
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -566,7 +627,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
           ),
           SizedBox(height: 12.h),
 
-          /// Net Gain
+          /// Net Gain - Current performance indicator
           Container(
             width: double.infinity,
             padding: EdgeInsets.symmetric(vertical: 6.h),
@@ -586,6 +647,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
                     fontSize: 13.sp,
                   ),
                 ),
+                // Net gain value with appropriate sign and color based on positive/negative value
                 Text(
                   "${trade.netGain >= 0 ? '+' : ''}${trade.netGain.toStringAsFixed(2)}%",
                   style: TextStyle(
@@ -599,14 +661,17 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
           ),
           SizedBox(height: 12.h),
 
-          /// Buttons
+          /// Action Buttons - About Trade and Place Order
           Row(
             children: [
+              // About Trade button - Shows detailed trade information
               Expanded(
                 child: SizedBox(
                   height: 34.h,
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      // TODO: Implement trade details view
+                    },
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: Color(0xff2F2F2F)),
                       shape: RoundedRectangleBorder(
@@ -623,6 +688,7 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
                 ),
               ),
               SizedBox(width: 12.w),
+              // Place Order button - Shows order confirmation dialog
               Expanded(
                 child: SizedBox(
                   height: 34.h,
@@ -658,9 +724,13 @@ class _TradesFutureActiveScreenState extends State<TradesFutureActiveScreen>
     );
   }
 
+  /// Helper method for consistent label text style
+  /// @return TextStyle - Style for label texts
   TextStyle _labelStyle() =>
       TextStyle(color: const Color(0xffC9CACC), fontSize: 13.sp);
 
+  /// Helper method for consistent value text style
+  /// @return TextStyle - Style for value texts
   TextStyle _valueStyle() =>
       TextStyle(color: const Color(0xffEBEEF5), fontSize: 12.sp);
 }

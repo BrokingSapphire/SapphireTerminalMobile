@@ -1,16 +1,22 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/funds/funds.dart';
-import 'package:sapphire/screens/account/account.dart';
-import 'package:sapphire/screens/home/trades/tradeReuse.dart';
-import 'package:sapphire/screens/home/trades/stocks/activeTrades/activeStocks.dart';
-import 'package:sapphire/screens/home/trades/stocks/closedTrades/closedStocks.dart';
-import 'package:sapphire/utils/constWidgets.dart';
-import 'package:sapphire/utils/naviWithoutAnimation.dart';
-import '../holdings/holdings.dart';
+// File: trades.dart
+// Description: Trades management screen in the Sapphire Trading application.
+// This screen displays different trading instruments (Stocks, Futures, Options, Commodity) with market data and provides navigation to other app sections.
 
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
+import 'package:flutter_svg/svg.dart'; // For SVG image rendering
+import 'package:sapphire/main.dart'; // App-wide utilities
+import 'package:sapphire/screens/funds/funds.dart'; // Funds management screen
+import 'package:sapphire/screens/account/account.dart'; // User profile screen
+import 'package:sapphire/screens/home/trades/tradeReuse.dart'; // Reusable trade components
+import 'package:sapphire/screens/home/trades/stocks/activeTrades/activeStocks.dart'; // Active stock trades screen
+import 'package:sapphire/screens/home/trades/stocks/closedTrades/closedStocks.dart'; // Closed stock trades screen
+import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI widgets
+import 'package:sapphire/utils/naviWithoutAnimation.dart'; // Navigation utility without animations
+import '../holdings/holdings.dart'; // Holdings screen
+
+/// TradesScreen - Main screen for displaying and managing trading activities
+/// Shows different trading instruments via tabs and displays market data
 class TradesScreen extends StatefulWidget {
   const TradesScreen({super.key});
 
@@ -18,41 +24,48 @@ class TradesScreen extends StatefulWidget {
   State<TradesScreen> createState() => _TradesScreenState();
 }
 
+/// State class for the TradesScreen widget
+/// Manages the UI display, tab selection, and page controller for trading instruments
 class _TradesScreenState extends State<TradesScreen> {
-  late PageController _pageController;
-  final List<String> tabs = ["Stocks", "Futures", "Options", "Commodity"];
-  int _selectedIndex = 0;
+  late PageController _pageController; // Controls the page view for different trading tabs
+  final List<String> tabs = ["Stocks", "Futures", "Options", "Commodity"]; // Trading instrument tabs
+  int _selectedIndex = 0; // Currently selected tab index
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: _selectedIndex);
+    _pageController = PageController(initialPage: _selectedIndex); // Initialize page controller with default tab
   }
 
   @override
   void dispose() {
-    _pageController.dispose();
+    _pageController.dispose(); // Clean up page controller resource
     super.dispose();
   }
 
+  /// Handles tab selection and updates the page view
+  /// @param index - The index of the selected tab
   void _onTabTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      _pageController.jumpToPage(index);
+      _pageController.jumpToPage(index); // Navigate to corresponding page
     });
   }
 
+  /// Updates the selected tab index when page is changed via swipe
+  /// @param index - The index of the new page
   void _onPageChanged(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  // Refresh logic
+  /// Handles the pull-to-refresh functionality
+  /// Refreshes the trade data from the server (currently just a placeholder)
   Future<void> _onRefresh() async {
     // Simulate a network fetch or data refresh
     await Future.delayed(const Duration(seconds: 2));
-    // Add your refresh logic here, e.g., fetch new data
+    // TODO: Implement actual data refresh logic here (e.g., API call)
     setState(() {
       // Update UI if needed
     });
@@ -72,13 +85,16 @@ class _TradesScreenState extends State<TradesScreen> {
           toolbarHeight: 0,
         ),
         body: NestedScrollView(
+          // Header section with app title, profile access, and market data
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            // App header with title and navigation icons
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    // Screen title
                     Text(
                       "Trades",
                       style: TextStyle(
@@ -89,11 +105,12 @@ class _TradesScreenState extends State<TradesScreen> {
                       ),
                     ),
                     Spacer(),
+                    // Funds navigation button
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: GestureDetector(
                         onTap: () {
-                          naviWithoutAnimation(context, FundsScreen());
+                          naviWithoutAnimation(context, FundsScreen()); // Navigate to funds screen
                         },
                         child: SvgPicture.asset(
                           "assets/svgs/wallet.svg",
@@ -103,9 +120,10 @@ class _TradesScreenState extends State<TradesScreen> {
                         ),
                       ),
                     ),
+                    // Profile navigation button
                     InkWell(
                       onTap: () {
-                        naviWithoutAnimation(context, ProfileScreen());
+                        naviWithoutAnimation(context, ProfileScreen()); // Navigate to profile screen
                       },
                       child: CircleAvatar(
                         backgroundColor: const Color(0xff021814),
@@ -124,6 +142,7 @@ class _TradesScreenState extends State<TradesScreen> {
                 ),
               ),
             ),
+            // Market data cards section - Shows key market indices
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.only(left: 16.w, right: 16.w),
@@ -136,6 +155,7 @@ class _TradesScreenState extends State<TradesScreen> {
                 ),
               ),
             ),
+            // Custom tab bar for trading instruments
             SliverPersistentHeader(
               pinned: true,
               delegate: CustomTabBarDelegate(
@@ -145,16 +165,18 @@ class _TradesScreenState extends State<TradesScreen> {
               ),
             ),
           ],
+          // Main content body with trading instrument tabs
           body: RefreshIndicator(
             onRefresh: _onRefresh,
             color: const Color(0xff1DB954), // Refresh indicator color
             backgroundColor: const Color(0xff121413),
             child: SingleChildScrollView(
               physics:
-                  const AlwaysScrollableScrollPhysics(), // Ensures scrollability
+              const AlwaysScrollableScrollPhysics(), // Ensures scrollability
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Page view for different trading instrument tabs
                   Padding(
                     padding: const EdgeInsets.only(top: 16),
                     child: SizedBox(
@@ -164,7 +186,7 @@ class _TradesScreenState extends State<TradesScreen> {
                         onPageChanged: _onPageChanged,
                         itemCount: tabs.length,
                         itemBuilder: (context, index) {
-                          return TradesTabContent(tabType: tabs[index]);
+                          return TradesTabContent(tabType: tabs[index]); // Load specific tab content
                         },
                       ),
                     ),
@@ -179,10 +201,12 @@ class _TradesScreenState extends State<TradesScreen> {
   }
 }
 
+/// CustomTabBarDelegate - Handles the custom persistent header tab bar
+/// Displays tabs for different trading instruments and manages their selection state
 class CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
-  final List<String> tabNames;
-  final int selectedIndex;
-  final Function(int) onTabTapped;
+  final List<String> tabNames; // Names of tabs to display
+  final int selectedIndex; // Currently selected tab
+  final Function(int) onTabTapped; // Callback when a tab is tapped
 
   CustomTabBarDelegate({
     required this.tabNames,
@@ -191,10 +215,10 @@ class CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
   });
 
   @override
-  double get minExtent => 55.h;
+  double get minExtent => 55.h; // Minimum height of the tab bar
 
   @override
-  double get maxExtent => 55.h;
+  double get maxExtent => 55.h; // Maximum height of the tab bar
 
   @override
   Widget build(
@@ -202,6 +226,7 @@ class CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
     return Container(
       color: const Color(0xff000000),
       child: Stack(children: [
+        // Bottom border line for the tab bar
         Positioned.fill(
           child: Container(
             alignment: Alignment.bottomCenter,
@@ -211,6 +236,7 @@ class CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
             ),
           ),
         ),
+        // Row of tab items
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: List.generate(tabNames.length, (index) {
@@ -223,7 +249,7 @@ class CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
                     border: Border(
                       bottom: BorderSide(
                         color: isSelected
-                            ? const Color(0xff1DB954)
+                            ? const Color(0xff1DB954) // Green indicator for selected tab
                             : Colors.transparent,
                         width: 2,
                       ),
@@ -237,7 +263,7 @@ class CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
                         tabNames[index],
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: isSelected ? Colors.green : Colors.white,
+                          color: isSelected ? Colors.green : Colors.white, // Selected tab text is green
                           fontSize: 14.sp,
                         ),
                       ),
@@ -255,13 +281,18 @@ class CustomTabBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   bool shouldRebuild(covariant CustomTabBarDelegate oldDelegate) {
     return tabNames != oldDelegate.tabNames ||
-        selectedIndex != oldDelegate.selectedIndex;
+        selectedIndex != oldDelegate.selectedIndex; // Rebuild if tabs or selection changes
   }
 }
 
+/// MarketDataCard - Widget that displays market index information
+/// Shows the market index name, current price, and price change
+/// @param title - Name of the market index
+/// @param price - Current price of the index
+/// @param change - Price change with percentage
 Widget MarketDataCard(String title, String price, String change) {
-  final bool isPositive = change.startsWith('+');
-  final Color changeColor = isPositive ? Colors.green : Colors.red;
+  final bool isPositive = change.startsWith('+'); // Determine if price change is positive
+  final Color changeColor = isPositive ? Colors.green : Colors.red; // Green for positive, red for negative
 
   return Container(
     height: 62.h,
@@ -275,6 +306,7 @@ Widget MarketDataCard(String title, String price, String change) {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Market index name
         Text(
           title,
           style: TextStyle(
@@ -283,6 +315,7 @@ Widget MarketDataCard(String title, String price, String change) {
               fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 2.h),
+        // Price and change container
         Container(
           padding: EdgeInsets.all(2.w),
           decoration: BoxDecoration(
@@ -292,12 +325,14 @@ Widget MarketDataCard(String title, String price, String change) {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
+              // Current price
               Text(
                 price,
                 style:
-                    TextStyle(color: const Color(0xffEBEEF5), fontSize: 12.sp),
+                TextStyle(color: const Color(0xffEBEEF5), fontSize: 12.sp),
               ),
               SizedBox(width: 6.w),
+              // Price change with color indication
               Text(
                 change,
                 style: TextStyle(color: changeColor, fontSize: 12.sp),
@@ -310,7 +345,12 @@ Widget MarketDataCard(String title, String price, String change) {
   );
 }
 
+/// TradesUtils - Utility class for trade-related helper functions and UI components
+/// Provides reusable widgets and dialogs for the trades screens
 class TradesUtils {
+  /// Creates and returns a dialog for confirming trade orders
+  /// @param context - The build context for showing the dialog
+  /// @return AlertDialog - A styled dialog with cancel and confirm options
   static Widget placeOrderPopup(BuildContext context) {
     return AlertDialog(
       backgroundColor: const Color(0xff121413), // Dark background
@@ -326,6 +366,7 @@ class TradesUtils {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            // Cancel button
             Expanded(
               child: TextButton(
                 onPressed: () {
@@ -335,7 +376,7 @@ class TradesUtils {
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.grey[800], // Dark gray for Cancel
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -347,17 +388,18 @@ class TradesUtils {
               ),
             ),
             SizedBox(width: 6.w),
+            // Place Order button
             Expanded(
               child: TextButton(
                 onPressed: () {
                   // Handle Place Order action
                   Navigator.of(context).pop(); // Close the dialog
-                  // Add your order placement logic here
+                  // TODO: Implement order placement logic here
                 },
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.green, // Green for Place Order
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),

@@ -1,30 +1,37 @@
+// File: closedOptions.dart
+// Description: Closed options trades screen for the Sapphire Trading application.
+// This screen displays completed options trades with detailed strategy information and provides search and view toggle functionality.
+
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:sapphire/screens/home/trades/options/closedTrades/closedOptionsGrid.dart';
-import 'package:sapphire/screens/home/trades/options/closedTrades/closedOptionsList.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
+import 'package:flutter_svg/svg.dart'; // For SVG image rendering
+import 'package:google_fonts/google_fonts.dart'; // For custom typography
+import 'package:percent_indicator/circular_percent_indicator.dart'; // For circular progress indicators
+import 'package:sapphire/screens/home/trades/options/closedTrades/closedOptionsGrid.dart'; // Grid view for closed options trades
+import 'package:sapphire/screens/home/trades/options/closedTrades/closedOptionsList.dart'; // List view for closed options trades
 
+/// TradeModel - Model class to represent a closed options trade
+/// Contains all relevant information about a completed options strategy with buy/sell legs
 class TradeModel {
-  final String symbol;
-  final String companyName;
-  final String logo;
-  final String optionName;
-  final String action;
-  final String status;
-  final String postedDateTime;
-  final String closedDateTime;
-  final String strategyBuy;
-  final String strategySell;
-  final double entryBuyPrice;
-  final double entrySellPrice;
-  final double exitBuyPrice;
-  final double exitSellPrice;
-  final double stoplossAmount;
-  final double targetAmount;
-  final double netGain;
+  final String symbol; // Stock symbol/ticker
+  final String companyName; // Full company name
+  final String logo; // Path to company logo asset
+  final String optionName; // Option contract details (e.g., "RELIANCE 1200 CE")
+  final String action; // Overall trade action (BUY/SELL)
+  final String status; // Trade outcome status (Target Hit/Miss)
+  final String postedDateTime; // When the trade was posted
+  final String closedDateTime; // When the trade was closed
+  final String strategyBuy; // Buy leg of the options strategy
+  final String strategySell; // Sell leg of the options strategy
+  final double entryBuyPrice; // Entry price for buy leg
+  final double entrySellPrice; // Entry price for sell leg  
+  final double exitBuyPrice; // Exit price for buy leg
+  final double exitSellPrice; // Exit price for sell leg
+  final double stoplossAmount; // Maximum loss amount
+  final double targetAmount; // Target profit amount
+  final double netGain; // Overall net gain/loss percentage
 
+  /// Constructor to initialize all trade properties
   TradeModel({
     required this.symbol,
     required this.companyName,
@@ -45,6 +52,9 @@ class TradeModel {
     required this.netGain,
   });
 
+  /// Factory constructor to create a TradeModel from JSON data
+  /// @param json - Map containing trade data
+  /// @return TradeModel - Instance created from the JSON data
   factory TradeModel.fromJson(Map<String, dynamic> json) {
     return TradeModel(
       symbol: json['symbol'],
@@ -67,6 +77,8 @@ class TradeModel {
     );
   }
 
+  /// Converts the TradeModel to a Map for passing to child widgets
+  /// @return Map<String, dynamic> - Map representation of the trade
   Map<String, dynamic> toMap() {
     return {
       'symbol': symbol,
@@ -90,6 +102,8 @@ class TradeModel {
   }
 }
 
+/// TradesOptionClosedScreen - Widget that displays closed options trades
+/// Includes search functionality and toggle between grid and list views
 class TradesOptionClosedScreen extends StatefulWidget {
   const TradesOptionClosedScreen({super.key});
 
@@ -98,13 +112,16 @@ class TradesOptionClosedScreen extends StatefulWidget {
       _TradesOptionClosedScreenState();
 }
 
+/// State class for the TradesOptionClosedScreen widget
+/// Manages the display of closed options trades, search filtering, and view mode toggle
 class _TradesOptionClosedScreenState extends State<TradesOptionClosedScreen>
     with SingleTickerProviderStateMixin {
-  double dynamicPercent = 75.0;
-  bool isGridView = true; // Default view mode
-  final TextEditingController _searchController = TextEditingController();
+  double dynamicPercent = 75.0; // For accuracy indicator (currently unused)
+  bool isGridView = true; // Default view mode - true for grid, false for list
+  final TextEditingController _searchController = TextEditingController(); // Controller for search input
 
-  // Dummy JSON data
+  // Sample options trade data for demonstration purposes
+  // In a production environment, this would be fetched from an API
   final List<Map<String, dynamic>> tradeData = [
     {
       'symbol': 'RELIANCE',
@@ -146,9 +163,9 @@ class _TradesOptionClosedScreenState extends State<TradesOptionClosedScreen>
     },
   ];
 
-  // Convert JSON data to TradeModel objects
+  // Convert JSON data to TradeModel objects for easier handling in the UI
   late final List<TradeModel> trades =
-      tradeData.map((json) => TradeModel.fromJson(json)).toList();
+  tradeData.map((json) => TradeModel.fromJson(json)).toList();
 
   // Filtered list for search results
   late List<TradeModel> filteredTrades;
@@ -158,7 +175,8 @@ class _TradesOptionClosedScreenState extends State<TradesOptionClosedScreen>
     super.initState();
     // Initialize filtered list with all trades
     filteredTrades = List.from(trades);
-    // Enforce uppercase in TextField
+
+    // Set up listener to enforce uppercase text in search field
     _searchController.addListener(() {
       final text = _searchController.text;
       if (text != text.toUpperCase()) {
@@ -172,6 +190,7 @@ class _TradesOptionClosedScreenState extends State<TradesOptionClosedScreen>
 
   @override
   void dispose() {
+    // Clean up controller when the widget is disposed
     _searchController.dispose();
     super.dispose();
   }
@@ -182,6 +201,7 @@ class _TradesOptionClosedScreenState extends State<TradesOptionClosedScreen>
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Scaffold(
         body: GestureDetector(
+          // Dismiss keyboard when tapping outside of text field
           onTap: () {
             FocusScope.of(context).unfocus();
           },
@@ -191,8 +211,10 @@ class _TradesOptionClosedScreenState extends State<TradesOptionClosedScreen>
               children: [
                 SizedBox(height: 5.h),
 
-                // Stats Container (commented out)
+                // Stats Container (currently commented out but can be enabled)
                 /*
+                // This is a container that would show trade statistics with a circular progress indicator
+                // Currently disabled but kept for future implementation
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                   decoration: BoxDecoration(
@@ -266,10 +288,10 @@ class _TradesOptionClosedScreenState extends State<TradesOptionClosedScreen>
                 */
                 SizedBox(height: 16.h),
 
-                // Search & Toggle View
+                // Search Bar and View Toggle Row
                 Row(
                   children: [
-                    // Search Bar
+                    // Search Bar for filtering trades
                     Expanded(
                       child: Container(
                         height: 44.h,
@@ -284,8 +306,10 @@ class _TradesOptionClosedScreenState extends State<TradesOptionClosedScreen>
                             setState(() {
                               // Filter trades based on search query
                               if (value.isEmpty) {
+                                // If search is empty, show all trades
                                 filteredTrades = List.from(trades);
                               } else {
+                                // Filter by symbol (starts with) or company name (contains)
                                 filteredTrades = trades.where((trade) {
                                   final symbolMatch = trade.symbol
                                       .toLowerCase()
@@ -341,7 +365,8 @@ class _TradesOptionClosedScreenState extends State<TradesOptionClosedScreen>
                       ),
                     ),
                     SizedBox(width: 10.w),
-                    // Toggle Buttons
+
+                    // View Toggle Buttons (Grid/List)
                     Container(
                       height: 44.h,
                       decoration: BoxDecoration(
@@ -353,13 +378,15 @@ class _TradesOptionClosedScreenState extends State<TradesOptionClosedScreen>
                         child: ToggleButtons(
                           renderBorder: false,
                           borderRadius: BorderRadius.circular(8.r),
-                          isSelected: [isGridView, !isGridView],
+                          isSelected: [isGridView, !isGridView], // Selection state based on view mode
                           onPressed: (index) {
                             setState(() {
+                              // Toggle view mode - 0 for grid, 1 for list
                               isGridView = index == 0;
                             });
                           },
                           children: [
+                            // Grid view toggle button
                             Container(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 8.w, vertical: 8.h),
@@ -368,9 +395,10 @@ class _TradesOptionClosedScreenState extends State<TradesOptionClosedScreen>
                               ),
                               child: Icon(
                                 Icons.grid_view_rounded,
-                                color: isGridView ? Colors.green : Colors.white,
+                                color: isGridView ? Colors.green : Colors.white, // Highlight when selected
                               ),
                             ),
+                            // List view toggle button
                             Container(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 8.w, vertical: 8.h),
@@ -380,7 +408,7 @@ class _TradesOptionClosedScreenState extends State<TradesOptionClosedScreen>
                               child: SvgPicture.asset(
                                 'assets/svgs/list.svg',
                                 color:
-                                    !isGridView ? Colors.green : Colors.white,
+                                !isGridView ? Colors.green : Colors.white, // Highlight when selected
                                 width: 18.w,
                                 height: 18.h,
                               ),
@@ -393,6 +421,8 @@ class _TradesOptionClosedScreenState extends State<TradesOptionClosedScreen>
                 ),
 
                 SizedBox(height: 16.h),
+
+                // Closed Trades Count Header
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -403,41 +433,47 @@ class _TradesOptionClosedScreenState extends State<TradesOptionClosedScreen>
                 ),
                 SizedBox(height: 8.h),
 
-                // Display search results or message if no results
+                // Display search results or empty state message
                 filteredTrades.isEmpty
-                    ? Center(
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 40.h),
-                          child: Column(
-                            children: [
-                              SvgPicture.asset(
-                                'assets/svgs/search-svgrepo-com (1).svg',
-                                width: 50.w,
-                                height: 50.h,
-                                color: Color(0xff2F2F2F),
-                              ),
-                              SizedBox(height: 16.h),
-                              Text(
-                                'No trades found',
-                                style: TextStyle(
-                                  color: Color(0xffC9CACC),
-                                  fontSize: 16.sp,
-                                ),
-                              ),
-                            ],
+                    ? // No search results found
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 40.h),
+                    child: Column(
+                      children: [
+                        // Empty state icon
+                        SvgPicture.asset(
+                          'assets/svgs/search-svgrepo-com (1).svg',
+                          width: 50.w,
+                          height: 50.h,
+                          color: Color(0xff2F2F2F),
+                        ),
+                        SizedBox(height: 16.h),
+                        // Empty state message
+                        Text(
+                          'No trades found',
+                          style: TextStyle(
+                            color: Color(0xffC9CACC),
+                            fontSize: 16.sp,
                           ),
                         ),
-                      )
-                    : Container(
-                        height: 700.h,
-                        child: isGridView
-                            ? ClosedOptionListScreen(
-                                trades: filteredTrades
-                                    .map((trade) => trade.toMap())
-                                    .toList(),
-                              )
-                            : const ClosedOptionGridScreen(),
-                      ),
+                      ],
+                    ),
+                  ),
+                )
+                    : // Trade list/grid based on selected view mode
+                Container(
+                  height: 700.h,
+                  child: isGridView
+                      ? // Show list view for options trades
+                  ClosedOptionListScreen(
+                    trades: filteredTrades
+                        .map((trade) => trade.toMap())
+                        .toList(),
+                  )
+                      : // Show grid view for options trades
+                  const ClosedOptionGridScreen(),
+                ),
               ],
             ),
           ),
@@ -447,7 +483,10 @@ class _TradesOptionClosedScreenState extends State<TradesOptionClosedScreen>
   }
 }
 
-// Helper Widgets
+/// Helper widget for displaying a trade detail row with label and value
+/// @param title - The label text
+/// @param value - The value text
+/// @return Widget - A row with label and value with consistent styling
 Widget tradeDetailRow(String title, String value) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -467,6 +506,10 @@ Widget tradeDetailRow(String title, String value) {
   );
 }
 
+/// Helper widget for displaying a statistic with small text
+/// @param title - The label text
+/// @param value - The value text
+/// @return Widget - A column with label and value with small styling
 Widget statText(String title, String value) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -486,6 +529,10 @@ Widget statText(String title, String value) {
   );
 }
 
+/// Helper widget for displaying a statistic with larger text
+/// @param title - The label text
+/// @param value - The value text
+/// @return Widget - A column with label and value with larger styling
 Widget statTextUp(String title, String value) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
