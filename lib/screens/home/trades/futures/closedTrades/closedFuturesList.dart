@@ -2,14 +2,60 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sapphire/screens/home/trades/trades.dart';
 
+class TradeModel {
+  final String symbol;
+  final String companyName;
+  final String logo;
+  final String action;
+  final String status;
+  final double entryPrice;
+  final String entryDateTime;
+  final double exitPrice;
+  final String exitDateTime;
+  final double netGain;
+
+  TradeModel({
+    required this.symbol,
+    required this.companyName,
+    required this.logo,
+    required this.action,
+    required this.status,
+    required this.entryPrice,
+    required this.entryDateTime,
+    required this.exitPrice,
+    required this.exitDateTime,
+    required this.netGain,
+  });
+
+  factory TradeModel.fromJson(Map<String, dynamic> json) {
+    return TradeModel(
+      symbol: json['symbol'],
+      companyName: json['company_name'],
+      logo: json['logo'],
+      action: json['action'],
+      status: json['status'],
+      entryPrice: json['entry_price'].toDouble(),
+      entryDateTime: json['entry_date_time'],
+      exitPrice: json['exit_price'].toDouble(),
+      exitDateTime: json['exit_date_time'],
+      netGain: json['net_gain'].toDouble(),
+    );
+  }
+}
+
 class ClosedFutureListScreen extends StatefulWidget {
-  const ClosedFutureListScreen({super.key});
+  final List<Map<String, dynamic>> trades;
+  const ClosedFutureListScreen({super.key, required this.trades});
 
   @override
   State<ClosedFutureListScreen> createState() => _ClosedFutureListScreenState();
 }
 
 class _ClosedFutureListScreenState extends State<ClosedFutureListScreen> {
+  // Convert JSON data to TradeModel objects
+  late final List<TradeModel> tradesList =
+      widget.trades.map((json) => TradeModel.fromJson(json)).toList();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,18 +63,17 @@ class _ClosedFutureListScreenState extends State<ClosedFutureListScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            buildTradeCard(),
-            SizedBox(
-              height: 12.h,
-            ),
-            buildTradeCard()
+            for (var i = 0; i < tradesList.length; i++) ...[
+              buildTradeCard(tradesList[i]),
+              SizedBox(height: 12.h),
+            ],
           ],
         ),
       ),
     );
   }
 
-  Widget buildTradeCard() {
+  Widget buildTradeCard(TradeModel trade) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.w),
       decoration: BoxDecoration(
@@ -48,7 +93,7 @@ class _ClosedFutureListScreenState extends State<ClosedFutureListScreen> {
                     radius: 14.r,
                     backgroundColor: Colors.white,
                     child: ClipOval(
-                      child: Image.asset('assets/images/reliance logo.png'),
+                      child: Image.asset(trade.logo),
                     ),
                   ),
                   SizedBox(width: 8.w),
@@ -58,7 +103,7 @@ class _ClosedFutureListScreenState extends State<ClosedFutureListScreen> {
                       Row(
                         children: [
                           Text(
-                            "RELIANCE",
+                            trade.symbol,
                             style: TextStyle(
                               fontSize: 13.sp,
                               color: const Color(0xffEBEEF5),
@@ -74,7 +119,7 @@ class _ClosedFutureListScreenState extends State<ClosedFutureListScreen> {
                               borderRadius: BorderRadius.circular(4.r),
                             ),
                             child: Text(
-                              "BUY",
+                              trade.action,
                               style: TextStyle(
                                 color: const Color(0xff22a06b),
                                 fontSize: 10.sp,
@@ -86,7 +131,7 @@ class _ClosedFutureListScreenState extends State<ClosedFutureListScreen> {
                       ),
                       SizedBox(height: 4.h),
                       Text(
-                        "Reliance Industries Ltd.",
+                        trade.companyName,
                         style: TextStyle(
                             fontSize: 11.sp, color: const Color(0xffC9CACC)),
                       ),
@@ -113,7 +158,7 @@ class _ClosedFutureListScreenState extends State<ClosedFutureListScreen> {
                       borderRadius: BorderRadius.circular(4.r),
                     ),
                     child: Text(
-                      "Target Miss",
+                      trade.status,
                       style: TextStyle(
                           color: const Color(0xffffd761), fontSize: 10.sp),
                     ),
@@ -129,8 +174,9 @@ class _ClosedFutureListScreenState extends State<ClosedFutureListScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Entry", style: _labelStyle()),
-              Text("₹1,580.60", style: _valueStyle()),
-              Text("14 Feb 2025 | 8:32 pm", style: _valueStyle()),
+              Text("₹${trade.entryPrice.toStringAsFixed(2)}",
+                  style: _valueStyle()),
+              Text(trade.entryDateTime, style: _valueStyle()),
             ],
           ),
           SizedBox(height: 8.h),
@@ -140,8 +186,8 @@ class _ClosedFutureListScreenState extends State<ClosedFutureListScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Exit", style: _labelStyle()),
-              Text("₹1,752.12", style: _valueStyle()),
-              Text("15 Feb 2025 | 9:32 pm", style: _valueStyle()),
+              Text("₹${trade.exitPrice.toStringAsFixed(2)}", style: _valueStyle()),
+              Text(trade.exitDateTime, style: _valueStyle()),
             ],
           ),
           SizedBox(height: 12.h),
@@ -167,9 +213,11 @@ class _ClosedFutureListScreenState extends State<ClosedFutureListScreen> {
                   ),
                 ),
                 Text(
-                  " +6.08%",
+                  "${trade.netGain >= 0 ? '+' : ''}${trade.netGain.toStringAsFixed(2)}%",
                   style: TextStyle(
-                    color: Color(0xff1db954),
+                    color: trade.netGain >= 0
+                        ? const Color(0xff1db954)
+                        : Colors.red,
                     fontWeight: FontWeight.w400,
                     fontSize: 13.sp,
                   ),
@@ -199,7 +247,7 @@ class _ClosedFutureListScreenState extends State<ClosedFutureListScreen> {
             ),
           ),
 
-          SizedBox(width: 12.w)
+          SizedBox(width: 12.w),
         ],
       ),
     );

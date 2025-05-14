@@ -3,14 +3,65 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/screens/home/trades/trades.dart';
 
+class TradeModel {
+  final String symbol;
+  final String companyName;
+  final String logo;
+  final String action;
+  final String status;
+  final String postedDateTime;
+  final double entryPrice;
+  final double exitRangeMin;
+  final double exitRangeMax;
+  final double target;
+  final double netGain;
+
+  TradeModel({
+    required this.symbol,
+    required this.companyName,
+    required this.logo,
+    required this.action,
+    required this.status,
+    required this.postedDateTime,
+    required this.entryPrice,
+    required this.exitRangeMin,
+    required this.exitRangeMax,
+    required this.target,
+    required this.netGain,
+  });
+
+  factory TradeModel.fromJson(Map<String, dynamic> json) {
+    return TradeModel(
+      symbol: json['symbol'],
+      companyName: json['company_name'],
+      logo: json['logo'],
+      action: json['action'],
+      status: json['status'],
+      postedDateTime: json['posted_date_time'],
+      entryPrice: json['entry_price'].toDouble(),
+      exitRangeMin: json['exit_range_min'].toDouble(),
+      exitRangeMax: json['exit_range_max'].toDouble(),
+      target: json['target'].toDouble(),
+      netGain: json['net_gain'].toDouble(),
+    );
+  }
+}
+
 class ClosedComListScreen extends StatefulWidget {
-  const ClosedComListScreen({super.key});
+  final List<Map<String, dynamic>> trades;
+  const ClosedComListScreen({super.key, required this.trades});
 
   @override
   State<ClosedComListScreen> createState() => _ClosedComListScreenState();
 }
 
 class _ClosedComListScreenState extends State<ClosedComListScreen> {
+  // Dummy JSON data defined directly as a List<Map<String, dynamic>>
+
+  // Convert JSON data to TradeModel objects
+  late final List<TradeModel> trades =
+      widget.trades.map((json) => TradeModel.fromJson(json)).toList();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,14 +69,17 @@ class _ClosedComListScreenState extends State<ClosedComListScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            buildTradeCard(),
+            for (var i = 0; i < trades.length; i++) ...[
+              buildTradeCard(trades[i]),
+              SizedBox(height: 12.h),
+            ],
           ],
         ),
       ),
     );
   }
 
-  Widget buildTradeCard() {
+  Widget buildTradeCard(TradeModel trade) {
     return Container(
       padding: EdgeInsets.all(14.w),
       decoration: BoxDecoration(
@@ -45,7 +99,7 @@ class _ClosedComListScreenState extends State<ClosedComListScreen> {
                     radius: 14.r,
                     backgroundColor: Colors.white,
                     child: ClipOval(
-                      child: Image.asset('assets/images/reliance logo.png'),
+                      child: Image.asset(trade.logo),
                     ),
                   ),
                   SizedBox(width: 8.w),
@@ -55,7 +109,7 @@ class _ClosedComListScreenState extends State<ClosedComListScreen> {
                       Row(
                         children: [
                           Text(
-                            "RELIANCE",
+                            trade.symbol,
                             style: TextStyle(
                               fontSize: 13.sp,
                               color: const Color(0xffEBEEF5),
@@ -71,7 +125,7 @@ class _ClosedComListScreenState extends State<ClosedComListScreen> {
                               borderRadius: BorderRadius.circular(4.r),
                             ),
                             child: Text(
-                              "BUY",
+                              trade.action,
                               style: TextStyle(
                                 color: const Color(0xff22a06b),
                                 fontSize: 10.sp,
@@ -85,7 +139,7 @@ class _ClosedComListScreenState extends State<ClosedComListScreen> {
                       Row(children: [
                         SvgPicture.asset("assets/svgs/clock.svg"),
                         SizedBox(width: 8.w),
-                        Text("14 Feb 2025 | 8:32 pm", style: _valueStyle()),
+                        Text(trade.postedDateTime, style: _valueStyle()),
                       ])
                     ],
                   ),
@@ -110,7 +164,7 @@ class _ClosedComListScreenState extends State<ClosedComListScreen> {
                       borderRadius: BorderRadius.circular(4.r),
                     ),
                     child: Text(
-                      "Target Miss",
+                      trade.status,
                       style: TextStyle(
                           color: const Color(0xffffd761), fontSize: 10.sp),
                     ),
@@ -126,7 +180,7 @@ class _ClosedComListScreenState extends State<ClosedComListScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Entry Price", style: _labelStyle()),
-              Text("₹1,580.60", style: _valueStyle()),
+              Text("₹${trade.entryPrice.toStringAsFixed(2)}", style: _valueStyle()),
             ],
           ),
           SizedBox(height: 8.h),
@@ -136,7 +190,9 @@ class _ClosedComListScreenState extends State<ClosedComListScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Exit Range", style: _labelStyle()),
-              Text("407-510", style: _valueStyle()),
+              Text(
+                  "₹${trade.exitRangeMin.toStringAsFixed(2)} - ₹${trade.exitRangeMax.toStringAsFixed(2)}",
+                  style: _valueStyle()),
             ],
           ),
           SizedBox(height: 8.h),
@@ -144,7 +200,7 @@ class _ClosedComListScreenState extends State<ClosedComListScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Target", style: _labelStyle()),
-              Text("₹1,752.12", style: _valueStyle()),
+              Text("₹${trade.target.toStringAsFixed(2)}", style: _valueStyle()),
             ],
           ),
           SizedBox(height: 12.h),
@@ -170,9 +226,9 @@ class _ClosedComListScreenState extends State<ClosedComListScreen> {
                   ),
                 ),
                 Text(
-                  " +6.08%",
+                  "${trade.netGain >= 0 ? '+' : ''}${trade.netGain.toStringAsFixed(2)}%",
                   style: TextStyle(
-                    color: Colors.green,
+                    color: trade.netGain >= 0 ? Colors.green : Colors.red,
                     fontWeight: FontWeight.w500,
                     fontSize: 13.sp,
                   ),

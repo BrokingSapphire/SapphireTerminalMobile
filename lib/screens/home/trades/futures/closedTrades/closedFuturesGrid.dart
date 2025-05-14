@@ -10,56 +10,58 @@ class ClosedFutureGridScreen extends StatefulWidget {
 
 class _ClosedFutureGridScreen extends State<ClosedFutureGridScreen> {
   final ScrollController _scrollController = ScrollController();
+  String? _sortColumn; // Tracks the currently sorted column
+  bool _isAscending = true; // Tracks sort direction
 
   final List<Map<String, String>> data = [
     {
       "symbol": "DABUR\nMAR FUT",
-      "date": "24 Jan 2024 12.30",
-      "entry": "₹510.68",
-      "exit": "₹512.00",
-      "netgain": "₹189",
-      "margin": "₹1,15,678.00",
-      "postedby": "User1",
-      "status": "Target Miss"
+      "date": "15 Feb 2024 09.15",
+      "entry": "₹550.25",
+      "exit": "₹560.00",
+      "netgain": "₹975",
+      "margin": "₹1,25,000.00",
+      "postedby": "Alice",
+      "status": "Target Achieved"
     },
     {
-      "symbol": "DABUR\nMAR FUT",
-      "date": "24 Jan 2024 12.30",
-      "entry": "₹510.68",
-      "exit": "₹510.68",
-      "netgain": "₹189",
-      "margin": "₹1,15,678.00",
-      "postedby": "{postedby.name}",
+      "symbol": "RECLTD\nAPR FUT",
+      "date": "10 Jan 2024 14.45",
+      "entry": "₹480.10",
+      "exit": "₹475.50",
+      "netgain": "-₹460",
+      "margin": "₹95,678.00",
+      "postedby": "Bob",
       "status": "Stoploss Hit"
     },
     {
       "symbol": "DLF\nMAR FUT",
-      "date": "24 Jan 2024 12.30",
+      "date": "20 Mar 2024 11.30",
       "entry": "₹510.68",
-      "exit": "₹510.68",
-      "netgain": "₹189",
+      "exit": "₹512.00",
+      "netgain": "₹132",
       "margin": "₹1,15,678.00",
-      "postedby": "{postedby.name}",
+      "postedby": "Charlie",
+      "status": "Target Miss"
+    },
+    {
+      "symbol": "HDFC\nMAY FUT",
+      "date": "05 Apr 2024 10.00",
+      "entry": "₹600.00",
+      "exit": "₹590.00",
+      "netgain": "-₹1000",
+      "margin": "₹2,50,000.00",
+      "postedby": "David",
       "status": "Stoploss Hit"
     },
     {
-      "symbol": "DABUR\nMAR FUT",
-      "date": "24 Jan 2024 12.30",
-      "entry": "₹510.68",
-      "exit": "₹510.68",
-      "netgain": "₹189",
-      "margin": "₹1,15,678.00",
-      "postedby": "{postedby.name}",
-      "status": "Target Achieved"
-    },
-    {
-      "symbol": "RECLTD\nMAR FUT",
-      "date": "24 Jan 2024 12.30",
+      "symbol": "TCS\nJUN FUT",
+      "date": "25 Feb 2024 13.20",
       "entry": "₹520.50",
       "exit": "₹530.00",
-      "netgain": "₹500",
-      "margin": "₹2,00,000.00",
-      "postedby": "User2",
+      "netgain": "₹950",
+      "margin": "₹1,80,000.00",
+      "postedby": "Eve",
       "status": "Target Achieved"
     },
   ];
@@ -73,6 +75,79 @@ class _ClosedFutureGridScreen extends State<ClosedFutureGridScreen> {
     {"text": "Posted By", "width": 147.w},
     {"text": "Status", "width": 140.w},
   ];
+
+  // Getter to return sorted data
+  List<Map<String, String>> get sortedData {
+    List<Map<String, String>> dataList = List.from(data);
+
+    if (_sortColumn != null) {
+      dataList.sort((a, b) {
+        String aValue = a[_sortColumn] ?? '';
+        String bValue = b[_sortColumn] ?? '';
+
+        // Handle numeric fields (remove ₹ and commas, convert to double)
+        if (['entry', 'exit', 'netgain', 'margin'].contains(_sortColumn)) {
+          double aNum =
+              double.tryParse(aValue.replaceAll(RegExp(r'[₹,]'), '')) ?? 0;
+          double bNum =
+              double.tryParse(bValue.replaceAll(RegExp(r'[₹,]'), '')) ?? 0;
+          return _isAscending ? aNum.compareTo(bNum) : bNum.compareTo(aNum);
+        }
+        // Handle date field
+        else if (_sortColumn == 'date') {
+          DateTime? aDate = _parseDate(aValue);
+          DateTime? bDate = _parseDate(bValue);
+          return _isAscending
+              ? (aDate ?? DateTime(0)).compareTo(bDate ?? DateTime(0))
+              : (bDate ?? DateTime(0)).compareTo(aDate ?? DateTime(0));
+        }
+        // Handle text fields (postedby, status)
+        else {
+          return _isAscending
+              ? aValue.compareTo(bValue)
+              : bValue.compareTo(aValue);
+        }
+      });
+    }
+
+    return dataList;
+  }
+
+  // Parse date string to DateTime
+  DateTime? _parseDate(String dateStr) {
+    try {
+      // Assuming format: "DD MMM YYYY HH.MM"
+      final parts = dateStr.split(' ');
+      final day = int.parse(parts[0]);
+      final month = _monthToInt(parts[1]);
+      final year = int.parse(parts[2]);
+      final timeParts = parts[3].split('.');
+      final hour = int.parse(timeParts[0]);
+      final minute = int.parse(timeParts[1]);
+      return DateTime(year, month, day, hour, minute);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Convert month abbreviation to number
+  int _monthToInt(String month) {
+    const months = {
+      'Jan': 1,
+      'Feb': 2,
+      'Mar': 3,
+      'Apr': 4,
+      'May': 5,
+      'Jun': 6,
+      'Jul': 7,
+      'Aug': 8,
+      'Sep': 9,
+      'Oct': 10,
+      'Nov': 11,
+      'Dec': 12,
+    };
+    return months[month] ?? 1;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +181,7 @@ class _ClosedFutureGridScreen extends State<ClosedFutureGridScreen> {
                           Padding(
                             padding: EdgeInsets.only(left: 30.w),
                             child: Column(
-                              children: data.map((row) {
+                              children: sortedData.map((row) {
                                 return Row(
                                   children: [
                                     _buildCell(row["date"]!, 140.w),
@@ -136,7 +211,7 @@ class _ClosedFutureGridScreen extends State<ClosedFutureGridScreen> {
                         children: [
                           _buildFixedCell("SYMBOL", isHeader: true),
                           Column(
-                            children: data.map((row) {
+                            children: sortedData.map((row) {
                               var parts = row["symbol"]!.split("\n");
                               return _buildFixedCell(
                                 parts[0],
@@ -158,6 +233,18 @@ class _ClosedFutureGridScreen extends State<ClosedFutureGridScreen> {
   }
 
   Widget _buildHeader(String text, double width) {
+    // Map header text to data key for sorting
+    final Map<String, String> headerToKey = {
+      "Date & Time": "date",
+      "Entry Price": "entry",
+      "Exit Price": "exit",
+      "Net Gain": "netgain",
+      "Margin": "margin",
+      "Posted By": "postedby",
+      "Status": "status",
+    };
+    String? sortKey = headerToKey[text];
+
     return Container(
       width: width,
       height: 40.h,
@@ -169,7 +256,27 @@ class _ClosedFutureGridScreen extends State<ClosedFutureGridScreen> {
           Text(text,
               style: TextStyle(color: Color(0xffC9CACC), fontSize: 13.sp)),
           SizedBox(width: 5.w),
-          Icon(Icons.swap_vert_rounded, color: Color(0xffC9CACC), size: 17.sp),
+          GestureDetector(
+            onTap: sortKey != null
+                ? () {
+                    setState(() {
+                      if (_sortColumn == sortKey) {
+                        // Toggle sort direction if same column
+                        _isAscending = !_isAscending;
+                      } else {
+                        // Set new sort column and default to ascending
+                        _sortColumn = sortKey;
+                        _isAscending = true;
+                      }
+                    });
+                  }
+                : null,
+            child: Icon(
+              Icons.swap_vert_rounded,
+              color: Color(0xffC9CACC),
+              size: 17.sp,
+            ),
+          ),
         ],
       ),
     );
