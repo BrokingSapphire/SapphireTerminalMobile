@@ -4,7 +4,6 @@
 // which will be used for account documents and trading authorization.
 
 import 'dart:typed_data'; // For handling binary data (signature image)
-import 'dart:ui' as ui; // For low-level drawing operations
 import 'package:flutter/material.dart';
 import 'package:sapphire/main.dart'; // App-wide navigation utilities
 import 'package:scribble/scribble.dart'; // Package for handling drawing canvas functionality
@@ -38,15 +37,12 @@ class _SignCanvasScreenState extends State<SignCanvasScreen> {
     try {
       // Render the signature from the canvas as image data
       ByteData? byteData = await _scribbleNotifier.renderImage();
-      if (byteData != null) {
-        // Convert ByteData to Uint8List (raw image bytes)
-        Uint8List signatureBytes = byteData.buffer.asUint8List();
-        // Navigate to confirmation screen with signature data
-        navi(SignConfirmationScreen(signatureBytes: signatureBytes), context);
-      }
+      // Convert ByteData to Uint8List (raw image bytes)
+      Uint8List signatureBytes = byteData.buffer.asUint8List();
+      // Navigate to confirmation screen with signature data
+      navi(SignConfirmationScreen(signatureBytes: signatureBytes), context);
     } catch (e) {
       // Log any errors during signature conversion
-      print("Error saving signature: $e");
     }
   }
 

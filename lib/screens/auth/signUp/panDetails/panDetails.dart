@@ -38,10 +38,10 @@ class _PanDetailsState extends State<PanDetails> {
 
   /// Validates PAN number format using regex pattern
   /// Valid PAN format: 5 uppercase letters + 4 digits + 1 uppercase letter
-  bool _isValidPAN(String pan) {
-    RegExp panRegex = RegExp(r'^[A-Z]{5}[0-9]{4}[A-Z]$');
-    return panRegex.hasMatch(pan);
-  }
+  // bool _isValidPAN(String pan) {
+  //   RegExp panRegex = RegExp(r'^[A-Z]{5}[0-9]{4}[A-Z]$');
+  //   return panRegex.hasMatch(pan);
+  // }
 
   /// Shows loading indicator dialog during API operations
   /// Prevents user interaction until operation completes

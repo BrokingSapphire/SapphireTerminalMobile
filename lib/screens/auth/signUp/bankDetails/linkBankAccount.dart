@@ -3,14 +3,11 @@
 // This screen provides users with different methods to link their bank account,
 // either via UPI or by entering bank details manually.
 
-import 'dart:convert'; // For JSON encoding/decoding
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:flutter_svg/svg.dart'; // For SVG rendering support
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // For secure token storage
-import 'package:http/http.dart' as http; // For API requests
 import 'package:sapphire/main.dart'; // App-wide navigation utilities
-import 'package:sapphire/screens/auth/signUp/bankDetails/linkManually.dart'; // Screen for manual bank linking
 import 'package:sapphire/screens/auth/signUp/bankDetails/linkViaUPI.dart'; // Screen for UPI linking
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
 

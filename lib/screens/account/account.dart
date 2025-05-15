@@ -1,6 +1,3 @@
-import 'dart:math' show min;
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,7 +11,6 @@ import 'package:sapphire/screens/account/manage/fundSettelmentFrequency/fundSett
 import 'package:sapphire/screens/account/profile/profile.dart';
 import 'package:sapphire/screens/account/manage/dematAccount/dematAccount.dart';
 import 'package:sapphire/screens/account/reports/customCalender.dart';
-import 'package:sapphire/screens/funds/funds.dart';
 import 'package:sapphire/screens/account/reports/ledger/ledger.dart';
 import 'package:sapphire/screens/account/manage/segmentActivation/segmentActivation.dart';
 import 'package:sapphire/screens/account/manage/bankAccounts/bankAccounts.dart';
@@ -47,7 +43,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     generalOnTap = [
       () {
@@ -519,9 +514,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: Text(
-                        dateRange == null
-                            ? 'Select date range'
-                            : '${DateFormat('dd-MM-yyyy').format(dateRange!.start)} ~ ${DateFormat('dd-MM-yyyy').format(dateRange!.end)}',
+                        '${DateFormat('dd-MM-yyyy').format(dateRange.start)} ~ ${DateFormat('dd-MM-yyyy').format(dateRange.end)}',
                         style: TextStyle(
                           color: isDark ? Colors.white70 : Colors.black,
                           fontSize: 13.sp,
@@ -533,13 +526,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(height: 24.h),
                   constWidgets.greenButton(
                     "Download",
-                    onTap: (symbol.isNotEmpty && dateRange != null)
-                        ? () {
-                            print(
-                                "Downloading data for Segment: $selectedSegment, Symbol: $symbol, Date Range: ${DateFormat('dd-MM-yyyy').format(dateRange!.start)} - ${DateFormat('dd-MM-yyyy').format(dateRange!.end)}");
-                            Navigator.pop(context);
-                          }
-                        : null,
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
                   ),
                 ],
               ),
@@ -623,7 +612,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           top: Radius.circular(26.r),
         ),
       ),
-      isScrollControlled: true, // Allows content to take full height if needed
+      isScrollControlled: true,
       builder: (BuildContext context) {
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 28.h),
@@ -1261,85 +1250,3 @@ class _PinnedDividerDelegate extends SliverPersistentHeaderDelegate {
 }
 
 // Profile Header Delegate for Pinned Profile Card
-class _ProfileHeaderDelegate extends SliverPersistentHeaderDelegate {
-  @override
-  double get minExtent => 80.h; // Height of the pinned profile card
-  @override
-  double get maxExtent => 80.h;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    final bool isDark = Theme.of(context).brightness == Brightness.dark;
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: GestureDetector(
-        onTap: () {
-          navi(AccountScreen(), context);
-        },
-        behavior: HitTestBehavior.opaque,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.r),
-            color: isDark ? const Color(0xff121413) : const Color(0xFFF4F4F9),
-          ),
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-          // Background color for the card
-          child: Row(
-            children: [
-              CircleAvatar(
-                backgroundColor:
-                    isDark ? Color(0xff021814) : Colors.green.withOpacity(0.2),
-                radius: 35.r,
-                child: Text(
-                  "NK",
-                  style: TextStyle(
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.bold,
-                    color: isDark ? Color(0xff22A06B) : Color(0xff22A06B),
-                  ),
-                ),
-              ),
-              SizedBox(width: 12.w), // Spacing between avatar and text
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Nakul Pratap Thakur",
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w500,
-                      color: isDark ? Colors.white : Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    "J098WE",
-                    style: TextStyle(
-                      color: isDark ? Color(0xffC9CACC) : Color(0xff6B7280),
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-              Spacer(), // Pushes the icon to the right
-              Icon(
-                Icons.arrow_forward_ios_outlined,
-                color: isDark ? Color(0xffC9CACC) : Colors.black,
-                size: 20.sp,
-              ),
-              SizedBox(width: 12.w), // Padding on the right side
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return true;
-  }
-}

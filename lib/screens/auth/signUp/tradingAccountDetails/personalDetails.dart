@@ -41,9 +41,9 @@ class _PersonalDetailsState extends State<PersonalDetails> {
 
   /// Updates the selected occupation
   /// @param value The selected occupation
-  void _selectOccupation(String value) {
-    setState(() => selectedOccupation = value);
-  }
+  // void _selectOccupation(String value) {
+  //   setState(() => selectedOccupation = value);
+  // }
 
   /// Submits occupation and politically exposed status to the backend API
   /// Note: Despite screen collecting more data, only these fields are sent

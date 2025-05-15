@@ -7,7 +7,6 @@ import 'package:flutter/services.dart'; // For text input formatting
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:flutter_svg/flutter_svg.dart'; // For SVG image rendering
 
-import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
 import 'package:sapphire/screens/funds/bankSelectionPopup.dart'; // Bank selection bottom sheet
 
 /// Utility class for number formatting
@@ -296,21 +295,6 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     // Create gradient for visual elements (not currently used but available)
-    final Shader linearGradient = LinearGradient(
-      begin: Alignment.centerLeft,
-      end: Alignment.centerRight,
-      colors: <Color>[
-        Color(0xffFF9E42), // Orange
-        Color(0xfffffd94), // Yellow
-        Color(0xffFF5722), // Red-Orange for contrast
-      ],
-      stops: [
-        0.0,
-        0.5,
-        1.0
-      ], // Adding a stop in the middle for a smoother gradient
-    ).createShader(Rect.fromLTWH(
-        0.0, 0.0, 300.0, 70.0)); // Increased size for better visibility
 
     final textColor = isDark ? Colors.white : Colors.black;
 
@@ -724,62 +708,6 @@ class _fundsWithdrawScreenState extends State<fundsWithdrawScreen> {
     );
   }
 
-  /// Creates a bank account selection tile
-  /// Shows bank logo, name, account number and selection status
-  Widget _buildBankTile(
-      String bankName, String accountNumber, String iconPath, String value) {
-    return GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          setState(() {
-            selectedBank = value;
-          });
-        },
-        child: ListTile(
-            contentPadding: EdgeInsets.symmetric(horizontal: 16),
-            trailing: Container(
-              width: 20.w,
-              height: 20.h,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: selectedBank == value
-                      ? Colors.green
-                      : Colors.grey.shade700,
-                  width: 2.5.w,
-                ),
-                color:
-                    selectedBank == value ? Colors.green : Colors.transparent,
-              ),
-              child: selectedBank == value
-                  ? Center(
-                      child: Container(
-                        width: 12.w,
-                        height: 12.h,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.black,
-                        ),
-                      ),
-                    )
-                  : null,
-            ),
-            title: Row(
-              children: [
-                Image.asset(iconPath, height: 30.h, width: 30.w),
-                SizedBox(width: 10.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(bankName,
-                        style: TextStyle(fontSize: 15.sp, color: Colors.white)),
-                    Text(accountNumber,
-                        style: TextStyle(color: Colors.grey, fontSize: 13.sp)),
-                  ],
-                ),
-              ],
-            )));
-  }
 
   /// Opens the bank selection bottom sheet
   /// Uses the centralized bottom sheet component

@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:flutter_svg/flutter_svg.dart'; // For SVG rendering support
 import 'package:sapphire/screens/auth/signUp/inPersonVerification/selfieCamera.dart'; // Next screen for taking selfie
-import 'package:sapphire/screens/auth/signUp/tradingAccountDetails/segmentSelection.dart'; // Not used directly
 
 import 'package:sapphire/main.dart'; // App-wide navigation utilities
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components

@@ -5,7 +5,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // For text input formatting
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
-import 'package:flutter_svg/svg.dart'; // For SVG image rendering
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
 import 'package:sapphire/screens/funds/bankSelectionPopup.dart'; // Bank selection bottom sheet
 
@@ -167,23 +166,23 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
 
   /// Gets the name of the currently selected bank
   /// Returns the bank name based on the selectedBank value
-  String _getSelectedBankName() {
-    if (selectedBank == 'bank_1') {
-      return 'Kotak Mahindra Bank';
-    }
-    // For all other banks (default to ICICI)
-    return 'ICICI Bank';
-  }
+  // String _getSelectedBankName() {
+  //   if (selectedBank == 'bank_1') {
+  //     return 'Kotak Mahindra Bank';
+  //   }
+  //   // For all other banks (default to ICICI)
+  //   return 'ICICI Bank';
+  // }
 
-  /// Gets the account number of the currently selected bank
-  /// Returns the masked account number based on the selectedBank value
-  String _getSelectedBankAccountNumber() {
-    final int index = int.tryParse(selectedBank?.split('_').last ?? '0') ?? 0;
-    if (index < banks.length) {
-      return banks[index]['details'] ?? '';
-    }
-    return '';
-  }
+  // /// Gets the account number of the currently selected bank
+  // /// Returns the masked account number based on the selectedBank value
+  // String _getSelectedBankAccountNumber() {
+  //   final int index = int.tryParse(selectedBank?.split('_').last ?? '0') ?? 0;
+  //   if (index < banks.length) {
+  //     return banks[index]['details'] ?? '';
+  //   }
+  //   return '';
+  // }
 
   @override
   void initState() {
@@ -730,9 +729,9 @@ class _fundsAddScreenState extends State<fundsAddScreen> {
   /// Opens payment method selection bottom sheet
   /// Displays UPI options, UPI ID input, and Net Banking option
   void _selectPaymentMethod(BuildContext context, bool isDark, String amount) {
-    double parsedAmount = double.tryParse(amount.replaceAll(',', '')) ?? 0.0;
-    bool isAboveTwoLakh = parsedAmount >
-        200000; // Check if amount exceeds ₹2 lakh (for potential regulatory requirements)
+    // double parsedAmount = double.tryParse(amount.replaceAll(',', '')) ?? 0.0;
+    // bool isAboveTwoLakh = parsedAmount >
+    //     200000; // Check if amount exceeds ₹2 lakh (for potential regulatory requirements)
 
     showModalBottomSheet(
       context: context,

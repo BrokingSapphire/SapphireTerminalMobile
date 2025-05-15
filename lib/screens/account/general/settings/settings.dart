@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/account/general/settings/2FA/2FA.dart';
 import 'package:sapphire/screens/account/general/settings/deleteAccount/deleteAccount.dart';
 import 'package:sapphire/screens/account/general/settings/permissions/permission.dart';
 import 'package:sapphire/screens/account/general/settings/sessionManagement/sessionManagement.dart';
 import 'package:sapphire/screens/account/general/settings/orderPreference/orderPreference.dart';
-import 'package:sapphire/themeProvider.dart';
 import 'package:sapphire/utils/toggle.dart';
 
 import 'package:sapphire/utils/constWidgets.dart';

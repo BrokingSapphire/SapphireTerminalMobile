@@ -175,81 +175,81 @@ class _NomineeDetailsScreenState extends State<NomineeDetailsScreen> {
     );
   }
 
-  /// Submits nominee details to the backend API
-  /// Collects all nominee information and sends to server
-  Future<void> _submitNominees() async {
-    // Retrieve authentication token from secure storage
-    final FlutterSecureStorage secureStorage = FlutterSecureStorage();
-    final token = await secureStorage.read(key: 'auth_token');
+  // /// Submits nominee details to the backend API
+  // /// Collects all nominee information and sends to server
+  // Future<void> _submitNominees() async {
+  //   // Retrieve authentication token from secure storage
+  //   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+  //   final token = await secureStorage.read(key: 'auth_token');
 
-    // Prepare nominee data for API submission
-    final List<Map<String, dynamic>> nomineePayload = nominees.map((nominee) {
-      return {
-        "name": nominee["nameController"].text.trim(),
-        "gov_id": nominee["panController"].text.trim(), // PAN as government ID
-        "relation": nominee["relation"] ?? "",
-        "share": nominee["share"].toInt() // Convert to integer percentage
-      };
-    }).toList();
+  //   // Prepare nominee data for API submission
+  //   final List<Map<String, dynamic>> nomineePayload = nominees.map((nominee) {
+  //     return {
+  //       "name": nominee["nameController"].text.trim(),
+  //       "gov_id": nominee["panController"].text.trim(), // PAN as government ID
+  //       "relation": nominee["relation"] ?? "",
+  //       "share": nominee["share"].toInt() // Convert to integer percentage
+  //     };
+  //   }).toList();
 
-    // Create complete request payload
-    final body = {"step": "add_nominees", "nominees": nomineePayload};
+  //   // Create complete request payload
+  //   final body = {"step": "add_nominees", "nominees": nomineePayload};
 
-    // API endpoint for nominee submission
-    final url = Uri.parse(
-      "https://api.backend.sapphirebroking.com:8443/api/v1/auth/signup/checkpoint",
-    );
+  //   // API endpoint for nominee submission
+  //   final url = Uri.parse(
+  //     "https://api.backend.sapphirebroking.com:8443/api/v1/auth/signup/checkpoint",
+  //   );
 
-    // Debug log of request payload
-    print("[DEBUG] Payload: ${jsonEncode(body)}");
+  //   // Debug log of request payload
+  //   print("[DEBUG] Payload: ${jsonEncode(body)}");
 
-    // Show loading indicator during API call
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => Center(
-        child: CircularProgressIndicator(color: Theme.of(context).primaryColor),
-      ),
-    );
+  //   // Show loading indicator during API call
+  //   showDialog(
+  //     context: context,
+  //     barrierDismissible: false,
+  //     builder: (_) => Center(
+  //       child: CircularProgressIndicator(color: Theme.of(context).primaryColor),
+  //     ),
+  //   );
 
-    try {
-      // Send API request
-      final response = await http.post(
-        url,
-        headers: {
-          "accept": "application/json",
-          "Content-Type": "application/json",
-          "Authorization": "Bearer $token",
-        },
-        body: jsonEncode(body),
-      );
+  //   try {
+  //     // Send API request
+  //     final response = await http.post(
+  //       url,
+  //       headers: {
+  //         "accept": "application/json",
+  //         "Content-Type": "application/json",
+  //         "Authorization": "Bearer $token",
+  //       },
+  //       body: jsonEncode(body),
+  //     );
 
-      // Dismiss loading indicator
-      Navigator.of(context).pop();
+  //     // Dismiss loading indicator
+  //     Navigator.of(context).pop();
 
-      // Debug logs for response
-      print("[DEBUG] Status: ${response.statusCode}");
-      print("[DEBUG] Body: ${response.body}");
+  //     // Debug logs for response
+  //     print("[DEBUG] Status: ${response.statusCode}");
+  //     print("[DEBUG] Body: ${response.body}");
 
-      // Handle API response
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        // Success case
-        constWidgets.snackbar(
-            "Nominees added successfully!", Colors.green, context);
-        navi(eSignScreen(), context); // Navigate to E-Sign screen
-      } else {
-        // Error case - extract error message from response if available
-        final msg = jsonDecode(response.body)['error']?['message'] ??
-            'Something went wrong.';
-        constWidgets.snackbar(msg, Colors.red, context);
-      }
-    } catch (e) {
-      // Handle exceptions during API call
-      Navigator.of(context).pop(); // Dismiss loading indicator
-      print("[EXCEPTION] $e");
-      constWidgets.snackbar("Error: $e", Colors.red, context);
-    }
-  }
+  //     // Handle API response
+  //     if (response.statusCode == 200 || response.statusCode == 201) {
+  //       // Success case
+  //       constWidgets.snackbar(
+  //           "Nominees added successfully!", Colors.green, context);
+  //       navi(eSignScreen(), context); // Navigate to E-Sign screen
+  //     } else {
+  //       // Error case - extract error message from response if available
+  //       final msg = jsonDecode(response.body)['error']?['message'] ??
+  //           'Something went wrong.';
+  //       constWidgets.snackbar(msg, Colors.red, context);
+  //     }
+  //   } catch (e) {
+  //     // Handle exceptions during API call
+  //     Navigator.of(context).pop(); // Dismiss loading indicator
+  //     print("[EXCEPTION] $e");
+  //     constWidgets.snackbar("Error: $e", Colors.red, context);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -21,7 +21,6 @@ class _ChoosestocktogiftState extends State<Choosestocktogift>
   List<String> stocks = [];
   bool checked = false;
 
-  String _selectedOrderType = "Buy";
   int _selectedIndex = 0;
   late PageController _pageController;
   bool _canResendOtp = false;
@@ -352,12 +351,6 @@ class _ChoosestocktogiftState extends State<Choosestocktogift>
     super.dispose();
   }
 
-  void _onTabTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      _pageController.jumpToPage(index); // Instant switch for taps
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

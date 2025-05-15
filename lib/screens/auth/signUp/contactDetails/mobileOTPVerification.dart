@@ -6,9 +6,7 @@ import 'dart:async'; // For timer functionality
 import 'package:flutter/gestures.dart'; // For advanced gesture handling
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
-import 'package:http/http.dart'; // For network requests
 import 'package:pinput/pinput.dart'; // Specialized OTP input widget
-import 'package:sapphire/functions/authFunctions.dart'; // Authentication utilities
 import 'package:sapphire/screens/auth/signUp/panDetails/panDetails.dart'; // Next screen in mobile verification flow
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
 import 'package:url_launcher/url_launcher.dart'; // For opening web URLs

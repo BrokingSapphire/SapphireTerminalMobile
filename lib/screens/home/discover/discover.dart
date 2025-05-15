@@ -1,21 +1,13 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/account/general/changePin/changePin.dart';
-import 'package:sapphire/screens/account/general/settings/settings.dart';
-import 'package:sapphire/screens/funds/funds.dart';
-import 'package:sapphire/screens/account/reports/ledger/ledger.dart';
 import 'package:sapphire/screens/account/account.dart';
-import 'package:sapphire/screens/account/reports/profitAndLoss/profitAndLoss.dart';
-import 'package:sapphire/screens/account/reports/tradesAndCharges/tradesAndCharges.dart';
-import 'package:sapphire/screens/home/discover/ipo/ongoing/ipoOngoing.dart';
+import 'package:sapphire/screens/funds/funds.dart';
 import 'package:sapphire/screens/home/discover/ipo/ipoWrapper.dart';
 import 'package:sapphire/screens/home/discover/pledge/pledge/pledge.dart';
-import 'package:sapphire/screens/home/discover/priceAlerts/createPriceAlerts.dart';
 import 'package:sapphire/screens/home/discover/priceAlerts/priceAlerts.dart';
-import 'package:sapphire/utils/constWidgets.dart';
 import 'package:sapphire/utils/naviWithoutAnimation.dart';
 
 class DiscoverScreen extends StatefulWidget {

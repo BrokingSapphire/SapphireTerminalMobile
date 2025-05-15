@@ -1,8 +1,4 @@
-import 'dart:math';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -187,9 +183,7 @@ class _OrderbookState extends State<Orderbook> {
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: Text(
-                        dateRange == null
-                            ? 'Select date range'
-                            : '${DateFormat('dd-MM-yyyy').format(dateRange!.start)} - ${DateFormat('dd-MM-yyyy').format(dateRange!.end)}',
+                        '${DateFormat('dd-MM-yyyy').format(dateRange.start)} - ${DateFormat('dd-MM-yyyy').format(dateRange.end)}',
                         style: TextStyle(
                           color: isDark ? Colors.white70 : Colors.black,
                           fontSize: 13.sp,
@@ -201,13 +195,9 @@ class _OrderbookState extends State<Orderbook> {
                   SizedBox(height: 12.h),
                   constWidgets.greenButton(
                     "Download",
-                    onTap: (symbol.isNotEmpty && dateRange != null)
-                        ? () {
-                            print(
-                                "Downloading data for Segment: $selectedSegment, Symbol: $symbol, Date Range: ${DateFormat('dd-MM-yyyy').format(dateRange!.start)} - ${DateFormat('dd-MM-yyyy').format(dateRange!.end)}");
-                            Navigator.pop(context);
-                          }
-                        : null,
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
                   ),
                 ],
               ),

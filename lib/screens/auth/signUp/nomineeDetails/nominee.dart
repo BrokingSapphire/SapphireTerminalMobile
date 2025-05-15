@@ -10,7 +10,6 @@ import 'package:sapphire/screens/auth/signUp/nomineeDetails/nomineeDetails.dart'
 
 import 'package:sapphire/main.dart'; // App-wide navigation utilities
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
-import '../signature/signatureCanvas.dart'; // Not used directly
 
 /// nomineeScreen - Introductory screen explaining the purpose of adding nominees
 /// Presents the concept and benefits of nominees before allowing users to add or skip

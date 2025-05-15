@@ -2,12 +2,9 @@
 // Description: Celebration screen shown after successful account creation in the Sapphire Trading application.
 // This screen displays confetti animation, account details, and provides the option to proceed to login.
 
-import 'dart:math'; // For mathematical operations (used by confetti package)
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:confetti/confetti.dart'; // For celebration animation effects
-import 'package:sapphire/screens/home/homeWarpper.dart'; // Home screen (not used directly)
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
 
 import 'package:sapphire/main.dart'; // App-wide navigation utilities

@@ -26,7 +26,6 @@ class SelfieVerificationScreen extends StatefulWidget {
 /// Manages camera, face detection, and selfie capture process
 class _SelfieVerificationScreenState extends State<SelfieVerificationScreen> {
   CameraController? _cameraController; // Controls the camera device
-  File? _image; // Stores the captured image file
   late List<CameraDescription> _cameras; // Available device cameras
   bool _isCapturing = false; // Prevents multiple simultaneous captures
   bool _faceDetected = false; // Tracks if a valid face is currently detected
@@ -100,8 +99,6 @@ class _SelfieVerificationScreenState extends State<SelfieVerificationScreen> {
           Face face = faces.first; // Focus on the first detected face
 
           // Check for required facial conditions (eyes open)
-          bool smiling =
-              face.smilingProbability != null && face.smilingProbability! > 0.3;
           bool eyesOpen = (face.leftEyeOpenProbability != null &&
               face.leftEyeOpenProbability! > 0.4) && // Left eye sufficiently open
               (face.rightEyeOpenProbability != null &&
