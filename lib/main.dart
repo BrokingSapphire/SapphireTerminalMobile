@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:sapphire/screens/auth/signUp/initialPage.dart'; // Initial landing screen
+import 'package:sapphire/screens/stockDetailedWindow/ordersDetails.dart';
 import 'package:sapphire/themeProvider.dart'; // Theme state management
 import 'package:provider/provider.dart'; // State management solution
 import 'package:sapphire/utils/appTheme.dart'; // App-wide theme configurations.
@@ -107,7 +108,7 @@ class MyApp extends StatelessWidget {
           darkTheme: AppThemes.darkTheme, // Dark theme configuration
           themeMode:
               themeProvider.themeMode, // Current theme mode (system/light/dark)
-          home: InitialScreen(), // Starting screen of the application
+          home: OrdersDetails(), // Starting screen of the application
           // home: BuyScreenWrapper(), // Alternate entry point (currently commented out)
         );
       },
