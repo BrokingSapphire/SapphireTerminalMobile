@@ -3,11 +3,8 @@
 // This screen allows users to add, edit and allocate percentage shares to nominees for their
 // trading account as per SEBI regulations for securities inheritance.
 
-import 'dart:convert'; // For JSON encoding/decoding
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
-import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // For secure token storage
-import 'package:http/http.dart' as http; // For API requests
 import 'package:sapphire/main.dart'; // App-wide navigation utilities
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
 import '../finalStep/eSign.dart'; // Next screen in registration flow

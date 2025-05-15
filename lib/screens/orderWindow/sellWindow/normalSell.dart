@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sapphire/screens/orderWindow/sellWindow/sellWrapper.dart';
-import 'package:sapphire/utils/animatedToggles.dart';
-import 'package:sapphire/utils/constWidgets.dart';
 import 'package:sapphire/utils/toggle.dart';
 
 class NormalSellScreen extends StatefulWidget {

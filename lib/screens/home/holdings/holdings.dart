@@ -6,7 +6,6 @@ import 'package:sapphire/screens/funds/funds.dart';
 import 'package:sapphire/screens/account/account.dart';
 import 'package:sapphire/screens/home/holdings/mutualFunds/mutualFunds.dart';
 import 'package:sapphire/screens/home/holdings/positions/positions.dart';
-import 'package:sapphire/utils/constWidgets.dart';
 import 'package:sapphire/utils/naviWithoutAnimation.dart';
 import 'equity/equity.dart';
 

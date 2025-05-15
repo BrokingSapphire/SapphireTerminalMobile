@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sapphire/screens/home/trades/trades.dart';
 
 class TradeModel {
   final String symbol;

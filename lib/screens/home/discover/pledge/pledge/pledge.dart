@@ -20,7 +20,6 @@ class _PledgeState extends State<Pledge> with SingleTickerProviderStateMixin {
   List<String> stocks = [];
   bool checked = false;
 
-  String _selectedOrderType = "Buy";
   int _selectedIndex = 0;
   late PageController _pageController;
 
@@ -66,13 +65,6 @@ class _PledgeState extends State<Pledge> with SingleTickerProviderStateMixin {
   void dispose() {
     tabController.dispose();
     super.dispose();
-  }
-
-  void _onTabTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      _pageController.jumpToPage(index); // Instant switch for taps
-    });
   }
 
   @override

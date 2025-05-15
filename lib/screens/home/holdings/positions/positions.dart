@@ -153,8 +153,6 @@ class _positionScreenState extends State<positionScreen> {
   Widget positionCard(String firstValue, String secondValue, bool isDark) {
     // Determine titles based on values
     String firstTitle = firstValue.contains('-') ? "Total Loss" : "Total Gain";
-    String secondTitle =
-        secondValue.contains('-') ? "Today's Loss" : "Today's Gain";
 
     return Container(
       height: 120.h / 2,
