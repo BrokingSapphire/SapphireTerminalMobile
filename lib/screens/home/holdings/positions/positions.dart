@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:sapphire/screens/home/holdings/holdingsBottomSheet.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class positionScreen extends StatefulWidget {
@@ -306,19 +305,6 @@ class _positionScreenState extends State<positionScreen> {
                                 var data = filteredPositionData[index];
                                 return GestureDetector(
                                   behavior: HitTestBehavior.opaque,
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                      builder: (context) => holdingsBottomSheet(
-                                        stockName: data['title'] ?? '',
-                                        stockCode: data['code'] ?? '',
-                                        price: data['price'] ?? '',
-                                        change: data['change'] ?? '',
-                                      ),
-                                    );
-                                  },
                                   child: positionScreenTiles(
                                       data['title'] ?? '',
                                       data['midtitle'] ?? '',
