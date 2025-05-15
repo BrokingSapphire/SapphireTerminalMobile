@@ -49,39 +49,6 @@ class _NormalBuyScreenState extends State<NormalBuyScreen> {
 
   final List<String> _options = ["Delivery", "Intraday", "MTF"];
 
-  Widget _buildSwitchTile(
-      {required String title,
-      required String subtitle,
-      required bool value,
-      required Function(bool) onChanged,
-      required bool isDark}) {
-    return SizedBox(
-      height: 60.h,
-      child: ListTile(
-        tileColor: isDark ? Color(0xff121413) : Color(0xffF4F4F9),
-        contentPadding: EdgeInsets.symmetric(horizontal: 16.w),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.r),
-        ),
-        title: Text(
-          title,
-          style: TextStyle(
-              color: isDark ? Colors.white : Colors.black, fontSize: 13.sp),
-        ),
-        subtitle: Text(
-          subtitle,
-          style: TextStyle(
-              color: isDark ? Colors.white70 : Color(0xff6B7280),
-              fontSize: 11.sp),
-        ),
-        trailing: CustomToggleSwitch(
-          initialValue: value,
-          onChanged: onChanged,
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;

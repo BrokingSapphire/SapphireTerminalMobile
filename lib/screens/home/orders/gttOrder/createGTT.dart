@@ -11,7 +11,6 @@ class OrdersScreen extends StatefulWidget {
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
-  int _selectedIndex = 0;
   bool isExpanded = false;
   bool isExpanded2 = false;
   bool isActiveTrades = true;
@@ -21,33 +20,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
   bool isEnabled = false;
   String selectedOption = "Delivery";
   final List<String> _options = ["Delivery", "Intraday", "MTF"];
-
-  Widget _toggleButton(String title, bool isSelected, VoidCallback onTap) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          height: 45.h,
-          width: 165.w,
-          decoration: BoxDecoration(
-            color: isSelected
-                ? Color(0xff3A3A3A)
-                : Colors.transparent, // Active & Inactive colors
-            borderRadius: BorderRadius.circular(30.r),
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            title,
-            style: TextStyle(
-              color:
-                  isSelected ? Colors.green : Color(0xffC9CACC), // Text color
-              fontSize: 14.sp,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _optionButton(String option, bool isSelected, VoidCallback onTap) {
     return Expanded(

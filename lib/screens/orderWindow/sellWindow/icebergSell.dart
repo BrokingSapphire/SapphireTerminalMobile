@@ -4,8 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sapphire/screens/orderWindow/sellWindow/sellWrapper.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../../utils/constWidgets.dart';
-
 class IcebergSellScreen extends StatefulWidget {
   final String tabName;
 
@@ -17,7 +15,6 @@ class IcebergSellScreen extends StatefulWidget {
 
 class _IcebergSellScreenState extends State<IcebergSellScreen> {
   bool _stopLoss = false;
-  bool _gtt = false;
 
   bool isExpanded = false;
   bool isMarketSelected = true;

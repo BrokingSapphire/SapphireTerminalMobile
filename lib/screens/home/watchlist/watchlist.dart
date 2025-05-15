@@ -163,20 +163,6 @@ class _WatchlistScreenState extends State<WatchlistScreen>
     });
   }
 
-  void _onAddTab() {
-    setState(() {
-      int newTabNumber = tabNames.length + 1;
-      tabNames.add('Watchlist $newTabNumber');
-      watchlistData.add({
-        'items': <dynamic>[],
-      });
-      _selectedIndex = tabNames.length - 1;
-      _pageController.jumpToPage(_selectedIndex);
-      print(
-          'Added new tab: Watchlist $newTabNumber, now on Watchlist $newTabNumber');
-    });
-  }
-
   // --- Refresh logic ---
   Future<void> _onRefresh() async {
     // Simulate a network fetch or data refresh

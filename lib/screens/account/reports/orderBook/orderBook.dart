@@ -15,7 +15,6 @@ class Orderbook extends StatefulWidget {
 class _OrderbookState extends State<Orderbook> {
   void showDownloadSheet(BuildContext context) {
     String? selectedSegment = 'Equity'; // Default selected value
-    String symbol = '';
     DateTimeRange? dateRange = DateTimeRange(
       start: DateTime.now().subtract(const Duration(days: 30)),
       end: DateTime.now(),
@@ -151,7 +150,6 @@ class _OrderbookState extends State<Orderbook> {
                       ),
                       onChanged: (value) {
                         setState(() {
-                          symbol = value;
                         });
                       },
                     ),

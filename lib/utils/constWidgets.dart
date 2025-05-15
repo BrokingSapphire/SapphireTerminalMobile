@@ -736,117 +736,6 @@ class constWidgets {
   /// Creates a "Need Help?" button with bottom sheet support options
   /// Used throughout the app to provide access to support resources
   static needHelpButton(BuildContext context) {
-    // Helper function to show FAQ bottom sheet with expandable items
-    void showFAQBottomSheet(BuildContext context) {
-      List<Map<String, String>> faqList = [
-        {
-          "question": "Is my personal data safe in Sapphire?",
-          "answer": "Yes, your data is completely secure."
-        },
-        {
-          "question": "Why do I need to provide my email?",
-          "answer": "Your email helps us personalize your experience."
-        },
-        {
-          "question": "Is my personal data safe in Sapphire?",
-          "answer": "Yes, your data is completely secure."
-        },
-        {
-          "question": "Why do I need to provide my email?",
-          "answer": "Your email helps us personalize your experience."
-        },
-        {
-          "question": "Is my personal data safe in Sapphire?",
-          "answer": "Yes, your data is completely secure."
-        },
-        {
-          "question": "Why do I need to provide my email?",
-          "answer": "Your email helps us personalize your experience."
-        },
-      ];
-
-      showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        isScrollControlled: true,
-        builder: (context) {
-          return DraggableScrollableSheet(
-            initialChildSize: 0.7, // 50% of screen height
-            minChildSize: 0.3,
-            maxChildSize: 0.8,
-            builder: (_, scrollController) {
-              return Container(
-                decoration: BoxDecoration(
-                  color: Colors.black, // Dark background like your screenshot
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.r),
-                    topRight: Radius.circular(20.r),
-                  ),
-                ),
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Frequently Asked Questions',
-                      style: TextStyle(
-                        fontSize: 21.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    Expanded(
-                      child: ListView.builder(
-                        controller: scrollController,
-                        itemCount: faqList.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Column(
-                              children: [
-                                ExpansionTile(
-                                  tilePadding:
-                                      EdgeInsets.symmetric(horizontal: 8),
-                                  title: Text(
-                                    faqList[index]['question']!,
-                                    style: TextStyle(
-                                        fontSize: 15.sp,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  trailing: Icon(Icons.keyboard_arrow_down,
-                                      color: Colors.white),
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 8),
-                                      child: Text(
-                                        faqList[index]['answer']!,
-                                        style: TextStyle(color: Colors.white70),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Divider(
-                                    color: Colors.grey.shade800,
-                                    height:
-                                        1), // Thin separator like your image
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          );
-        },
-      );
-    }
-
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: TextButton(
@@ -1150,7 +1039,6 @@ class CustomRadioButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: onTap,
       child: Container(

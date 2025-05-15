@@ -12,18 +12,19 @@ import 'eventsTab.dart';
 class watchlistSDW extends StatefulWidget {
   final String stockName;
   final String stockCode;
-  String price;
-  String change;
+  final String price;    // Changed to final
+  final String change;   // Changed to final
   final VoidCallback onBuy;
   final VoidCallback onSell;
-  watchlistSDW(
-      {super.key,
-      required this.stockName,
-      required this.stockCode,
-      required this.price,
-      required this.change,
-      required this.onBuy,
-      required this.onSell});
+
+  const watchlistSDW({    // Added const constructor
+    super.key,
+    required this.stockName,
+    required this.stockCode,
+    required this.price,
+    required this.change,
+    required this.onBuy,
+    required this.onSell});
 
   @override
   State<watchlistSDW> createState() => _watchlistSDWState();
@@ -713,30 +714,6 @@ class _watchlistSDWState extends State<watchlistSDW>
     );
   }
 
-  // Quick action icons row
-  Widget _buildActionIcons(bool isDark) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        _buildActionItem(
-          isDark,
-          'assets/svgs/setAlert.svg',
-          'Set Alert',
-        ),
-        _buildActionItem(
-          isDark,
-          'assets/svgs/optionChain.svg',
-          'Option Chain',
-        ),
-        _buildActionItem(
-          isDark,
-          'assets/svgs/stockSip.svg',
-          'Stock SIP',
-        ),
-      ],
-    );
-  }
-
   // Individual action item with icon and label
   Widget _buildActionItem(bool isDark, String iconPath, String label) {
     return Column(
@@ -756,30 +733,6 @@ class _watchlistSDWState extends State<watchlistSDW>
             fontWeight: FontWeight.w500,
             color: isDark ? Colors.white : Colors.black87,
           ),
-        ),
-      ],
-    );
-  }
-
-  // "View Chart" link button
-  Widget _buildViewChartLink() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          'View Chart',
-          style: TextStyle(
-            color: Color(0xFF1DB954),
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        SizedBox(width: 5.w),
-        SvgPicture.asset(
-          'assets/svgs/charts.svg',
-          height: 22.h,
-          color: Color(0xFF1DB954),
-          width: 22.w,
         ),
       ],
     );
@@ -1487,9 +1440,7 @@ class _watchlistSDWState extends State<watchlistSDW>
 
   // Performance metrics section with sliders
   Widget _buildPerformanceSection(bool isDark) {
-    double todaysLow = 1467.00;
-    double todaysHigh = 1567.00; // Example higher value
-    double currentPrice = 1500.00;
+// Example higher value
     return Column(
       children: [
         // Today's range
@@ -1964,8 +1915,6 @@ class _watchlistSDWState extends State<watchlistSDW>
     final Color iconColor =
         const Color(0xFF999999); // Icon color (slightly dimmed)
 
-    // Item hover/selection color (when available)
-    final Color hoverColor = const Color(0xFF333333);
     // =============================================
 
     return Row(
@@ -2550,22 +2499,6 @@ class _watchlistSDWState extends State<watchlistSDW>
   // Track which card is selected in the locate section
   String selectedCard = 'Card 1';
 
-  // Custom tab bar with 3 options
-  Widget _buildCustomTabBar(bool isDark) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 8.h),
-      decoration: BoxDecoration(
-        color: isDark ? const Color(0xff1A1A1A) : const Color(0xffF2F2F2),
-        borderRadius: BorderRadius.circular(6.r),
-      ),
-      child: Row(
-        children: customTabOptions.map((tabName) {
-          return _buildTabOption(isDark, tabName, selectedTab == tabName);
-        }).toList(),
-      ),
-    );
-  }
-
   // Individual tab option
   Widget _buildTabOption(bool isDark, String title, bool isSelected) {
     return Expanded(
@@ -2914,122 +2847,122 @@ class _watchlistSDWState extends State<watchlistSDW>
   }
 
   // Content to display based on selected tab
-  Widget _buildTabContent(bool isDark) {
-    // Return different content based on which tab is selected
-    switch (selectedTab) {
-      case 'Overview':
-        return Container(
-          padding: EdgeInsets.all(16.w),
-          decoration: BoxDecoration(
-            color: isDark ? const Color(0xff1A1A1A) : Colors.white,
-            borderRadius: BorderRadius.circular(8.r),
-            border: Border.all(
-              color: isDark ? const Color(0xff2F2F2F) : const Color(0xffE5E7EB),
-              width: 1,
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Company Overview',
-                style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              SizedBox(height: 8.h),
-              Text(
-                'Key metrics and performance indicators for the stock at a glance.',
-                style: TextStyle(
-                  color: isDark
-                      ? const Color(0xffC9CACC)
-                      : const Color(0xff6B7280),
-                  fontSize: 12.sp,
-                ),
-              ),
-              SizedBox(height: 16.h),
-              _buildSummaryMetrics(isDark),
-            ],
-          ),
-        );
-      case 'Financials':
-        return Container(
-          padding: EdgeInsets.all(16.w),
-          decoration: BoxDecoration(
-            color: isDark ? const Color(0xff1A1A1A) : Colors.white,
-            borderRadius: BorderRadius.circular(8.r),
-            border: Border.all(
-              color: isDark ? const Color(0xff2F2F2F) : const Color(0xffE5E7EB),
-              width: 1,
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Financial Performance',
-                style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              SizedBox(height: 8.h),
-              Text(
-                'Quarterly and annual financial data including revenue, profit, and growth.',
-                style: TextStyle(
-                  color: isDark
-                      ? const Color(0xffC9CACC)
-                      : const Color(0xff6B7280),
-                  fontSize: 12.sp,
-                ),
-              ),
-              SizedBox(height: 16.h),
-              _buildFinancialMetrics(isDark),
-            ],
-          ),
-        );
-      case 'News':
-        return Container(
-          padding: EdgeInsets.all(16.w),
-          decoration: BoxDecoration(
-            color: isDark ? const Color(0xff1A1A1A) : Colors.white,
-            borderRadius: BorderRadius.circular(8.r),
-            border: Border.all(
-              color: isDark ? const Color(0xff2F2F2F) : const Color(0xffE5E7EB),
-              width: 1,
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Latest News',
-                style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              SizedBox(height: 8.h),
-              Text(
-                'Recent news and updates related to the company.',
-                style: TextStyle(
-                  color: isDark
-                      ? const Color(0xffC9CACC)
-                      : const Color(0xff6B7280),
-                  fontSize: 12.sp,
-                ),
-              ),
-              SizedBox(height: 16.h),
-              _buildNewsItems(isDark),
-            ],
-          ),
-        );
-      default:
-        return Container(); // Empty container as fallback
-    }
-  }
+  // Widget _buildTabContent(bool isDark) {
+  //   // Return different content based on which tab is selected
+  //   switch (selectedTab) {
+  //     case 'Overview':
+  //       return Container(
+  //         padding: EdgeInsets.all(16.w),
+  //         decoration: BoxDecoration(
+  //           color: isDark ? const Color(0xff1A1A1A) : Colors.white,
+  //           borderRadius: BorderRadius.circular(8.r),
+  //           border: Border.all(
+  //             color: isDark ? const Color(0xff2F2F2F) : const Color(0xffE5E7EB),
+  //             width: 1,
+  //           ),
+  //         ),
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Text(
+  //               'Company Overview',
+  //               style: TextStyle(
+  //                 color: isDark ? Colors.white : Colors.black,
+  //                 fontSize: 14.sp,
+  //                 fontWeight: FontWeight.w600,
+  //               ),
+  //             ),
+  //             SizedBox(height: 8.h),
+  //             Text(
+  //               'Key metrics and performance indicators for the stock at a glance.',
+  //               style: TextStyle(
+  //                 color: isDark
+  //                     ? const Color(0xffC9CACC)
+  //                     : const Color(0xff6B7280),
+  //                 fontSize: 12.sp,
+  //               ),
+  //             ),
+  //             SizedBox(height: 16.h),
+  //             _buildSummaryMetrics(isDark),
+  //           ],
+  //         ),
+  //       );
+  //     case 'Financials':
+  //       return Container(
+  //         padding: EdgeInsets.all(16.w),
+  //         decoration: BoxDecoration(
+  //           color: isDark ? const Color(0xff1A1A1A) : Colors.white,
+  //           borderRadius: BorderRadius.circular(8.r),
+  //           border: Border.all(
+  //             color: isDark ? const Color(0xff2F2F2F) : const Color(0xffE5E7EB),
+  //             width: 1,
+  //           ),
+  //         ),
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Text(
+  //               'Financial Performance',
+  //               style: TextStyle(
+  //                 color: isDark ? Colors.white : Colors.black,
+  //                 fontSize: 14.sp,
+  //                 fontWeight: FontWeight.w600,
+  //               ),
+  //             ),
+  //             SizedBox(height: 8.h),
+  //             Text(
+  //               'Quarterly and annual financial data including revenue, profit, and growth.',
+  //               style: TextStyle(
+  //                 color: isDark
+  //                     ? const Color(0xffC9CACC)
+  //                     : const Color(0xff6B7280),
+  //                 fontSize: 12.sp,
+  //               ),
+  //             ),
+  //             SizedBox(height: 16.h),
+  //             _buildFinancialMetrics(isDark),
+  //           ],
+  //         ),
+  //       );
+  //     case 'News':
+  //       return Container(
+  //         padding: EdgeInsets.all(16.w),
+  //         decoration: BoxDecoration(
+  //           color: isDark ? const Color(0xff1A1A1A) : Colors.white,
+  //           borderRadius: BorderRadius.circular(8.r),
+  //           border: Border.all(
+  //             color: isDark ? const Color(0xff2F2F2F) : const Color(0xffE5E7EB),
+  //             width: 1,
+  //           ),
+  //         ),
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Text(
+  //               'Latest News',
+  //               style: TextStyle(
+  //                 color: isDark ? Colors.white : Colors.black,
+  //                 fontSize: 14.sp,
+  //                 fontWeight: FontWeight.w600,
+  //               ),
+  //             ),
+  //             SizedBox(height: 8.h),
+  //             Text(
+  //               'Recent news and updates related to the company.',
+  //               style: TextStyle(
+  //                 color: isDark
+  //                     ? const Color(0xffC9CACC)
+  //                     : const Color(0xff6B7280),
+  //                 fontSize: 12.sp,
+  //               ),
+  //             ),
+  //             SizedBox(height: 16.h),
+  //             _buildNewsItems(isDark),
+  //           ],
+  //         ),
+  //       );
+  //     default:
+  //       return Container(); // Empty container as fallback
+  //   }
+  // }
 }

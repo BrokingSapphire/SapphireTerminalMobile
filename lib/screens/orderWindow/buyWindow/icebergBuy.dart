@@ -16,8 +16,6 @@ class Icebergbuyscreen extends StatefulWidget {
 
 class _IcebergbuyscreenState extends State<Icebergbuyscreen> {
   bool _stopLoss = false;
-  bool _gtt = false;
-
   bool isExpanded = false;
   bool isMarketSelected = true;
   int _selectedIndex = 0;

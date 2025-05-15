@@ -52,8 +52,6 @@ class _DisclosureState extends State<Disclosure> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    double progress = (maxCountdown - countdown) / maxCountdown;
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,

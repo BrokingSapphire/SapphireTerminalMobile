@@ -16,8 +16,6 @@ class MTFBuyScreen extends StatefulWidget {
 }
 
 class _MTFBuyScreenState extends State<MTFBuyScreen> {
-  bool _stopLoss = false;
-  bool _gtt = false;
 
   bool isExpanded = false;
   bool isMarketSelected = true;

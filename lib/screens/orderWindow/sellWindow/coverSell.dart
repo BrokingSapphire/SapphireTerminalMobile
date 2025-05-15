@@ -16,13 +16,9 @@ class MTFSellScreen extends StatefulWidget {
 }
 
 class _MTFSellScreenState extends State<MTFSellScreen> {
-  bool _stopLoss = false;
-  bool _gtt = false;
-
   bool isExpanded = false;
   bool isMarketSelected = true;
   int _selectedIndex = 1;
-  int _validityOptionIndex = 0; // 0: Day, 1: IOC, 2: Minutes
   int quantity = 1;
 
   TextEditingController priceController =

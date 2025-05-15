@@ -22,7 +22,6 @@ class _ChoosestocktogiftState extends State<Choosestocktogift>
   bool checked = false;
 
   int _selectedIndex = 0;
-  late PageController _pageController;
   bool _canResendOtp = false;
   int _remainingSeconds = 2;
 
@@ -342,7 +341,6 @@ class _ChoosestocktogiftState extends State<Choosestocktogift>
     tabController.addListener(() {
       setState(() {}); // Rebuild UI when a tab is selected
     });
-    _pageController = PageController(initialPage: _selectedIndex);
   }
 
   @override

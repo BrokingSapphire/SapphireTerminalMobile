@@ -21,7 +21,6 @@ class _PledgeState extends State<Pledge> with SingleTickerProviderStateMixin {
   bool checked = false;
 
   int _selectedIndex = 0;
-  late PageController _pageController;
 
   // Track selected stocks and total amount across tabs
   Map<String, bool> selectedStocks = {};
@@ -58,7 +57,6 @@ class _PledgeState extends State<Pledge> with SingleTickerProviderStateMixin {
     tabController.addListener(() {
       setState(() {}); // Rebuild UI when a tab is selected
     });
-    _pageController = PageController(initialPage: _selectedIndex);
   }
 
   @override
