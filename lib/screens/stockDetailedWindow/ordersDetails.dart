@@ -64,7 +64,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                     borderRadius: BorderRadius.circular(4.r),
                   ),
                   child: Text(
-                    "BUY",
+                    "NSE",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 10.sp,
