@@ -14,40 +14,43 @@ class _newsTabState extends State<newsTab> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // News items
-          _buildNewsItem(
-            'Hindustan Times',
-            '12 hours',
-            'Hero MotoCorp reported a Q4 FY25 net profit of ₹1081 crore, up 6% YoY, driven by demand in premium motorcycles, scooters, and EVs. The company retained market leadership for the 24th year. Revenue rose 4% YoY to ₹9939 crore in Q4 FY25. Annual revenue reached ₹40923 crore, an 8% increase, with PAT up 17% to ₹4376 crore, aided by strong exports and new model introductions.',
-          ),
-          SizedBox(height: 16.h),
-          _buildNewsItem(
-            'ScoutQuest',
-            'a day',
-            'Hero MotoCorp\'s higher realizations are due to a better product mix. The wedding season in May and June is expected to boost two-wheeler sales.\nMargins are projected to remain between 14-16%. The electric vehicle business is anticipated to break even within two years.',
-          ),
-          SizedBox(height: 16.h),
-          _buildNewsItem(
-            'ScoutQuest',
-            'a day',
-            'Hero MotoCorp aims to maintain profit margins between 14-16%.',
-          ),
-          SizedBox(height: 16.h),
-          _buildNewsItem(
-            'BSE',
-            '2 days',
-            'Hero MotoCorp Ltd. cancels its Investor Day 2025 scheduled for May 19 in Mumbai.',
-          ),
-          SizedBox(height: 16.h),
-          _buildNewsItem(
-            'ScoutQuest',
-            '2 days',
-            'Hero MotoCorp Ltd\'s Investor Day on May 19, 2025, in Mumbai is cancelled. Initially announced on May 5, 2025.',
-          ),
-        ],
+      child: Padding(
+        padding: EdgeInsets.symmetric(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // News items
+            _buildNewsItem(
+              'Hindustan Times',
+              '12 hours',
+              'Hero MotoCorp reported a Q4 FY25 net profit of ₹1081 crore, up 6% YoY, driven by demand in premium motorcycles, scooters, and EVs. The company retained market leadership for the 24th year. Revenue rose 4% YoY to ₹9939 crore in Q4 FY25. Annual revenue reached ₹40923 crore, an 8% increase, with PAT up 17% to ₹4376 crore, aided by strong exports and new model introductions.',
+            ),
+            // SizedBox(height: 12.h),
+            _buildNewsItem(
+              'ScoutQuest',
+              'a day',
+              'Hero MotoCorp\'s higher realizations are due to a better product mix. The wedding season in May and June is expected to boost two-wheeler sales.\nMargins are projected to remain between 14-16%. The electric vehicle business is anticipated to break even within two years.',
+            ),
+            // SizedBox(height: 16.h),
+            _buildNewsItem(
+              'ScoutQuest',
+              'a day',
+              'Hero MotoCorp aims to maintain profit margins between 14-16%.',
+            ),
+            // SizedBox(height: 16.h),
+            _buildNewsItem(
+              'BSE',
+              '2 days',
+              'Hero MotoCorp Ltd. cancels its Investor Day 2025 scheduled for May 19 in Mumbai.',
+            ),
+            // SizedBox(height: 16.h),
+            _buildNewsItem(
+              'ScoutQuest',
+              '2 days',
+              'Hero MotoCorp Ltd\'s Investor Day on May 19, 2025, in Mumbai is cancelled. Initially announced on May 5, 2025.',
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -80,7 +83,7 @@ class _newsTabState extends State<newsTab> {
                 style: TextStyle(
                   color: widget.isDark ? Colors.white : Colors.black87,
                   fontSize: 13.sp,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               Text(
@@ -98,7 +101,7 @@ class _newsTabState extends State<newsTab> {
             content,
             style: TextStyle(
               color: widget.isDark ? Colors.white : Colors.black87,
-              fontSize: 13.sp,
+              fontSize: 11.sp,
               height: 1.5,
             ),
           ),
