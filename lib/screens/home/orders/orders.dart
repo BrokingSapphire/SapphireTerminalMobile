@@ -331,7 +331,7 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "price": "₹1,67,580.60",
             "ltp": "₹1,995.55",
             "change": "(-1.06%)",
-            "type": "DELIVERY"
+            "type": "DEL"
           },
           {
             "title": "RELIANCE",
@@ -340,7 +340,7 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "price": "₹2,50,000.00",
             "ltp": "₹2,500.00",
             "change": "(+0.50%)",
-            "type": "CARRYFORWARD"
+            "type": "CFD"
           },
           {
             "title": "TCS",
@@ -349,7 +349,7 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "price": "₹3,20,150.75",
             "ltp": "₹2,125.00",
             "change": "(+0.75%)",
-            "type": "INTRADAY"
+            "type": "INT"
           },
           {
             "title": "HDFCBANK",
@@ -368,7 +368,7 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "price": "₹1,10,500.20",
             "ltp": "₹1,220.30",
             "change": "(+0.10%)",
-            "type": "DELIVERY"
+            "type": "DEL"
           },
           {
             "title": "SBIN",
@@ -377,7 +377,7 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "price": "₹75,360.40",
             "ltp": "₹750.00",
             "change": "(-0.50%)",
-            "type": "CARRYFORWARD"
+            "type": "CFD"
           },
           {
             "title": "INFY",
@@ -386,7 +386,7 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "price": "₹1,45,112.75",
             "ltp": "₹1,500.00",
             "change": "(+0.20%)",
-            "type": "INTRADAY"
+            "type": "INT"
           },
           {
             "title": "BAJFINANCE",
@@ -823,7 +823,7 @@ class _OrderTabContentState extends State<OrderTabContent> {
                           orderData[index]["price"]!,
                           orderData[index]["ltp"]!,
                           orderData[index]["change"]!,
-                          orderData[index]["type"] ?? "DELIVERY",
+                          orderData[index]["type"] ?? "DEL",
                           orderStatus:
                               widget.tabType, // Pass the current tab type
                         ),
@@ -960,17 +960,17 @@ Widget orderType(String label) {
 
 Map<String, Color> _getChipColors(String label) {
   switch (label.toUpperCase()) {
-    case 'DELIVERY':
+    case 'DEL':
       return {
         'background': Color(0xff1e2e2a),
         'text': Color(0xffa5d6c9),
       };
-    case 'INTRADAY':
+    case 'INT':
       return {
         'background': Color(0xff33260d),
         'text': Color(0xffffb74d),
       };
-    case 'CARRYFORWARD':
+    case 'CFD':
       return {
         'background': Color(0xff1f2537),
         'text': Color(0xff9fa8da),

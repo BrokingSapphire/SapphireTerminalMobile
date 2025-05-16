@@ -46,7 +46,7 @@ class _positionScreenState extends State<positionScreen> {
       "subtitle": "1,782 (-2.5%)",
       "trail1": "+3,20,734.12 (+1.5%)",
       "trail2": "BUY",
-      "trail3": "INTRADAY",
+      "trail3": "INT",
       "isBuy": true,
       "isOpen": true
     },
@@ -56,7 +56,7 @@ class _positionScreenState extends State<positionScreen> {
       "subtitle": "1,782 (-2.5%)",
       "trail1": "-3,23,067.14 (-1.5%)",
       "trail2": "SELL",
-      "trail3": "INTRADAY",
+      "trail3": "INT",
       "isBuy": false,
       "isOpen": true
     },
@@ -66,7 +66,7 @@ class _positionScreenState extends State<positionScreen> {
       "subtitle": "1,782 (-2.5%)",
       "trail1": "+3,20,734.12 (+1.5%)",
       "trail2": "BUY",
-      "trail3": "INTRADAY",
+      "trail3": "INT",
       "isBuy": true,
       "isOpen": true
     },
@@ -76,7 +76,7 @@ class _positionScreenState extends State<positionScreen> {
       "subtitle": "1,782 (-2.5%)",
       "trail1": "-3,23,067.14 (-1.5%)",
       "trail2": "SELL",
-      "trail3": "CARRYFORWARD",
+      "trail3": "CFD",
       "isBuy": false,
       "isOpen": false
     },
@@ -86,7 +86,7 @@ class _positionScreenState extends State<positionScreen> {
       "subtitle": "1,782 (-2.5%)",
       "trail1": "+3,20,734.12 (+1.5%)",
       "trail2": "BUY",
-      "trail3": "INTRADAY",
+      "trail3": "INT",
       "isBuy": true,
       "isOpen": false
     },
@@ -96,7 +96,7 @@ class _positionScreenState extends State<positionScreen> {
       "subtitle": "1,782 (-2.5%)",
       "trail1": "-3,23,067.14 (-1.5%)",
       "trail2": "SELL",
-      "trail3": "INTRADAY",
+      "trail3": "INT",
       "isBuy": false,
       "isOpen": false
     },
@@ -106,7 +106,7 @@ class _positionScreenState extends State<positionScreen> {
       "subtitle": "1,782 (-2.5%)",
       "trail1": "+3,20,734.12 (+1.5%)",
       "trail2": "BUY",
-      "trail3": "INTRADAY",
+      "trail3": "INT",
       "isBuy": true,
       "isOpen": false
     },
@@ -116,7 +116,7 @@ class _positionScreenState extends State<positionScreen> {
       "subtitle": "1,782 (-2.5%)",
       "trail1": "-3,23,067.14 (-1.5%)",
       "trail2": "SELL",
-      "trail3": "CARRYFORWARD",
+      "trail3": "CFD",
       "isBuy": false,
       "isOpen": false
     }
@@ -125,17 +125,17 @@ class _positionScreenState extends State<positionScreen> {
   // Function to get chip colors based on label
   Map<String, Color> _getChipColors(String label) {
     switch (label.toUpperCase()) {
-      case 'DELIVERY':
+      case 'DEL':
         return {
           'background': Color(0xff1e2e2a),
           'text': Color(0xffa5d6c9),
         };
-      case 'INTRADAY':
+      case 'INT':
         return {
           'background': Color(0xff33260d),
           'text': Color(0xffffb74d),
         };
-      case 'CARRYFORWARD':
+      case 'CFD':
         return {
           'background': Color(0xff1f2537),
           'text': Color(0xff9fa8da),
