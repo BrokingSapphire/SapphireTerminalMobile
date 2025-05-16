@@ -406,35 +406,6 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
         ));
   }
 
-  Widget _summaryRow(String lTitle, String lVal, String rTitle, String rVal,
-      {required bool isGain}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _summaryCol(lTitle, lVal, isGain: true),
-        _summaryCol(rTitle, rVal, isGain: isGain),
-      ],
-    );
-  }
-
-  Widget _summaryCol(String title, String value, {required bool isGain}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(title, style: TextStyle(color: Colors.grey, fontSize: 12.sp)),
-        SizedBox(height: 4),
-        Text(
-          value,
-          style: TextStyle(
-            color: isGain ? Colors.green : Colors.red,
-            fontWeight: FontWeight.bold,
-            fontSize: 14.sp,
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _fundTile({
     required String title,
     required String category,

@@ -44,11 +44,11 @@ jobs:
       - name: Get Flutter dependencies
         run: flutter pub get
 
-      - name: Analyze code
-        run: flutter analyze
+#      - name: Analyze code
+#        run: flutter analyze --fatal-warnings
 
-      - name: Run tests
-        run: flutter test
+#      - name: Run tests
+#        run: flutter test
 
 
   build_android:

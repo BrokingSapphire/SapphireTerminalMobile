@@ -3,10 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/home/discover/ipo/applied/ipoApplicationStatus.dart';
 import 'package:sapphire/screens/home/discover/ipo/ongoing/ipoApply.dart';
-// import 'package:sapphire/screens/home/discover/ongoingIpo/ongoingIpoApplication.dart';
-import 'package:sapphire/utils/constWidgets.dart';
 import 'package:sapphire/utils/ipoTile.dart'; // Assuming this file contains your custom widgets
-// import '../../../../utils/ongoingIpoTile.dart'; // Assuming this file contains your ongoingIpoTile widget
 
 class ongoingIpo extends StatefulWidget {
   const ongoingIpo({super.key});

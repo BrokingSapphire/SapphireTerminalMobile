@@ -873,7 +873,6 @@ class sellScreenCheckbox extends StatefulWidget {
 class _sellScreenCheckboxState extends State<sellScreenCheckbox> {
   @override
   Widget build(BuildContext context) {
-    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: () => widget.onChanged(!widget.value),
       child: Container(
@@ -921,7 +920,6 @@ class sellRadioButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: onTap,
       child: Container(

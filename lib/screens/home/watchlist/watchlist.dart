@@ -7,7 +7,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/funds/funds.dart';
 import 'package:sapphire/screens/account/account.dart';
-import 'package:sapphire/screens/home/watchlist/searchPage.dart';
 import 'package:sapphire/screens/orderWindow/buyWindow/buyWrapper.dart';
 import 'package:sapphire/screens/orderWindow/sellWindow/sellWrapper.dart';
 import 'package:sapphire/screens/stockDetailedWindow/watchlistSDW.dart';
@@ -15,9 +14,6 @@ import 'package:sapphire/utils/constWidgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sapphire/utils/naviWithoutAnimation.dart';
 import 'package:sapphire/screens/home/watchlist/watchlistTabBar.dart';
-import 'package:sapphire/utils/filters.dart';
-import 'package:sapphire/wat.dart'; // For showFilterBottomSheet
-import 'package:sapphire/screens/home/watchlist/stockDetailSheet.dart';
 
 class WatchlistScreen extends StatefulWidget {
   const WatchlistScreen({super.key});
@@ -164,20 +160,6 @@ class _WatchlistScreenState extends State<WatchlistScreen>
         'Swiped tab: Switching to Watchlist ${index + 1} (from Watchlist ${_selectedIndex + 1})');
     setState(() {
       _selectedIndex = index;
-    });
-  }
-
-  void _onAddTab() {
-    setState(() {
-      int newTabNumber = tabNames.length + 1;
-      tabNames.add('Watchlist $newTabNumber');
-      watchlistData.add({
-        'items': <dynamic>[],
-      });
-      _selectedIndex = tabNames.length - 1;
-      _pageController.jumpToPage(_selectedIndex);
-      print(
-          'Added new tab: Watchlist $newTabNumber, now on Watchlist $newTabNumber');
     });
   }
 

@@ -2,6 +2,9 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sapphire/main.dart';
+import 'package:sapphire/screens/optionChain/optionChainPrice.dart';
+import 'package:sapphire/screens/optionChain/optionChainWrapper.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -12,12 +15,14 @@ import 'eventsTab.dart';
 class watchlistSDW extends StatefulWidget {
   final String stockName;
   final String stockCode;
-  String price;
-  String change;
+  final String price; // Changed to final
+  final String change; // Changed to final
   final VoidCallback onBuy;
   final VoidCallback onSell;
-  watchlistSDW(
-      {super.key,
+
+  const watchlistSDW(
+      { // Added const constructor
+      super.key,
       required this.stockName,
       required this.stockCode,
       required this.price,
@@ -38,6 +43,11 @@ class _watchlistSDWState extends State<watchlistSDW>
   bool isNSE = true;
   String selectedRange = '1D';
   bool show20depth = false;
+  bool scroll = false;
+  final GlobalKey _scrollKey = GlobalKey();
+  final ScrollController scrollController = ScrollController();
+
+  bool isDividerVisible = true;
 
   // Custom tab bar selection state
   String selectedTab = 'Overview';
@@ -70,15 +80,24 @@ class _watchlistSDWState extends State<watchlistSDW>
     if (initialPage < 0) initialPage = 0;
     _pageController = PageController(initialPage: initialPage);
 
-    // Add listener to update selectedTab when tab changes
+    // Add listener to update selectedTab when tab changes and sync PageView
     _tabController.addListener(() {
       if (!_tabController.indexIsChanging) return;
       setState(() {
         selectedTab = customTabOptions[_tabController.index];
+        // Sync page controller with tab controller
+        _pageController.animateToPage(
+          _tabController.index,
+          duration: Duration(milliseconds: 150),
+          curve: Curves.easeInOut,
+        );
       });
     });
 
-    // Initialize scroll controller
+    // Initialize scroll controller for visibility detection
+    scrollController.addListener(_checkDividerVisibility);
+
+    // Initialize scroll controller for app bar
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
 
@@ -136,11 +155,35 @@ class _watchlistSDWState extends State<watchlistSDW>
 
   @override
   void dispose() {
+    // Clean up all controllers
+    scrollController.removeListener(_checkDividerVisibility);
+    scrollController.dispose();
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
     _tabController.dispose();
     _pageController.dispose();
     super.dispose();
+  }
+
+  // Method to check if the divider is visible
+  void _checkDividerVisibility() {
+    if (_scrollKey.currentContext == null) return;
+
+    final RenderBox box =
+        _scrollKey.currentContext!.findRenderObject() as RenderBox;
+    final position = box.localToGlobal(Offset.zero);
+
+    // If the divider's top position is outside the visible screen bounds (AppBar height or screen height)
+    bool currentlyVisible = position.dy >= kToolbarHeight &&
+        position.dy <= MediaQuery.of(context).size.height;
+
+    if (isDividerVisible != currentlyVisible) {
+      setState(() {
+        isDividerVisible = currentlyVisible;
+        scroll = !scroll;
+        print("Divider visibility changed: $isDividerVisible");
+      });
+    }
   }
 
   // Scroll listener to update app bar title visibility
@@ -230,10 +273,19 @@ class _watchlistSDWState extends State<watchlistSDW>
               height: 22.h,
               color: isDark ? Colors.white : Colors.black),
           SizedBox(width: 16.w),
-          SvgPicture.asset("assets/svgs/chain.svg",
-              width: 22.w,
-              height: 22.h,
-              color: isDark ? Colors.white : Colors.black),
+          GestureDetector(
+            onTap: () {
+              navi(
+                  OptionChainWrapper(
+                      symbol: widget.stockName,
+                      exchange: isNSE ? "NSE" : "BSE"),
+                  context);
+            },
+            child: SvgPicture.asset("assets/svgs/chain.svg",
+                width: 22.w,
+                height: 22.h,
+                color: isDark ? Colors.white : Colors.black),
+          ),
           SizedBox(width: 16.w),
           SvgPicture.asset("assets/svgs/notification.svg",
               width: 22.w,
@@ -289,17 +341,15 @@ class _watchlistSDWState extends State<watchlistSDW>
                 },
                 child: SingleChildScrollView(
                   controller: _scrollController,
-                  physics: const AlwaysScrollableScrollPhysics(),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: 16.w, vertical: 9.h),
                         child: _buildHeader(isDark),
                       ),
-                      SizedBox(
-                        height: 3.h,
-                      ),
+                      SizedBox(height: 3.h),
                       Divider(
                           color: isDark
                               ? const Color(0xFF2F2F2F)
@@ -310,10 +360,7 @@ class _watchlistSDWState extends State<watchlistSDW>
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Header showing stock information
-
                             SizedBox(height: 12.h),
-
                             stockChartWidget(
                               dataPoints: getChartData(selectedRange),
                               selectedRange: selectedRange,
@@ -328,8 +375,6 @@ class _watchlistSDWState extends State<watchlistSDW>
                                 color: isDark
                                     ? const Color(0xFF2F2F2F)
                                     : const Color(0xFFD1D5DB)),
-
-                            // Market Depth section
                             _buildSectionHeader(isDark, 'Market Depth'),
                             SizedBox(height: 16.h),
                             _buildMarketDepthTable(isDark),
@@ -357,42 +402,41 @@ class _watchlistSDWState extends State<watchlistSDW>
                                         )),
                             ),
                             Divider(
+                                key: _scrollKey,
                                 color: isDark
                                     ? const Color(0xFF2F2F2F)
                                     : const Color(0xFFD1D5DB)),
-                            SizedBox(
-                              height: 12.h,
-                            ),
+                            SizedBox(height: 12.h),
+
+                            // Custom tab bar
                             CustomTabBar(
-                                tabController: _tabController,
-                                options: customTabOptions),
-                            SizedBox(
-                              height: 12.h,
+                              tabController: _tabController,
+                              options: customTabOptions,
                             ),
-                            // Page view for tab content using Visibility for better height management
-                            Column(children: [
-                              // Overview tab - visible when tab index is 0
-                              Visibility(
-                                visible: _tabController.index == 0,
-                                maintainState: true,
-                                child: SingleChildScrollView(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  child: _buildOverviewTab(isDark),
-                                ),
+
+                            // Tab content
+                            SizedBox(height: 16.h),
+                            Container(
+                              height: 600.h,
+                              // .h, // Fixed height that can be adjusted as needed
+                              child: TabBarView(
+                                controller: _tabController,
+                                children: [
+                                  SingleChildScrollView(
+                                    physics: scroll
+                                        ? NeverScrollableScrollPhysics()
+                                        : AlwaysScrollableScrollPhysics(),
+                                    child: _buildOverviewTab(isDark),
+                                  ),
+                                  SingleChildScrollView(
+                                    child: newsTab(isDark: isDark),
+                                  ),
+                                  SingleChildScrollView(
+                                    child: EventsTab(isDark: isDark),
+                                  ),
+                                ],
                               ),
-                              // News tab - visible when tab index is 1
-                              Visibility(
-                                visible: _tabController.index == 1,
-                                maintainState: true,
-                                child: newsTab(isDark: isDark),
-                              ),
-                              // Events tab - visible when tab index is 2
-                              Visibility(
-                                visible: _tabController.index == 2,
-                                maintainState: true,
-                                child: EventsTab(isDark: isDark),
-                              ),
-                            ]),
+                            ),
                             // Divider(
                             //     color: isDark
                             //         ? const Color(0xFF2F2F2F)
@@ -713,30 +757,6 @@ class _watchlistSDWState extends State<watchlistSDW>
     );
   }
 
-  // Quick action icons row
-  Widget _buildActionIcons(bool isDark) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        _buildActionItem(
-          isDark,
-          'assets/svgs/setAlert.svg',
-          'Set Alert',
-        ),
-        _buildActionItem(
-          isDark,
-          'assets/svgs/optionChain.svg',
-          'Option Chain',
-        ),
-        _buildActionItem(
-          isDark,
-          'assets/svgs/stockSip.svg',
-          'Stock SIP',
-        ),
-      ],
-    );
-  }
-
   // Individual action item with icon and label
   Widget _buildActionItem(bool isDark, String iconPath, String label) {
     return Column(
@@ -756,30 +776,6 @@ class _watchlistSDWState extends State<watchlistSDW>
             fontWeight: FontWeight.w500,
             color: isDark ? Colors.white : Colors.black87,
           ),
-        ),
-      ],
-    );
-  }
-
-  // "View Chart" link button
-  Widget _buildViewChartLink() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          'View Chart',
-          style: TextStyle(
-            color: Color(0xFF1DB954),
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        SizedBox(width: 5.w),
-        SvgPicture.asset(
-          'assets/svgs/charts.svg',
-          height: 22.h,
-          color: Color(0xFF1DB954),
-          width: 22.w,
         ),
       ],
     );
@@ -1487,9 +1483,7 @@ class _watchlistSDWState extends State<watchlistSDW>
 
   // Performance metrics section with sliders
   Widget _buildPerformanceSection(bool isDark) {
-    double todaysLow = 1467.00;
-    double todaysHigh = 1567.00; // Example higher value
-    double currentPrice = 1500.00;
+// Example higher value
     return Column(
       children: [
         // Today's range
@@ -1964,8 +1958,6 @@ class _watchlistSDWState extends State<watchlistSDW>
     final Color iconColor =
         const Color(0xFF999999); // Icon color (slightly dimmed)
 
-    // Item hover/selection color (when available)
-    final Color hoverColor = const Color(0xFF333333);
     // =============================================
 
     return Row(
@@ -2550,22 +2542,6 @@ class _watchlistSDWState extends State<watchlistSDW>
   // Track which card is selected in the locate section
   String selectedCard = 'Card 1';
 
-  // Custom tab bar with 3 options
-  Widget _buildCustomTabBar(bool isDark) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 8.h),
-      decoration: BoxDecoration(
-        color: isDark ? const Color(0xff1A1A1A) : const Color(0xffF2F2F2),
-        borderRadius: BorderRadius.circular(6.r),
-      ),
-      child: Row(
-        children: customTabOptions.map((tabName) {
-          return _buildTabOption(isDark, tabName, selectedTab == tabName);
-        }).toList(),
-      ),
-    );
-  }
-
   // Individual tab option
   Widget _buildTabOption(bool isDark, String title, bool isSelected) {
     return Expanded(
@@ -2914,122 +2890,122 @@ class _watchlistSDWState extends State<watchlistSDW>
   }
 
   // Content to display based on selected tab
-  Widget _buildTabContent(bool isDark) {
-    // Return different content based on which tab is selected
-    switch (selectedTab) {
-      case 'Overview':
-        return Container(
-          padding: EdgeInsets.all(16.w),
-          decoration: BoxDecoration(
-            color: isDark ? const Color(0xff1A1A1A) : Colors.white,
-            borderRadius: BorderRadius.circular(8.r),
-            border: Border.all(
-              color: isDark ? const Color(0xff2F2F2F) : const Color(0xffE5E7EB),
-              width: 1,
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Company Overview',
-                style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              SizedBox(height: 8.h),
-              Text(
-                'Key metrics and performance indicators for the stock at a glance.',
-                style: TextStyle(
-                  color: isDark
-                      ? const Color(0xffC9CACC)
-                      : const Color(0xff6B7280),
-                  fontSize: 12.sp,
-                ),
-              ),
-              SizedBox(height: 16.h),
-              _buildSummaryMetrics(isDark),
-            ],
-          ),
-        );
-      case 'Financials':
-        return Container(
-          padding: EdgeInsets.all(16.w),
-          decoration: BoxDecoration(
-            color: isDark ? const Color(0xff1A1A1A) : Colors.white,
-            borderRadius: BorderRadius.circular(8.r),
-            border: Border.all(
-              color: isDark ? const Color(0xff2F2F2F) : const Color(0xffE5E7EB),
-              width: 1,
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Financial Performance',
-                style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              SizedBox(height: 8.h),
-              Text(
-                'Quarterly and annual financial data including revenue, profit, and growth.',
-                style: TextStyle(
-                  color: isDark
-                      ? const Color(0xffC9CACC)
-                      : const Color(0xff6B7280),
-                  fontSize: 12.sp,
-                ),
-              ),
-              SizedBox(height: 16.h),
-              _buildFinancialMetrics(isDark),
-            ],
-          ),
-        );
-      case 'News':
-        return Container(
-          padding: EdgeInsets.all(16.w),
-          decoration: BoxDecoration(
-            color: isDark ? const Color(0xff1A1A1A) : Colors.white,
-            borderRadius: BorderRadius.circular(8.r),
-            border: Border.all(
-              color: isDark ? const Color(0xff2F2F2F) : const Color(0xffE5E7EB),
-              width: 1,
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Latest News',
-                style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              SizedBox(height: 8.h),
-              Text(
-                'Recent news and updates related to the company.',
-                style: TextStyle(
-                  color: isDark
-                      ? const Color(0xffC9CACC)
-                      : const Color(0xff6B7280),
-                  fontSize: 12.sp,
-                ),
-              ),
-              SizedBox(height: 16.h),
-              _buildNewsItems(isDark),
-            ],
-          ),
-        );
-      default:
-        return Container(); // Empty container as fallback
-    }
-  }
+  // Widget _buildTabContent(bool isDark) {
+  //   // Return different content based on which tab is selected
+  //   switch (selectedTab) {
+  //     case 'Overview':
+  //       return Container(
+  //         padding: EdgeInsets.all(16.w),
+  //         decoration: BoxDecoration(
+  //           color: isDark ? const Color(0xff1A1A1A) : Colors.white,
+  //           borderRadius: BorderRadius.circular(8.r),
+  //           border: Border.all(
+  //             color: isDark ? const Color(0xff2F2F2F) : const Color(0xffE5E7EB),
+  //             width: 1,
+  //           ),
+  //         ),
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Text(
+  //               'Company Overview',
+  //               style: TextStyle(
+  //                 color: isDark ? Colors.white : Colors.black,
+  //                 fontSize: 14.sp,
+  //                 fontWeight: FontWeight.w600,
+  //               ),
+  //             ),
+  //             SizedBox(height: 8.h),
+  //             Text(
+  //               'Key metrics and performance indicators for the stock at a glance.',
+  //               style: TextStyle(
+  //                 color: isDark
+  //                     ? const Color(0xffC9CACC)
+  //                     : const Color(0xff6B7280),
+  //                 fontSize: 12.sp,
+  //               ),
+  //             ),
+  //             SizedBox(height: 16.h),
+  //             _buildSummaryMetrics(isDark),
+  //           ],
+  //         ),
+  //       );
+  //     case 'Financials':
+  //       return Container(
+  //         padding: EdgeInsets.all(16.w),
+  //         decoration: BoxDecoration(
+  //           color: isDark ? const Color(0xff1A1A1A) : Colors.white,
+  //           borderRadius: BorderRadius.circular(8.r),
+  //           border: Border.all(
+  //             color: isDark ? const Color(0xff2F2F2F) : const Color(0xffE5E7EB),
+  //             width: 1,
+  //           ),
+  //         ),
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Text(
+  //               'Financial Performance',
+  //               style: TextStyle(
+  //                 color: isDark ? Colors.white : Colors.black,
+  //                 fontSize: 14.sp,
+  //                 fontWeight: FontWeight.w600,
+  //               ),
+  //             ),
+  //             SizedBox(height: 8.h),
+  //             Text(
+  //               'Quarterly and annual financial data including revenue, profit, and growth.',
+  //               style: TextStyle(
+  //                 color: isDark
+  //                     ? const Color(0xffC9CACC)
+  //                     : const Color(0xff6B7280),
+  //                 fontSize: 12.sp,
+  //               ),
+  //             ),
+  //             SizedBox(height: 16.h),
+  //             _buildFinancialMetrics(isDark),
+  //           ],
+  //         ),
+  //       );
+  //     case 'News':
+  //       return Container(
+  //         padding: EdgeInsets.all(16.w),
+  //         decoration: BoxDecoration(
+  //           color: isDark ? const Color(0xff1A1A1A) : Colors.white,
+  //           borderRadius: BorderRadius.circular(8.r),
+  //           border: Border.all(
+  //             color: isDark ? const Color(0xff2F2F2F) : const Color(0xffE5E7EB),
+  //             width: 1,
+  //           ),
+  //         ),
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Text(
+  //               'Latest News',
+  //               style: TextStyle(
+  //                 color: isDark ? Colors.white : Colors.black,
+  //                 fontSize: 14.sp,
+  //                 fontWeight: FontWeight.w600,
+  //               ),
+  //             ),
+  //             SizedBox(height: 8.h),
+  //             Text(
+  //               'Recent news and updates related to the company.',
+  //               style: TextStyle(
+  //                 color: isDark
+  //                     ? const Color(0xffC9CACC)
+  //                     : const Color(0xff6B7280),
+  //                 fontSize: 12.sp,
+  //               ),
+  //             ),
+  //             SizedBox(height: 16.h),
+  //             _buildNewsItems(isDark),
+  //           ],
+  //         ),
+  //       );
+  //     default:
+  //       return Container(); // Empty container as fallback
+  //   }
+  // }
 }

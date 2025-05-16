@@ -4,7 +4,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
-import 'package:flutter_svg/svg.dart'; // For SVG image rendering
 import 'package:sapphire/screens/home/trades/trades.dart'; // Trade utilities and shared components
 
 /// TradeModel - Model class to represent an options trade

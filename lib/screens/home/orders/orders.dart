@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/funds/funds.dart';
 import 'package:sapphire/screens/account/account.dart';
-import 'package:sapphire/screens/home/discover/priceAlerts/priceAlerts.dart';
-import 'package:sapphire/screens/home/orders/gttOrder/gtt1Screen.dart';
-import 'package:sapphire/screens/home/discover/priceAlerts/createPriceAlerts.dart';
-import 'package:sapphire/screens/home/orders/basketOrder/basketOrder.dart';
-import 'package:sapphire/screens/orderWindow/buyWindow/buyWrapper.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 import 'package:sapphire/utils/naviWithoutAnimation.dart';
 

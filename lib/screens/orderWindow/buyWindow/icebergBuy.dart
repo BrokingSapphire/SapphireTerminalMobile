@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sapphire/screens/orderWindow/buyWindow/buyWrapper.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../utils/constWidgets.dart';
@@ -17,8 +16,6 @@ class Icebergbuyscreen extends StatefulWidget {
 
 class _IcebergbuyscreenState extends State<Icebergbuyscreen> {
   bool _stopLoss = false;
-  bool _gtt = false;
-
   bool isExpanded = false;
   bool isMarketSelected = true;
   int _selectedIndex = 0;

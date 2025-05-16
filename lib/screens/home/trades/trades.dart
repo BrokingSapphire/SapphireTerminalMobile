@@ -5,15 +5,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:flutter_svg/svg.dart'; // For SVG image rendering
-import 'package:sapphire/main.dart'; // App-wide utilities
 import 'package:sapphire/screens/funds/funds.dart'; // Funds management screen
 import 'package:sapphire/screens/account/account.dart'; // User profile screen
 import 'package:sapphire/screens/home/trades/tradeReuse.dart'; // Reusable trade components
-import 'package:sapphire/screens/home/trades/stocks/activeTrades/activeStocks.dart'; // Active stock trades screen
-import 'package:sapphire/screens/home/trades/stocks/closedTrades/closedStocks.dart'; // Closed stock trades screen
-import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI widgets
 import 'package:sapphire/utils/naviWithoutAnimation.dart'; // Navigation utility without animations
-import '../holdings/holdings.dart'; // Holdings screen
 
 /// TradesScreen - Main screen for displaying and managing trading activities
 /// Shows different trading instruments via tabs and displays market data

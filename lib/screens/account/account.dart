@@ -310,7 +310,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void showDownloadSheet(BuildContext context) {
     String selectedSegment = 'Equity'; // Default selected value
     String selectedReportType = 'PDF'; // Default selected value
-    String symbol = '';
     DateTimeRange? dateRange = DateTimeRange(
       start: DateTime.now().subtract(const Duration(days: 30)),
       end: DateTime.now(),

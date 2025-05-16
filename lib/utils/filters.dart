@@ -7,8 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive U
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
 import 'package:flutter_svg/flutter_svg.dart'; // For SVG image rendering
 
-import 'constWidgets.dart'; // Import for direct access to the widgets
-
 /// FilterOption - Model class for each filter option configuration
 /// Contains the filter label, available sort directions, and associated icon
 class FilterOption {

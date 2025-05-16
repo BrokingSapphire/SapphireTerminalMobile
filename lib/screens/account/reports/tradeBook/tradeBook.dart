@@ -15,7 +15,6 @@ class Tradebook extends StatefulWidget {
 class _TradebookState extends State<Tradebook> {
   void showDownloadSheet(BuildContext context) {
     String? selectedSegment = 'Equity'; // Default selected value
-    String symbol = '';
     DateTimeRange? dateRange = DateTimeRange(
       start: DateTime.now().subtract(const Duration(days: 30)),
       end: DateTime.now(),
@@ -151,7 +150,6 @@ class _TradebookState extends State<Tradebook> {
                       ),
                       onChanged: (value) {
                         setState(() {
-                          symbol = value;
                         });
                       },
                     ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:sapphire/screens/home/holdings/holdingsBottomSheet.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class EquityScreen extends StatefulWidget {
@@ -265,21 +264,6 @@ class _EquityScreenState extends State<EquityScreen> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       behavior: HitTestBehavior.opaque,
-                      onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          backgroundColor: Colors.transparent,
-                          builder: (context) => holdingsBottomSheet(
-                            stockName: filteredEquityData[index]["name"]!,
-                            stockCode:
-                                filteredEquityData[index]["code"] ?? "NSE",
-                            price: filteredEquityData[index]["price"] ?? "0.00",
-                            change:
-                                filteredEquityData[index]["change"] ?? "0.00%",
-                          ),
-                        );
-                      },
                       child: constWidgets.equityScreenTiles(
                           filteredEquityData[index]["name"]!,
                           filteredEquityData[index]["quantity"]!,

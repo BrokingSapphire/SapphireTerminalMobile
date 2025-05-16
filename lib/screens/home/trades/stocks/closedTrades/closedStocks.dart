@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:flutter_svg/svg.dart'; // For SVG image rendering
 import 'package:google_fonts/google_fonts.dart'; // For custom typography
-import 'package:percent_indicator/circular_percent_indicator.dart'; // For circular progress indicators
 import 'package:sapphire/screens/home/trades/stocks/closedTrades/closedStocksGrid.dart'; // Grid view for closed stock trades
 import 'package:sapphire/screens/home/trades/stocks/closedTrades/closedStocksList.dart'; // List view for closed stock trades
 
