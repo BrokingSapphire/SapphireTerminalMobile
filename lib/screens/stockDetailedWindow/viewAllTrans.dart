@@ -8,9 +8,10 @@ class ViewAllTransactions extends StatefulWidget {
   State<ViewAllTransactions> createState() => _ViewAllTransactionsState();
 }
 
-class _ViewAllTransactionsState extends State<ViewAllTransactions> with SingleTickerProviderStateMixin {
+class _ViewAllTransactionsState extends State<ViewAllTransactions>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  
+
   @override
   void initState() {
     super.initState();
@@ -23,8 +24,11 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions> with SingleTi
     super.dispose();
   }
 
-  Widget _buildTransactionItem(String date, String quantity, String investedPrice, String atp) {
+  Widget _buildTransactionItem(
+      String date, String quantity, String investedPrice, String atp) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.h),
       child: Column(
@@ -55,14 +59,14 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions> with SingleTi
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Quantity : $quantity",
+                "Quantity: $quantity",
                 style: TextStyle(
                   fontSize: 12.sp,
                   color: isDark ? Color(0xffc9cacc) : Color(0xff6B7280),
                 ),
               ),
               Text(
-                "ATP : $atp",
+                "ATP: $atp",
                 style: TextStyle(
                   fontSize: 12.sp,
                   color: isDark ? Color(0xffc9cacc) : Color(0xff6B7280),
@@ -75,8 +79,11 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions> with SingleTi
     );
   }
 
-  Widget _buildMonthSection(String month, List<Map<String, String>> transactions) {
+  Widget _buildMonthSection(
+      String month, List<Map<String, String>> transactions) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -91,19 +98,37 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions> with SingleTi
             ),
           ),
         ),
-        ...transactions.map((transaction) => _buildTransactionItem(
+        ListView.separated(
+          shrinkWrap: true, // Ensure it doesn't scroll independently
+          physics:
+              const NeverScrollableScrollPhysics(), // Disable scrolling within ListView
+          itemCount: transactions.length,
+          itemBuilder: (context, index) {
+            final transaction = transactions[index];
+            return _buildTransactionItem(
               transaction['date']!,
               transaction['quantity']!,
               transaction['investedPrice']!,
               transaction['atp']!,
-            )),
+            );
+          },
+          separatorBuilder: (context, index) {
+            return Divider(
+              height: 16.h, // Space above and below the divider
+              thickness: 1.h,
+              color: isDark
+                  ? Color(0xff2f2f2f)
+                  : Colors.grey[300], // Theme-aware divider color
+            );
+          },
+        ),
       ],
     );
   }
 
   Widget _buildShortTermTab() {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     // Mock data for short term transactions
     final aprilTransactions = [
       {
@@ -131,7 +156,7 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions> with SingleTi
         'atp': '₹134',
       },
     ];
-    
+
     final marchTransactions = [
       {
         'date': '26 March 2025',
@@ -146,7 +171,7 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions> with SingleTi
         'atp': '₹134',
       },
     ];
-    
+
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.all(16.w),
@@ -167,8 +192,7 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions> with SingleTi
                     "Summary",
                     style: TextStyle(
                       fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                      color: isDark ? Colors.white : Colors.black,
+                      color: isDark ? Colors.white : Color(0xff6B7280),
                     ),
                   ),
                   SizedBox(height: 12.h),
@@ -182,7 +206,9 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions> with SingleTi
                             "Total Qty.",
                             style: TextStyle(
                               fontSize: 12.sp,
-                              color: isDark ? Color(0xffc9cacc) : Color(0xff6B7280),
+                              color: isDark
+                                  ? Color(0xffc9cacc)
+                                  : Color(0xff6B7280),
                             ),
                           ),
                           SizedBox(height: 4.h),
@@ -199,7 +225,9 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions> with SingleTi
                             "P&L",
                             style: TextStyle(
                               fontSize: 12.sp,
-                              color: isDark ? Color(0xffc9cacc) : Color(0xff6B7280),
+                              color: isDark
+                                  ? Color(0xffc9cacc)
+                                  : Color(0xff6B7280),
                             ),
                           ),
                           SizedBox(height: 4.h),
@@ -220,7 +248,9 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions> with SingleTi
                             "Present value",
                             style: TextStyle(
                               fontSize: 12.sp,
-                              color: isDark ? Color(0xffc9cacc) : Color(0xff6B7280),
+                              color: isDark
+                                  ? Color(0xffc9cacc)
+                                  : Color(0xff6B7280),
                             ),
                           ),
                           SizedBox(height: 4.h),
@@ -237,7 +267,9 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions> with SingleTi
                             "XIRR",
                             style: TextStyle(
                               fontSize: 12.sp,
-                              color: isDark ? Color(0xffc9cacc) : Color(0xff6B7280),
+                              color: isDark
+                                  ? Color(0xffc9cacc)
+                                  : Color(0xff6B7280),
                             ),
                           ),
                           SizedBox(height: 4.h),
@@ -257,11 +289,9 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions> with SingleTi
               ),
             ),
             SizedBox(height: 16.h),
-            
             // April transactions
             _buildMonthSection("April 2025", aprilTransactions),
             SizedBox(height: 16.h),
-            
             // March transactions
             _buildMonthSection("March 2025", marchTransactions),
           ],
@@ -272,7 +302,7 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions> with SingleTi
 
   Widget _buildLongTermTab() {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Center(
       child: Padding(
         padding: EdgeInsets.all(16.w),
@@ -292,7 +322,7 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions> with SingleTi
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? Colors.black : Colors.white,
+      // Removed backgroundColor as per previous instruction
       appBar: AppBar(
         backgroundColor: isDark ? Colors.black : Colors.white,
         leadingWidth: 28,
