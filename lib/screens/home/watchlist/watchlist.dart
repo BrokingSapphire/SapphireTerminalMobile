@@ -9,7 +9,7 @@ import 'package:sapphire/screens/funds/funds.dart';
 import 'package:sapphire/screens/account/account.dart';
 import 'package:sapphire/screens/orderWindow/buyWindow/buyWrapper.dart';
 import 'package:sapphire/screens/orderWindow/sellWindow/sellWrapper.dart';
-import 'package:sapphire/screens/stockDetailedWindow/watchlistSDW.dart';
+import 'package:sapphire/screens/stockDetailedWindow/watchlist/watchlistSDW.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sapphire/utils/naviWithoutAnimation.dart';

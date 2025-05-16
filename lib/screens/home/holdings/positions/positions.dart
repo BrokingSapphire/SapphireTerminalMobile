@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/stockDetailedWindow/equityDetails.dart';
-import 'package:sapphire/screens/stockDetailedWindow/positionsDetails.dart';
+import 'package:sapphire/screens/stockDetailedWindow/holdings/equity/equitySDW.dart';
+import 'package:sapphire/screens/stockDetailedWindow/holdings/positions/positionsSDW.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class positionScreen extends StatefulWidget {

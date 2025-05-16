@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/stockDetailedWindow/mutualFundsDetails.dart';
+import 'package:sapphire/screens/stockDetailedWindow/holdings/mutualFunds/mutualFundsSDW.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class MutualFundsScreen extends StatefulWidget {
