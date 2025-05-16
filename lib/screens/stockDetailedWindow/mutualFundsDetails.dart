@@ -131,8 +131,8 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                       child: Text(
                                         "Motilal Oswal Midcap Fund Direct Growth",
                                         style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w600,
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.w500,
                                           color: isDark
                                               ? Colors.white
                                               : Colors.black,
@@ -184,119 +184,144 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                             ),
                           ),
                           SizedBox(height: 4.h),
-                          Text(
-                            "+₹22,678.80 (2.78%)",
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.green,
-                            ),
-                          ),
-                          SizedBox(height: 16.h),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Total Qty.",
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: isDark
-                                          ? Color(0xffc9cacc)
-                                          : Color(0xff6B7280),
-                                    ),
-                                  ),
-                                  SizedBox(height: 4.h),
-                                  Text(
-                                    "100",
-                                    style: TextStyle(
-                                      fontSize: 13.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color:
-                                          isDark ? Colors.white : Colors.black,
-                                    ),
-                                  ),
-                                ],
+                              Text(
+                                "+₹22,678.80",
+                                style: TextStyle(
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.green,
+                                ),
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "XIRR",
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: isDark
-                                          ? Color(0xffc9cacc)
-                                          : Color(0xff6B7280),
-                                    ),
-                                  ),
-                                  SizedBox(height: 4.h),
-                                  Text(
-                                    "0.00%",
-                                    style: TextStyle(
-                                      fontSize: 13.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color:
-                                          isDark ? Colors.white : Colors.black,
-                                    ),
-                                  ),
-                                ],
+                              SizedBox(width: 4.w),
+                              Text(
+                                "(2.78%)",
+                                style: TextStyle(
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.green,
+                                ),
                               ),
                             ],
                           ),
                           SizedBox(height: 16.h),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Present value",
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: isDark
-                                          ? Color(0xffc9cacc)
-                                          : Color(0xff6B7280),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Total Qty.",
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: isDark
+                                            ? Color(0xffc9cacc)
+                                            : Color(0xff6B7280),
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(height: 4.h),
-                                  Text(
-                                    "₹1,34,789.00",
-                                    style: TextStyle(
-                                      fontSize: 13.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color:
-                                          isDark ? Colors.white : Colors.black,
+                                    SizedBox(height: 6.h),
+                                    Text(
+                                      "100",
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: isDark
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Current value",
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: isDark
-                                          ? Color(0xffc9cacc)
-                                          : Color(0xff6B7280),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "XIRR",
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: isDark
+                                            ? Color(0xffc9cacc)
+                                            : Color(0xff6B7280),
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(height: 4.h),
-                                  Text(
-                                    "₹1,34,789.00",
-                                    style: TextStyle(
-                                      fontSize: 13.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color:
-                                          isDark ? Colors.white : Colors.black,
+                                    SizedBox(height: 6.h),
+                                    Text(
+                                      "0.00%",
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: isDark
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 12.h),
+                          Row(
+                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Present value",
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: isDark
+                                            ? Color(0xffc9cacc)
+                                            : Color(0xff6B7280),
+                                      ),
+                                    ),
+                                    SizedBox(height: 6.h),
+                                    Text(
+                                      "₹1,34,789.00",
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: isDark
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Current value",
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: isDark
+                                            ? Color(0xffc9cacc)
+                                            : Color(0xff6B7280),
+                                      ),
+                                    ),
+                                    SizedBox(height: 6.h),
+                                    Text(
+                                      "₹1,34,789.00",
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: isDark
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -346,7 +371,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 8.h),
+                          SizedBox(height: 6.h),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -408,7 +433,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                 child: Text(
                                   "View all Transactions",
                                   style: TextStyle(
-                                    fontSize: 12.sp,
+                                    fontSize: 13.sp,
                                     color: const Color(0xff1DB954),
                                   ),
                                 ),
@@ -422,7 +447,8 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                               // Short term container
                               Expanded(
                                 child: Container(
-                                  padding: EdgeInsets.all(12.w),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.w, vertical: 8.h),
                                   decoration: BoxDecoration(
                                     color: isDark
                                         ? Color(0xff121212)
@@ -527,7 +553,8 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                               // Long term container
                               Expanded(
                                 child: Container(
-                                  padding: EdgeInsets.all(12.w),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.w, vertical: 8.h),
                                   decoration: BoxDecoration(
                                     color: isDark
                                         ? Color(0xff121212)

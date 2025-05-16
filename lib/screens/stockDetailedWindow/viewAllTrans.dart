@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sapphire/utils/constWidgets.dart';
 
 class ViewAllTransactions extends StatefulWidget {
   const ViewAllTransactions({Key? key}) : super(key: key);
@@ -11,6 +12,7 @@ class ViewAllTransactions extends StatefulWidget {
 class _ViewAllTransactionsState extends State<ViewAllTransactions>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  List<String> tabOptions = ['Short Term', 'Long Term'];
 
   @override
   void initState() {
@@ -45,12 +47,23 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions>
                   color: isDark ? Colors.white : Colors.black,
                 ),
               ),
-              Text(
-                "Invested Price: $investedPrice",
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  color: isDark ? Color(0xffc9cacc) : Color(0xff6B7280),
-                ),
+              Row(
+                children: [
+                  Text(
+                    "Invested Price: ",
+                    style: TextStyle(
+                      fontSize: 13.sp,
+                      color: isDark ? Colors.white70 : Color(0xff6B7280),
+                    ),
+                  ),
+                  Text(
+                    "$investedPrice",
+                    style: TextStyle(
+                      fontSize: 13.sp,
+                      color: isDark ? Colors.white : Color(0xff6B7280),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -58,19 +71,41 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions>
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "Quantity: $quantity",
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  color: isDark ? Color(0xffc9cacc) : Color(0xff6B7280),
-                ),
+              Row(
+                children: [
+                  Text(
+                    "Quantity: ",
+                    style: TextStyle(
+                      fontSize: 13.sp,
+                      color: isDark ? Colors.white70 : Color(0xff6B7280),
+                    ),
+                  ),
+                  Text(
+                    "$quantity",
+                    style: TextStyle(
+                      fontSize: 13.sp,
+                      color: isDark ? Colors.white : Color(0xff6B7280),
+                    ),
+                  ),
+                ],
               ),
-              Text(
-                "ATP: $atp",
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  color: isDark ? Color(0xffc9cacc) : Color(0xff6B7280),
-                ),
+              Row(
+                children: [
+                  Text(
+                    "ATP: ",
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: isDark ? Colors.white70 : Color(0xff6B7280),
+                    ),
+                  ),
+                  Text(
+                    "$atp",
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: isDark ? Colors.white : Color(0xff6B7280),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -92,8 +127,8 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions>
           child: Text(
             month,
             style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w600,
+              fontSize: 15.sp,
+              fontWeight: FontWeight.w400,
               color: isDark ? Colors.white : Colors.black,
             ),
           ),
@@ -114,7 +149,7 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions>
           },
           separatorBuilder: (context, index) {
             return Divider(
-              height: 16.h, // Space above and below the divider
+              height: 12.h, // Space above and below the divider
               thickness: 1.h,
               color: isDark
                   ? Color(0xff2f2f2f)
@@ -191,97 +226,101 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions>
                   Text(
                     "Summary",
                     style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: 15.sp,
                       color: isDark ? Colors.white : Color(0xff6B7280),
                     ),
                   ),
                   SizedBox(height: 12.h),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Total Qty.",
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: isDark
-                                  ? Color(0xffc9cacc)
-                                  : Color(0xff6B7280),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Total Qty.",
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: isDark
+                                    ? Color(0xffc9cacc)
+                                    : Color(0xff6B7280),
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 4.h),
-                          Text(
-                            "100",
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w500,
-                              color: isDark ? Colors.white : Colors.black,
+                            SizedBox(height: 6.h),
+                            Text(
+                              "100",
+                              style: TextStyle(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w500,
+                                color: isDark ? Colors.white : Colors.black,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 8.h),
-                          Text(
-                            "P&L",
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: isDark
-                                  ? Color(0xffc9cacc)
-                                  : Color(0xff6B7280),
+                            SizedBox(height: 12.h),
+                            Text(
+                              "P&L",
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: isDark
+                                    ? Color(0xffc9cacc)
+                                    : Color(0xff6B7280),
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 4.h),
-                          Text(
-                            "-₹445.60",
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.red,
+                            SizedBox(height: 6.h),
+                            Text(
+                              "-₹445.60",
+                              style: TextStyle(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.red,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Present value",
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: isDark
-                                  ? Color(0xffc9cacc)
-                                  : Color(0xff6B7280),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Present value",
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: isDark
+                                    ? Color(0xffc9cacc)
+                                    : Color(0xff6B7280),
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 4.h),
-                          Text(
-                            "₹1,34,789.00",
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w500,
-                              color: isDark ? Colors.white : Colors.black,
+                            SizedBox(height: 6.h),
+                            Text(
+                              "₹1,34,789.00",
+                              style: TextStyle(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w500,
+                                color: isDark ? Colors.white : Colors.black,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 8.h),
-                          Text(
-                            "XIRR",
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: isDark
-                                  ? Color(0xffc9cacc)
-                                  : Color(0xff6B7280),
+                            SizedBox(height: 12.h),
+                            Text(
+                              "XIRR",
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: isDark
+                                    ? Color(0xffc9cacc)
+                                    : Color(0xff6B7280),
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 4.h),
-                          Text(
-                            "₹245.60",
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w500,
-                              color: isDark ? Colors.white : Colors.black,
+                            SizedBox(height: 6.h),
+                            Text(
+                              "₹245.60",
+                              style: TextStyle(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w500,
+                                color: isDark ? Colors.white : Colors.black,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -322,7 +361,7 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions>
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      // Removed backgroundColor as per previous instruction
+      backgroundColor: isDark ? Colors.black : Colors.white,
       appBar: AppBar(
         backgroundColor: isDark ? Colors.black : Colors.white,
         leadingWidth: 28,
@@ -341,30 +380,26 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions>
             color: isDark ? Colors.white : Colors.black,
           ),
         ),
+        // Add divider between title and tab bar
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(48.h),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: TabBar(
-              controller: _tabController,
-              isScrollable: true,
-              labelColor: Colors.green,
-              unselectedLabelColor: isDark ? Colors.white : Colors.black,
-              indicatorColor: Colors.green,
-              indicatorSize: TabBarIndicatorSize.label,
-              labelStyle: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
+          preferredSize: Size.fromHeight(41.h),
+          child: Column(
+            children: [
+              // Divider between AppBar title and tab bar
+              Padding(
+                padding: EdgeInsets.only(bottom: 16.h),
+                child: Divider(
+                  height: 1.h,
+                  thickness: 1.h,
+                  color: isDark ? Color(0xff2f2f2f) : Colors.grey[300],
+                ),
               ),
-              unselectedLabelStyle: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w400,
+              // SizedBox(height: 16.h),
+              CustomTabBar(
+                tabController: _tabController,
+                options: tabOptions,
               ),
-              tabs: [
-                Tab(text: "Short Term"),
-                Tab(text: "Long Term"),
-              ],
-            ),
+            ],
           ),
         ),
       ),
