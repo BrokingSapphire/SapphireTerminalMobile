@@ -229,7 +229,7 @@ class _watchlistSDWState extends State<watchlistSDW>
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "₹ " + widget.price,
+                        widget.price,
                         style: TextStyle(
                           fontSize: 13.sp,
                           fontWeight: FontWeight.w500,
@@ -277,6 +277,9 @@ class _watchlistSDWState extends State<watchlistSDW>
               navi(
                   OptionChainWrapper(
                       symbol: widget.stockName,
+                      stockName: widget.stockName,
+                      price: widget.price,
+                      change: widget.change,
                       exchange: isNSE ? "NSE" : "BSE"),
                   context);
             },

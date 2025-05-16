@@ -20,189 +20,229 @@ class _optionChainOIState extends State<optionChainOI>
   // Data for the option chain above the highlighted row
   final List<Map<String, dynamic>> optionChainDataAbove = [
     {
-      'leftVolume': '1K',
-      'callOI': '10K',
-      'callPercent': '+4.55%',
-      'strikePrice': '23,700',
-      'putOI': '12K',
-      'putPercent': '+4.55%',
-      'rightVolume': '120K',
+      "callOI": "10K",
+      "callOiPercentage": "+4.55%",
+      "callPrice": "₹1,580.60",
+      "callPricePercentage": "+4.45%",
+      "strikePrice": "23,700",
+      "putPrice": "₹80.60",
+      "putPricePercentage": "+4.55%",
+      "putOI": "12K",
+      "putOiPercentage": "+4.55%"
     },
     {
-      'leftVolume': '2K',
-      'callOI': '11K',
-      'callPercent': '+4.75%',
-      'strikePrice': '23,750',
-      'putOI': '13K',
-      'putPercent': '+5.20%',
-      'rightVolume': '110K',
+      "callOI": "11K",
+      "callOiPercentage": "+4.75%",
+      "callPrice": "₹1,580.60",
+      "callPricePercentage": "+4.45%",
+      "strikePrice": "23,750",
+      "putPrice": "₹80.60",
+      "putPricePercentage": "+5.20%",
+      "putOI": "13K",
+      "putOiPercentage": "+5.20%"
     },
     {
-      'leftVolume': '3K',
-      'callOI': '12K',
-      'callPercent': '+5.00%',
-      'strikePrice': '23,800',
-      'putOI': '14K',
-      'putPercent': '+6.00%',
-      'rightVolume': '100K',
+      "callOI": "12K",
+      "callOiPercentage": "+5.00%",
+      "callPrice": "₹1,580.60",
+      "callPricePercentage": "+4.45%",
+      "strikePrice": "23,800",
+      "putPrice": "₹80.60",
+      "putPricePercentage": "+6.00%",
+      "putOI": "14K",
+      "putOiPercentage": "+6.00%"
     },
     {
-      'leftVolume': '4K',
-      'callOI': '13K',
-      'callPercent': '+5.25%',
-      'strikePrice': '23,850',
-      'putOI': '15K',
-      'putPercent': '+7.10%',
-      'rightVolume': '90K',
+      "callOI": "13K",
+      "callOiPercentage": "+5.25%",
+      "callPrice": "₹1,580.60",
+      "callPricePercentage": "+4.45%",
+      "strikePrice": "23,850",
+      "putPrice": "₹80.60",
+      "putPricePercentage": "+7.10%",
+      "putOI": "15K",
+      "putOiPercentage": "+7.10%"
     },
     {
-      'leftVolume': '5K',
-      'callOI': '14K',
-      'callPercent': '+5.50%',
-      'strikePrice': '23,900',
-      'putOI': '16K',
-      'putPercent': '+8.25%',
-      'rightVolume': '85K',
+      "callOI": "14K",
+      "callOiPercentage": "+5.50%",
+      "callPrice": "₹1,580.60",
+      "callPricePercentage": "+4.45%",
+      "strikePrice": "23,900",
+      "putPrice": "₹80.60",
+      "putPricePercentage": "+8.25%",
+      "putOI": "16K",
+      "putOiPercentage": "+8.25%"
     },
     {
-      'leftVolume': '6K',
-      'callOI': '15K',
-      'callPercent': '+5.75%',
-      'strikePrice': '23,950',
-      'putOI': '17K',
-      'putPercent': '+9.50%',
-      'rightVolume': '80K',
+      "callOI": "15K",
+      "callOiPercentage": "+5.75%",
+      "callPrice": "₹1,580.60",
+      "callPricePercentage": "+4.45%",
+      "strikePrice": "23,950",
+      "putPrice": "₹80.60",
+      "putPricePercentage": "+9.50%",
+      "putOI": "17K",
+      "putOiPercentage": "+9.50%"
     },
     {
-      'leftVolume': '7K',
-      'callOI': '16K',
-      'callPercent': '+6.00%',
-      'strikePrice': '24,000',
-      'putOI': '18K',
-      'putPercent': '+10.75%',
-      'rightVolume': '75K',
+      "callOI": "16K",
+      "callOiPercentage": "+6.00%",
+      "callPrice": "₹1,580.60",
+      "callPricePercentage": "+4.45%",
+      "strikePrice": "24,000",
+      "putPrice": "₹80.60",
+      "putPricePercentage": "+10.75%",
+      "putOI": "18K",
+      "putOiPercentage": "+10.75%"
     },
     {
-      'leftVolume': '8K',
-      'callOI': '17K',
-      'callPercent': '+6.25%',
-      'strikePrice': '24,050',
-      'putOI': '19K',
-      'putPercent': '+12.00%',
-      'rightVolume': '70K',
+      "callOI": "17K",
+      "callOiPercentage": "+6.25%",
+      "callPrice": "₹1,580.60",
+      "callPricePercentage": "+4.45%",
+      "strikePrice": "24,050",
+      "putPrice": "₹80.60",
+      "putPricePercentage": "+12.00%",
+      "putOI": "19K",
+      "putOiPercentage": "+12.00%"
     },
     {
-      'leftVolume': '9K',
-      'callOI': '18K',
-      'callPercent': '+6.50%',
-      'strikePrice': '24,100',
-      'putOI': '20K',
-      'putPercent': '+13.25%',
-      'rightVolume': '65K',
+      "callOI": "18K",
+      "callOiPercentage": "+6.50%",
+      "callPrice": "₹1,580.60",
+      "callPricePercentage": "+4.45%",
+      "strikePrice": "24,100",
+      "putPrice": "₹80.60",
+      "putPricePercentage": "+13.25%",
+      "putOI": "20K",
+      "putOiPercentage": "+13.25%"
     },
     {
-      'leftVolume': '10K',
-      'callOI': '19K',
-      'callPercent': '+6.75%',
-      'strikePrice': '24,150',
-      'putOI': '21K',
-      'putPercent': '+14.50%',
-      'rightVolume': '60K',
-    },
+      "callOI": "19K",
+      "callOiPercentage": "+6.75%",
+      "callPrice": "₹1,580.60",
+      "callPricePercentage": "+4.45%",
+      "strikePrice": "24,150",
+      "putPrice": "₹80.60",
+      "putPricePercentage": "+14.50%",
+      "putOI": "21K",
+      "putOiPercentage": "+14.50%"
+    }
   ];
 
   // Data for the option chain below the highlighted row
   final List<Map<String, dynamic>> optionChainDataBelow = [
     {
-      'leftVolume': '11K',
-      'callOI': '20K',
-      'callPercent': '+7.00%',
-      'strikePrice': '24,200',
-      'putOI': '22K',
-      'putPercent': '+15.75%',
-      'rightVolume': '55K',
+      "callOI": "10K",
+      "callOiPercentage": "+4.55%",
+      "callPrice": "₹1,580.60",
+      "callPricePercentage": "+4.45%",
+      "strikePrice": "23,700",
+      "putPrice": "₹80.60",
+      "putPricePercentage": "+4.55%",
+      "putOI": "12K",
+      "putOiPercentage": "+4.55%"
     },
     {
-      'leftVolume': '12K',
-      'callOI': '21K',
-      'callPercent': '+7.25%',
-      'strikePrice': '24,250',
-      'putOI': '23K',
-      'putPercent': '+17.00%',
-      'rightVolume': '50K',
+      "callOI": "11K",
+      "callOiPercentage": "+4.75%",
+      "callPrice": "₹1,580.60",
+      "callPricePercentage": "+4.45%",
+      "strikePrice": "23,750",
+      "putPrice": "₹80.60",
+      "putPricePercentage": "+5.20%",
+      "putOI": "13K",
+      "putOiPercentage": "+5.20%"
     },
     {
-      'leftVolume': '13K',
-      'callOI': '22K',
-      'callPercent': '+7.50%',
-      'strikePrice': '24,300',
-      'putOI': '24K',
-      'putPercent': '+18.25%',
-      'rightVolume': '45K',
+      "callOI": "12K",
+      "callOiPercentage": "+5.00%",
+      "callPrice": "₹1,580.60",
+      "callPricePercentage": "+4.45%",
+      "strikePrice": "23,800",
+      "putPrice": "₹80.60",
+      "putPricePercentage": "+6.00%",
+      "putOI": "14K",
+      "putOiPercentage": "+6.00%"
     },
     {
-      'leftVolume': '14K',
-      'callOI': '23K',
-      'callPercent': '+7.75%',
-      'strikePrice': '24,350',
-      'putOI': '25K',
-      'putPercent': '+19.50%',
-      'rightVolume': '40K',
+      "callOI": "13K",
+      "callOiPercentage": "+5.25%",
+      "callPrice": "₹1,580.60",
+      "callPricePercentage": "+4.45%",
+      "strikePrice": "23,850",
+      "putPrice": "₹80.60",
+      "putPricePercentage": "+7.10%",
+      "putOI": "15K",
+      "putOiPercentage": "+7.10%"
     },
     {
-      'leftVolume': '15K',
-      'callOI': '24K',
-      'callPercent': '+8.00%',
-      'strikePrice': '24,400',
-      'putOI': '26K',
-      'putPercent': '+20.75%',
-      'rightVolume': '35K',
+      "callOI": "14K",
+      "callOiPercentage": "+5.50%",
+      "callPrice": "₹1,580.60",
+      "callPricePercentage": "+4.45%",
+      "strikePrice": "23,900",
+      "putPrice": "₹80.60",
+      "putPricePercentage": "+8.25%",
+      "putOI": "16K",
+      "putOiPercentage": "+8.25%"
     },
     {
-      'leftVolume': '16K',
-      'callOI': '25K',
-      'callPercent': '+8.25%',
-      'strikePrice': '24,450',
-      'putOI': '27K',
-      'putPercent': '+22.00%',
-      'rightVolume': '30K',
+      "callOI": "15K",
+      "callOiPercentage": "+5.75%",
+      "callPrice": "₹1,580.60",
+      "callPricePercentage": "+4.45%",
+      "strikePrice": "23,950",
+      "putPrice": "₹80.60",
+      "putPricePercentage": "+9.50%",
+      "putOI": "17K",
+      "putOiPercentage": "+9.50%"
     },
     {
-      'leftVolume': '17K',
-      'callOI': '26K',
-      'callPercent': '+8.50%',
-      'strikePrice': '24,500',
-      'putOI': '28K',
-      'putPercent': '+23.25%',
-      'rightVolume': '25K',
+      "callOI": "16K",
+      "callOiPercentage": "+6.00%",
+      "callPrice": "₹1,580.60",
+      "callPricePercentage": "+4.45%",
+      "strikePrice": "24,000",
+      "putPrice": "₹80.60",
+      "putPricePercentage": "+10.75%",
+      "putOI": "18K",
+      "putOiPercentage": "+10.75%"
     },
     {
-      'leftVolume': '18K',
-      'callOI': '27K',
-      'callPercent': '+8.75%',
-      'strikePrice': '24,550',
-      'putOI': '29K',
-      'putPercent': '+24.50%',
-      'rightVolume': '20K',
+      "callOI": "17K",
+      "callOiPercentage": "+6.25%",
+      "callPrice": "₹1,580.60",
+      "callPricePercentage": "+4.45%",
+      "strikePrice": "24,050",
+      "putPrice": "₹80.60",
+      "putPricePercentage": "+12.00%",
+      "putOI": "19K",
+      "putOiPercentage": "+12.00%"
     },
     {
-      'leftVolume': '19K',
-      'callOI': '28K',
-      'callPercent': '+9.00%',
-      'strikePrice': '24,600',
-      'putOI': '30K',
-      'putPercent': '+25.75%',
-      'rightVolume': '15K',
+      "callOI": "18K",
+      "callOiPercentage": "+6.50%",
+      "callPrice": "₹1,580.60",
+      "callPricePercentage": "+4.45%",
+      "strikePrice": "24,100",
+      "putPrice": "₹80.60",
+      "putPricePercentage": "+13.25%",
+      "putOI": "20K",
+      "putOiPercentage": "+13.25%"
     },
     {
-      'leftVolume': '20K',
-      'callOI': '29K',
-      'callPercent': '+9.25%',
-      'strikePrice': '24,650',
-      'putOI': '31K',
-      'putPercent': '+27.00%',
-      'rightVolume': '10K',
-    },
+      "callOI": "19K",
+      "callOiPercentage": "+6.75%",
+      "callPrice": "₹1,580.60",
+      "callPricePercentage": "+4.45%",
+      "strikePrice": "24,150",
+      "putPrice": "₹80.60",
+      "putPricePercentage": "+14.50%",
+      "putOI": "21K",
+      "putOiPercentage": "+14.50%"
+    }
   ];
 
   @override
@@ -245,25 +285,29 @@ class _optionChainOIState extends State<optionChainOI>
   Widget build(BuildContext context) {
     final List<Widget> rowsAbove = optionChainDataAbove
         .map((data) => _buildOptionRow(
-              data['leftVolume'],
               data['callOI'],
-              data['callPercent'],
+              data['callOiPercentage'],
+              data['callPrice'],
+              data['callPricePercentage'],
               data['strikePrice'],
+              data['putPrice'],
+              data['putPricePercentage'],
               data['putOI'],
-              data['putPercent'],
-              data['rightVolume'],
+              data['putOiPercentage'],
             ))
         .toList();
 
     final List<Widget> rowsBelow = optionChainDataBelow
         .map((data) => _buildOptionRow(
-              data['leftVolume'],
               data['callOI'],
-              data['callPercent'],
+              data['callOiPercentage'],
+              data['callPrice'],
+              data['callPricePercentage'],
               data['strikePrice'],
+              data['putPrice'],
+              data['putPricePercentage'],
               data['putOI'],
-              data['putPercent'],
-              data['rightVolume'],
+              data['putOiPercentage'],
             ))
         .toList();
 
@@ -313,120 +357,119 @@ class _optionChainOIState extends State<optionChainOI>
   }
 
   Widget _buildHeaderRow({Key? key}) {
+    return Column(
+      children: [
+        Container(
+          key: key,
+          color: Colors.black,
+          padding: EdgeInsets.only(top: 8.h),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Column(
+                  children: [
+                    Text(
+                      "Call OI",
+                      style: TextStyle(color: Colors.white, fontSize: 13.sp),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  children: [
+                    Text(
+                      "Call Price",
+                      style: TextStyle(color: Colors.white, fontSize: 13.sp),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  children: [
+                    Text(
+                      "Strike Price",
+                      style: TextStyle(color: Colors.white, fontSize: 13.sp),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  children: [
+                    Text(
+                      "Put Price",
+                      style: TextStyle(color: Colors.white, fontSize: 13.sp),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  children: [
+                    Text(
+                      "Put OI",
+                      style: TextStyle(color: Colors.white, fontSize: 13.sp),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 8.h,
+        ),
+        Divider(
+          color: Color(0xff2f2f2f),
+        )
+      ],
+    );
+  }
+
+  Widget _buildOptionRow(
+      String callOI,
+      String callOiPercentage,
+      String callPrice,
+      String callPricePercentage,
+      String strikePrice,
+      String putPrice,
+      String putPricePercentage,
+      String putOI,
+      String putOiPercentage) {
     return Container(
-      key: key,
-      color: Colors.black,
+      color: const Color(0xff000000),
       padding: EdgeInsets.symmetric(vertical: 8.h),
       child: Row(
         children: [
           Expanded(
-            flex: 1,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  "Volume",
-                  style: TextStyle(color: Colors.white70, fontSize: 14.sp),
-                  textAlign: TextAlign.center,
+                  callOI,
+                  style: TextStyle(color: Colors.white, fontSize: 11.sp),
                 ),
-                SizedBox(height: 4.h),
-                Container(
-                  width: double.infinity,
-                  height: 1.h,
-                  color: Colors.white10,
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Column(
-              children: [
                 Text(
-                  "Call OI",
-                  style: TextStyle(color: Colors.white70, fontSize: 14.sp),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 4.h),
-                Container(
-                  width: double.infinity,
-                  height: 1.h,
-                  color: Colors.white10,
+                  callOiPercentage,
+                  style: TextStyle(
+                      color: callOiPercentage.startsWith('+')
+                          ? const Color(0xff1DB954)
+                          : Colors.red,
+                      fontSize: 11.sp),
                 ),
               ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Column(
-              children: [
-                Text(
-                  "Strike Price",
-                  style: TextStyle(color: Colors.white70, fontSize: 14.sp),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 4.h),
-                Container(
-                  width: double.infinity,
-                  height: 1.h,
-                  color: Colors.white10,
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Column(
-              children: [
-                Text(
-                  "Put OI",
-                  style: TextStyle(color: Colors.white70, fontSize: 14.sp),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 4.h),
-                Container(
-                  width: double.infinity,
-                  height: 1.h,
-                  color: Colors.white10,
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Column(
-              children: [
-                Text(
-                  "Volume",
-                  style: TextStyle(color: Colors.white70, fontSize: 14.sp),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 4.h),
-                Container(
-                  width: double.infinity,
-                  height: 1.h,
-                  color: Colors.white10,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildOptionRow(String leftVolume, String callOI, String callPercent,
-      String strikePrice, String putOI, String putPercent, String rightVolume) {
-    return Container(
-      color: const Color(0xff000000),
-      padding: EdgeInsets.symmetric(vertical: 10.h),
-      child: Row(
-        children: [
-          Expanded(
-            child: Center(
-              child: Text(
-                leftVolume,
-                style: TextStyle(color: Colors.white, fontSize: 14.sp),
-              ),
             ),
           ),
           Expanded(
@@ -434,44 +477,52 @@ class _optionChainOIState extends State<optionChainOI>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  callOI,
-                  style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                  callPrice,
+                  style: TextStyle(color: Colors.white, fontSize: 11.sp),
                 ),
                 Text(
-                  callPercent,
+                  callPricePercentage,
                   style: TextStyle(
-                      color: callPercent.startsWith('+')
+                      color: callPricePercentage.startsWith('+')
                           ? const Color(0xff1DB954)
                           : Colors.red,
-                      fontSize: 14.sp),
+                      fontSize: 11.sp),
                 ),
               ],
             ),
           ),
           Expanded(
             child: Center(
-              child: Stack(
-                alignment: Alignment.center,
+              child: Column(
+                // alignment: Alignment.center,
                 children: [
-                  Positioned(
-                    bottom: 0,
-                    child: Container(
-                      width: 40.w,
-                      height: 1.h,
-                      color: Colors.red,
-                    ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    child: Container(
-                      width: 40.w,
-                      height: 1.h,
-                      color: Colors.green,
-                    ),
-                  ),
                   Text(
                     strikePrice,
-                    style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 11.sp,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  SizedBox(
+                    height: 4.h,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 25.w,
+                        height: 1.h,
+                        color: Colors.red,
+                      ),
+                      SizedBox(
+                        width: 4.w,
+                      ),
+                      Container(
+                        width: 25.w,
+                        height: 1.h,
+                        color: Colors.green,
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -482,26 +533,37 @@ class _optionChainOIState extends State<optionChainOI>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  putOI,
-                  style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                  putPrice,
+                  style: TextStyle(color: Colors.white, fontSize: 11.sp),
                 ),
                 Text(
-                  putPercent,
+                  putPricePercentage,
                   style: TextStyle(
-                      color: putPercent.startsWith('+')
+                      color: putPricePercentage.startsWith('+')
                           ? const Color(0xff1DB954)
                           : Colors.red,
-                      fontSize: 14.sp),
+                      fontSize: 11.sp),
                 ),
               ],
             ),
           ),
           Expanded(
-            child: Center(
-              child: Text(
-                rightVolume,
-                style: TextStyle(color: Colors.white, fontSize: 14.sp),
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  putOI,
+                  style: TextStyle(color: Colors.white, fontSize: 11.sp),
+                ),
+                Text(
+                  putOiPercentage,
+                  style: TextStyle(
+                      color: putPricePercentage.startsWith('+')
+                          ? const Color(0xff1DB954)
+                          : Colors.red,
+                      fontSize: 11.sp),
+                ),
+              ],
             ),
           ),
         ],
@@ -546,7 +608,7 @@ class _optionChainOIState extends State<optionChainOI>
               "81,580.00 (-0.46%)",
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 14.sp,
+                fontSize: 13.sp,
                 fontWeight: FontWeight.w500,
               ),
             ),

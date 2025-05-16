@@ -352,6 +352,7 @@ class _optionChainPriceState extends State<optionChainPrice>
       body: Column(
         children: [
           _buildHeaderRow(key: _headerKey),
+          // SizedBox(height: 8.h),
           Expanded(
             child: NotificationListener<ScrollNotification>(
               onNotification: (scrollInfo) {
@@ -396,104 +397,108 @@ class _optionChainPriceState extends State<optionChainPrice>
   }
 
   Widget _buildHeaderRow({Key? key}) {
-    return Container(
-      key: key,
-      color: Colors.black,
-      padding: EdgeInsets.symmetric(vertical: 8.h),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Column(
-              children: [
-                Text(
-                  "Volume",
-                  style: TextStyle(color: Colors.white70, fontSize: 14.sp),
-                  textAlign: TextAlign.center,
+    return Column(
+      children: [
+        Container(
+          key: key,
+          color: Colors.black,
+          padding: EdgeInsets.only(top: 8.h),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Column(
+                  children: [
+                    Text(
+                      "Volume",
+                      style: TextStyle(color: Colors.white, fontSize: 13.sp),
+                      textAlign: TextAlign.center,
+                    ),
+                    // SizedBox(height: 16.h),
+                    // Container(
+                    //   width: double.infinity,
+                    //   height: 1.h,
+                    //   color: Colors.white10,
+                    // ),
+                  ],
                 ),
-                SizedBox(height: 4.h),
-                Container(
-                  width: double.infinity,
-                  height: 1.h,
-                  color: Colors.white10,
+              ),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  children: [
+                    Text(
+                      "Call Price",
+                      style: TextStyle(color: Colors.white, fontSize: 13.sp),
+                      textAlign: TextAlign.center,
+                    ),
+                    // SizedBox(height: 16.h),
+                    // Container(
+                    //   width: double.infinity,
+                    //   height: 1.h,
+                    //   color: Colors.white10,
+                    // ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  children: [
+                    Text(
+                      "Strike Price",
+                      style: TextStyle(color: Colors.white, fontSize: 13.sp),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  children: [
+                    Text(
+                      "Put Price",
+                      style: TextStyle(color: Colors.white, fontSize: 13.sp),
+                      textAlign: TextAlign.center,
+                    ),
+                    // SizedBox(height: 8.h),
+                    // Container(
+                    //   width: double.infinity,
+                    //   height: 1.h,
+                    //   color: Colors.white10,
+                    // ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  children: [
+                    Text(
+                      "Volume",
+                      style: TextStyle(color: Colors.white, fontSize: 13.sp),
+                      textAlign: TextAlign.center,
+                    ),
+                    // SizedBox(height: 8.h),
+                    // Container(
+                    //   width: double.infinity,
+                    //   height: 1.h,
+                    //   color: Colors.white10,
+                    // ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          Expanded(
-            flex: 1,
-            child: Column(
-              children: [
-                Text(
-                  "Call Price",
-                  style: TextStyle(color: Colors.white70, fontSize: 14.sp),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 4.h),
-                Container(
-                  width: double.infinity,
-                  height: 1.h,
-                  color: Colors.white10,
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Column(
-              children: [
-                Text(
-                  "Strike Price",
-                  style: TextStyle(color: Colors.white70, fontSize: 14.sp),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 4.h),
-                Container(
-                  width: double.infinity,
-                  height: 1.h,
-                  color: Colors.white10,
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Column(
-              children: [
-                Text(
-                  "Put Price",
-                  style: TextStyle(color: Colors.white70, fontSize: 14.sp),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 4.h),
-                Container(
-                  width: double.infinity,
-                  height: 1.h,
-                  color: Colors.white10,
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Column(
-              children: [
-                Text(
-                  "Volume",
-                  style: TextStyle(color: Colors.white70, fontSize: 14.sp),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 4.h),
-                Container(
-                  width: double.infinity,
-                  height: 1.h,
-                  color: Colors.white10,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+        ),
+        SizedBox(
+          height: 8.h,
+        ),
+        Divider(
+          color: Color(0xff2f2f2f),
+        )
+      ],
     );
   }
 
@@ -507,14 +512,14 @@ class _optionChainPriceState extends State<optionChainPrice>
       String rightVolume) {
     return Container(
       color: const Color(0xff000000),
-      padding: EdgeInsets.symmetric(vertical: 10.h),
+      padding: EdgeInsets.symmetric(vertical: 8.h),
       child: Row(
         children: [
           Expanded(
             child: Center(
               child: Text(
                 leftVolume,
-                style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                style: TextStyle(color: Colors.white, fontSize: 11.sp),
               ),
             ),
           ),
@@ -524,40 +529,48 @@ class _optionChainPriceState extends State<optionChainPrice>
               children: [
                 Text(
                   callPrice,
-                  style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                  style: TextStyle(color: Colors.white, fontSize: 11.sp),
                 ),
                 Text(
                   callPercent,
                   style: TextStyle(
-                      color: const Color(0xff1DB954), fontSize: 14.sp),
+                      color: const Color(0xff1DB954), fontSize: 11.sp),
                 ),
               ],
             ),
           ),
           Expanded(
             child: Center(
-              child: Stack(
-                alignment: Alignment.center,
+              child: Column(
+                // alignment: Alignment.center,
                 children: [
-                  Positioned(
-                    bottom: 0,
-                    child: Container(
-                      width: 40.w,
-                      height: 1.h,
-                      color: Colors.red,
-                    ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    child: Container(
-                      width: 40.w,
-                      height: 1.h,
-                      color: Colors.green,
-                    ),
-                  ),
                   Text(
                     strikePrice,
-                    style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 11.sp,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  SizedBox(
+                    height: 4.h,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 25.w,
+                        height: 1.h,
+                        color: Colors.red,
+                      ),
+                      SizedBox(
+                        width: 4.w,
+                      ),
+                      Container(
+                        width: 25.w,
+                        height: 1.h,
+                        color: Colors.green,
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -569,12 +582,12 @@ class _optionChainPriceState extends State<optionChainPrice>
               children: [
                 Text(
                   putPrice,
-                  style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                  style: TextStyle(color: Colors.white, fontSize: 11.sp),
                 ),
                 Text(
                   putPercent,
                   style: TextStyle(
-                      color: const Color(0xff1DB954), fontSize: 14.sp),
+                      color: const Color(0xff1DB954), fontSize: 11.sp),
                 ),
               ],
             ),
@@ -583,7 +596,7 @@ class _optionChainPriceState extends State<optionChainPrice>
             child: Center(
               child: Text(
                 rightVolume,
-                style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                style: TextStyle(color: Colors.white, fontSize: 11.sp),
               ),
             ),
           ),
@@ -629,8 +642,8 @@ class _optionChainPriceState extends State<optionChainPrice>
               "81,580.00 (-0.46%)",
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
+                fontSize: 13.sp,
+                fontWeight: FontWeight.w400,
               ),
             ),
           ),
