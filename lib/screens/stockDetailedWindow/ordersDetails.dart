@@ -23,7 +23,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
         Text(
           rightText,
           style: TextStyle(
-              fontSize: 13.sp,
+              fontSize: 11.sp,
               color: isDark ? Color(0xffEBEEF5) : Color(0xffEBEEF5)),
         ),
       ],
@@ -53,10 +53,10 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                   "PETRONET",
                   style: TextStyle(
                       fontSize: 15.sp,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w600,
                       color: isDark ? Colors.white : Colors.black),
                 ),
-                SizedBox(width: 10.w),
+                SizedBox(width: 8.w),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                   decoration: BoxDecoration(
@@ -72,7 +72,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                     ),
                   ),
                 ),
-                SizedBox(width: 10.w),
+                SizedBox(width: 6.w),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                   decoration: BoxDecoration(
@@ -88,7 +88,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                     ),
                   ),
                 ),
-                SizedBox(width: 10.w),
+                SizedBox(width: 6.w),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                   decoration: BoxDecoration(
@@ -96,7 +96,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                     borderRadius: BorderRadius.circular(4.r),
                   ),
                   child: Text(
-                    "COMPLETED",
+                    "EXECUTED",
                     style: TextStyle(
                       color: const Color(0xff1db954),
                       fontSize: 10.sp,
@@ -109,7 +109,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
             SizedBox(height: 4.h),
             RichText(
               text: TextSpan(
-                text: "₹1,256.89 ",
+                text: "1256.89 ",
                 style: TextStyle(
                     fontSize: 13.sp,
                     color: isDark ? Colors.white : Color(0xff6B7280)),
@@ -126,11 +126,12 @@ class _OrdersDetailsState extends State<OrdersDetails> {
       ),
       body: Column(
         children: [
+          SizedBox(height: 6.h),
           Divider(
             height: 1.h,
             color: Color(0xff2f2f2f),
           ),
-          SizedBox(height: 16.h),
+          SizedBox(height: 12.h),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Column(
@@ -204,7 +205,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16.h),
+                SizedBox(height: 12.h),
                 Container(
                   decoration: BoxDecoration(
                     color: isDark ? Color(0xff121413) : Colors.white,
@@ -219,8 +220,8 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                         Column(
                           children: [
                             SvgPicture.asset(
-                              "assets/icons/arrow_up.svg",
-                              color: isDark ? Colors.white : Colors.black,
+                              "assets/svgs/createAlertOrderDetails.svg",
+                              color: Color(0xff1db954),
                               height: 20.h,
                               width: 20.w,
                             ),
@@ -238,9 +239,9 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                         Column(
                           children: [
                             SvgPicture.asset(
-                              "assets/icons/arrow_down.svg",
+                              "assets/svgs/optionChainOrderDetails.svg",
                               colorFilter: ColorFilter.mode(
-                                isDark ? Colors.white : Colors.black,
+                                Color(0xff1db954),
                                 BlendMode.srcIn,
                               ),
                               height: 20.h,
@@ -260,9 +261,9 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                         Column(
                           children: [
                             SvgPicture.asset(
-                              "assets/icons/arrow_up.svg",
+                              "assets/svgs/createGtt.svg",
                               colorFilter: ColorFilter.mode(
-                                isDark ? Colors.white : Colors.black,
+                                Color(0xff1db954),
                                 BlendMode.srcIn,
                               ),
                               height: 20.h,
@@ -283,7 +284,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16.h),
+                SizedBox(height: 12.h),
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -311,22 +312,22 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                             ),
                             SizedBox(height: 13.h),
                             stockDetailRow("Validity / Product", "Day / NRML"),
-                            SizedBox(height: 8.h),
+                            SizedBox(height: 12.h),
                             stockDetailRow("Status", "COMPLETED"),
-                            SizedBox(height: 8.h),
+                            SizedBox(height: 12.h),
                             stockDetailRow("Price", "0.00"),
-                            SizedBox(height: 8.h),
+                            SizedBox(height: 12.h),
                             stockDetailRow("User", "JQN407"),
-                            SizedBox(height: 8.h),
+                            SizedBox(height: 12.h),
                             stockDetailRow("Trigger price", "0.00"),
-                            SizedBox(height: 8.h),
+                            SizedBox(height: 12.h),
                             stockDetailRow("Time", "2025-05-15 22:00:00"),
-                            SizedBox(height: 8.h),
+                            SizedBox(height: 12.h),
                             stockDetailRow(
                                 "Exchange Time", "2025-05-15 22:00:00"),
-                            SizedBox(height: 8.h),
+                            SizedBox(height: 12.h),
                             stockDetailRow("Order ID", "195868461864684"),
-                            SizedBox(height: 8.h),
+                            SizedBox(height: 12.h),
                             stockDetailRow("Exchange ID", "651648348468"),
                           ],
                         ),
@@ -335,7 +336,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                   ),
                 ),
                 SizedBox(
-                  height: 16.h,
+                  height: 12.h,
                 ),
                 Container(
                   width: double.infinity,
@@ -354,13 +355,16 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SvgPicture.asset(
-                                  "assets/icons/arrow_up.svg",
+                                  "assets/svgs/viewChart.svg",
                                   colorFilter: ColorFilter.mode(
-                                    isDark ? Colors.white : Colors.black,
+                                    Color(0xff1db954),
                                     BlendMode.srcIn,
                                   ),
                                   height: 20.h,
                                   width: 20.w,
+                                ),
+                                SizedBox(
+                                  width: 4.w,
                                 ),
                                 Text(
                                   "View Chart",
@@ -384,13 +388,16 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SvgPicture.asset(
-                                  "assets/icons/arrow_up.svg",
+                                  "assets/svgs/stockDetails.svg",
                                   colorFilter: ColorFilter.mode(
-                                    isDark ? Colors.white : Colors.black,
+                                    Color(0xff1db954),
                                     BlendMode.srcIn,
                                   ),
                                   height: 20.h,
                                   width: 20.w,
+                                ),
+                                SizedBox(
+                                  width: 4.w,
                                 ),
                                 Text(
                                   "Stock Details",
