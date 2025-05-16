@@ -7,6 +7,7 @@ import 'package:sapphire/screens/funds/funds.dart';
 import 'package:sapphire/screens/home/discover/ipo/ipoWrapper.dart';
 import 'package:sapphire/screens/home/discover/pledge/pledge/pledge.dart';
 import 'package:sapphire/screens/home/discover/priceAlerts/priceAlerts.dart';
+import 'package:sapphire/screens/optionChain/optionChainWrapper.dart';
 import 'package:sapphire/utils/naviWithoutAnimation.dart';
 
 class DiscoverScreen extends StatefulWidget {
@@ -185,10 +186,10 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                         height: 1,
                         color: Color(0xff2f2f2f),
                       ),
-                      Divider(
-                        height: 1,
-                        color: Color(0xff2f2f2f),
-                      ),
+                      // Divider(
+                      //   height: 1,
+                      //   color: Color(0xff2f2f2f),
+                      // ),
                       ListTile(
                         contentPadding: EdgeInsets.symmetric(
                             horizontal: 16.w, vertical: 6.h),
@@ -213,6 +214,44 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                         trailing:
                             Icon(Icons.arrow_forward_ios_outlined, size: 15.sp),
                         onTap: () => navi(PriceAlerts(), context),
+                      ),
+                      Divider(
+                        height: 1,
+                        color: Color(0xff2f2f2f),
+                      ),
+                      ListTile(
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 6.h),
+                        leading: SvgPicture.asset(
+                          'assets/svgs/optionChain.svg',
+                          width: 24.w,
+                          height: 24.h,
+                          color: Color(0xffc9cacc),
+                        ),
+                        title: Text(
+                          'Option Chain',
+                          style:
+                              TextStyle(fontSize: 15.sp, color: Colors.white),
+                        ),
+                        subtitle: Text(
+                          'View live option chain data to analyse market sentiment instantly.',
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            color: Color(0xffc9cacc),
+                          ),
+                        ),
+                        trailing:
+                            Icon(Icons.arrow_forward_ios_outlined, size: 15.sp),
+                        onTap: () {
+                          navi(
+                              OptionChainWrapper(
+                                  symbol: "NIFTY",
+                                  exchange: "NSE",
+                                  stockName: "NIFTY",
+                                  price: "25019.80",
+                                  change: "-42.30(0.17%)"),
+                              context);
+                        },
                       ),
                       Divider(
                         height: 1,
