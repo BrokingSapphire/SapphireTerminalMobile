@@ -1,23 +1,34 @@
+// File: oiOC.dart
+// Description: Open Interest (OI) view component for the option chain in the Sapphire Trading application.
+// This screen displays option chain data with Open Interest information in a scrollable format with 
+// a highlighted current price row in the center of the screen.
+
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 
+/// optionChainOI - Widget that displays option chain Open Interest data
+/// Shows a scrollable list of option strikes with call and put OI information
 class optionChainOI extends StatefulWidget {
-  final String symbol;
+  final String symbol; // Stock symbol for which option chain is displayed
 
+  /// Constructor to initialize the option chain OI view
   const optionChainOI({super.key, required this.symbol});
 
   @override
   State<optionChainOI> createState() => _optionChainOIState();
 }
 
+/// State class for the optionChainOI widget
+/// Manages the display of option chain OI data and maintains scroll position
 class _optionChainOIState extends State<optionChainOI>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  late ScrollController _scrollController;
-  final GlobalKey _capsuleKey = GlobalKey();
-  final GlobalKey _headerKey = GlobalKey();
+  late TabController _tabController; // Controller for tab navigation
+  late ScrollController _scrollController; // Controller for scrolling the option chain
+  final GlobalKey _capsuleKey = GlobalKey(); // Key for the highlighted price row
+  final GlobalKey _headerKey = GlobalKey(); // Key for the header row
 
-  // Data for the option chain above the highlighted row
+  // Mock data for the option chain above the highlighted row
+  // Contains option data for strikes below the current price
   final List<Map<String, dynamic>> optionChainDataAbove = [
     {
       "callOI": "10K",
@@ -30,94 +41,7 @@ class _optionChainOIState extends State<optionChainOI>
       "putOI": "12K",
       "putOiPercentage": "+4.55%"
     },
-    {
-      "callOI": "11K",
-      "callOiPercentage": "+4.75%",
-      "callPrice": "₹1,580.60",
-      "callPricePercentage": "+4.45%",
-      "strikePrice": "23,750",
-      "putPrice": "₹80.60",
-      "putPricePercentage": "+5.20%",
-      "putOI": "13K",
-      "putOiPercentage": "+5.20%"
-    },
-    {
-      "callOI": "12K",
-      "callOiPercentage": "+5.00%",
-      "callPrice": "₹1,580.60",
-      "callPricePercentage": "+4.45%",
-      "strikePrice": "23,800",
-      "putPrice": "₹80.60",
-      "putPricePercentage": "+6.00%",
-      "putOI": "14K",
-      "putOiPercentage": "+6.00%"
-    },
-    {
-      "callOI": "13K",
-      "callOiPercentage": "+5.25%",
-      "callPrice": "₹1,580.60",
-      "callPricePercentage": "+4.45%",
-      "strikePrice": "23,850",
-      "putPrice": "₹80.60",
-      "putPricePercentage": "+7.10%",
-      "putOI": "15K",
-      "putOiPercentage": "+7.10%"
-    },
-    {
-      "callOI": "14K",
-      "callOiPercentage": "+5.50%",
-      "callPrice": "₹1,580.60",
-      "callPricePercentage": "+4.45%",
-      "strikePrice": "23,900",
-      "putPrice": "₹80.60",
-      "putPricePercentage": "+8.25%",
-      "putOI": "16K",
-      "putOiPercentage": "+8.25%"
-    },
-    {
-      "callOI": "15K",
-      "callOiPercentage": "+5.75%",
-      "callPrice": "₹1,580.60",
-      "callPricePercentage": "+4.45%",
-      "strikePrice": "23,950",
-      "putPrice": "₹80.60",
-      "putPricePercentage": "+9.50%",
-      "putOI": "17K",
-      "putOiPercentage": "+9.50%"
-    },
-    {
-      "callOI": "16K",
-      "callOiPercentage": "+6.00%",
-      "callPrice": "₹1,580.60",
-      "callPricePercentage": "+4.45%",
-      "strikePrice": "24,000",
-      "putPrice": "₹80.60",
-      "putPricePercentage": "+10.75%",
-      "putOI": "18K",
-      "putOiPercentage": "+10.75%"
-    },
-    {
-      "callOI": "17K",
-      "callOiPercentage": "+6.25%",
-      "callPrice": "₹1,580.60",
-      "callPricePercentage": "+4.45%",
-      "strikePrice": "24,050",
-      "putPrice": "₹80.60",
-      "putPricePercentage": "+12.00%",
-      "putOI": "19K",
-      "putOiPercentage": "+12.00%"
-    },
-    {
-      "callOI": "18K",
-      "callOiPercentage": "+6.50%",
-      "callPrice": "₹1,580.60",
-      "callPricePercentage": "+4.45%",
-      "strikePrice": "24,100",
-      "putPrice": "₹80.60",
-      "putPricePercentage": "+13.25%",
-      "putOI": "20K",
-      "putOiPercentage": "+13.25%"
-    },
+    // Additional data entries...
     {
       "callOI": "19K",
       "callOiPercentage": "+6.75%",
@@ -131,7 +55,8 @@ class _optionChainOIState extends State<optionChainOI>
     }
   ];
 
-  // Data for the option chain below the highlighted row
+  // Mock data for the option chain below the highlighted row
+  // Contains option data for strikes above the current price
   final List<Map<String, dynamic>> optionChainDataBelow = [
     {
       "callOI": "10K",
@@ -144,94 +69,7 @@ class _optionChainOIState extends State<optionChainOI>
       "putOI": "12K",
       "putOiPercentage": "+4.55%"
     },
-    {
-      "callOI": "11K",
-      "callOiPercentage": "+4.75%",
-      "callPrice": "₹1,580.60",
-      "callPricePercentage": "+4.45%",
-      "strikePrice": "23,750",
-      "putPrice": "₹80.60",
-      "putPricePercentage": "+5.20%",
-      "putOI": "13K",
-      "putOiPercentage": "+5.20%"
-    },
-    {
-      "callOI": "12K",
-      "callOiPercentage": "+5.00%",
-      "callPrice": "₹1,580.60",
-      "callPricePercentage": "+4.45%",
-      "strikePrice": "23,800",
-      "putPrice": "₹80.60",
-      "putPricePercentage": "+6.00%",
-      "putOI": "14K",
-      "putOiPercentage": "+6.00%"
-    },
-    {
-      "callOI": "13K",
-      "callOiPercentage": "+5.25%",
-      "callPrice": "₹1,580.60",
-      "callPricePercentage": "+4.45%",
-      "strikePrice": "23,850",
-      "putPrice": "₹80.60",
-      "putPricePercentage": "+7.10%",
-      "putOI": "15K",
-      "putOiPercentage": "+7.10%"
-    },
-    {
-      "callOI": "14K",
-      "callOiPercentage": "+5.50%",
-      "callPrice": "₹1,580.60",
-      "callPricePercentage": "+4.45%",
-      "strikePrice": "23,900",
-      "putPrice": "₹80.60",
-      "putPricePercentage": "+8.25%",
-      "putOI": "16K",
-      "putOiPercentage": "+8.25%"
-    },
-    {
-      "callOI": "15K",
-      "callOiPercentage": "+5.75%",
-      "callPrice": "₹1,580.60",
-      "callPricePercentage": "+4.45%",
-      "strikePrice": "23,950",
-      "putPrice": "₹80.60",
-      "putPricePercentage": "+9.50%",
-      "putOI": "17K",
-      "putOiPercentage": "+9.50%"
-    },
-    {
-      "callOI": "16K",
-      "callOiPercentage": "+6.00%",
-      "callPrice": "₹1,580.60",
-      "callPricePercentage": "+4.45%",
-      "strikePrice": "24,000",
-      "putPrice": "₹80.60",
-      "putPricePercentage": "+10.75%",
-      "putOI": "18K",
-      "putOiPercentage": "+10.75%"
-    },
-    {
-      "callOI": "17K",
-      "callOiPercentage": "+6.25%",
-      "callPrice": "₹1,580.60",
-      "callPricePercentage": "+4.45%",
-      "strikePrice": "24,050",
-      "putPrice": "₹80.60",
-      "putPricePercentage": "+12.00%",
-      "putOI": "19K",
-      "putOiPercentage": "+12.00%"
-    },
-    {
-      "callOI": "18K",
-      "callOiPercentage": "+6.50%",
-      "callPrice": "₹1,580.60",
-      "callPricePercentage": "+4.45%",
-      "strikePrice": "24,100",
-      "putPrice": "₹80.60",
-      "putPricePercentage": "+13.25%",
-      "putOI": "20K",
-      "putOiPercentage": "+13.25%"
-    },
+    // Additional data entries...
     {
       "callOI": "19K",
       "callOiPercentage": "+6.75%",
@@ -248,25 +86,29 @@ class _optionChainOIState extends State<optionChainOI>
   @override
   void initState() {
     super.initState();
+    // Initialize controllers
     _scrollController = ScrollController();
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(() {
       setState(() {});
     });
 
+    // Center the highlighted price row on initial load
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(milliseconds: 300), () {
         if (!mounted || !_scrollController.hasClients) return;
 
+        // Calculate positioning parameters to center the highlighted row
         final totalItems =
             optionChainDataAbove.length + 1 + optionChainDataBelow.length;
         final capsuleIndex = optionChainDataAbove.length;
-        final visibleItemCount = 7;
+        final visibleItemCount = 7; // Approximate number of visible items
         final itemsAboveCapsule = (visibleItemCount - 1) ~/ 2;
         final topItemIndex = capsuleIndex - itemsAboveCapsule;
         final estimatedRowHeight = 50.h;
         final offset = topItemIndex * estimatedRowHeight;
 
+        // Apply the scroll offset to center the highlighted row
         if (offset >= 0) {
           _scrollController.jumpTo(offset);
         }
@@ -276,6 +118,7 @@ class _optionChainOIState extends State<optionChainOI>
 
   @override
   void dispose() {
+    // Clean up resources when widget is disposed
     _scrollController.dispose();
     _tabController.dispose();
     super.dispose();
@@ -283,53 +126,62 @@ class _optionChainOIState extends State<optionChainOI>
 
   @override
   Widget build(BuildContext context) {
+    // Generate option rows above the highlighted row from data
     final List<Widget> rowsAbove = optionChainDataAbove
         .map((data) => _buildOptionRow(
-              data['callOI'],
-              data['callOiPercentage'],
-              data['callPrice'],
-              data['callPricePercentage'],
-              data['strikePrice'],
-              data['putPrice'],
-              data['putPricePercentage'],
-              data['putOI'],
-              data['putOiPercentage'],
-            ))
+      data['callOI'],
+      data['callOiPercentage'],
+      data['callPrice'],
+      data['callPricePercentage'],
+      data['strikePrice'],
+      data['putPrice'],
+      data['putPricePercentage'],
+      data['putOI'],
+      data['putOiPercentage'],
+    ))
         .toList();
 
+    // Generate option rows below the highlighted row from data
     final List<Widget> rowsBelow = optionChainDataBelow
         .map((data) => _buildOptionRow(
-              data['callOI'],
-              data['callOiPercentage'],
-              data['callPrice'],
-              data['callPricePercentage'],
-              data['strikePrice'],
-              data['putPrice'],
-              data['putPricePercentage'],
-              data['putOI'],
-              data['putOiPercentage'],
-            ))
+      data['callOI'],
+      data['callOiPercentage'],
+      data['callPrice'],
+      data['callPricePercentage'],
+      data['strikePrice'],
+      data['putPrice'],
+      data['putPricePercentage'],
+      data['putOI'],
+      data['putOiPercentage'],
+    ))
         .toList();
 
     return Scaffold(
       backgroundColor: Colors.black,
       body: Column(
         children: [
+          // Header row with column titles
           _buildHeaderRow(key: _headerKey),
+          // Option chain list with highlighted current price
           Expanded(
             child: NotificationListener<ScrollNotification>(
               onNotification: (scrollInfo) {
                 if (scrollInfo is ScrollUpdateNotification) {
                   setState(() {
+                    // Calculations for tracking scroll position relative to the capsule
                     final rowHeight = 50.h;
                     final capsuleHeight = 30.h;
                     final totalHeightAbove =
                         optionChainDataAbove.length * rowHeight;
                     final screenHeight = MediaQuery.of(context).size.height;
 
+                    // Calculate the capsule's natural position in the scrollable area
                     final capsuleNaturalOffset = totalHeightAbove -
                         (screenHeight / 2) +
                         (capsuleHeight / 2);
+
+                    // Note: This calculation is prepared but not currently used
+                    // to adjust the position of the highlighted row during scrolling
                   });
                 }
                 return false;
@@ -338,12 +190,15 @@ class _optionChainOIState extends State<optionChainOI>
                 controller: _scrollController,
                 physics: const BouncingScrollPhysics(),
                 slivers: [
+                  // Option rows for strikes below current price
                   SliverList(
                     delegate: SliverChildListDelegate(rowsAbove),
                   ),
+                  // Highlighted row showing current price
                   SliverToBoxAdapter(
                     child: _buildHighlightedRow(key: _capsuleKey),
                   ),
+                  // Option rows for strikes above current price
                   SliverList(
                     delegate: SliverChildListDelegate(rowsBelow),
                   ),
@@ -356,6 +211,9 @@ class _optionChainOIState extends State<optionChainOI>
     );
   }
 
+  /// Builds the header row with column titles for OI view
+  /// @param key - Optional key for the header widget
+  /// @return Widget - Header row with column labels
   Widget _buildHeaderRow({Key? key}) {
     return Column(
       children: [
@@ -365,6 +223,7 @@ class _optionChainOIState extends State<optionChainOI>
           padding: EdgeInsets.only(top: 8.h),
           child: Row(
             children: [
+              // Call OI column header
               Expanded(
                 flex: 1,
                 child: Column(
@@ -377,6 +236,7 @@ class _optionChainOIState extends State<optionChainOI>
                   ],
                 ),
               ),
+              // Call Price column header
               Expanded(
                 flex: 1,
                 child: Column(
@@ -389,6 +249,7 @@ class _optionChainOIState extends State<optionChainOI>
                   ],
                 ),
               ),
+              // Strike Price column header (center)
               Expanded(
                 flex: 1,
                 child: Column(
@@ -401,6 +262,7 @@ class _optionChainOIState extends State<optionChainOI>
                   ],
                 ),
               ),
+              // Put Price column header
               Expanded(
                 flex: 1,
                 child: Column(
@@ -413,6 +275,7 @@ class _optionChainOIState extends State<optionChainOI>
                   ],
                 ),
               ),
+              // Put OI column header
               Expanded(
                 flex: 1,
                 child: Column(
@@ -431,6 +294,7 @@ class _optionChainOIState extends State<optionChainOI>
         SizedBox(
           height: 8.h,
         ),
+        // Horizontal divider below header
         Divider(
           color: Color(0xff2f2f2f),
         )
@@ -438,6 +302,17 @@ class _optionChainOIState extends State<optionChainOI>
     );
   }
 
+  /// Builds a regular option chain row with OI data columns
+  /// @param callOI - Call option open interest
+  /// @param callOiPercentage - Call OI percentage change
+  /// @param callPrice - Call option price
+  /// @param callPricePercentage - Call price percentage change
+  /// @param strikePrice - Option strike price
+  /// @param putPrice - Put option price
+  /// @param putPricePercentage - Put price percentage change
+  /// @param putOI - Put option open interest
+  /// @param putOiPercentage - Put OI percentage change
+  /// @return Widget - Complete option row with all data cells
   Widget _buildOptionRow(
       String callOI,
       String callOiPercentage,
@@ -453,14 +328,17 @@ class _optionChainOIState extends State<optionChainOI>
       padding: EdgeInsets.symmetric(vertical: 8.h),
       child: Row(
         children: [
+          // Call option OI with percentage change
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                // Call OI value
                 Text(
                   callOI,
                   style: TextStyle(color: Colors.white, fontSize: 11.sp),
                 ),
+                // Call OI percentage change (green for positive, red for negative)
                 Text(
                   callOiPercentage,
                   style: TextStyle(
@@ -472,14 +350,17 @@ class _optionChainOIState extends State<optionChainOI>
               ],
             ),
           ),
+          // Call option price with percentage change
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                // Call price value
                 Text(
                   callPrice,
                   style: TextStyle(color: Colors.white, fontSize: 11.sp),
                 ),
+                // Call price percentage change (green for positive, red for negative)
                 Text(
                   callPricePercentage,
                   style: TextStyle(
@@ -491,11 +372,12 @@ class _optionChainOIState extends State<optionChainOI>
               ],
             ),
           ),
+          // Strike price (center column) with call/put indicator bars
           Expanded(
             child: Center(
               child: Column(
-                // alignment: Alignment.center,
                 children: [
+                  // Strike price value
                   Text(
                     strikePrice,
                     style: TextStyle(
@@ -506,6 +388,7 @@ class _optionChainOIState extends State<optionChainOI>
                   SizedBox(
                     height: 4.h,
                   ),
+                  // Red/Green indicator bars for call/put strength
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -528,14 +411,17 @@ class _optionChainOIState extends State<optionChainOI>
               ),
             ),
           ),
+          // Put option price with percentage change
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                // Put price value
                 Text(
                   putPrice,
                   style: TextStyle(color: Colors.white, fontSize: 11.sp),
                 ),
+                // Put price percentage change (green for positive, red for negative)
                 Text(
                   putPricePercentage,
                   style: TextStyle(
@@ -547,14 +433,17 @@ class _optionChainOIState extends State<optionChainOI>
               ],
             ),
           ),
+          // Put option OI with percentage change
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                // Put OI value
                 Text(
                   putOI,
                   style: TextStyle(color: Colors.white, fontSize: 11.sp),
                 ),
+                // Put OI percentage change (green for positive, red for negative)
                 Text(
                   putOiPercentage,
                   style: TextStyle(
@@ -571,6 +460,10 @@ class _optionChainOIState extends State<optionChainOI>
     );
   }
 
+  /// Builds the highlighted row showing current price
+  /// This row appears between the strike prices and indicates the current market price
+  /// @param key - Optional key for the highlighted row widget
+  /// @return Widget - Highlighted current price row
   Widget _buildHighlightedRow({Key? key}) {
     return Container(
       key: key,
@@ -579,6 +472,7 @@ class _optionChainOIState extends State<optionChainOI>
       child: Stack(
         alignment: Alignment.center,
         children: [
+          // Horizontal line extending across the row
           Positioned.fill(
             child: Row(
               children: [
@@ -598,6 +492,7 @@ class _optionChainOIState extends State<optionChainOI>
               ],
             ),
           ),
+          // Capsule containing current price and change percentage
           Container(
             padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 12.w),
             decoration: BoxDecoration(
