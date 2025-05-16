@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/optionChain/optionChainPrice.dart';
 import 'package:sapphire/screens/optionChain/optionChainWrapper.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 import 'package:visibility_detector/visibility_detector.dart';

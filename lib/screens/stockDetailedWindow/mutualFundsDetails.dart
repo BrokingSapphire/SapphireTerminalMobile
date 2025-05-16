@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/stockDetailedWindow/viewAllTrans.dart';
 
 class MutualFundsDetails extends StatefulWidget {
@@ -400,11 +401,16 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                   color: isDark ? Colors.white : Colors.black,
                                 ),
                               ),
-                              Text(
-                                "View all Transactions",
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: const Color(0xff1DB954),
+                              GestureDetector(
+                                onTap: () {
+                                  navi(ViewAllTransactions(), context);
+                                },
+                                child: Text(
+                                  "View all Transactions",
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: const Color(0xff1DB954),
+                                  ),
                                 ),
                               ),
                             ],

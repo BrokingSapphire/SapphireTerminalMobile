@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sapphire/main.dart';
+import 'package:sapphire/screens/stockDetailedWindow/mutualFundsDetails.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class MutualFundsScreen extends StatefulWidget {
@@ -273,8 +275,12 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              constWidgets.singleCard("Current Value",
-                                  '₹15,11,750', "Overall Loss", "-₹45,096", isDark),
+                              constWidgets.singleCard(
+                                  "Current Value",
+                                  '₹15,11,750',
+                                  "Overall Loss",
+                                  "-₹45,096",
+                                  isDark),
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                                 child: Divider(
@@ -388,14 +394,20 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
                               itemCount: filteredMutualFundsData.length,
                               itemBuilder: (context, index) {
                                 var data = filteredMutualFundsData[index];
-                                return _fundTile(
-                                  title: data['title'],
-                                  category: data['category'],
-                                  invested: data['invested'],
-                                  returns: data['returns'],
-                                  isGain: data['isGain'],
-                                  icon: data['icon'],
-                                  isDark: isDark,
+                                return GestureDetector(
+                                  onTap: () {
+                                    navi(MutualFundsDetails(), context);
+                                  },
+                                  behavior: HitTestBehavior.opaque,
+                                  child: _fundTile(
+                                    title: data['title'],
+                                    category: data['category'],
+                                    invested: data['invested'],
+                                    returns: data['returns'],
+                                    isGain: data['isGain'],
+                                    icon: data['icon'],
+                                    isDark: isDark,
+                                  ),
                                 );
                               },
                             )

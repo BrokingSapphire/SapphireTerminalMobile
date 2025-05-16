@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sapphire/main.dart';
+import 'package:sapphire/screens/stockDetailedWindow/equityDetails.dart';
+import 'package:sapphire/screens/stockDetailedWindow/positionsDetails.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class positionScreen extends StatefulWidget {
@@ -303,19 +306,25 @@ class _positionScreenState extends State<positionScreen> {
                                 var data = filteredPositionData[index];
                                 return GestureDetector(
                                   behavior: HitTestBehavior.opaque,
-                                  child: positionScreenTiles(
-                                      data['title'] ?? '',
-                                      data['midtitle'] ?? '',
-                                      data['subtitle'] ?? '',
-                                      data['trail1'] ?? '',
-                                      data['trail2'] ?? '',
-                                      data['trail3'] ?? '',
-                                      data['isBuy'] ?? false,
-                                      isDark,
-                                      isOpen: data.containsKey('isOpen')
-                                          ? data['isOpen']
-                                          : true,
-                                      index: index),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      navi(PositionsDetails(), context);
+                                    },
+                                    behavior: HitTestBehavior.opaque,
+                                    child: positionScreenTiles(
+                                        data['title'] ?? '',
+                                        data['midtitle'] ?? '',
+                                        data['subtitle'] ?? '',
+                                        data['trail1'] ?? '',
+                                        data['trail2'] ?? '',
+                                        data['trail3'] ?? '',
+                                        data['isBuy'] ?? false,
+                                        isDark,
+                                        isOpen: data.containsKey('isOpen')
+                                            ? data['isOpen']
+                                            : true,
+                                        index: index),
+                                  ),
                                 );
                               })
                         ])

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/funds/funds.dart';
 import 'package:sapphire/screens/account/account.dart';
+import 'package:sapphire/screens/stockDetailedWindow/ordersDetails.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 import 'package:sapphire/utils/naviWithoutAnimation.dart';
 
@@ -809,16 +811,22 @@ class _OrderTabContentState extends State<OrderTabContent> {
                 itemBuilder: (context, index) {
                   return Column(
                     children: [
-                      contentCard(
-                        orderData[index]["title"]!,
-                        orderData[index]["quantity"]!,
-                        orderData[index]["time"]!,
-                        orderData[index]["price"]!,
-                        orderData[index]["ltp"]!,
-                        orderData[index]["change"]!,
-                        orderData[index]["type"] ?? "DELIVERY",
-                        orderStatus:
-                            widget.tabType, // Pass the current tab type
+                      GestureDetector(
+                        onTap: () {
+                          navi(OrdersDetails(), context);
+                        },
+                        behavior: HitTestBehavior.opaque,
+                        child: contentCard(
+                          orderData[index]["title"]!,
+                          orderData[index]["quantity"]!,
+                          orderData[index]["time"]!,
+                          orderData[index]["price"]!,
+                          orderData[index]["ltp"]!,
+                          orderData[index]["change"]!,
+                          orderData[index]["type"] ?? "DELIVERY",
+                          orderStatus:
+                              widget.tabType, // Pass the current tab type
+                        ),
                       ),
                       if (index != orderData.length - 1)
                         Divider(color: const Color(0xff2f2f2f)),

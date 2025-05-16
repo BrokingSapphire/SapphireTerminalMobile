@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sapphire/main.dart';
+import 'package:sapphire/screens/stockDetailedWindow/equityDetails.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class EquityScreen extends StatefulWidget {
@@ -238,7 +240,8 @@ class _EquityScreenState extends State<EquityScreen> {
                         SizedBox(
                             height: 64.h,
                             width: 64.w,
-                            child: SvgPicture.asset("assets/svgs/doneMark.svg")),
+                            child:
+                                SvgPicture.asset("assets/svgs/doneMark.svg")),
                         SizedBox(height: 20.h),
                         Text("No Equity Found",
                             style: TextStyle(
@@ -264,12 +267,18 @@ class _EquityScreenState extends State<EquityScreen> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       behavior: HitTestBehavior.opaque,
-                      child: constWidgets.equityScreenTiles(
-                          filteredEquityData[index]["name"]!,
-                          filteredEquityData[index]["quantity"]!,
-                          filteredEquityData[index]["loss"]!,
-                          filteredEquityData[index]["ltp"]!,
-                          isDark),
+                      child: GestureDetector(
+                        onTap: () {
+                          navi(EquityDetails(), context);
+                        },
+                        behavior: HitTestBehavior.opaque,
+                        child: constWidgets.equityScreenTiles(
+                            filteredEquityData[index]["name"]!,
+                            filteredEquityData[index]["quantity"]!,
+                            filteredEquityData[index]["loss"]!,
+                            filteredEquityData[index]["ltp"]!,
+                            isDark),
+                      ),
                     );
                   },
                   shrinkWrap: true,
