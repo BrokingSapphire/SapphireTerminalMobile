@@ -56,7 +56,9 @@ class _newsTabState extends State<newsTab> {
   Widget _buildNewsItem(String source, String time, String content) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 12.h),
+      padding: EdgeInsets.symmetric(
+        vertical: 12.h,
+      ),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
