@@ -51,7 +51,7 @@ class _PositionsDetailsState extends State<PositionsDetails> {
             color: isDark ? Color(0xffc9cacc) : Colors.grey[600],
           ),
         ),
-        SizedBox(height: 4.h),
+        SizedBox(height: 6.h),
         Text(
           value,
           style: TextStyle(
@@ -118,9 +118,9 @@ class _PositionsDetailsState extends State<PositionsDetails> {
                       fontWeight: FontWeight.w700,
                       color: isDark ? Colors.white : Colors.black),
                 ),
-                SizedBox(width: 10.w),
+                SizedBox(width: 8.w),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.h),
                   decoration: BoxDecoration(
                     color: const Color(0xff303030),
                     borderRadius: BorderRadius.circular(4.r),
@@ -134,9 +134,9 @@ class _PositionsDetailsState extends State<PositionsDetails> {
                     ),
                   ),
                 ),
-                SizedBox(width: 10.w),
+                SizedBox(width: 6.w),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.h),
                   decoration: BoxDecoration(
                     color: const Color(0xff303030),
                     borderRadius: BorderRadius.circular(4.r),
@@ -209,56 +209,76 @@ class _PositionsDetailsState extends State<PositionsDetails> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 8.h),
-                          Text(
-                            "₹+22,678.80 (2.78%)",
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              color: Colors.green,
-                            ),
-                          ),
-                          SizedBox(height: 16.h),
+                          SizedBox(height: 6.h),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _buildInfoCard(
-                                      "Today's realized G&L", "1500/1500"),
-                                  SizedBox(height: 12.h),
-                                  _buildInfoCard(
-                                      "Net Quantity", "1 Lot (1 Lot = 76)"),
-                                  SizedBox(height: 12.h),
-                                  _buildInfoCard(
-                                      "Invested Value", "₹12,445.60"),
-                                ],
+                              Text(
+                                "+₹22,678.80",
+                                style: TextStyle(
+                                  fontSize: 15.sp,
+                                  color: Colors.green,
+                                ),
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _buildInfoCard("Avg. Sell Price", "₹327.00"),
-                                  SizedBox(height: 12.h),
-                                  _buildInfoCard(
-                                      "Avg. Buy Price", "₹12,445.60"),
-                                  SizedBox(height: 12.h),
-                                  _buildInfoCard("Market Value", "₹12,445.60"),
-                                ],
+                              SizedBox(width: 4.w),
+                              Text(
+                                "(2.78%)",
+                                style: TextStyle(
+                                  fontSize: 13.sp,
+                                  color: Colors.green,
+                                ),
                               ),
                             ],
                           ),
-                          SizedBox(height: 10.h),
+                          SizedBox(height: 16.h),
+                          Row(
+                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _buildInfoCard(
+                                        "Today's realized G&L", "1500/1500"),
+                                    SizedBox(height: 12.h),
+                                    _buildInfoCard(
+                                        "Net Quantity", "1 Lot (1 Lot = 76)"),
+                                    SizedBox(height: 12.h),
+                                    _buildInfoCard(
+                                        "Invested Value", "₹12,445.60"),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _buildInfoCard(
+                                        "Avg. Sell Price", "₹327.00"),
+                                    SizedBox(height: 12.h),
+                                    _buildInfoCard(
+                                        "Avg. Buy Price", "₹12,445.60"),
+                                    SizedBox(height: 12.h),
+                                    _buildInfoCard(
+                                        "Market Value", "₹12,445.60"),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 12.h),
                           // Action Buttons
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Expanded(
                                 child: Container(
+                                  height: 38.h,
                                   padding: EdgeInsets.symmetric(
-                                      vertical: 12.h, horizontal: 16.w),
+                                      vertical: 6.h, horizontal: 16.w),
                                   decoration: BoxDecoration(
                                     color: isDark
                                         ? const Color(0xff2F2F2F)
+                                            .withOpacity(0.4)
                                         : Colors.grey[100],
                                     borderRadius: BorderRadius.circular(8.r),
                                     border: Border.all(
@@ -271,6 +291,7 @@ class _PositionsDetailsState extends State<PositionsDetails> {
                                       "Convert",
                                       style: TextStyle(
                                         fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
                                         color: isDark
                                             ? Colors.white
                                             : Colors.black,
@@ -282,11 +303,13 @@ class _PositionsDetailsState extends State<PositionsDetails> {
                               SizedBox(width: 10.w),
                               Expanded(
                                 child: Container(
+                                  height: 38.h,
                                   padding: EdgeInsets.symmetric(
-                                      vertical: 12.h, horizontal: 16.w),
+                                      vertical: 6.h, horizontal: 16.w),
                                   decoration: BoxDecoration(
                                     color: isDark
                                         ? const Color(0xff2F2F2F)
+                                            .withOpacity(0.4)
                                         : Colors.grey[100],
                                     borderRadius: BorderRadius.circular(8.r),
                                     border: Border.all(
@@ -299,6 +322,7 @@ class _PositionsDetailsState extends State<PositionsDetails> {
                                       "Stop Loss/Target",
                                       style: TextStyle(
                                         fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
                                         color: isDark
                                             ? Colors.white
                                             : Colors.black,
@@ -313,7 +337,7 @@ class _PositionsDetailsState extends State<PositionsDetails> {
                       ),
                     ),
 
-                    SizedBox(height: 16.h),
+                    SizedBox(height: 12.h),
 
                     // Action Icons
                     Container(
@@ -331,7 +355,7 @@ class _PositionsDetailsState extends State<PositionsDetails> {
                           _buildActionButton(
                               "assets/svgs/chain.svg", "Option Chain"),
                           _buildActionButton(
-                              "assets/svgs/save.svg", "Create GTT"),
+                              "assets/svgs/createGtt.svg", "Create GTT"),
                         ],
                       ),
                     ),
@@ -356,83 +380,92 @@ class _PositionsDetailsState extends State<PositionsDetails> {
                           ),
                           SizedBox(height: 16.h),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Buy Qty.",
-                                    style: TextStyle(
-                                      fontSize: 11.sp,
-                                      color: isDark
-                                          ? Color(0xffC9CACC)
-                                          : Colors.grey[600],
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Buy Qty.",
+                                      style: TextStyle(
+                                        fontSize: 11.sp,
+                                        color: isDark
+                                            ? Color(0xffC9CACC)
+                                            : Colors.grey[600],
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(height: 4.h),
-                                  Text(
-                                    "3,000",
-                                    style: TextStyle(
-                                      fontSize: 13.sp,
-                                      color:
-                                          isDark ? Colors.white : Colors.black,
+                                    SizedBox(height: 4.h),
+                                    Text(
+                                      "3,000",
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        color: isDark
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Buy Price",
-                                    style: TextStyle(
-                                      fontSize: 11.sp,
-                                      color: isDark
-                                          ? Color(0xffC9CACC)
-                                          : Colors.grey[600],
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Buy Price",
+                                      style: TextStyle(
+                                        fontSize: 11.sp,
+                                        color: isDark
+                                            ? Color(0xffC9CACC)
+                                            : Colors.grey[600],
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(height: 4.h),
-                                  Text(
-                                    "345.55",
-                                    style: TextStyle(
-                                      fontSize: 13.sp,
-                                      color:
-                                          isDark ? Colors.white : Colors.black,
+                                    SizedBox(height: 4.h),
+                                    Text(
+                                      "345.55",
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        color: isDark
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Buy Value",
-                                    style: TextStyle(
-                                      fontSize: 11.sp,
-                                      color: isDark
-                                          ? Color(0xffC9CACC)
-                                          : Colors.grey[600],
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Buy Value",
+                                      style: TextStyle(
+                                        fontSize: 11.sp,
+                                        color: isDark
+                                            ? Color(0xffC9CACC)
+                                            : Colors.grey[600],
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(height: 4.h),
-                                  Text(
-                                    "9,55,456.89",
-                                    style: TextStyle(
-                                      fontSize: 13.sp,
-                                      color:
-                                          isDark ? Colors.white : Colors.black,
+                                    SizedBox(height: 4.h),
+                                    Text(
+                                      "9,55,456.89",
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        color: isDark
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(height: 16.h),
+                    SizedBox(height: 12.h),
 
                     // View Chart and Stock Details buttons
                     Container(
@@ -468,13 +501,8 @@ class _PositionsDetailsState extends State<PositionsDetails> {
                                               MainAxisAlignment.center,
                                           children: [
                                             SvgPicture.asset(
-                                              "assets/icons/arrow_up.svg",
-                                              colorFilter: ColorFilter.mode(
-                                                isDark
-                                                    ? Colors.white
-                                                    : Colors.black,
-                                                BlendMode.srcIn,
-                                              ),
+                                              "assets/svgs/viewChart.svg",
+                                              color: Color(0xff1db954),
                                               height: 20.h,
                                               width: 20.w,
                                             ),
@@ -504,13 +532,8 @@ class _PositionsDetailsState extends State<PositionsDetails> {
                                               MainAxisAlignment.center,
                                           children: [
                                             SvgPicture.asset(
-                                              "assets/icons/arrow_up.svg",
-                                              colorFilter: ColorFilter.mode(
-                                                isDark
-                                                    ? Colors.white
-                                                    : Colors.black,
-                                                BlendMode.srcIn,
-                                              ),
+                                              "assets/svgs/stockDetails.svg",
+                                              color: Color(0xff1db954),
                                               height: 20.h,
                                               width: 20.w,
                                             ),
