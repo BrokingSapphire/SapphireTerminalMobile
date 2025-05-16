@@ -6,7 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:sapphire/main.dart'; // For navigation utilities
-import 'package:sapphire/screens/stockDetailedWindow/holdings/viewAllTransactions.dart'; // For viewing all transactions
+import 'package:sapphire/screens/stockDetailedWindow/holdings/viewAllTransactions/shortTermTxn.dart'; // For viewing all transactions
 
 /// MutualFundsDetails - Widget that displays detailed information about a mutual fund investment
 /// Shows complete fund information with P&L, NAV details, and transaction history

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:flutter_svg/flutter_svg.dart'; // For SVG image rendering
 import 'package:sapphire/main.dart'; // For navigation utilities
-import 'package:sapphire/screens/stockDetailedWindow/holdings/viewAllTransactions.dart'; // For viewing all transactions
+import 'package:sapphire/screens/stockDetailedWindow/holdings/viewAllTransactions/shortTermTxn.dart'; // For viewing all transactions
 
 /// EquityDetails - Widget that displays detailed information about an equity position
 /// Shows comprehensive equity information with performance metrics and action options

@@ -1,4 +1,4 @@
-// File: viewAllTransactions.dart
+// File: shortTermTxn.dart
 // Description: Transactions history screen for the Sapphire Trading application.
 // This screen displays a list of stock transactions organized by time period (short/long term)
 // and month, with transaction details and summary information.
