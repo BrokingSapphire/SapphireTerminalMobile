@@ -67,6 +67,32 @@ class _EquityDetailsState extends State<EquityDetails> {
     );
   }
 
+  Widget _buildAvgInfoCard(String title, String value, {bool isRed = false}) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 13.sp,
+            color: isDark ? Color(0xffc9cacc) : Colors.grey[600],
+          ),
+        ),
+        SizedBox(height: 4.h),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 15.sp,
+            color: isRed
+                ? Colors.red
+                : (isDark ? Color(0xffEBEEF5) : Colors.black),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildActionButton(String iconPath, String label) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
@@ -222,7 +248,7 @@ class _EquityDetailsState extends State<EquityDetails> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 16.h),
+                    SizedBox(height: 12.h),
                     // Overall Loss Section
                     Container(
                       width: double.infinity,
@@ -248,45 +274,63 @@ class _EquityDetailsState extends State<EquityDetails> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 8.h),
-                          Text(
-                            "₹-22,678.80 (-2.78%)",
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              color: Colors.red,
-                            ),
+                          SizedBox(height: 6.h),
+                          Row(
+                            children: [
+                              Text(
+                                "-₹22,678.80",
+                                style: TextStyle(
+                                  fontSize: 15.sp,
+                                  color: Colors.red,
+                                ),
+                              ),
+                              SizedBox(width: 4.w),
+                              Text(
+                                "(-2.78%)",
+                                style: TextStyle(
+                                  fontSize: 13.sp,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(height: 16.h),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _buildInfoCard("Total Qty.", "1500/1500"),
-                                  SizedBox(height: 12.h),
-                                  _buildInfoCard("Invested", "₹12,445.78"),
-                                  SizedBox(height: 12.h),
-                                  _buildInfoCard("Total gain", "₹12,445.60"),
-                                ],
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _buildInfoCard("Total Qty.", "1500/1500"),
+                                    SizedBox(height: 12.h),
+                                    _buildInfoCard("Invested", "₹12,445.78"),
+                                    SizedBox(height: 12.h),
+                                    _buildInfoCard("Total gain", "₹12,445.60"),
+                                  ],
+                                ),
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _buildInfoCard("Avg. Trade Price", "₹327.00"),
-                                  SizedBox(height: 12.h),
-                                  _buildInfoCard("Market Value", "₹12,445.60"),
-                                  SizedBox(height: 12.h),
-                                  _buildInfoCard(
-                                      "Total realized gain", "₹12,445.60"),
-                                ],
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _buildInfoCard(
+                                        "Avg. Trade Price", "₹327.00"),
+                                    SizedBox(height: 12.h),
+                                    _buildInfoCard(
+                                        "Market Value", "₹12,445.60"),
+                                    SizedBox(height: 12.h),
+                                    _buildInfoCard(
+                                        "Total realized gain", "₹12,445.60"),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(height: 16.h),
+                    SizedBox(height: 12.h),
 
                     // Action Buttons
                     Container(
@@ -304,11 +348,11 @@ class _EquityDetailsState extends State<EquityDetails> {
                           _buildActionButton(
                               "assets/svgs/chain.svg", "Option Chain"),
                           _buildActionButton(
-                              "assets/svgs/save.svg", "Create GTT"),
+                              "assets/svgs/createGtt.svg", "Create GTT"),
                         ],
                       ),
                     ),
-                    SizedBox(height: 16.h),
+                    SizedBox(height: 12.h),
 
                     // Price Details
                     Container(
@@ -324,22 +368,25 @@ class _EquityDetailsState extends State<EquityDetails> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              _buildInfoCard("Avg. Traded Price", "₹678.80"),
+                              _buildAvgInfoCard("Avg. Traded Price", "₹678.80"),
                             ],
                           ),
                           SizedBox(height: 16.h),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              _buildInfoCard(
-                                  "Avg. Price without charges", "₹445.60"),
-                              _buildInfoCard("Charges Per Share", "₹7.00"),
+                              Expanded(
+                                child: _buildInfoCard(
+                                    "Avg. Price without charges", "₹445.60"),
+                              ),
+                              Expanded(
+                                  child: _buildInfoCard(
+                                      "Charges Per Share", "₹7.00")),
                             ],
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(height: 16.h),
+                    SizedBox(height: 12.h),
 
                     // Stock Details Section
                     Container(
@@ -368,7 +415,7 @@ class _EquityDetailsState extends State<EquityDetails> {
                                 child: Text(
                                   "View all Transactions",
                                   style: TextStyle(
-                                    fontSize: 12.sp,
+                                    fontSize: 13.sp,
                                     color: const Color(0xff1DB954),
                                   ),
                                 ),
@@ -382,7 +429,8 @@ class _EquityDetailsState extends State<EquityDetails> {
                               // Short term container
                               Expanded(
                                 child: Container(
-                                  padding: EdgeInsets.all(12.w),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.w, vertical: 8.h),
                                   decoration: BoxDecoration(
                                     color: isDark
                                         ? Color(0xff121212)
@@ -402,7 +450,7 @@ class _EquityDetailsState extends State<EquityDetails> {
                                       Text(
                                         "Short term",
                                         style: TextStyle(
-                                          fontSize: 14.sp,
+                                          fontSize: 13.sp,
                                           color: isDark
                                               ? Colors.white
                                               : Colors.black,
@@ -487,7 +535,8 @@ class _EquityDetailsState extends State<EquityDetails> {
                               // Long term container
                               Expanded(
                                 child: Container(
-                                  padding: EdgeInsets.all(12.w),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.w, vertical: 8.h),
                                   decoration: BoxDecoration(
                                     color: isDark
                                         ? Color(0xff121212)
@@ -507,7 +556,7 @@ class _EquityDetailsState extends State<EquityDetails> {
                                       Text(
                                         "Long term",
                                         style: TextStyle(
-                                          fontSize: 14.sp,
+                                          fontSize: 13.sp,
                                           color: isDark
                                               ? Colors.white
                                               : Colors.black,
@@ -593,7 +642,7 @@ class _EquityDetailsState extends State<EquityDetails> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 16.h),
+                    SizedBox(height: 12.h),
                     Container(
                       decoration: BoxDecoration(
                         color: isDark ? Colors.black : Colors.white,
@@ -627,16 +676,12 @@ class _EquityDetailsState extends State<EquityDetails> {
                                               MainAxisAlignment.center,
                                           children: [
                                             SvgPicture.asset(
-                                              "assets/icons/arrow_up.svg",
-                                              colorFilter: ColorFilter.mode(
-                                                isDark
-                                                    ? Colors.white
-                                                    : Colors.black,
-                                                BlendMode.srcIn,
-                                              ),
+                                              "assets/svgs/viewChart.svg",
+                                              color: Color(0xff1db954),
                                               height: 20.h,
                                               width: 20.w,
                                             ),
+                                            SizedBox(width: 4.w),
                                             Text(
                                               "View Chart",
                                               style: TextStyle(
@@ -649,7 +694,7 @@ class _EquityDetailsState extends State<EquityDetails> {
                                         ),
                                       )),
                                       Container(
-                                        width: 1.w,
+                                        width: 2.w,
                                         height: 25.h,
                                         color: Color(0xff2f2f2f),
                                       ),
@@ -660,16 +705,12 @@ class _EquityDetailsState extends State<EquityDetails> {
                                               MainAxisAlignment.center,
                                           children: [
                                             SvgPicture.asset(
-                                              "assets/icons/arrow_up.svg",
-                                              colorFilter: ColorFilter.mode(
-                                                isDark
-                                                    ? Colors.white
-                                                    : Colors.black,
-                                                BlendMode.srcIn,
-                                              ),
+                                              "assets/svgs/stockDetails.svg",
+                                              color: Color(0xff1db954),
                                               height: 20.h,
                                               width: 20.w,
                                             ),
+                                            SizedBox(width: 4.w),
                                             Text(
                                               "Stock Details",
                                               style: TextStyle(
