@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:flutter_svg/svg.dart'; // For SVG rendering support
 import 'package:sapphire/main.dart'; // Contains app-wide utilities
+import 'package:sapphire/screens/auth/login/loginOtp.dart';
+import 'package:sapphire/screens/auth/login/troubleLoggingIn/panInput.dart';
 import 'package:sapphire/screens/home/riskDisclosure.dart';
 import 'package:sapphire/screens/auth/signUp/contactDetails/email.dart';
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
@@ -38,31 +40,46 @@ class _LoginScreenState extends State<LoginScreen> {
     // Detect if the app is running in dark mode to adjust UI elements accordingly
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return SafeArea(
-      child: Scaffold(
-        // Allow UI to resize when keyboard appears
-        resizeToAvoidBottomInset: true,
-        body: Center(
-          child: GestureDetector(
-            // Dismiss keyboard when tapping outside input fields
-            onTap: () {
-              FocusScope.of(context).unfocus();
+    return Scaffold(
+      // Allow UI to resize when keyboard appears
+      resizeToAvoidBottomInset: true,
+      appBar: AppBar(
+        toolbarHeight: 45.h,
+        leading: Padding(
+          padding: EdgeInsets.only(top: 16.h),
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            iconSize: 28.sp,
+            onPressed: () {
+              Navigator.pop(context);
             },
-            behavior: HitTestBehavior.opaque,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0.w),
+          ),
+        ),
+      ),
+      body: Center(
+        child: GestureDetector(
+          // Dismiss keyboard when tapping outside input fields
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          behavior: HitTestBehavior.opaque,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15.0.w),
+            child: Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         // Top spacing
-                        SizedBox(height: 40.h),
+                        // SizedBox(height: 40.h),
 
                         // App logo
-                        Image.asset("assets/images/whiteLogo.png", scale: 0.7),
-                        SizedBox(height: 30.h),
+                        // Image.asset("assets/images/whiteLogo.png", scale: 0.7),
+
+                        Spacer(),
 
                         // Welcome header section
                         Align(
@@ -78,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     fontSize: 34.sp,
                                     fontWeight: FontWeight.w600),
                               ),
-                              SizedBox(height: 17.h),
+                              SizedBox(height: 8.h),
 
                               // Subtitle
                               Text(
@@ -309,6 +326,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   child: TextButton(
                                     onPressed: () {
                                       // TODO: Implement account recovery flow
+                                      navi(panInput(), context);
                                     },
                                     child: Text(
                                       "Trouble logging in?",
@@ -331,7 +349,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         /// Processes the login attempt and navigates to next screen on success
                         constWidgets.greenButton("Continue", onTap: () {
                           // Navigate to the Disclosure screen without animation
-                          naviWithoutAnimation(context, Disclosure());
+                          navi(loginOtp(), context);
                         }),
                         SizedBox(height: 24.h),
                         RichText(
