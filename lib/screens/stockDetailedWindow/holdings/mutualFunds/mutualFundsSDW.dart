@@ -1,8 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/stockDetailedWindow/viewAllTrans.dart';
+// File: mutualFundsSDW.dart
+// Description: Mutual funds details screen for the Sapphire Trading application.
+// This screen displays comprehensive information about a mutual fund investment including
+// fund details, profit and loss, NAV details, and transaction history with options to exit or add to the position.
 
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
+import 'package:sapphire/main.dart'; // For navigation utilities
+import 'package:sapphire/screens/stockDetailedWindow/holdings/viewAllTransactions/shortTermTxn.dart'; // For viewing all transactions
+
+/// MutualFundsDetails - Widget that displays detailed information about a mutual fund investment
+/// Shows complete fund information with P&L, NAV details, and transaction history
 class MutualFundsDetails extends StatefulWidget {
   const MutualFundsDetails({Key? key}) : super(key: key);
 
@@ -10,6 +17,8 @@ class MutualFundsDetails extends StatefulWidget {
   State<MutualFundsDetails> createState() => _MutualFundsDetailsState();
 }
 
+/// State class for the MutualFundsDetails widget
+/// Manages the display of mutual fund details and related actions
 class _MutualFundsDetailsState extends State<MutualFundsDetails> {
   // Add a focus node to track when search field is focused
   final FocusNode _searchFocusNode = FocusNode();
@@ -24,23 +33,33 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
 
   @override
   void dispose() {
+    // Clean up resources when widget is disposed
     _searchFocusNode.removeListener(_onFocusChange);
     _searchFocusNode.dispose();
     _searchController.dispose();
     super.dispose();
   }
 
+  /// Handles focus changes for search field
+  /// Rebuilds UI when search focus changes
   void _onFocusChange() {
     // Trigger rebuild when focus changes
     setState(() {});
   }
 
+  /// Creates an information row with label and value
+  /// @param label - Label for the information (left side)
+  /// @param value - Value to display (right side)
+  /// @param isGreen - Whether to show the value in green (for positive values)
+  /// @param alignRight - Whether to align the value to the right
+  /// @return Widget - Row with formatted label and value
   Widget _buildInfoRow(String label, String value,
       {bool isGreen = false, bool alignRight = false}) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        // Information label (left)
         Text(
           label,
           style: TextStyle(
@@ -48,13 +67,14 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
             color: isDark ? Color(0xffc9cacc) : Color(0xff6B7280),
           ),
         ),
+        // Information value (right)
         Text(
           value,
           style: TextStyle(
             fontSize: 12.sp,
             fontWeight: FontWeight.w500,
             color:
-                isGreen ? Colors.green : (isDark ? Colors.white : Colors.black),
+            isGreen ? Colors.green : (isDark ? Colors.white : Colors.black),
           ),
           textAlign: alignRight ? TextAlign.right : TextAlign.left,
         ),
@@ -71,6 +91,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
       appBar: AppBar(
         backgroundColor: isDark ? Colors.black : Colors.white,
         leadingWidth: 28,
+        // Back button
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -78,6 +99,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
           ),
           onPressed: () => Navigator.pop(context),
         ),
+        // Screen title
         title: Text(
           "My Investment",
           style: TextStyle(
@@ -89,6 +111,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
       ),
       body: Column(
         children: [
+          // Divider below app bar
           Divider(
             height: 1.h,
             color: Color(0xff2f2f2f),
@@ -101,7 +124,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 16.h),
-                    // Fund Name Section
+                    // Fund Name Section - Shows fund name and category
                     Container(
                       padding: EdgeInsets.all(16.w),
                       decoration: BoxDecoration(
@@ -110,23 +133,26 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                       ),
                       child: Row(
                         children: [
+                          // Fund logo/icon
                           Container(
                             width: 32.w,
                             height: 32.h,
                             decoration: BoxDecoration(
-                              color: Colors.amber,
+                              color: Colors.amber, // Fund brand color
                               shape: BoxShape.circle,
                             ),
                           ),
                           SizedBox(width: 12.w),
+                          // Fund name and category
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
                                   children: [
+                                    // Mutual fund name
                                     Expanded(
                                       child: Text(
                                         "Motilal Oswal Midcap Fund Direct Growth",
@@ -139,14 +165,16 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                         ),
                                       ),
                                     ),
+                                    // Right chevron icon
                                     Icon(
                                       Icons.chevron_right,
                                       color:
-                                          isDark ? Colors.white : Colors.black,
+                                      isDark ? Colors.white : Colors.black,
                                     ),
                                   ],
                                 ),
                                 SizedBox(height: 4.h),
+                                // Fund type and category
                                 Text(
                                   "Regular · Equity-Midcap",
                                   style: TextStyle(
@@ -164,7 +192,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                     ),
                     SizedBox(height: 16.h), // Gap between sections
 
-                    // P&L Section
+                    // P&L Section - Shows profit and loss metrics
                     Container(
                       padding: EdgeInsets.all(16.w),
                       decoration: BoxDecoration(
@@ -174,8 +202,9 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          // P&L header
                           Text(
-                            "P&L",
+                            "P&L", // Profit & Loss
                             style: TextStyle(
                               fontSize: 12.sp,
                               color: isDark
@@ -184,37 +213,39 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                             ),
                           ),
                           SizedBox(height: 4.h),
+                          // Profit amount and percentage
                           Row(
                             children: [
                               Text(
-                                "+₹22,678.80",
+                                "+₹22,678.80", // Profit amount (positive)
                                 style: TextStyle(
                                   fontSize: 15.sp,
                                   fontWeight: FontWeight.w500,
-                                  color: Colors.green,
+                                  color: Colors.green, // Green for profit
                                 ),
                               ),
                               SizedBox(width: 4.w),
                               Text(
-                                "(2.78%)",
+                                "(2.78%)", // Profit percentage
                                 style: TextStyle(
                                   fontSize: 13.sp,
                                   fontWeight: FontWeight.w500,
-                                  color: Colors.green,
+                                  color: Colors.green, // Green for profit
                                 ),
                               ),
                             ],
                           ),
                           SizedBox(height: 16.h),
+                          // First row of metrics: Total Quantity and XIRR
                           Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              // Total Quantity column
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Total Qty.",
+                                      "Total Qty.", // Total units held
                                       style: TextStyle(
                                         fontSize: 12.sp,
                                         color: isDark
@@ -224,7 +255,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                     ),
                                     SizedBox(height: 6.h),
                                     Text(
-                                      "100",
+                                      "100", // Number of units
                                       style: TextStyle(
                                         fontSize: 13.sp,
                                         fontWeight: FontWeight.w500,
@@ -236,12 +267,13 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                   ],
                                 ),
                               ),
+                              // XIRR column (Extended Internal Rate of Return)
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "XIRR",
+                                      "XIRR", // Extended Internal Rate of Return
                                       style: TextStyle(
                                         fontSize: 12.sp,
                                         color: isDark
@@ -251,7 +283,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                     ),
                                     SizedBox(height: 6.h),
                                     Text(
-                                      "0.00%",
+                                      "0.00%", // XIRR percentage
                                       style: TextStyle(
                                         fontSize: 13.sp,
                                         fontWeight: FontWeight.w500,
@@ -266,15 +298,16 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                             ],
                           ),
                           SizedBox(height: 12.h),
+                          // Second row of metrics: Present value and Current value
                           Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              // Present value column
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Present value",
+                                      "Present value", // Investment value at purchase
                                       style: TextStyle(
                                         fontSize: 12.sp,
                                         color: isDark
@@ -284,7 +317,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                     ),
                                     SizedBox(height: 6.h),
                                     Text(
-                                      "₹1,34,789.00",
+                                      "₹1,34,789.00", // Investment amount
                                       style: TextStyle(
                                         fontSize: 13.sp,
                                         fontWeight: FontWeight.w500,
@@ -296,12 +329,13 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                   ],
                                 ),
                               ),
+                              // Current value column
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Current value",
+                                      "Current value", // Current market value
                                       style: TextStyle(
                                         fontSize: 12.sp,
                                         color: isDark
@@ -311,7 +345,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                     ),
                                     SizedBox(height: 6.h),
                                     Text(
-                                      "₹1,34,789.00",
+                                      "₹1,34,789.00", // Current value
                                       style: TextStyle(
                                         fontSize: 13.sp,
                                         fontWeight: FontWeight.w500,
@@ -330,7 +364,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                     ),
                     SizedBox(height: 16.h), // Gap between sections
 
-                    // NAV Details Section
+                    // NAV Details Section - Shows Net Asset Value information
                     Container(
                       padding: EdgeInsets.all(12.w),
                       decoration: BoxDecoration(
@@ -339,11 +373,12 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                       ),
                       child: Column(
                         children: [
+                          // NAV headers row
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Text(
-                                "Avg Nav",
+                                "Avg Nav", // Average Net Asset Value
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   color: isDark
@@ -352,7 +387,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                 ),
                               ),
                               Text(
-                                "Units",
+                                "Units", // Number of units held
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   color: isDark
@@ -361,7 +396,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                 ),
                               ),
                               Text(
-                                "Current Nav",
+                                "Current Nav", // Current Net Asset Value
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   color: isDark
@@ -372,11 +407,12 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                             ],
                           ),
                           SizedBox(height: 6.h),
+                          // NAV values row
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Text(
-                                "1500/1500",
+                                "1500/1500", // Average NAV value
                                 style: TextStyle(
                                   fontSize: 13.sp,
                                   fontWeight: FontWeight.w500,
@@ -384,7 +420,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                 ),
                               ),
                               Text(
-                                "327.00",
+                                "327.00", // Number of units
                                 style: TextStyle(
                                   fontSize: 13.sp,
                                   fontWeight: FontWeight.w500,
@@ -392,7 +428,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                 ),
                               ),
                               Text(
-                                "₹1,34,789.00",
+                                "₹1,34,789.00", // Current NAV value
                                 style: TextStyle(
                                   fontSize: 13.sp,
                                   fontWeight: FontWeight.w500,
@@ -406,7 +442,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                     ),
                     SizedBox(height: 16.h), // Gap between sections
 
-                    // Mutual Fund Details Section
+                    // Mutual Fund Details Section - Shows transaction history
                     Container(
                       padding: EdgeInsets.all(16.w),
                       decoration: BoxDecoration(
@@ -426,6 +462,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                   color: isDark ? Colors.white : Colors.black,
                                 ),
                               ),
+                              // View all transactions link
                               GestureDetector(
                                 onTap: () {
                                   navi(ViewAllTransactions(), context);
@@ -441,10 +478,10 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                             ],
                           ),
                           SizedBox(height: 16.h),
-                          // Position Rows - Redesigned to match the image
+                          // Position Rows - Short term and Long term holdings
                           Row(
                             children: [
-                              // Short term container
+                              // Short term holdings container
                               Expanded(
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
@@ -463,10 +500,11 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                   ),
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
+                                      // Short term header
                                       Text(
-                                        "Short term",
+                                        "Short term", // Holdings < 1 year
                                         style: TextStyle(
                                           fontSize: 14.sp,
                                           color: isDark
@@ -475,6 +513,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                         ),
                                       ),
                                       SizedBox(height: 6.h),
+                                      // Short term details container
                                       Container(
                                         padding: EdgeInsets.all(12.w),
                                         decoration: BoxDecoration(
@@ -482,7 +521,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                               ? Color(0xff252525)
                                               : Colors.grey[100],
                                           borderRadius:
-                                              BorderRadius.circular(8.r),
+                                          BorderRadius.circular(8.r),
                                           border: Border.all(
                                             color: isDark
                                                 ? Color(0xff2F2F2F)
@@ -492,14 +531,15 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                         ),
                                         child: Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                           children: [
+                                            // Quantity column
                                             Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "Qty.",
+                                                  "Qty.", // Quantity
                                                   style: TextStyle(
                                                     fontSize: 11.sp,
                                                     color: isDark
@@ -509,7 +549,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                                 ),
                                                 SizedBox(height: 4.h),
                                                 Text(
-                                                  "1000",
+                                                  "1000", // Number of units
                                                   style: TextStyle(
                                                     fontSize: 11.sp,
                                                     color: isDark
@@ -519,12 +559,13 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                                 ),
                                               ],
                                             ),
+                                            // Value column
                                             Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
+                                              CrossAxisAlignment.end,
                                               children: [
                                                 Text(
-                                                  "Value",
+                                                  "Value", // Current value
                                                   style: TextStyle(
                                                     fontSize: 11.sp,
                                                     color: isDark
@@ -534,10 +575,10 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                                 ),
                                                 SizedBox(height: 4.h),
                                                 Text(
-                                                  "-₹12,347.00",
+                                                  "-₹12,347.00", // Loss amount (negative)
                                                   style: TextStyle(
                                                     fontSize: 11.sp,
-                                                    color: Colors.red,
+                                                    color: Colors.red, // Red for loss
                                                   ),
                                                 ),
                                               ],
@@ -550,7 +591,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                 ),
                               ),
                               SizedBox(width: 12.w),
-                              // Long term container
+                              // Long term holdings container
                               Expanded(
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
@@ -569,10 +610,11 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                   ),
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
+                                      // Long term header
                                       Text(
-                                        "Long term",
+                                        "Long term", // Holdings > 1 year
                                         style: TextStyle(
                                           fontSize: 14.sp,
                                           color: isDark
@@ -581,6 +623,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                         ),
                                       ),
                                       SizedBox(height: 6.h),
+                                      // Long term details container
                                       Container(
                                         padding: EdgeInsets.all(12.w),
                                         decoration: BoxDecoration(
@@ -588,7 +631,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                               ? Color(0xff252525)
                                               : Colors.grey[100],
                                           borderRadius:
-                                              BorderRadius.circular(8.r),
+                                          BorderRadius.circular(8.r),
                                           border: Border.all(
                                             color: isDark
                                                 ? Color(0xff2F2F2F)
@@ -598,14 +641,15 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                         ),
                                         child: Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                           children: [
+                                            // Quantity column
                                             Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "Qty.",
+                                                  "Qty.", // Quantity
                                                   style: TextStyle(
                                                     fontSize: 11.sp,
                                                     color: isDark
@@ -615,7 +659,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                                 ),
                                                 SizedBox(height: 4.h),
                                                 Text(
-                                                  "0",
+                                                  "0", // Zero units (no long term holdings)
                                                   style: TextStyle(
                                                     fontSize: 11.sp,
                                                     color: isDark
@@ -625,12 +669,13 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                                 ),
                                               ],
                                             ),
+                                            // Value column
                                             Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
+                                              CrossAxisAlignment.end,
                                               children: [
                                                 Text(
-                                                  "Value",
+                                                  "Value", // Current value
                                                   style: TextStyle(
                                                     fontSize: 11.sp,
                                                     color: isDark
@@ -640,10 +685,10 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                                                 ),
                                                 SizedBox(height: 4.h),
                                                 Text(
-                                                  "+₹12,347.00",
+                                                  "+₹12,347.00", // Profit amount (positive)
                                                   style: TextStyle(
                                                     fontSize: 11.sp,
-                                                    color: Colors.green,
+                                                    color: Colors.green, // Green for profit
                                                   ),
                                                 ),
                                               ],
@@ -661,10 +706,11 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                       ),
                     ),
                     SizedBox(height: 16.h),
+                    // Folio number display
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "Folio No.: 856846",
+                        "Folio No.: 856846", // Mutual fund folio number
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: 12.sp,
@@ -679,6 +725,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
           ),
         ],
       ),
+      // Bottom action buttons - EXIT and ADD
       bottomNavigationBar: Container(
         padding: EdgeInsets.only(
           left: 16.w,
@@ -697,10 +744,11 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
         ),
         child: Row(
           children: [
+            // EXIT button (red) - Redeem investment
             Expanded(
               child: ElevatedButton(
                 onPressed: () {
-                  // Handle EXIT action
+                  // Handle EXIT action - Redeem fund units
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
@@ -711,7 +759,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                   padding: EdgeInsets.symmetric(vertical: 12.h),
                 ),
                 child: Text(
-                  "EXIT",
+                  "EXIT", // Redeem/Withdraw investment
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
@@ -720,10 +768,11 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
               ),
             ),
             SizedBox(width: 12.w),
+            // ADD button (green) - Add to investment
             Expanded(
               child: ElevatedButton(
                 onPressed: () {
-                  // Handle ADD action
+                  // Handle ADD action - Add more investment
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xff1DB954),
@@ -734,7 +783,7 @@ class _MutualFundsDetailsState extends State<MutualFundsDetails> {
                   padding: EdgeInsets.symmetric(vertical: 12.h),
                 ),
                 child: Text(
-                  "ADD",
+                  "ADD", // Add more investment units
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,

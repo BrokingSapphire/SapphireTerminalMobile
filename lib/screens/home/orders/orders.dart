@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/funds/funds.dart';
 import 'package:sapphire/screens/account/account.dart';
-import 'package:sapphire/screens/stockDetailedWindow/ordersDetails.dart';
+import 'package:sapphire/screens/stockDetailedWindow/orders/ordersSDW.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 import 'package:sapphire/utils/naviWithoutAnimation.dart';
 

@@ -5,10 +5,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:sapphire/screens/auth/signUp/initialPage.dart'; // Initial landing screen
-import 'package:sapphire/screens/stockDetailedWindow/equityDetails.dart';
-import 'package:sapphire/screens/stockDetailedWindow/mutualFundsDetails.dart';
-import 'package:sapphire/screens/stockDetailedWindow/ordersDetails.dart';
-import 'package:sapphire/screens/stockDetailedWindow/viewAllTrans.dart';
 import 'package:sapphire/themeProvider.dart'; // Theme state management
 import 'package:provider/provider.dart'; // State management solution
 import 'package:sapphire/utils/appTheme.dart'; // App-wide theme configurations.

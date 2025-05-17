@@ -7,7 +7,7 @@ import 'package:sapphire/screens/funds/funds.dart';
 import 'package:sapphire/screens/home/discover/ipo/ipoWrapper.dart';
 import 'package:sapphire/screens/home/discover/pledge/pledge/pledge.dart';
 import 'package:sapphire/screens/home/discover/priceAlerts/priceAlerts.dart';
-import 'package:sapphire/screens/optionChain/optionChainWrapper.dart';
+import 'package:sapphire/screens/optionChain/optionChain.dart';
 import 'package:sapphire/utils/naviWithoutAnimation.dart';
 
 class DiscoverScreen extends StatefulWidget {

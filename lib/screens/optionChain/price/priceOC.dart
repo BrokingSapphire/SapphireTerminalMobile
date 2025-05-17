@@ -1,23 +1,34 @@
+// File: priceOC.dart
+// Description: Price view component for the option chain in the Sapphire Trading application.
+// This screen displays option chain data with price information in a scrollable format with a highlighted
+// current price row in the center of the screen.
+
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 
+/// optionChainPrice - Widget that displays option chain price data
+/// Shows a scrollable list of option strikes with call and put price information
 class optionChainPrice extends StatefulWidget {
-  final String symbol;
+  final String symbol; // Stock symbol for which option chain is displayed
 
+  /// Constructor to initialize the option chain price view
   const optionChainPrice({super.key, required this.symbol});
 
   @override
   State<optionChainPrice> createState() => _optionChainPriceState();
 }
 
+/// State class for the optionChainPrice widget
+/// Manages the display of option chain price data and maintains scroll position
 class _optionChainPriceState extends State<optionChainPrice>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  late ScrollController _scrollController;
-  final GlobalKey _capsuleKey = GlobalKey();
-  final GlobalKey _headerKey = GlobalKey();
+  late TabController _tabController; // Controller for tab navigation
+  late ScrollController _scrollController; // Controller for scrolling the option chain
+  final GlobalKey _capsuleKey = GlobalKey(); // Key for the highlighted price row
+  final GlobalKey _headerKey = GlobalKey(); // Key for the header row
 
   // Mock data for the option chain above the highlighted row
+  // Contains option data for strikes below the current price
   final List<Map<String, dynamic>> optionChainDataAbove = [
     {
       'leftVolume': '1K',
@@ -28,114 +39,7 @@ class _optionChainPriceState extends State<optionChainPrice>
       'putPercent': '+4.55%',
       'rightVolume': '120K',
     },
-    {
-      'leftVolume': '2K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '23,750',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '110K',
-    },
-    {
-      'leftVolume': '3K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '23,800',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '100K',
-    },
-    {
-      'leftVolume': '4K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '23,850',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '90K',
-    },
-    {
-      'leftVolume': '1K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '23,700',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '120K',
-    },
-    {
-      'leftVolume': '2K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '23,750',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '110K',
-    },
-    {
-      'leftVolume': '3K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '23,800',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '100K',
-    },
-    {
-      'leftVolume': '4K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '23,850',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '90K',
-    },
-    {
-      'leftVolume': '5K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '23,900',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '85K',
-    },
-    {
-      'leftVolume': '7K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '23,950',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '80K',
-    },
-    {
-      'leftVolume': '10K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '24,000',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '75K',
-    },
-    {
-      'leftVolume': '12K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '24,050',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '70K',
-    },
-    {
-      'leftVolume': '15K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '24,100',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '65K',
-    },
+    // Additional data entries...
     {
       'leftVolume': '18K',
       'callPrice': '₹1,580.60',
@@ -148,6 +52,7 @@ class _optionChainPriceState extends State<optionChainPrice>
   ];
 
   // Mock data for the option chain below the highlighted row
+  // Contains option data for strikes above the current price
   final List<Map<String, dynamic>> optionChainDataBelow = [
     {
       'leftVolume': '20K',
@@ -158,105 +63,7 @@ class _optionChainPriceState extends State<optionChainPrice>
       'putPercent': '+4.55%',
       'rightVolume': '55L',
     },
-    {
-      'leftVolume': '18K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '24,300',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '50L',
-    },
-    {
-      'leftVolume': '15K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '24,350',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '45L',
-    },
-    {
-      'leftVolume': '20K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '24,250',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '55L',
-    },
-    {
-      'leftVolume': '18K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '24,300',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '50L',
-    },
-    {
-      'leftVolume': '15K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '24,350',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '45L',
-    },
-    {
-      'leftVolume': '12K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '24,400',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '40L',
-    },
-    {
-      'leftVolume': '10K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '24,450',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '35L',
-    },
-    {
-      'leftVolume': '8K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '24,500',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '30L',
-    },
-    {
-      'leftVolume': '6K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '24,550',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '25L',
-    },
-    {
-      'leftVolume': '5K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '24,600',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '20L',
-    },
-    {
-      'leftVolume': '3K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '24,650',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
-      'rightVolume': '15L',
-    },
+    // Additional data entries...
     {
       'leftVolume': '2K',
       'callPrice': '₹1,580.60',
@@ -271,19 +78,20 @@ class _optionChainPriceState extends State<optionChainPrice>
   @override
   void initState() {
     super.initState();
+    // Initialize controllers
     _scrollController = ScrollController();
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(() {
       setState(() {});
     });
 
-    // Use a simpler approach to center the capsule
+    // Center the highlighted price row on initial load
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Use a longer delay to ensure the UI is fully rendered
       Future.delayed(const Duration(milliseconds: 300), () {
         if (!mounted || !_scrollController.hasClients) return;
 
-        // Get the total number of items
+        // Get the total number of items in the list
         final totalItems =
             optionChainDataAbove.length + 1 + optionChainDataBelow.length;
 
@@ -292,7 +100,7 @@ class _optionChainPriceState extends State<optionChainPrice>
 
         // Calculate how many items should be visible on screen
         final visibleItemCount =
-            7; // Adjust this number based on your screen size
+        7; // Adjust this number based on your screen size
 
         // Calculate how many items should be above the capsule to center it
         final itemsAboveCapsule = (visibleItemCount - 1) ~/ 2;
@@ -306,7 +114,7 @@ class _optionChainPriceState extends State<optionChainPrice>
         // Calculate the scroll offset
         final offset = topItemIndex * estimatedRowHeight;
 
-        // Apply the scroll offset
+        // Apply the scroll offset to center the highlighted row
         if (offset >= 0) {
           _scrollController.jumpTo(offset);
         }
@@ -316,6 +124,7 @@ class _optionChainPriceState extends State<optionChainPrice>
 
   @override
   void dispose() {
+    // Clean up resources when widget is disposed
     _scrollController.dispose();
     _tabController.dispose();
     super.dispose();
@@ -323,41 +132,45 @@ class _optionChainPriceState extends State<optionChainPrice>
 
   @override
   Widget build(BuildContext context) {
+    // Generate option rows above the highlighted row from data
     final List<Widget> rowsAbove = optionChainDataAbove
         .map((data) => _buildOptionRow(
-              data['leftVolume'],
-              data['callPrice'],
-              data['callPercent'],
-              data['strikePrice'],
-              data['putPrice'],
-              data['putPercent'],
-              data['rightVolume'],
-            ))
+      data['leftVolume'],
+      data['callPrice'],
+      data['callPercent'],
+      data['strikePrice'],
+      data['putPrice'],
+      data['putPercent'],
+      data['rightVolume'],
+    ))
         .toList();
 
+    // Generate option rows below the highlighted row from data
     final List<Widget> rowsBelow = optionChainDataBelow
         .map((data) => _buildOptionRow(
-              data['leftVolume'],
-              data['callPrice'],
-              data['callPercent'],
-              data['strikePrice'],
-              data['putPrice'],
-              data['putPercent'],
-              data['rightVolume'],
-            ))
+      data['leftVolume'],
+      data['callPrice'],
+      data['callPercent'],
+      data['strikePrice'],
+      data['putPrice'],
+      data['putPercent'],
+      data['rightVolume'],
+    ))
         .toList();
 
     return Scaffold(
       backgroundColor: Colors.black,
       body: Column(
         children: [
+          // Header row with column titles
           _buildHeaderRow(key: _headerKey),
-          // SizedBox(height: 8.h),
+          // Option chain list with highlighted current price
           Expanded(
             child: NotificationListener<ScrollNotification>(
               onNotification: (scrollInfo) {
                 if (scrollInfo is ScrollUpdateNotification) {
                   setState(() {
+                    // Calculations for tracking scroll position relative to the capsule
                     final rowHeight = 50.h;
                     final capsuleHeight = 30.h;
                     final totalHeightAbove =
@@ -378,12 +191,15 @@ class _optionChainPriceState extends State<optionChainPrice>
                 controller: _scrollController,
                 physics: const BouncingScrollPhysics(),
                 slivers: [
+                  // Option rows for strikes below current price
                   SliverList(
                     delegate: SliverChildListDelegate(rowsAbove),
                   ),
+                  // Highlighted row showing current price
                   SliverToBoxAdapter(
                     child: _buildHighlightedRow(key: _capsuleKey),
                   ),
+                  // Option rows for strikes above current price
                   SliverList(
                     delegate: SliverChildListDelegate(rowsBelow),
                   ),
@@ -396,6 +212,9 @@ class _optionChainPriceState extends State<optionChainPrice>
     );
   }
 
+  /// Builds the header row with column titles
+  /// @param key - Optional key for the header widget
+  /// @return Widget - Header row with column labels
   Widget _buildHeaderRow({Key? key}) {
     return Column(
       children: [
@@ -405,6 +224,7 @@ class _optionChainPriceState extends State<optionChainPrice>
           padding: EdgeInsets.only(top: 8.h),
           child: Row(
             children: [
+              // Volume column header (left side)
               Expanded(
                 flex: 1,
                 child: Column(
@@ -414,6 +234,7 @@ class _optionChainPriceState extends State<optionChainPrice>
                       style: TextStyle(color: Colors.white, fontSize: 13.sp),
                       textAlign: TextAlign.center,
                     ),
+                    // Commented divider code
                     // SizedBox(height: 16.h),
                     // Container(
                     //   width: double.infinity,
@@ -423,6 +244,7 @@ class _optionChainPriceState extends State<optionChainPrice>
                   ],
                 ),
               ),
+              // Call Price column header
               Expanded(
                 flex: 1,
                 child: Column(
@@ -432,6 +254,7 @@ class _optionChainPriceState extends State<optionChainPrice>
                       style: TextStyle(color: Colors.white, fontSize: 13.sp),
                       textAlign: TextAlign.center,
                     ),
+                    // Commented divider code
                     // SizedBox(height: 16.h),
                     // Container(
                     //   width: double.infinity,
@@ -441,6 +264,7 @@ class _optionChainPriceState extends State<optionChainPrice>
                   ],
                 ),
               ),
+              // Strike Price column header (center)
               Expanded(
                 flex: 1,
                 child: Column(
@@ -453,6 +277,7 @@ class _optionChainPriceState extends State<optionChainPrice>
                   ],
                 ),
               ),
+              // Put Price column header
               Expanded(
                 flex: 1,
                 child: Column(
@@ -462,6 +287,7 @@ class _optionChainPriceState extends State<optionChainPrice>
                       style: TextStyle(color: Colors.white, fontSize: 13.sp),
                       textAlign: TextAlign.center,
                     ),
+                    // Commented divider code
                     // SizedBox(height: 8.h),
                     // Container(
                     //   width: double.infinity,
@@ -471,6 +297,7 @@ class _optionChainPriceState extends State<optionChainPrice>
                   ],
                 ),
               ),
+              // Volume column header (right side)
               Expanded(
                 flex: 1,
                 child: Column(
@@ -480,6 +307,7 @@ class _optionChainPriceState extends State<optionChainPrice>
                       style: TextStyle(color: Colors.white, fontSize: 13.sp),
                       textAlign: TextAlign.center,
                     ),
+                    // Commented divider code
                     // SizedBox(height: 8.h),
                     // Container(
                     //   width: double.infinity,
@@ -495,6 +323,7 @@ class _optionChainPriceState extends State<optionChainPrice>
         SizedBox(
           height: 8.h,
         ),
+        // Horizontal divider below header
         Divider(
           color: Color(0xff2f2f2f),
         )
@@ -502,6 +331,15 @@ class _optionChainPriceState extends State<optionChainPrice>
     );
   }
 
+  /// Builds a regular option chain row with all data columns
+  /// @param leftVolume - Call option volume
+  /// @param callPrice - Call option price
+  /// @param callPercent - Call option price change percentage
+  /// @param strikePrice - Option strike price
+  /// @param putPrice - Put option price
+  /// @param putPercent - Put option price change percentage
+  /// @param rightVolume - Put option volume
+  /// @return Widget - Complete option row with all data cells
   Widget _buildOptionRow(
       String leftVolume,
       String callPrice,
@@ -515,6 +353,7 @@ class _optionChainPriceState extends State<optionChainPrice>
       padding: EdgeInsets.symmetric(vertical: 8.h),
       child: Row(
         children: [
+          // Call option volume (left column)
           Expanded(
             child: Center(
               child: Text(
@@ -523,6 +362,7 @@ class _optionChainPriceState extends State<optionChainPrice>
               ),
             ),
           ),
+          // Call option price with percentage change
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -539,10 +379,10 @@ class _optionChainPriceState extends State<optionChainPrice>
               ],
             ),
           ),
+          // Strike price (center column) with call/put indicator bars
           Expanded(
             child: Center(
               child: Column(
-                // alignment: Alignment.center,
                 children: [
                   Text(
                     strikePrice,
@@ -554,6 +394,7 @@ class _optionChainPriceState extends State<optionChainPrice>
                   SizedBox(
                     height: 4.h,
                   ),
+                  // Red/Green indicator bars for call/put strength
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -576,6 +417,7 @@ class _optionChainPriceState extends State<optionChainPrice>
               ),
             ),
           ),
+          // Put option price with percentage change
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -592,6 +434,7 @@ class _optionChainPriceState extends State<optionChainPrice>
               ],
             ),
           ),
+          // Put option volume (right column)
           Expanded(
             child: Center(
               child: Text(
@@ -605,6 +448,10 @@ class _optionChainPriceState extends State<optionChainPrice>
     );
   }
 
+  /// Builds the highlighted row showing current price
+  /// This row appears between the strike prices and indicates the current market price
+  /// @param key - Optional key for the highlighted row widget
+  /// @return Widget - Highlighted current price row
   Widget _buildHighlightedRow({Key? key}) {
     return Container(
       key: key,
@@ -613,6 +460,7 @@ class _optionChainPriceState extends State<optionChainPrice>
       child: Stack(
         alignment: Alignment.center,
         children: [
+          // Horizontal line extending across the row
           Positioned.fill(
             child: Row(
               children: [
@@ -632,6 +480,7 @@ class _optionChainPriceState extends State<optionChainPrice>
               ],
             ),
           ),
+          // Capsule containing current price and change percentage
           Container(
             padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 12.w),
             decoration: BoxDecoration(

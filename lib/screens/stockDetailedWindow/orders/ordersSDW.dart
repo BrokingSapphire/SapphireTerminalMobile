@@ -1,8 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
+// File: ordersSDW.dart
+// Description: Order details screen for the Sapphire Trading application.
+// This screen shows comprehensive information about an executed order including quantity,
+// price, order type, and other transaction details.
 
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
+import 'package:flutter_svg/svg.dart'; // For SVG image rendering
+import 'package:provider/provider.dart'; // For state management
+
+/// OrdersDetails - Widget that displays detailed information about a stock order
+/// Shows complete information about an executed order with options for related actions
 class OrdersDetails extends StatefulWidget {
   const OrdersDetails({super.key});
 
@@ -10,16 +17,24 @@ class OrdersDetails extends StatefulWidget {
   State<OrdersDetails> createState() => _OrdersDetailsState();
 }
 
+/// State class for the OrdersDetails widget
+/// Manages the display of order details and related actions
 class _OrdersDetailsState extends State<OrdersDetails> {
+  /// Creates a row with label and value for stock details section
+  /// @param leftText - Label for the detail (left side)
+  /// @param rightText - Value of the detail (right side)
+  /// @return Widget - Row with formatted label and value
   Widget stockDetailRow(String leftText, String rightText) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        // Left side label (gray color)
         Text(
           leftText,
           style: TextStyle(fontSize: 11.sp, color: Color(0xffC9CACC)),
         ),
+        // Right side value (white color)
         Text(
           rightText,
           style: TextStyle(
@@ -37,6 +52,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
       appBar: AppBar(
         backgroundColor: isDark ? Colors.black : Colors.white,
         leadingWidth: 28,
+        // Back button
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -44,11 +60,13 @@ class _OrdersDetailsState extends State<OrdersDetails> {
           ),
           onPressed: () => Navigator.pop(context),
         ),
+        // Title section with stock info and status
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
+                // Stock symbol
                 Text(
                   "PETRONET",
                   style: TextStyle(
@@ -57,6 +75,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                       color: isDark ? Colors.white : Colors.black),
                 ),
                 SizedBox(width: 8.w),
+                // Exchange indicator (NSE)
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                   decoration: BoxDecoration(
@@ -73,6 +92,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                   ),
                 ),
                 SizedBox(width: 6.w),
+                // Order type indicator (BUY)
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                   decoration: BoxDecoration(
@@ -89,6 +109,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                   ),
                 ),
                 SizedBox(width: 6.w),
+                // Order status indicator (EXECUTED)
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                   decoration: BoxDecoration(
@@ -107,15 +128,16 @@ class _OrdersDetailsState extends State<OrdersDetails> {
               ],
             ),
             SizedBox(height: 4.h),
+            // Current price with change percentage
             RichText(
               text: TextSpan(
-                text: "1256.89 ",
+                text: "1256.89 ", // Current price
                 style: TextStyle(
                     fontSize: 13.sp,
                     color: isDark ? Colors.white : Color(0xff6B7280)),
                 children: [
                   TextSpan(
-                    text: "(+1.67%)",
+                    text: "(+1.67%)", // Change percentage (green for positive)
                     style: TextStyle(fontSize: 13.sp, color: Colors.green),
                   ),
                 ],
@@ -127,6 +149,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
       body: Column(
         children: [
           SizedBox(height: 6.h),
+          // Divider below app bar
           Divider(
             height: 1.h,
             color: Color(0xff2f2f2f),
@@ -136,6 +159,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Column(
               children: [
+                // Order summary card - shows quantity, price, and order type
                 Container(
                   decoration: BoxDecoration(
                     color: isDark ? Color(0xff121413) : Colors.white,
@@ -143,10 +167,11 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                   ),
                   child: Padding(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                    EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
+                        // Filled quantity column
                         Column(
                           children: [
                             Text(
@@ -156,7 +181,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                             ),
                             SizedBox(height: 4.h),
                             Text(
-                              "1500/1500",
+                              "1500/1500", // Executed/Total quantity
                               style: TextStyle(
                                   fontSize: 13.sp,
                                   color: isDark
@@ -165,6 +190,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                             ),
                           ],
                         ),
+                        // Average price column
                         Column(
                           children: [
                             Text(
@@ -174,7 +200,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                             ),
                             SizedBox(height: 4.h),
                             Text(
-                              "327.00",
+                              "327.00", // Average execution price
                               style: TextStyle(
                                   fontSize: 13.sp,
                                   color: isDark
@@ -183,6 +209,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                             ),
                           ],
                         ),
+                        // Order type column
                         Column(
                           children: [
                             Text(
@@ -192,7 +219,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                             ),
                             SizedBox(height: 4.h),
                             Text(
-                              "MARKET",
+                              "MARKET", // Order type (MARKET/LIMIT)
                               style: TextStyle(
                                   fontSize: 13.sp,
                                   color: isDark
@@ -206,6 +233,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                   ),
                 ),
                 SizedBox(height: 12.h),
+                // Action buttons card - Set Alert, Option Chain, Create GTT
                 Container(
                   decoration: BoxDecoration(
                     color: isDark ? Color(0xff121413) : Colors.white,
@@ -213,10 +241,11 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                   ),
                   child: Padding(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                    EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
+                        // Set Alert action button
                         Column(
                           children: [
                             SvgPicture.asset(
@@ -227,7 +256,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                             ),
                             SizedBox(height: 4.h),
                             Text(
-                              " Set Alert",
+                              " Set Alert", // Create price alert
                               style: TextStyle(
                                   fontSize: 13.sp,
                                   color: isDark
@@ -236,6 +265,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                             ),
                           ],
                         ),
+                        // Option Chain action button
                         Column(
                           children: [
                             SvgPicture.asset(
@@ -249,7 +279,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                             ),
                             SizedBox(height: 4.h),
                             Text(
-                              "Option Chain",
+                              "Option Chain", // View option chain
                               style: TextStyle(
                                   fontSize: 13.sp,
                                   color: isDark
@@ -258,6 +288,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                             ),
                           ],
                         ),
+                        // Create GTT action button
                         Column(
                           children: [
                             SvgPicture.asset(
@@ -271,7 +302,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                             ),
                             SizedBox(height: 4.h),
                             Text(
-                              "Create GTT",
+                              "Create GTT", // Create Good Till Triggered order
                               style: TextStyle(
                                   fontSize: 13.sp,
                                   color: isDark
@@ -285,6 +316,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                   ),
                 ),
                 SizedBox(height: 12.h),
+                // Stock details card - comprehensive order information
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -293,12 +325,13 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                   ),
                   child: Padding(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                    EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Column(
                           children: [
+                            // Section header
                             Align(
                               alignment: Alignment.topLeft,
                               child: Text(
@@ -311,24 +344,25 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                               ),
                             ),
                             SizedBox(height: 13.h),
-                            stockDetailRow("Validity / Product", "Day / NRML"),
+                            // Order details rows
+                            stockDetailRow("Validity / Product", "Day / NRML"), // Order validity and product type
                             SizedBox(height: 12.h),
-                            stockDetailRow("Status", "COMPLETED"),
+                            stockDetailRow("Status", "COMPLETED"), // Order status
                             SizedBox(height: 12.h),
-                            stockDetailRow("Price", "0.00"),
+                            stockDetailRow("Price", "0.00"), // Order price (0 for market order)
                             SizedBox(height: 12.h),
-                            stockDetailRow("User", "JQN407"),
+                            stockDetailRow("User", "JQN407"), // User ID
                             SizedBox(height: 12.h),
-                            stockDetailRow("Trigger price", "0.00"),
+                            stockDetailRow("Trigger price", "0.00"), // Trigger price (if applicable)
                             SizedBox(height: 12.h),
-                            stockDetailRow("Time", "2025-05-15 22:00:00"),
+                            stockDetailRow("Time", "2025-05-15 22:00:00"), // Order timestamp
                             SizedBox(height: 12.h),
                             stockDetailRow(
-                                "Exchange Time", "2025-05-15 22:00:00"),
+                                "Exchange Time", "2025-05-15 22:00:00"), // Exchange timestamp
                             SizedBox(height: 12.h),
-                            stockDetailRow("Order ID", "195868461864684"),
+                            stockDetailRow("Order ID", "195868461864684"), // Order ID
                             SizedBox(height: 12.h),
-                            stockDetailRow("Exchange ID", "651648348468"),
+                            stockDetailRow("Exchange ID", "651648348468"), // Exchange order ID
                           ],
                         ),
                       ],
@@ -338,6 +372,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                 SizedBox(
                   height: 12.h,
                 ),
+                // Action buttons card - View Chart, Stock Details
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -349,67 +384,70 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                           horizontal: 16.w, vertical: 12.h),
                       child: Row(
                         children: [
+                          // View Chart button (left side)
                           Expanded(
                               child: Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/svgs/viewChart.svg",
-                                  colorFilter: ColorFilter.mode(
-                                    Color(0xff1db954),
-                                    BlendMode.srcIn,
-                                  ),
-                                  height: 20.h,
-                                  width: 20.w,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      "assets/svgs/viewChart.svg",
+                                      colorFilter: ColorFilter.mode(
+                                        Color(0xff1db954),
+                                        BlendMode.srcIn,
+                                      ),
+                                      height: 20.h,
+                                      width: 20.w,
+                                    ),
+                                    SizedBox(
+                                      width: 4.w,
+                                    ),
+                                    Text(
+                                      "View Chart", // View price chart
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: isDark
+                                              ? Color(0xffEBEEF5)
+                                              : Color(0xffEBEEF5)),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(
-                                  width: 4.w,
-                                ),
-                                Text(
-                                  "View Chart",
-                                  style: TextStyle(
-                                      fontSize: 13.sp,
-                                      color: isDark
-                                          ? Color(0xffEBEEF5)
-                                          : Color(0xffEBEEF5)),
-                                ),
-                              ],
-                            ),
-                          )),
+                              )),
+                          // Vertical divider between buttons
                           Container(
                             width: 1.w,
                             height: 25.h,
                             color: Color(0xff2f2f2f),
                           ),
+                          // Stock Details button (right side)
                           Expanded(
                               child: Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/svgs/stockDetails.svg",
-                                  colorFilter: ColorFilter.mode(
-                                    Color(0xff1db954),
-                                    BlendMode.srcIn,
-                                  ),
-                                  height: 20.h,
-                                  width: 20.w,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      "assets/svgs/stockDetails.svg",
+                                      colorFilter: ColorFilter.mode(
+                                        Color(0xff1db954),
+                                        BlendMode.srcIn,
+                                      ),
+                                      height: 20.h,
+                                      width: 20.w,
+                                    ),
+                                    SizedBox(
+                                      width: 4.w,
+                                    ),
+                                    Text(
+                                      "Stock Details", // View detailed stock information
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: isDark
+                                              ? Color(0xffEBEEF5)
+                                              : Color(0xffEBEEF5)),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(
-                                  width: 4.w,
-                                ),
-                                Text(
-                                  "Stock Details",
-                                  style: TextStyle(
-                                      fontSize: 13.sp,
-                                      color: isDark
-                                          ? Color(0xffEBEEF5)
-                                          : Color(0xffEBEEF5)),
-                                ),
-                              ],
-                            ),
-                          )),
+                              )),
                         ],
                       )),
                 ),
@@ -418,10 +456,12 @@ class _OrdersDetailsState extends State<OrdersDetails> {
           )
         ],
       ),
+      // Bottom action buttons - View Position, Reorder
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [
+            // View Position button (gray)
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
@@ -431,11 +471,12 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                 ),
                 height: 40.h,
                 child: Center(
-                  child: Text("View Position"),
+                  child: Text("View Position"), // View current position
                 ),
               ),
             ),
             SizedBox(width: 10.w),
+            // Reorder button (green)
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
@@ -444,7 +485,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                 ),
                 height: 40.h,
                 child: Center(
-                  child: Text("Reorder"),
+                  child: Text("Reorder"), // Place identical order again
                 ),
               ),
             ),
