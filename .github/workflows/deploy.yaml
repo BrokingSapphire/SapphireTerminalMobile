@@ -1,11 +1,11 @@
 # Debug Build
-name: "Build & Debug (Dev)"
+name: "Build & Debug (Main)"
 
 on:
   push:
-    branches: [dev]
+    branches: [main]
   pull_request:
-    branches: [dev]
+    branches: [main]
 
 # Cancel in-progress runs on new pushes
 concurrency:
