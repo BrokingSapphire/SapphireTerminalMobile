@@ -1,5 +1,5 @@
-# Debug Build
-name: "Build & Debug (Main)"
+# Release Build
+name: "Build & Release (Main)"
 
 on:
   push:
@@ -52,10 +52,10 @@ jobs:
 
 
   build_android:
-    name: Build Android (Debug)
+    name: Build Android (Release)
     needs: lint_and_test
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v3
 
@@ -83,21 +83,21 @@ jobs:
       - name: Get Flutter dependencies
         run: flutter pub get
 
-      - name: Build Android App (Debug)
-        run: flutter build apk --debug
+      - name: Build Android App (Release)
+        run: flutter build apk --release
 
-      - name: Upload Android Debug Build
+      - name: Upload Android Release Build
         uses: actions/upload-artifact@v4
         with:
-          name: android-debug-build
-          path: build/app/outputs/flutter-apk/app-debug.apk
-          retention-days: 7
+          name: android-release-build
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 30
 
   build_ios:
-    name: Build iOS (Debug)
+    name: Build iOS (Release)
     needs: lint_and_test
     runs-on: macos-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v3
 
@@ -130,19 +130,19 @@ jobs:
           cd ios
           pod install --repo-update
 
-      - name: Build iOS App (Debug)
-        run: flutter build ios --debug --no-codesign
+      - name: Build iOS App (Release)
+        run: flutter build ios --release --no-codesign
 
       - name: Create IPA
         run: |
           cd build/ios/iphoneos
           mkdir Payload
           cp -R Runner.app Payload
-          zip -r app-debug.ipa Payload
+          zip -r app-release.ipa Payload
 
-      - name: Upload iOS Debug Build
+      - name: Upload iOS Release Build
         uses: actions/upload-artifact@v4
         with:
-          name: ios-debug-build
-          path: build/ios/iphoneos/app-debug.ipa
-          retention-days: 7
+          name: ios-release-build
+          path: build/ios/iphoneos/app-release.ipa
+          retention-days: 30
