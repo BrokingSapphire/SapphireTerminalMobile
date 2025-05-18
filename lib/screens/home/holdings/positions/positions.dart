@@ -220,117 +220,118 @@ class _positionScreenState extends State<positionScreen> {
         },
         color: const Color(0xff1DB954), // Green refresh indicator
         backgroundColor: isDark ? const Color(0xff121413) : Colors.white,
-        child: filteredPositionData.isEmpty
-            ? SizedBox(
-                height: MediaQuery.of(context).size.height,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                          height: 64.h,
-                          width: 64.w,
-                          child: SvgPicture.asset("assets/svgs/doneMark.svg")),
-                      SizedBox(height: 20.h),
-                      Text("No Open Positions",
-                          style: TextStyle(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.bold,
-                              color: isDark ? Colors.white : Colors.black)),
-                      SizedBox(height: 10.h),
-                      SizedBox(
-                          width: 250.w,
-                          child: Text(
-                              "Your active trades will be listed here. Start Trading Now!",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 13.sp, color: Colors.grey))),
-                    ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ListView(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                children: [
+                  SizedBox(
+                    height: 15.h,
                   ),
-                ),
-              )
-            : SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ListView(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6.r),
+                          color: isDark
+                              ? const Color(0xFF121413)
+                              : const Color(0xFFF4F4F9)),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 6.h),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            positionCard('-₹15,11,750', "-₹45,096", isDark),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15.h,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: constWidgets.searchFieldWithInput(context,
+                        "Search by name or ticker", "positions", isDark,
+                        controller: _searchController, onChanged: (value) {
+                      setState(() {
+                        _searchQuery = value;
+                      });
+                    }),
+                  ),
+                  SizedBox(
+                    height: 15.h,
+                  ),
+                  if (filteredPositionData.isEmpty && _searchQuery.isNotEmpty)
+                    Container()
+                  else if (filteredPositionData.isEmpty)
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          SizedBox(height: 30.h),
                           SizedBox(
-                            height: 15.h,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.w),
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6.r),
-                                  color: isDark
-                                      ? const Color(0xFF121413)
-                                      : const Color(0xFFF4F4F9)),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(vertical: 6.h),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    positionCard(
-                                        '-₹15,11,750', "-₹45,096", isDark),
-                                  ],
-                                ),
-                              ),
+                              height: 64.h,
+                              width: 64.w,
+                              child:
+                                  SvgPicture.asset("assets/svgs/doneMark.svg")),
+                          SizedBox(height: 20.h),
+                          Text("No Open Positions",
+                              style: TextStyle(
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: isDark ? Colors.white : Colors.black)),
+                          SizedBox(height: 10.h),
+                          SizedBox(
+                              width: 250.w,
+                              child: Text(
+                                  "Your active trades will be listed here. Start Trading Now!",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 13.sp, color: Colors.grey))),
+                        ],
+                      ),
+                    )
+                  else
+                    ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: filteredPositionData.length,
+                        itemBuilder: (context, index) {
+                          var data = filteredPositionData[index];
+                          return GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            child: GestureDetector(
+                              onTap: () {
+                                navi(PositionsDetails(), context);
+                              },
+                              behavior: HitTestBehavior.opaque,
+                              child: positionScreenTiles(
+                                  data['title'] ?? '',
+                                  data['midtitle'] ?? '',
+                                  data['subtitle'] ?? '',
+                                  data['trail1'] ?? '',
+                                  data['trail2'] ?? '',
+                                  data['trail3'] ?? '',
+                                  data['isBuy'] ?? false,
+                                  isDark,
+                                  isOpen: data.containsKey('isOpen')
+                                      ? data['isOpen']
+                                      : true,
+                                  index: index),
                             ),
-                          ),
-                          SizedBox(
-                            height: 15.h,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.w),
-                            child: constWidgets.searchFieldWithInput(context,
-                                "Search by name or ticker", "positions", isDark,
-                                controller: _searchController,
-                                onChanged: (value) {
-                              setState(() {
-                                _searchQuery = value;
-                              });
-                            }),
-                          ),
-                          SizedBox(
-                            height: 15.h,
-                          ),
-                          ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: filteredPositionData.length,
-                              itemBuilder: (context, index) {
-                                var data = filteredPositionData[index];
-                                return GestureDetector(
-                                  behavior: HitTestBehavior.opaque,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      navi(PositionsDetails(), context);
-                                    },
-                                    behavior: HitTestBehavior.opaque,
-                                    child: positionScreenTiles(
-                                        data['title'] ?? '',
-                                        data['midtitle'] ?? '',
-                                        data['subtitle'] ?? '',
-                                        data['trail1'] ?? '',
-                                        data['trail2'] ?? '',
-                                        data['trail3'] ?? '',
-                                        data['isBuy'] ?? false,
-                                        isDark,
-                                        isOpen: data.containsKey('isOpen')
-                                            ? data['isOpen']
-                                            : true,
-                                        index: index),
-                                  ),
-                                );
-                              })
-                        ])
-                  ],
-                ),
+                          );
+                        })
+                ],
               ),
+            ],
+          ),
+        ),
       ),
     );
   }
