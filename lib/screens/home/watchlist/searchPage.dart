@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sapphire/main.dart';
+import 'package:sapphire/screens/stockDetailedWindow/watchlist/watchlistSDW.dart';
 
 class SearchPageScreen extends StatefulWidget {
   const SearchPageScreen({super.key});
@@ -24,24 +26,36 @@ class _SearchPageScreenState extends State<SearchPageScreen>
       "date": "Reliance Industries Ltd.",
       "type": "cash",
       "image": "assets/images/reliance logo.png",
+      "symbol": "RELIANCE",
+      "price": 2580.45,
+      "change": 15.75,
     },
     {
       "name": "RELIANCE FUT",
       "date": "27 Mar 2025",
       "type": "future",
       "image": "assets/images/reliance logo.png",
+      "symbol": "RELIANCEFUT",
+      "price": 2595.20,
+      "change": 18.30,
     },
     {
       "name": "RELIANCE FUT",
       "date": "24 Apr 2025",
       "type": "future",
       "image": "assets/images/reliance logo.png",
+      "symbol": "RELIANCEFUT2",
+      "price": 2610.75,
+      "change": 22.50,
     },
     {
       "name": "RELIANCE 1200 CE",
       "date": "27 Mar 2025",
       "type": "option",
       "image": "assets/images/reliance logo.png",
+      "symbol": "RELIANCE1200CE",
+      "price": 1380.60,
+      "change": -5.25,
     },
   ];
 
@@ -63,24 +77,25 @@ class _SearchPageScreenState extends State<SearchPageScreen>
   String _searchQuery = '';
 
   List<Map<String, dynamic>> getFilteredStocks() {
+    // Return empty list if search query is empty (initial blank screen)
+    if (_searchQuery.isEmpty) {
+      return [];
+    }
+
     String selected = options[_currentIndex].toLowerCase();
 
-    // First filter by tab selection
+    // Filter by tab selection
     List<Map<String, dynamic>> tabFilteredStocks = selected == "all"
         ? stocks
         : stocks.where((stock) => stock["type"] == selected).toList();
 
-    // Then filter by search query if it exists
-    if (_searchQuery.isNotEmpty) {
-      return tabFilteredStocks.where((stock) {
-        return stock["name"]
-            .toString()
-            .toUpperCase()
-            .startsWith(_searchQuery.toUpperCase());
-      }).toList();
-    }
-
-    return tabFilteredStocks;
+    // Filter by search query
+    return tabFilteredStocks.where((stock) {
+      return stock["name"]
+          .toString()
+          .toUpperCase()
+          .startsWith(_searchQuery.toUpperCase());
+    }).toList();
   }
 
   @override
@@ -102,7 +117,10 @@ class _SearchPageScreenState extends State<SearchPageScreen>
                   children: [
                     InkWell(
                       onTap: () => Navigator.pop(context),
-                      child: Icon(Icons.arrow_back, color: appColors.textColor),
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: appColors.textColor,
+                      ),
                     ),
                     SizedBox(width: 10.w),
                     Expanded(
@@ -117,7 +135,6 @@ class _SearchPageScreenState extends State<SearchPageScreen>
                           },
                           inputFormatters: [
                             UpperCaseTextFormatter(),
-                            // Custom formatter to force uppercase
                           ],
                           decoration: InputDecoration(
                             hintText: "Search Instruments to add",
@@ -161,8 +178,7 @@ class _SearchPageScreenState extends State<SearchPageScreen>
                   ],
                 ),
               ),
-
-              // Custom tab bar (original design)
+              // Custom tab bar
               Container(
                 height: 56.h,
                 decoration: BoxDecoration(
@@ -180,7 +196,6 @@ class _SearchPageScreenState extends State<SearchPageScreen>
                     final isSelected = index == _currentIndex;
                     return GestureDetector(
                       onTap: () {
-                        // Direct update without animations for fastest response
                         if (_currentIndex != index) {
                           setState(() {
                             _currentIndex = index;
@@ -225,153 +240,166 @@ class _SearchPageScreenState extends State<SearchPageScreen>
                   }),
                 ),
               ),
-
-              // Content with PageView for sliding
+              // Content with PageView and RefreshIndicator
               Expanded(
-                child: PageView.builder(
-                  controller: _pageController,
-                  physics: const ClampingScrollPhysics(),
-                  onPageChanged: (index) {
-                    // Immediate update for best responsiveness
-                    setState(() {
-                      _currentIndex = index;
-                    });
-                  },
-                  itemCount: options.length,
-                  itemBuilder: (context, pageIndex) {
-                    // Get filtered stocks based on both tab selection and search query
-                    final filteredStocks = getFilteredStocks();
-
-                    // Get the current tab name for the empty state message
-                    String currentTab = options[_currentIndex].toLowerCase();
-                    return filteredStocks.isEmpty
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.search_off,
-                                  size: 48.sp,
-                                  color: appColors.secondaryTextColor,
-                                ),
-                                SizedBox(height: 16.h),
-                                Text(
-                                  _searchQuery.isEmpty
-                                      ? "No ${currentTab} instruments found"
-                                      : "No instruments starting with '${_searchQuery}' found",
-                                  style: TextStyle(
-                                    color: appColors.textColor,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                SizedBox(height: 8.h),
-                                Text(
-                                  _searchQuery.isEmpty
-                                      ? "Try selecting a different category"
-                                      : "Try a different search term",
-                                  style: TextStyle(
-                                    color: appColors.secondaryTextColor,
-                                    fontSize: 14.sp,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        : ListView.builder(
-                            itemCount: filteredStocks.length,
-                            itemBuilder: (context, index) {
-                              final stock = filteredStocks[index];
-                              return Column(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 16.w, vertical: 12.h),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        _buildStockLogo(stock["image"]),
-                                        SizedBox(width: 12.w),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                stock["name"],
-                                                style: TextStyle(
-                                                  fontSize: 14.sp,
-                                                  color: appColors.textColor,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
+                child: RefreshIndicator(
+                  color: appColors.accentColor,
+                  backgroundColor: appColors.backgroundColor,
+                  onRefresh: _searchQuery.isEmpty
+                      ? () async {} // Disabled when no search query
+                      : () async {
+                          // Simulate refresh (replace with API call)
+                          await Future.delayed(const Duration(seconds: 2));
+                          setState(() {});
+                        },
+                  child: PageView.builder(
+                    controller: _pageController,
+                    physics: const ClampingScrollPhysics(),
+                    onPageChanged: (index) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
+                    itemCount: options.length,
+                    itemBuilder: (context, pageIndex) {
+                      final filteredStocks = getFilteredStocks();
+                      String currentTab = options[_currentIndex].toLowerCase();
+                      return SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height,
+                          child: Center(
+                            child: filteredStocks.isEmpty
+                                ? Container()
+                                : ListView.builder(
+                                    itemCount: filteredStocks.length,
+                                    itemBuilder: (context, index) {
+                                      final stock = filteredStocks[index];
+                                      return Column(
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 16.w,
+                                              vertical: 12.h,
+                                            ),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                navi(
+                                                    watchlistSDW(
+                                                      stockName:
+                                                          stock["name"] ?? "",
+                                                      stockCode:
+                                                          stock["symbol"] ?? "",
+                                                      price: (stock["price"] ??
+                                                              0.0)
+                                                          .toString(),
+                                                      change:
+                                                          (stock["change"] ??
+                                                                  0.0)
+                                                              .toString(),
+                                                      onBuy: () {},
+                                                      onSell: () {},
+                                                    ),
+                                                    context);
+                                              },
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  _buildStockLogo(
+                                                      stock["image"]),
+                                                  SizedBox(width: 12.w),
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          stock["name"],
+                                                          style: TextStyle(
+                                                            fontSize: 14.sp,
+                                                            color: appColors
+                                                                .textColor,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 2.h),
+                                                        Text(
+                                                          stock["date"],
+                                                          style: TextStyle(
+                                                            fontSize: 11.sp,
+                                                            color: appColors
+                                                                .secondaryTextColor,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 12.w),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                        "NSE",
+                                                        style: TextStyle(
+                                                          fontSize: 13.sp,
+                                                          color: appColors
+                                                              .textColor,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                      SizedBox(height: 2.h),
+                                                      Text(
+                                                        stock["type"],
+                                                        style: TextStyle(
+                                                          fontSize: 11.sp,
+                                                          color: appColors
+                                                              .secondaryTextColor,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(width: 20.w),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      debugPrint(
+                                                          "${stock["name"]} added to watchlist!");
+                                                    },
+                                                    child: SvgPicture.asset(
+                                                      'assets/svgs/bookmark-x.svg',
+                                                      colorFilter:
+                                                          const ColorFilter
+                                                              .mode(
+                                                        Colors.green,
+                                                        BlendMode.srcIn,
+                                                      ),
+                                                      width: 22.w,
+                                                      height: 22.h,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                              SizedBox(height: 2.h),
-                                              Text(
-                                                stock["date"],
-                                                style: TextStyle(
-                                                  fontSize: 11.sp,
-                                                  color: appColors
-                                                      .secondaryTextColor,
-                                                ),
-                                              ),
-                                            ],
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(width: 12.w),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Text(
-                                              "NSE",
-                                              style: TextStyle(
-                                                fontSize: 13.sp,
-                                                color: appColors.textColor,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            SizedBox(height: 2.h),
-                                            Text(
-                                              stock["type"],
-                                              style: TextStyle(
-                                                fontSize: 11.sp,
-                                                color: appColors
-                                                    .secondaryTextColor,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(width: 20.w),
-                                        InkWell(
-                                          onTap: () {
-                                            debugPrint(
-                                                "${stock["name"]} added to watchlist!");
-                                          },
-                                          child: SvgPicture.asset(
-                                            'assets/svgs/bookmark-x.svg',
-                                            colorFilter: ColorFilter.mode(
-                                              Colors.green,
-                                              BlendMode.srcIn,
-                                            ),
-                                            width: 22.w,
-                                            height: 22.h,
+                                          Divider(
+                                            height: 1.h,
+                                            color: appColors.dividerColor,
+                                            indent: 16.w,
+                                            endIndent: 16.w,
                                           ),
-                                        ),
-                                      ],
-                                    ),
+                                        ],
+                                      );
+                                    },
                                   ),
-                                  Divider(
-                                    height: 1.h,
-                                    color: appColors.dividerColor,
-                                    indent: 16.w,
-                                    endIndent: 16.w,
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                  },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ],
@@ -413,6 +441,7 @@ class AppColors {
   Color get dividerColor => const Color(0xFF2F2F2F);
 
   Color get accentColor => const Color(0xFF1DB954); // Green accent color
+
   Color get tabBarColor => isDark ? const Color(0xFF000000) : Colors.white;
 
   Color get borderColor =>

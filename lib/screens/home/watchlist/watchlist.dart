@@ -396,30 +396,58 @@ class _WatchlistScreenState extends State<WatchlistScreen>
               return true;
             },
             child: currentItems.isEmpty
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                            height: 64.h,
-                            width: 64.w,
-                            child:
-                                SvgPicture.asset("assets/svgs/doneMark.svg")),
-                        SizedBox(height: 20.h),
-                        Text("No Instruments Added",
-                            style: TextStyle(
-                                fontSize: 15.sp,
-                                fontWeight: FontWeight.bold,
-                                color: isDark ? Colors.white : Colors.black)),
-                        SizedBox(height: 10.h),
-                        SizedBox(
-                            width: 250.w,
-                            child: Text(
-                                "Use the search bar to find and track your favourite stocks here.",
-                                textAlign: TextAlign.center,
+                ? RefreshIndicator(
+                    color: const Color(0xff1DB954), // Green indicator
+                    backgroundColor:
+                        isDark ? Colors.black : Colors.white, // Ensure contrast
+                    onRefresh: () async {
+                      // Simulate a refresh operation (replace with actual data fetching)
+                      await Future.delayed(const Duration(seconds: 2));
+                      setState(() {}); // Trigger UI rebuild
+                    },
+                    child: SingleChildScrollView(
+                      physics:
+                          const AlwaysScrollableScrollPhysics(), // Enable pull-to-refresh
+                      child: SizedBox(
+                        height: MediaQuery.of(context)
+                            .size
+                            .height, // Full screen height
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 110.h),
+                              SizedBox(
+                                height: 64.h,
+                                width: 64.w,
+                                child: SvgPicture.asset(
+                                    "assets/svgs/doneMark.svg"),
+                              ),
+                              SizedBox(height: 20.h),
+                              Text(
+                                "No Instruments Added",
                                 style: TextStyle(
-                                    fontSize: 13.sp, color: Colors.grey))),
-                      ],
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: isDark ? Colors.white : Colors.black,
+                                ),
+                              ),
+                              SizedBox(height: 10.h),
+                              SizedBox(
+                                width: 250.w,
+                                child: Text(
+                                  "Use the search bar to find and track your favourite stocks here.",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 13.sp,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   )
                 : RefreshIndicator(
@@ -764,6 +792,36 @@ class _WatchlistScreenState extends State<WatchlistScreen>
                   _pageController.jumpToPage(_selectedIndex);
                 });
               },
+              onDeleteWatchlist: (index) {
+                // Prevent deleting the last watchlist
+                if (tabNames.length <= 1) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        "Cannot delete the last watchlist",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: Colors.red,
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                  return;
+                }
+                
+                setState(() {
+                  // Remove the watchlist from tabNames and watchlistData
+                  tabNames.removeAt(index);
+                  watchlistData.removeAt(index);
+                  
+                  // Adjust selected index if necessary
+                  if (_selectedIndex >= tabNames.length) {
+                    _selectedIndex = tabNames.length - 1;
+                  }
+                  
+                  // Update the page controller
+                  _pageController.jumpToPage(_selectedIndex);
+                });
+              },
               onAddCategory: (categories) {
                 setState(() {
                   if (_selectedIndex < watchlistData.length) {
@@ -805,6 +863,7 @@ class _WatchlistTabBarDelegate extends SliverPersistentHeaderDelegate {
   final Function(int, String) onEditWatchlist;
   final Function(String) onCreateWatchlist;
   final Function(List<String>) onAddCategory;
+  final Function(int)? onDeleteWatchlist;
 
   _WatchlistTabBarDelegate({
     required this.tabNames,
@@ -813,6 +872,7 @@ class _WatchlistTabBarDelegate extends SliverPersistentHeaderDelegate {
     required this.onEditWatchlist,
     required this.onCreateWatchlist,
     required this.onAddCategory,
+    this.onDeleteWatchlist,
   });
 
   @override
@@ -831,6 +891,7 @@ class _WatchlistTabBarDelegate extends SliverPersistentHeaderDelegate {
         onEditWatchlist: onEditWatchlist,
         onCreateWatchlist: onCreateWatchlist,
         onAddCategory: onAddCategory,
+        onDeleteWatchlist: onDeleteWatchlist,
         isDark: isDark,
       ),
     );

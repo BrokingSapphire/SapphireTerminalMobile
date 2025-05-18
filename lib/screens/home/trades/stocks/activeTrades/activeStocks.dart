@@ -63,47 +63,50 @@ class _TradesActiveScreenState extends State<TradesActiveScreen>
   void initState() {
     super.initState();
     // Initialize _trades with default data if widget.trades is null
-    _trades = widget.trades ?? [
-      // Sample trade data - Reliance Industries
-      Trade(
-        logoPath: 'assets/images/reliance logo.png',
-        title: 'RELIANCE',
-        companyName: 'Reliance Industries Ltd.',
-        action: 'BUY',
-        currentPrice: 580.60,
-        priceChange: 0.55,
-        percentageChange: 1.33,
-        entryPrice: 1200.00,
-        entryRange: '₹1,198.00 - 1,273.00',
-        postedDate: '15 Feb 2025 | 03:17 pm',
-        targetPrice: '1,380.00',
-        holdDuration: '1 - 3 months',
-        netGain: 6.08,
-      ),
-      // Sample trade data - Tata Steel
-      Trade(
-        logoPath: 'assets/images/reliance logo.png', // TODO: Update with correct Tata Steel logo
-        title: 'TATASTEEL',
-        companyName: 'Tata Steel Ltd.',
-        action: 'SELL',
-        currentPrice: 1450.25,
-        priceChange: -2.10,
-        percentageChange: -0.14,
-        entryPrice: 1400.00,
-        entryRange: '₹1,390.00 - 1,410.00',
-        postedDate: '16 Feb 2025 | 10:00 am',
-        targetPrice: '1,500.00',
-        holdDuration: '2 - 4 months',
-        netGain: 3.45,
-      ),
-    ];
+    _trades = widget.trades ??
+        [
+          // Sample trade data - Reliance Industries
+          Trade(
+            logoPath: 'assets/images/reliance logo.png',
+            title: 'RELIANCE',
+            companyName: 'Reliance Industries Ltd.',
+            action: 'BUY',
+            currentPrice: 580.60,
+            priceChange: 0.55,
+            percentageChange: 1.33,
+            entryPrice: 1200.00,
+            entryRange: '₹1,198.00 - 1,273.00',
+            postedDate: '15 Feb 2025 | 03:17 pm',
+            targetPrice: '1,380.00',
+            holdDuration: '1 - 3 months',
+            netGain: 6.08,
+          ),
+          // Sample trade data - Tata Steel
+          Trade(
+            logoPath:
+                'assets/images/reliance logo.png', // TODO: Update with correct Tata Steel logo
+            title: 'TATASTEEL',
+            companyName: 'Tata Steel Ltd.',
+            action: 'SELL',
+            currentPrice: 1450.25,
+            priceChange: -2.10,
+            percentageChange: -0.14,
+            entryPrice: 1400.00,
+            entryRange: '₹1,390.00 - 1,410.00',
+            postedDate: '16 Feb 2025 | 10:00 am',
+            targetPrice: '1,500.00',
+            holdDuration: '2 - 4 months',
+            netGain: 3.45,
+          ),
+        ];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.only(right: 16.w, left: 16.h, top: 16.w, bottom: 8.w),
+        padding:
+            EdgeInsets.only(right: 16.w, left: 16.h, top: 16.w, bottom: 8.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -116,6 +119,7 @@ class _TradesActiveScreenState extends State<TradesActiveScreen>
             // List of active trade cards
             Expanded(
               child: ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
                 itemCount: _trades.length,
                 itemBuilder: (context, index) {
                   return Padding(
@@ -178,7 +182,8 @@ class _TradesActiveScreenState extends State<TradesActiveScreen>
                           SizedBox(width: 6.w),
                           // Action tag (BUY/SELL)
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 6.w, vertical: 2.h),
                             decoration: BoxDecoration(
                               color: const Color(0xff1db954).withOpacity(0.2),
                               borderRadius: BorderRadius.circular(4.r),
@@ -198,7 +203,8 @@ class _TradesActiveScreenState extends State<TradesActiveScreen>
                       // Full company name
                       Text(
                         trade.companyName,
-                        style: TextStyle(fontSize: 11.sp, color: const Color(0xffC9CACC)),
+                        style: TextStyle(
+                            fontSize: 11.sp, color: const Color(0xffC9CACC)),
                       ),
                     ],
                   ),
@@ -247,7 +253,8 @@ class _TradesActiveScreenState extends State<TradesActiveScreen>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Entry Price", style: _labelStyle()),
-              Text("₹${trade.entryPrice.toStringAsFixed(2)}", style: _valueStyle()),
+              Text("₹${trade.entryPrice.toStringAsFixed(2)}",
+                  style: _valueStyle()),
             ],
           ),
           SizedBox(height: 8.h),
@@ -367,7 +374,8 @@ class _TradesActiveScreenState extends State<TradesActiveScreen>
                     onPressed: () {
                       showDialog(
                         context: context,
-                        builder: (context) => TradesUtils.placeOrderPopup(context),
+                        builder: (context) =>
+                            TradesUtils.placeOrderPopup(context),
                       );
                     },
                     style: OutlinedButton.styleFrom(

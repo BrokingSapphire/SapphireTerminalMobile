@@ -113,7 +113,7 @@ class MyApp extends StatelessWidget {
           darkTheme: AppThemes.darkTheme, // Dark theme configuration
           themeMode:
               themeProvider.themeMode, // Current theme mode (system/light/dark)
-          home: CongratulationsScreen(), // Starting screen of the application
+          home: HomeWrapper(), // Starting screen of the application
           // home: loginOtp(), // Alternate entry point (currently commented out)
         );
       },

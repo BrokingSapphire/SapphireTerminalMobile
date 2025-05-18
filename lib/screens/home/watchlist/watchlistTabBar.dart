@@ -11,6 +11,7 @@ class WatchlistTabBar extends StatefulWidget {
   final Function(int index, String newName)? onEditWatchlist;
   final Function(String name)? onCreateWatchlist;
   final Function(List<String> categories)? onAddCategory;
+  final Function(int index)? onDeleteWatchlist;
   final bool isDark;
 
   const WatchlistTabBar({
@@ -21,6 +22,7 @@ class WatchlistTabBar extends StatefulWidget {
     this.onEditWatchlist,
     this.onCreateWatchlist,
     this.onAddCategory,
+    this.onDeleteWatchlist,
     required this.isDark,
   });
 
@@ -70,6 +72,56 @@ class _WatchlistTabBarState extends State<WatchlistTabBar> {
     }
   }
 
+  void _showDeleteConfirmationDialog(BuildContext context, int index) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: isDark ? const Color(0xff121413) : Colors.white,
+        title: Text(
+          "Delete Watchlist",
+          style: TextStyle(
+            fontSize: 18.sp,
+            fontWeight: FontWeight.bold,
+            color: isDark ? Colors.white : Colors.black,
+          ),
+        ),
+        content: Text(
+          "Are you sure you want to delete '${widget.tabNames[index]}'? This action cannot be undone.",
+          style: TextStyle(
+            fontSize: 14.sp,
+            color: isDark ? Colors.white : Colors.black,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              "Cancel",
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: Colors.grey,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              widget.onDeleteWatchlist?.call(index);
+              Navigator.pop(context);
+            },
+            child: Text(
+              "Delete",
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: Colors.red,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showEditWatchlistModal(
       BuildContext context, int index, String currentName) {
     final controller = TextEditingController(text: currentName);
@@ -102,7 +154,9 @@ class _WatchlistTabBarState extends State<WatchlistTabBar> {
                 ),
                 const Spacer(),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _showDeleteConfirmationDialog(context, index);
+                  },
                   icon: SvgPicture.asset(
                     "assets/svgs/delete.svg",
                     color: widget.isDark ? Colors.white : Colors.black,
