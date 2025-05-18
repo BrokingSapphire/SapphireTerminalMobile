@@ -24,19 +24,24 @@ class FamilyDetailsScreen extends StatefulWidget {
 /// State class for the FamilyDetailsScreen widget
 /// Manages form inputs, validation, API submission, and UI rendering
 class _FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
-  TextEditingController fathersName = TextEditingController(); // Controls father's name input
-  TextEditingController mothersName = TextEditingController(); // Controls mother's name input
-  bool _isGray = true; // Controls button enabled/disabled state based on form completion
-  double width = 0; // Width for choice chips, calculated dynamically during build
+  TextEditingController fathersName =
+      TextEditingController(); // Controls father's name input
+  TextEditingController mothersName =
+      TextEditingController(); // Controls mother's name input
+  bool _isGray =
+      true; // Controls button enabled/disabled state based on form completion
+  double width =
+      0; // Width for choice chips, calculated dynamically during build
   String? selectedMaritalStatus = "Single"; // Default marital status selection
-  final FlutterSecureStorage secureStorage = FlutterSecureStorage(); // For storing auth token securely
+  final FlutterSecureStorage secureStorage =
+      FlutterSecureStorage(); // For storing auth token securely
 
   /// Computed property to check if all required fields are filled
   /// Used to determine if form is ready for submission
   bool get isFormComplete =>
       fathersName.text.trim().isNotEmpty &&
-          mothersName.text.trim().isNotEmpty &&
-          selectedMaritalStatus != null;
+      mothersName.text.trim().isNotEmpty &&
+      selectedMaritalStatus != null;
 
   @override
   void initState() {
@@ -50,8 +55,10 @@ class _FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
   /// Called when text input changes in either name field
   void _checkFields() {
     setState(() {
-      _isGray =
-          fathersName.text.trim().isEmpty || mothersName.text.trim().isEmpty; // Gray out button if either field is empty
+      _isGray = fathersName.text.trim().isEmpty ||
+          mothersName.text
+              .trim()
+              .isEmpty; // Gray out button if either field is empty
     });
   }
 
@@ -65,7 +72,8 @@ class _FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
 
     // Prepare request body with family details
     final body = {
-      "step": "user_detail", // Identifies which signup step this data belongs to
+      "step":
+          "user_detail", // Identifies which signup step this data belongs to
       "marital_status": selectedMaritalStatus,
       "father_name": fathersName.text.trim(),
       "mother_name": mothersName.text.trim(),
@@ -205,30 +213,10 @@ class _FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             // Continue button - conditionally styled based on form completion
-            SizedBox(
-              height: 52.h,
-              width: double.infinity,
-              child: ElevatedButton(
-                // Original API submission implementation (currently commented out)
-                // onPressed: _isGray ? null : () => submitFamilyDetails(),
-
-                // Temporary simplified implementation for testing/demo
-                // TODO: Restore original implementation with API submission when ready
-                onPressed: () => navi(PersonalDetails(), context),
-                child: Text(
-                  "Continue",
-                  style: TextStyle(
-                    fontSize: 17.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                  (_isGray) ? Colors.grey[400] : Color(0xFF1DB954), // Gray when form incomplete, green when complete
-                  foregroundColor: Colors.white,
-                ),
-              ),
+            constWidgets.greenButton(
+              "Continue",
+              onTap: () => navi(PersonalDetails(), context),
+              isDisabled: _isGray,
             ),
             SizedBox(height: 10.h),
             // Help button for user assistance

@@ -26,168 +26,168 @@ class _fundSettelmentFrequencyState extends State<fundSettelmentFrequency> {
     "Unused funds will be transfered to your bank account on the first Friday of every quarter",
   ];
 
-  void _showIncomeProofBottomSheet(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+  // void _showIncomeProofBottomSheet(BuildContext context) {
+  //   final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return Container(
-              decoration: BoxDecoration(
-                color: isDark ? Color(0xff121413) : Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(24.r),
-                  topRight: Radius.circular(24.r),
-                ),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Upload Income Proof",
-                    style: TextStyle(
-                      color: isDark ? Colors.white : Colors.black,
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(height: 12.h),
-                  Divider(
-                    color: Color(0xFF2F2F2F),
-                    thickness: 1,
-                  ),
-                  SizedBox(height: 16.h),
-                  // Document Selection
-                  Text(
-                    "Select Document",
-                    style: TextStyle(
-                      color: isDark ? Colors.white : Colors.black,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  SizedBox(height: 6.h),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    decoration: BoxDecoration(
-                      color: isDark ? Color(0xff121413) : Color(0xFFF4F4F9),
-                      borderRadius: BorderRadius.circular(8.r),
-                      border: Border.all(
-                        color: isDark ? Color(0xFF2F2F2F) : Color(0xFFE5E7EB),
-                        width: 1,
-                      ),
-                    ),
-                    child: DropdownButton<String>(
-                      value: selectedDocument,
-                      icon: Icon(
-                        Icons.keyboard_arrow_down,
-                        color: isDark ? Colors.white : Colors.black,
-                      ),
-                      isExpanded: true,
-                      dropdownColor: isDark ? Color(0xff121413) : Colors.white,
-                      underline: SizedBox(),
-                      style: TextStyle(
-                        color: isDark ? Colors.white : Colors.black,
-                        fontSize: 14.sp,
-                      ),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          selectedDocument = newValue!;
-                        });
-                      },
-                      items: <String>[
-                        'PAN Card',
-                        'Aadhar Card',
-                        'Passport',
-                        'Driving License'
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  SizedBox(height: 16.h),
+  //   showModalBottomSheet(
+  //     context: context,
+  //     backgroundColor: Colors.transparent,
+  //     isScrollControlled: true,
+  //     builder: (BuildContext context) {
+  //       return StatefulBuilder(
+  //         builder: (BuildContext context, StateSetter setState) {
+  //           return Container(
+  //             decoration: BoxDecoration(
+  //               color: isDark ? Color(0xff121413) : Colors.white,
+  //               borderRadius: BorderRadius.only(
+  //                 topLeft: Radius.circular(24.r),
+  //                 topRight: Radius.circular(24.r),
+  //               ),
+  //             ),
+  //             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+  //             child: Column(
+  //               mainAxisSize: MainAxisSize.min,
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: [
+  //                 Text(
+  //                   "Upload Income Proof",
+  //                   style: TextStyle(
+  //                     color: isDark ? Colors.white : Colors.black,
+  //                     fontSize: 18.sp,
+  //                     fontWeight: FontWeight.w600,
+  //                   ),
+  //                 ),
+  //                 SizedBox(height: 12.h),
+  //                 Divider(
+  //                   color: Color(0xFF2F2F2F),
+  //                   thickness: 1,
+  //                 ),
+  //                 SizedBox(height: 16.h),
+  //                 // Document Selection
+  //                 Text(
+  //                   "Select Document",
+  //                   style: TextStyle(
+  //                     color: isDark ? Colors.white : Colors.black,
+  //                     fontSize: 14.sp,
+  //                     fontWeight: FontWeight.w500,
+  //                   ),
+  //                 ),
+  //                 SizedBox(height: 6.h),
+  //                 Container(
+  //                   padding: EdgeInsets.symmetric(horizontal: 12.w),
+  //                   decoration: BoxDecoration(
+  //                     color: isDark ? Color(0xff121413) : Color(0xFFF4F4F9),
+  //                     borderRadius: BorderRadius.circular(8.r),
+  //                     border: Border.all(
+  //                       color: isDark ? Color(0xFF2F2F2F) : Color(0xFFE5E7EB),
+  //                       width: 1,
+  //                     ),
+  //                   ),
+  //                   child: DropdownButton<String>(
+  //                     value: selectedDocument,
+  //                     icon: Icon(
+  //                       Icons.keyboard_arrow_down,
+  //                       color: isDark ? Colors.white : Colors.black,
+  //                     ),
+  //                     isExpanded: true,
+  //                     dropdownColor: isDark ? Color(0xff121413) : Colors.white,
+  //                     underline: SizedBox(),
+  //                     style: TextStyle(
+  //                       color: isDark ? Colors.white : Colors.black,
+  //                       fontSize: 14.sp,
+  //                     ),
+  //                     onChanged: (String? newValue) {
+  //                       setState(() {
+  //                         selectedDocument = newValue!;
+  //                       });
+  //                     },
+  //                     items: <String>[
+  //                       'PAN Card',
+  //                       'Aadhar Card',
+  //                       'Passport',
+  //                       'Driving License'
+  //                     ].map<DropdownMenuItem<String>>((String value) {
+  //                       return DropdownMenuItem<String>(
+  //                         value: value,
+  //                         child: Text(value),
+  //                       );
+  //                     }).toList(),
+  //                   ),
+  //                 ),
+  //                 SizedBox(height: 16.h),
 
-                  // Upload document section
-                  Text(
-                    "Upload document",
-                    style: TextStyle(
-                      color: isDark ? Colors.white : Colors.black,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  SizedBox(height: 6.h),
-                  DottedBorder(
-                    borderType: BorderType.RRect,
-                    radius: Radius.circular(8.r),
-                    dashPattern: [8, 6],
-                    color: isDark
-                        ? const Color(0xFF2F2F2F)
-                        : const Color(0xFFE5E7EB),
-                    strokeWidth: 1,
-                    child: Container(
-                      height: 120.h,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.r),
-                        color: Colors.transparent, // optional background
-                      ),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(height: 8.h),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/svgs/update.svg",
-                                  color: isDark ? Colors.white : Colors.black,
-                                ),
-                                SizedBox(width: 8.w),
-                                Text(
-                                  "Upload a file or ",
-                                  style: TextStyle(
-                                    color: isDark ? Colors.white : Colors.black,
-                                    fontSize: 14.sp,
-                                  ),
-                                ),
-                                Text(
-                                  "Choose file",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14.sp,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 24.h),
+  //                 // Upload document section
+  //                 Text(
+  //                   "Upload document",
+  //                   style: TextStyle(
+  //                     color: isDark ? Colors.white : Colors.black,
+  //                     fontSize: 14.sp,
+  //                     fontWeight: FontWeight.w500,
+  //                   ),
+  //                 ),
+  //                 SizedBox(height: 6.h),
+  //                 DottedBorder(
+  //                   borderType: BorderType.RRect,
+  //                   radius: Radius.circular(8.r),
+  //                   dashPattern: [8, 6],
+  //                   color: isDark
+  //                       ? const Color(0xFF2F2F2F)
+  //                       : const Color(0xFFE5E7EB),
+  //                   strokeWidth: 1,
+  //                   child: Container(
+  //                     height: 120.h,
+  //                     width: double.infinity,
+  //                     decoration: BoxDecoration(
+  //                       borderRadius: BorderRadius.circular(8.r),
+  //                       color: Colors.transparent, // optional background
+  //                     ),
+  //                     child: Center(
+  //                       child: Column(
+  //                         mainAxisAlignment: MainAxisAlignment.center,
+  //                         children: [
+  //                           SizedBox(height: 8.h),
+  //                           Row(
+  //                             mainAxisAlignment: MainAxisAlignment.center,
+  //                             children: [
+  //                               SvgPicture.asset(
+  //                                 "assets/svgs/update.svg",
+  //                                 color: isDark ? Colors.white : Colors.black,
+  //                               ),
+  //                               SizedBox(width: 8.w),
+  //                               Text(
+  //                                 "Upload a file or ",
+  //                                 style: TextStyle(
+  //                                   color: isDark ? Colors.white : Colors.black,
+  //                                   fontSize: 14.sp,
+  //                                 ),
+  //                               ),
+  //                               Text(
+  //                                 "Choose file",
+  //                                 style: TextStyle(
+  //                                   color: Colors.white,
+  //                                   fontSize: 14.sp,
+  //                                   decoration: TextDecoration.underline,
+  //                                 ),
+  //                               ),
+  //                             ],
+  //                           ),
+  //                         ],
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 SizedBox(height: 24.h),
 
-                  // Continue button
-                  constWidgets.greenButton("Continue"),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
+  //                 // Continue button
+  //                 constWidgets.greenButton("Continue"),
+  //               ],
+  //             ),
+  //           );
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -332,7 +332,7 @@ class _fundSettelmentFrequencyState extends State<fundSettelmentFrequency> {
                   SizedBox(height: 345.h),
                   // Spacer(),
                   constWidgets.greenButton("Proceed", onTap: () {
-                    _showIncomeProofBottomSheet(context);
+                    // _showIncomeProofBottomSheet(context);
                   })
                 ],
               ),

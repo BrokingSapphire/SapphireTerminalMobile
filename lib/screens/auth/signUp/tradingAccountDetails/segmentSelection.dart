@@ -3,10 +3,13 @@
 // This screen is part of the KYC flow and allows users to select which market segments they want to trade in.
 
 import 'dart:convert'; // For JSON encoding/decoding
+import 'dart:io'; // For File operations
+import 'package:file_picker/file_picker.dart'; // For picking files
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
-import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // For secure token storage
-import 'package:http/http.dart' as http; // For API requests
+import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // For secure storage
+import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/screens/auth/signUp/tradingAccountDetails/familyDetails.dart'; // Next screen in registration flow
 import 'package:sapphire/main.dart'; // App-wide navigation utilities
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
@@ -22,11 +25,43 @@ class SegmentSelectionScreen extends StatefulWidget {
 }
 
 /// State class for the SegmentSelectionScreen widget
-/// Manages segment selection state and API submission
+/// Manages segment selection state and navigation
 class _SegmentSelectionScreenState extends State<SegmentSelectionScreen> {
   // Set to track which segments the user has selected
   Set<String> selectedSegments = {};
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+  String? selectedDocument; // Tracks selected document in bottom sheet
+  File? _selectedFile; // Selected file for income proof
+  String? _selectedFileName; // Name of the selected file
+
+  /// Pick a file using file_picker
+  Future<void> _pickFile(
+      BuildContext context, StateSetter setModalState) async {
+    try {
+      // Initialize FilePicker
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf', 'jpg', 'jpeg', 'png'],
+      );
+
+      if (result != null && result.files.isNotEmpty) {
+        final path = result.files.single.path;
+        final name = result.files.single.name;
+
+        if (path != null) {
+          setModalState(() {
+            _selectedFile = File(path);
+            _selectedFileName = name;
+          });
+        }
+      }
+    } catch (e) {
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error picking file: $e')),
+      );
+    }
+  }
 
   // Mapping between UI display names and API parameter values
   final Map<String, String> segmentApiMap = {
@@ -45,9 +80,13 @@ class _SegmentSelectionScreenState extends State<SegmentSelectionScreen> {
   }
 
   /// Toggles selection state of a segment
-  /// Adds segment if not selected, removes if already selected
+  /// Prevents deselection of "Cash/Mutual Funds"
   void _toggleSegment(String segment) {
     setState(() {
+      if (segment == "Cash/Mutual Funds") {
+        // Do not allow deselection of Cash/Mutual Funds
+        return;
+      }
       if (selectedSegments.contains(segment)) {
         selectedSegments.remove(segment);
       } else {
@@ -56,86 +95,266 @@ class _SegmentSelectionScreenState extends State<SegmentSelectionScreen> {
     });
   }
 
-  /// Submits the user's selected segments to the backend API
-  /// Saves the selections and navigates to the next screen on success
-  Future<void> submitSelectedSegments() async {
-    // Get authentication token from secure storage
-    // final token = await secureStorage.read(key: 'auth_token');
-
-    // TODO: Remove hardcoded token before production
-    // Temporary token for development/testing
-    final token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhpbWFuc2h1c2Fyb2RlMDhAZ21haWwuY29tIiwicGhvbmUiOiI4NDMyMzA0MDIzIiwiaWF0IjoxNzQzNDk5ODIyLCJleHAiOjE3NDM1ODYyMjJ9.CJNPPnQCA80dDSmQY8cE7mnO9cUGnuV5Rxq6lyroYSA";
-    print(token);
-
-    // Convert UI segment names to API-expected values using the mapping
+  /// Saves selected segments to secure storage
+  Future<void> _saveSegments() async {
     final List<String> segmentsForApi =
-    selectedSegments.map((label) => segmentApiMap[label] ?? label).toList();
-
-    // API endpoint for saving segment selection data
-    final url = Uri.parse(
-        "https://api.backend.sapphirebroking.com:8443/api/v1/auth/signup/checkpoint");
-
-    // Prepare request body with step identifier and selected segments
-    final body = {
-      "step": "investment_segment",
-      "segments": segmentsForApi,
-    };
-
-    print("📤 Payload: ${jsonEncode(body)}");
-
-    // Show loading indicator while API request is in progress
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => const Center(
-        child: CircularProgressIndicator(color: Color(0xFF1DB954)),
-      ),
+        selectedSegments.map((label) => segmentApiMap[label] ?? label).toList();
+    await secureStorage.write(
+      key: 'selected_segments',
+      value: jsonEncode(segmentsForApi),
     );
+  }
 
-    try {
-      // Send POST request to backend API
-      final response = await http.post(
-        url,
-        headers: {
-          "accept": "application/json",
-          "Content-Type": "application/json",
-          "Authorization": "Bearer $token",
-        },
-        body: jsonEncode(body),
-      );
+  /// Shows bottom sheet for uploading income proof when required
+  void _showIncomeProofBottomSheet(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-      // Hide loading indicator
-      Navigator.of(context).pop();
-      print("📨 API Status: ${response.statusCode}");
-      print("📨 API Response: ${response.body}");
-
-      // Handle API response based on status code
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        // Success: Show confirmation message and navigate to next screen
-        constWidgets.snackbar(
-            "Investment segment saved", Colors.green, context);
-        navi(FamilyDetailsScreen(), context);
-      } else {
-        // Error: Extract error message from response if available
-        final msg = jsonDecode(response.body)?["error"]?["message"] ??
-            "Failed to submit segments";
-        constWidgets.snackbar(msg, Colors.red, context);
-      }
-    } catch (e) {
-      // Handle network or other exceptions
-      Navigator.of(context).pop();
-      constWidgets.snackbar("Error: $e", Colors.red, context);
-    }
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              decoration: BoxDecoration(
+                color: isDark ? Color(0xff121413) : Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(24.r),
+                  topRight: Radius.circular(24.r),
+                ),
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Upload Income Proof",
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: 12.h),
+                  Divider(
+                    color: Color(0xFF2F2F2F),
+                    thickness: 1,
+                  ),
+                  SizedBox(height: 16.h),
+                  // Document Selection
+                  Text(
+                    "Select Document",
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(height: 6.h),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12.w),
+                    decoration: BoxDecoration(
+                      color: isDark ? Color(0xff121413) : Color(0xFFF4F4F9),
+                      borderRadius: BorderRadius.circular(8.r),
+                      border: Border.all(
+                        color: isDark ? Color(0xFF2F2F2F) : Color(0xFFE5E7EB),
+                        width: 1,
+                      ),
+                    ),
+                    child: DropdownButton<String>(
+                      value: selectedDocument,
+                      icon: Icon(
+                        Icons.keyboard_arrow_down,
+                        color: isDark ? Colors.white : Colors.black,
+                      ),
+                      isExpanded: true,
+                      dropdownColor: isDark ? Color(0xff121413) : Colors.white,
+                      underline: SizedBox(),
+                      style: TextStyle(
+                        color: isDark ? Colors.white : Colors.black,
+                        fontSize: 14.sp,
+                      ),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedDocument = newValue!;
+                        });
+                      },
+                      items: <String>[
+                        "Bank statement (6 mo): Avg. bal. > ₹10K",
+                        "Salary slip: Gross > ₹15K/mo",
+                        "ITR/Form 16: Gross > ₹1.2L/yr",
+                        "Net worth certificate: > ₹10L",
+                        "Demat statement: Holdings > ₹10K",
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  // Upload document section
+                  Text(
+                    "Upload document",
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(height: 6.h),
+                  GestureDetector(
+                    onTap: () {
+                      _pickFile(context, setState);
+                    },
+                    child: DottedBorder(
+                      borderType: BorderType.RRect,
+                      radius: Radius.circular(8.r),
+                      dashPattern: [8, 6],
+                      color: isDark
+                          ? const Color(0xFF2F2F2F)
+                          : const Color(0xFFE5E7EB),
+                      strokeWidth: 1,
+                      child: Container(
+                        height: 120.h,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.r),
+                          color: Colors.transparent,
+                        ),
+                        child: Center(
+                          child: _selectedFile == null
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 8.h),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/svgs/update.svg",
+                                          color: isDark
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
+                                        SizedBox(width: 8.w),
+                                        Text(
+                                          "Upload a file or ",
+                                          style: TextStyle(
+                                            color: isDark
+                                                ? Colors.white
+                                                : Colors.black,
+                                            fontSize: 14.sp,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Choose file",
+                                          style: TextStyle(
+                                            color: isDark
+                                                ? Colors.white
+                                                : Colors.black,
+                                            fontSize: 14.sp,
+                                            decoration:
+                                                TextDecoration.underline,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 8.h),
+                                    Text(
+                                      "Supported formats: PDF, JPG, PNG",
+                                      style: TextStyle(
+                                        color: isDark
+                                            ? Colors.grey
+                                            : Colors.grey[600],
+                                        fontSize: 12.sp,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      _selectedFileName!
+                                              .toLowerCase()
+                                              .endsWith('.pdf')
+                                          ? Icons.picture_as_pdf
+                                          : Icons.image,
+                                      size: 36,
+                                      color: isDark
+                                          ? Colors.white
+                                          : Colors.black87,
+                                    ),
+                                    SizedBox(height: 8.h),
+                                    Text(
+                                      _selectedFileName!,
+                                      style: TextStyle(
+                                        color: isDark
+                                            ? Colors.white
+                                            : Colors.black,
+                                        fontSize: 14.sp,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    SizedBox(height: 8.h),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _selectedFile = null;
+                                          _selectedFileName = null;
+                                        });
+                                      },
+                                      child: Text(
+                                        "Remove",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 14.sp,
+                                          decoration: TextDecoration.underline,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  // Show upload button when file is selected
+                  if (_selectedFile != null) SizedBox(height: 24.h),
+                  // Continue button
+                  constWidgets.greenButton(
+                    "Continue",
+                    onTap: (_selectedFile == null)
+                        ? null
+                        : () async {
+                            Navigator.pop(context); // Close bottom sheet
+                            await _saveSegments(); // Save segments
+                            navi(FamilyDetailsScreen(), context); // Navigate
+                          },
+                    isDisabled: _selectedFile == null,
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // Determine if dark mode is enabled for theming
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      // App bar with back button
       appBar: AppBar(
         leadingWidth: 46,
         leading: Padding(
@@ -144,7 +363,7 @@ class _SegmentSelectionScreenState extends State<SegmentSelectionScreen> {
             icon: Icon(Icons.arrow_back,
                 color: isDark ? Colors.white : Colors.black),
             onPressed: () {
-              Navigator.pop(context); // Navigate back to previous screen
+              Navigator.pop(context);
             },
           ),
         ),
@@ -157,10 +376,8 @@ class _SegmentSelectionScreenState extends State<SegmentSelectionScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(height: 8.h),
-            // Progress indicator showing user is on step 1 of 3 in this flow
             constWidgets.topProgressBar(1, 3, context),
             SizedBox(height: 24.h),
-            // Main screen title
             Text(
               "Choose Your Investment Segment",
               style: TextStyle(
@@ -170,11 +387,9 @@ class _SegmentSelectionScreenState extends State<SegmentSelectionScreen> {
               ),
             ),
             SizedBox(height: 16.h),
-            // Grid layout for segment selection chips
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // First row of segment options
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -183,7 +398,6 @@ class _SegmentSelectionScreenState extends State<SegmentSelectionScreen> {
                   ],
                 ),
                 SizedBox(height: 20.h),
-                // Second row of segment options
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -192,26 +406,26 @@ class _SegmentSelectionScreenState extends State<SegmentSelectionScreen> {
                   ],
                 ),
                 SizedBox(height: 20.h),
-                // Third row with single segment option
                 _buildSelectableChip("Commodity Derivatives"),
               ],
             ),
-            Spacer(), // Pushes action buttons to bottom of screen
-            // Primary action button to continue to next step
-            constWidgets.greenButton("Continue",
-                // Original validation logic (commented out)
-                // onTap: selectedSegments.isEmpty
-                //     ? null
-                //     : () {
-                //         submitSelectedSegments();
-                //       },
-
-                // Current implementation: direct navigation without API call
-                onTap: () {
-                  navi(FamilyDetailsScreen(), context);
-                }),
+            Spacer(),
+            constWidgets.greenButton(
+              "Continue",
+              onTap: () async {
+                // Check if F&O, Currency, or Commodity Derivatives are selected
+                bool requiresIncomeProof = selectedSegments.contains("F&O") ||
+                    selectedSegments.contains("Currency") ||
+                    selectedSegments.contains("Commodity Derivatives");
+                if (requiresIncomeProof) {
+                  _showIncomeProofBottomSheet(context);
+                } else {
+                  await _saveSegments(); // Save segments
+                  navi(FamilyDetailsScreen(), context); // Navigate
+                }
+              },
+            ),
             SizedBox(height: 10.h),
-            // Help button for users who need assistance
             Center(child: constWidgets.needHelpButton(context)),
           ],
         ),
@@ -220,17 +434,18 @@ class _SegmentSelectionScreenState extends State<SegmentSelectionScreen> {
   }
 
   /// Creates a selectable chip widget for a segment option
-  /// Includes visual indication of selection state and handles tap interactions
   Widget _buildSelectableChip(String segment) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return InkWell(
       borderRadius: BorderRadius.circular(25.r),
-      onTap: () => _toggleSegment(segment),
+      onTap:
+          segment == "Cash/Mutual Funds" ? null : () => _toggleSegment(segment),
       child: constWidgets.segmentChoiceChipiWithCheckbox(
         segment,
         selectedSegments.contains(segment),
         context,
-        isDark, // Pass isDark to support theme-aware chip styling
+        isDark,
+        isDisabled: segment == "Cash/Mutual Funds",
       ),
     );
   }

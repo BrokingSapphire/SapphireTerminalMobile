@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sapphire/main.dart'; // App-wide utilities
 import 'package:sapphire/screens/auth/signUp/contactDetails/mobileOTPVerification.dart'; // Next screen in registration flow
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
+import 'package:sapphire/functions/authFunctions.dart'; // Auth functions for verification
 
 /// EmailScreen - First step in the user registration process
 /// Collects and validates the user's email address before proceeding to verification
@@ -42,42 +43,41 @@ class _EmailScreenState extends State<EmailScreen> {
   /// Validates the email input and proceeds to the next screen if valid
   /// Shows error feedback if validation fails
   void _validateAndProceed() {
-    // NOTE: Current implementation bypasses validation and uses hardcoded values
-    // This appears to be for development/testing purposes
-    navi(
-        MobileOtpVerification(
-            isEmail: true,
-            email: "email",
-            mobileOrEmail: "himanshusarode@gmail.com"),
-        context);
+    // NOTE: Development implementation commented out
+    // navi(
+    //     MobileOtpVerification(
+    //         isEmail: true,
+    //         email: "email",
+    //         mobileOrEmail: "himanshusarode@gmail.com"),
+    //     context);
 
-    // Production implementation (currently commented out):
-    // if (_email.text.isEmpty ||
-    //     !isValidEmail(_email.text) ||
-    //     _email.text.endsWith(".com") == false) {
-    //   setState(() {
-    //     _isEmailInvalid = true; // Change border color to red
-    //   });
-    //
-    //   // Show error snackbar
-    //   constWidgets.snackbar("Enter a valid email address", Colors.red, context);
-    //
-    //   // Clear email field after a short delay
-    //   Future.delayed(Duration(seconds: 1), () {
-    //     setState(() {
-    //       _isEmailInvalid = false; // Reset border color
-    //     });
-    //     _email.clear();
-    //   });
-    // } else {
-    //   AuthFunctions().emailVerification(_email.text.toString());
-    //   navi(
-    //       MobileOtpVerification(
-    //           isEmail: true,
-    //           email: _email.text.toString(),
-    //           mobileOrEmail: _email.text.toString()),
-    //       context);
-    // }
+    // Production implementation:
+    if (_email.text.isEmpty ||
+        !isValidEmail(_email.text) ||
+        _email.text.endsWith(".com") == false) {
+      setState(() {
+        _isEmailInvalid = true; // Change border color to red
+      });
+
+      // Show error snackbar
+      constWidgets.snackbar("Enter a valid email address", Colors.red, context);
+
+      // Clear email field after a short delay
+      Future.delayed(Duration(seconds: 1), () {
+        setState(() {
+          _isEmailInvalid = false; // Reset border color
+        });
+        _email.clear();
+      });
+    } else {
+      // AuthFunctions().emailVerification(_email.text.toString());
+      navi(
+          MobileOtpVerification(
+              isEmail: true,
+              email: _email.text.toString(),
+              mobileOrEmail: _email.text.toString()),
+          context);
+    }
   }
 
   @override
@@ -102,13 +102,8 @@ class _EmailScreenState extends State<EmailScreen> {
             child: Column(
               children: [
                 // App logo centered at the top
-                Center(
-                  child: Image.asset(
-                    "assets/images/whiteLogo.png",
-                    scale: 0.7,
-                  ),
-                ),
-                SizedBox(height: 40.h),
+
+                SizedBox(height: 100.h),
 
                 // Welcome header section with app name
                 Align(
@@ -127,7 +122,9 @@ class _EmailScreenState extends State<EmailScreen> {
                 // Subheader describing the signup process
                 Align(
                     alignment: Alignment.topLeft,
-                    child: Text("Get started in just a few easy steps!")),
+                    child: Text(
+                      "Get started in just a few easy steps!",
+                    )),
                 SizedBox(height: 40.h),
 
                 /// Email input field with validation
@@ -234,24 +231,6 @@ class _EmailScreenState extends State<EmailScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             // Footer section with legal information
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20.0),
-                  child: Text(
-                    "© 2025 Sapphire Broking. SEBI Registered Stock Broker | Member: NSE, BSE, MCX, NCDEX. Investments are subject to market risks. Read all documents carefully. Disputes subject to Nagpur jurisdiction.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 11.sp,
-                        color: isDark ? Color(0xFF9B9B9B) : Color(0xFF6B7280)),
-                  ),
-                ),
-              ],
-            ),
-
-            /// Continue button - conditionally enabled based on input validity
-            /// Custom implementation instead of using constWidgets.greenButton
             Container(
               height: 52.h,
               width: double.infinity,
@@ -275,7 +254,25 @@ class _EmailScreenState extends State<EmailScreen> {
               ),
             ),
 
-            SizedBox(height: 10.h),
+            SizedBox(height: 15.h),
+
+            /// Continue button - conditionally enabled based on input validity
+            /// Custom implementation instead of using constWidgets.greenButton
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 0.0),
+                  child: Text(
+                    "© 2025 Sapphire Broking. SEBI Registered Stock Broker | Member: NSE, BSE, MCX, NCDEX. Investments are subject to market risks. Read all documents carefully. Disputes subject to Nagpur jurisdiction.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 11.sp,
+                        color: isDark ? Color(0xFF9B9B9B) : Color(0xFF6B7280)),
+                  ),
+                ),
+              ],
+            ),
 
             /// Help button for user assistance
             /// Uses a pre-defined widget from constWidgets

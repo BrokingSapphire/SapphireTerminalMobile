@@ -42,6 +42,7 @@ dependencies:
   webview_flutter:
   visibility_detector: ^0.4.0+2
   flutter_recaptcha_v2_compat: 
+  file_picker: ^10.1.9
   
 
 dev_dependencies:

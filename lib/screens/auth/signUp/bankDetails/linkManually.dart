@@ -3,11 +3,9 @@
 // This screen allows users to manually enter their bank account details (IFSC code,
 // account number, and account type) as an alternative to UPI-based linking.
 
-import 'dart:convert'; // For JSON encoding/decoding
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // For input formatters
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
-import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // For secure token storage
-import 'package:http/http.dart' as http; // For API requests
 import 'package:sapphire/screens/auth/signUp/bankDetails/confirmBankDetails.dart'; // Next screen after successful linking
 import 'package:sapphire/screens/auth/signUp/bankDetails/linkViaUPI.dart'; // Alternative UPI linking screen
 import 'package:sapphire/main.dart'; // App-wide navigation utilities
@@ -16,12 +14,14 @@ import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
 /// ManualLinkingScreen - Screen for manually entering bank account details
 /// Provides fields for IFSC code, account number, and account type selection
 class ManualLinkingScreen extends StatefulWidget {
+  const ManualLinkingScreen({super.key});
+
   @override
   _ManualLinkingScreenState createState() => _ManualLinkingScreenState();
 }
 
 /// State class for the ManualLinkingScreen widget
-/// Manages form input, validation, and API submission
+/// Manages form input, validation, and navigation
 class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
   // Text controllers for input fields
   TextEditingController ifscController = TextEditingController();
@@ -33,8 +33,11 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
   // Flag to track if form is complete for button enabling
   bool _isButtonDisabled = true;
 
-  // Secure storage for authentication token
-  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+  // Focus node for IFSC field to manage refocusing
+  final FocusNode _ifscFocusNode = FocusNode();
+
+  // Flag to track if numeric keyboard should be shown for IFSC
+  bool _isNumericPhase = false;
 
   @override
   void initState() {
@@ -63,79 +66,26 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
     });
   }
 
-  /// Submits bank account details to the backend API
-  /// Sends IFSC, account number, and account type for verification
-  Future<void> submitBankDetails() async {
-    // Debug logging
-    print("[INFO] Submit button pressed");
-
-    // Retrieve authentication token from secure storage
-    final token = await secureStorage.read(key: 'auth_token');
-    print("[INFO] Retrieved token: $token");
-
-    // API endpoint for bank details submission
-    final url = Uri.parse(
-        "https://api.backend.sapphirebroking.com:8443/api/v1/auth/signup/checkpoint");
-
-    // Prepare request payload
-    final body = {
-      "step": "bank_validation",
-      "validation_type": "bank",
-      "bank": {
-        "account_number": accountNumberController.text.trim(),
-        "ifsc_code": ifscController.text.trim(),
-      },
-    };
-
-    // Debug log the request body
-    print("[INFO] Request body: ${jsonEncode(body)}");
-
-    // Show loading indicator during API call
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => const Center(
-        child: CircularProgressIndicator(color: Color(0xFF1DB954)),
-      ),
-    );
-
-    try {
-      // Send API request
-      final response = await http.post(
-        url,
-        headers: {
-          "accept": "application/json",
-          "Content-Type": "application/json",
-          "Authorization": "Bearer $token",
-        },
-        body: jsonEncode(body),
-      );
-
-      // Dismiss loading indicator
-      Navigator.of(context).pop();
-
-      // Debug log API response
-      print("[INFO] Response status: ${response.statusCode}");
-      print("[INFO] Response body: ${response.body}");
-
-      // Handle API response
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        // Success case
-        constWidgets.snackbar(
-            "Bank linked successfully!", Colors.green, context);
-        navi(confirmBankDetails(), context); // Navigate to confirmation screen
-      } else {
-        // Error case - extract error message if available
-        final msg = jsonDecode(response.body)['error']?['message'] ??
-            'Something went wrong.';
-        print("[ERROR] API Error Message: $msg");
-        constWidgets.snackbar(msg, Colors.red, context);
-      }
-    } catch (e) {
-      // Handle exceptions during API call
-      Navigator.of(context).pop();
-      print("[EXCEPTION] $e");
-      constWidgets.snackbar("Error: $e", Colors.red, context);
+  /// Handles IFSC input changes to switch keyboards
+  void _handleIfscChange(String value) {
+    if (value.length == 4 && !_isNumericPhase) {
+      setState(() {
+        _isNumericPhase = true;
+      });
+      // Close the text keyboard and refocus with numeric keyboard
+      FocusScope.of(context).unfocus();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        FocusScope.of(context).requestFocus(_ifscFocusNode);
+      });
+    } else if (value.length < 4 && _isNumericPhase) {
+      setState(() {
+        _isNumericPhase = false;
+      });
+      // Close the numeric keyboard and refocus with text keyboard
+      FocusScope.of(context).unfocus();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        FocusScope.of(context).requestFocus(_ifscFocusNode);
+      });
     }
   }
 
@@ -146,6 +96,7 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
     accountNumberController.removeListener(_checkFields);
     ifscController.dispose();
     accountNumberController.dispose();
+    _ifscFocusNode.dispose();
     super.dispose();
   }
 
@@ -191,9 +142,10 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
               Text(
                 "Link your bank account",
                 style: TextStyle(
-                    color: isDark ? Colors.white : Colors.black,
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.bold),
+                  color: isDark ? Colors.white : Colors.black,
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               SizedBox(height: 16.h),
 
@@ -201,28 +153,106 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
               Text(
                 "Make sure that you are linking a bank account that is in your name.",
                 style: TextStyle(
-                    color: isDark ? Colors.white : Colors.black,
-                    fontSize: 14.sp),
+                  color: isDark ? Colors.white : Colors.black,
+                  fontSize: 14.sp,
+                ),
               ),
               SizedBox(height: 16.h),
 
-              // IFSC code input field
-              constWidgets.textField("IFSC Code", ifscController,
-                  isDark: isDark),
+              // IFSC code input field with dynamic keyboard
+              TextField(
+                controller: ifscController,
+                focusNode: _ifscFocusNode,
+                keyboardType:
+                    _isNumericPhase ? TextInputType.number : TextInputType.text,
+                inputFormatters: [
+                  IfscInputFormatter(), // Enforce 4 letters + 7 digits
+                  UpperCaseTextFormatter(), // Force uppercase for letters
+                  LengthLimitingTextInputFormatter(
+                      11), // Limit to 11 characters
+                ],
+                style: TextStyle(
+                  color: isDark ? Colors.white : Colors.black,
+                  fontSize: 14.sp,
+                ),
+                onChanged: _handleIfscChange,
+                decoration: InputDecoration(
+                  labelText: "IFSC Code",
+                  labelStyle: TextStyle(
+                    color: isDark ? Colors.white70 : Colors.black54,
+                    fontSize: 14.sp,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.r),
+                    borderSide: BorderSide(
+                      color: isDark ? Colors.grey[600]! : Colors.grey[400]!,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.r),
+                    borderSide: BorderSide(
+                      color: isDark ? Colors.grey[600]! : Colors.grey[400]!,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.r),
+                    borderSide: const BorderSide(
+                      color: Color(0xFF1DB954), // Green focused border
+                      width: 2,
+                    ),
+                  ),
+                ),
+              ),
               SizedBox(height: 12.h),
 
-              // Account number input field
-              constWidgets.textField('Account Number', accountNumberController,
-                  isDark: isDark),
+              // Account number input field with numeric input
+              TextField(
+                controller: accountNumberController,
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly, // Restrict to digits
+                ],
+                style: TextStyle(
+                  color: isDark ? Colors.white : Colors.black,
+                  fontSize: 14.sp,
+                ),
+                decoration: InputDecoration(
+                  labelText: "Account Number",
+                  labelStyle: TextStyle(
+                    color: isDark ? Colors.white70 : Colors.black54,
+                    fontSize: 14.sp,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.r),
+                    borderSide: BorderSide(
+                      color: isDark ? Colors.grey[600]! : Colors.grey[400]!,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.r),
+                    borderSide: BorderSide(
+                      color: isDark ? Colors.grey[600]! : Colors.grey[400]!,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.r),
+                    borderSide: const BorderSide(
+                      color: Color(0xFF1DB954), // Green focused border
+                      width: 2,
+                    ),
+                  ),
+                ),
+              ),
               SizedBox(height: 18.h),
 
               // Account type selection section
               Text(
                 "Account Type",
                 style: TextStyle(
-                    color: isDark ? Colors.white : Colors.black,
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold),
+                  color: isDark ? Colors.white : Colors.black,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               SizedBox(height: 12.h),
               Row(
@@ -244,9 +274,10 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
                   Text(
                     "  OR  ",
                     style: TextStyle(
-                        color: isDark ? Colors.white : Color(0xFFC9CACC)),
+                      color: isDark ? Colors.white : Color(0xFFC9CACC),
+                    ),
                   ),
-                  Expanded(child: Divider())
+                  Expanded(child: Divider()),
                 ],
               ),
               SizedBox(height: 6.h),
@@ -261,15 +292,16 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
                   child: Text(
                     "Link bank account using UPI",
                     style: TextStyle(
-                        color: Colors.green,
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold),
+                      color: Colors.green,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
 
               // Push content to top
-              Spacer(),
+              const Spacer(),
             ],
           ),
         ),
@@ -281,31 +313,16 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Continue button - conditionally enabled based on form completeness
-            SizedBox(
-              height: 52.h,
-              width: double.infinity,
-              child: ElevatedButton(
-                child: Text(
-                  "Continue",
-                  style:
-                      TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w600),
-                ),
-                // onPressed: _isButtonDisabled ? null : submitBankDetails,
-                onPressed: () {
-                  navi(confirmBankDetails(),
-                      context); // Navigate to confirmation screen
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _isButtonDisabled
-                      ? isDark
-                          ? Color(0xff2f2f2f)
-                          : Colors.grey[400]
-                      : Color(
-                          0xFF1DB954), // Gray when disabled, green when enabled
-                  foregroundColor: Colors.white,
-                ),
-              ),
+            // Continue button - enabled only when form is complete
+            constWidgets.greenButton(
+              "Continue",
+              onTap: _isButtonDisabled
+                  ? null
+                  : () {
+                      navi(confirmBankDetails(),
+                          context); // Navigate to confirmation screen
+                    },
+              isDisabled: _isButtonDisabled,
             ),
             SizedBox(height: 10.h),
 
@@ -327,5 +344,47 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
       onTap: () => _selectAccountType(value),
       child: constWidgets.choiceChip(value, isSelected, context, 100.w, isDark),
     );
+  }
+}
+
+/// Custom TextInputFormatter to force uppercase input
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
+    );
+  }
+}
+
+/// Custom TextInputFormatter to enforce IFSC format (4 letters + 7 digits)
+class IfscInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    final newText = newValue.text;
+    if (newText.length > 11) {
+      return oldValue; // Limit to 11 characters
+    }
+
+    // Check first 4 characters (letters only)
+    if (newText.length <= 4) {
+      if (!RegExp(r'^[A-Za-z]*$').hasMatch(newText)) {
+        return oldValue; // Allow only letters
+      }
+    }
+    // Check last 7 characters (digits only)
+    else if (newText.length > 4) {
+      final prefix = newText.substring(0, 4);
+      final suffix = newText.substring(4);
+      if (!RegExp(r'^[A-Za-z]{4}$').hasMatch(prefix) ||
+          !RegExp(r'^\d*$').hasMatch(suffix)) {
+        return oldValue; // Enforce 4 letters + digits
+      }
+    }
+
+    return newValue;
   }
 }

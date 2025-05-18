@@ -24,7 +24,8 @@ class MobileOtp extends StatefulWidget {
 /// State class for the MobileOtp widget
 /// Manages mobile number input and validation
 class _MobileOtpState extends State<MobileOtp> {
-  final TextEditingController _phoneNumber = TextEditingController(); // For phone number input
+  final TextEditingController _phoneNumber =
+      TextEditingController(); // For phone number input
   final _formKey = GlobalKey<FormState>(); // For form validation
 
   @override
@@ -32,7 +33,7 @@ class _MobileOtpState extends State<MobileOtp> {
     super.initState();
     _phoneNumber.addListener(() {
       setState(
-              () {}); // Rebuild UI when phone number changes (for button state updates)
+          () {}); // Rebuild UI when phone number changes (for button state updates)
     });
   }
 
@@ -67,45 +68,55 @@ class _MobileOtpState extends State<MobileOtp> {
       // Main body content with gesture detection to dismiss keyboard on tap
       body: GestureDetector(
         onTap: () {
-          FocusScope.of(context).unfocus(); // Dismiss keyboard when tapping outside
+          FocusScope.of(context)
+              .unfocus(); // Dismiss keyboard when tapping outside
         },
         behavior: HitTestBehavior.opaque,
         child: LayoutBuilder(
           builder: (context, constraints) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      // Screen title
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Mobile Verification",
-                          style: TextStyle(
-                            fontSize: 21.sp,
-                            fontWeight: FontWeight.w600,
-                            color: isDark ? Colors.white : Colors.black,
-                          ),
+            return ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Screen title
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Mobile Verification",
+                        style: TextStyle(
+                          fontSize: 21.sp,
+                          fontWeight: FontWeight.w600,
+                          color: isDark ? Colors.white : Colors.black,
                         ),
                       ),
-                      SizedBox(height: 24.h),
-                      // Phone number input field
-                      Form(
-                        key: _formKey,
-                        child: constWidgets.textField(
-                          "Phone Number",
-                          _phoneNumber,
-                          isPhoneNumber: true, // Enable phone number formatting
-                          isDark: isDark,
-                        ),
+                    ),
+                    SizedBox(height: 24.h),
+                    // Phone number input field
+                    Form(
+                      key: _formKey,
+                      child: constWidgets.textField(
+                        "Phone Number",
+                        _phoneNumber,
+                        isPhoneNumber: true, // Enable phone number formatting
+                        isDark: isDark,
                       ),
-                      SizedBox(height: 20.h),
-                    ],
-                  ),
+                    ),
+                    Spacer(),
+                    constWidgets.greenButton("Continue", onTap: () {
+                      navi(
+                          MobileOtpVerification(
+                              isEmail: false,
+                              email: widget.email,
+                              mobileOrEmail: _phoneNumber.text.toString()),
+                          context);
+                    },
+                        isDisabled: _phoneNumber.text.isEmpty ||
+                            _formKey.currentState!.validate() == false),
+                    SizedBox(height: 15.h),
+                  ],
                 ),
               ),
             );
@@ -123,7 +134,7 @@ class _MobileOtpState extends State<MobileOtp> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 20.0),
+                  padding: const EdgeInsets.only(bottom: 0.0),
                   child: Text(
                     "© 2025 Sapphire Broking. SEBI Registered Stock Broker | Member: NSE, BSE, MCX, NCDEX. Investments are subject to market risks. Read all documents carefully. Disputes subject to Nagpur jurisdiction.",
                     textAlign: TextAlign.center,
@@ -136,77 +147,7 @@ class _MobileOtpState extends State<MobileOtp> {
               ],
             ),
             // Continue button - conditionally styled based on validation state
-            Container(
-              height: 52.h,
-              width: double.infinity,
-              child: ElevatedButton(
-                // NOTE: Original implementation commented out
-                // This section contains the original implementation with API calls
-                // onPressed: (_phoneNumber.text.isNotEmpty &&
-                //         _formKey.currentState != null &&
-                //         _formKey.currentState!.validate())
-                //     ? () {
-                //         AuthFunctions()
-                //             .mobileVerification(
-                //                 _phoneNumber.text.toString(), widget.email)
-                //             .then((value) => navi(
-                //                 MobileOtpVerification(
-                //                     isEmail: false,
-                //                     email: widget.email,
-                //                     mobileOrEmail:
-                //                         _phoneNumber.text.toString()),
-                //                 context));
-                //       }
-                //     : () {
-                //         ScaffoldMessenger.of(context).showSnackBar(
-                //           SnackBar(
-                //             content: Text(
-                //               "Enter a valid phone number!",
-                //               style: TextStyle(color: Colors.white),
-                //             ),
-                //             backgroundColor: Colors.red,
-                //           ),
-                //         );
-                //       },
 
-                // Temporary simplified implementation - bypasses API call
-                // TODO: Restore original implementation with API validation when ready
-                onPressed: () {
-                  navi(
-                      MobileOtpVerification(
-                          isEmail: false,
-                          email: widget.email,
-                          mobileOrEmail: _phoneNumber.text.toString()),
-                      context);
-                },
-                // Button styling - changes color based on validation state
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: (_phoneNumber.text.isNotEmpty &&
-                      _formKey.currentState != null &&
-                      _formKey.currentState!.validate())
-                      ? Color(0xFF1DB954) // Green when valid
-                      : isDark
-                      ? Color(0xff2f2f2f) // Dark gray in dark mode when invalid
-                      : Colors.grey[300], // Light gray in light mode when invalid
-                  foregroundColor: isDark ? Colors.white : Colors.black,
-                ),
-                child: Text(
-                  "Continue",
-                  style: TextStyle(
-                    fontSize: 17.sp,
-                    fontWeight: FontWeight.w600,
-                    color: (_phoneNumber.text.isNotEmpty &&
-                        _formKey.currentState != null &&
-                        _formKey.currentState!.validate())
-                        ? Colors.white // White text when valid
-                        : isDark
-                        ? Color(0xffc9cacc) // Light gray in dark mode when invalid
-                        : Colors.grey[600], // Dark gray in light mode when invalid
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 10.h),
             // Help button for user assistance
             constWidgets.needHelpButton(context),
           ],

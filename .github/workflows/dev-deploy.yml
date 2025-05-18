@@ -1,5 +1,5 @@
-# Debug Build
-name: "Build & Debug (Dev)"
+# Dev Build
+name: "Build & Deploy (Dev)"
 
 on:
   push:
@@ -45,14 +45,14 @@ jobs:
         run: flutter pub get
 
 #      - name: Analyze code
-#        run: flutter analyze --fatal-warnings
-
+#        run: flutter analyze
+#
 #      - name: Run tests
 #        run: flutter test
 
 
   build_android:
-    name: Build Android (Debug)
+    name: Build Android (Dev)
     needs: lint_and_test
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -83,18 +83,18 @@ jobs:
       - name: Get Flutter dependencies
         run: flutter pub get
 
-      - name: Build Android App (Debug)
-        run: flutter build apk --debug
+      - name: Build Android App (Dev)
+        run: flutter build apk --profile
 
-      - name: Upload Android Debug Build
+      - name: Upload Android Dev Build
         uses: actions/upload-artifact@v4
         with:
-          name: android-debug-build
-          path: build/app/outputs/flutter-apk/app-debug.apk
-          retention-days: 7
+          name: android-dev-build
+          path: build/app/outputs/flutter-apk/app-profile.apk
+          retention-days: 14
 
   build_ios:
-    name: Build iOS (Debug)
+    name: Build iOS (Dev)
     needs: lint_and_test
     runs-on: macos-latest
     timeout-minutes: 30
@@ -130,19 +130,19 @@ jobs:
           cd ios
           pod install --repo-update
 
-      - name: Build iOS App (Debug)
-        run: flutter build ios --debug --no-codesign
+      - name: Build iOS App (Dev)
+        run: flutter build ios --profile --no-codesign
 
       - name: Create IPA
         run: |
           cd build/ios/iphoneos
           mkdir Payload
           cp -R Runner.app Payload
-          zip -r app-debug.ipa Payload
+          zip -r app-profile.ipa Payload
 
-      - name: Upload iOS Debug Build
+      - name: Upload iOS Dev Build
         uses: actions/upload-artifact@v4
         with:
-          name: ios-debug-build
-          path: build/ios/iphoneos/app-debug.ipa
-          retention-days: 7
+          name: ios-dev-build
+          path: build/ios/iphoneos/app-profile.ipa
+          retention-days: 14

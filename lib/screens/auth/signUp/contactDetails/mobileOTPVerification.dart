@@ -21,7 +21,7 @@ class MobileOtpVerification extends StatefulWidget {
   final bool isEmail; // Flag to determine verification type (email vs mobile)
   final String email; // Email address is always required in both flows
   final String
-  mobileOrEmail; // Contains either email or mobile number based on isEmail flag
+      mobileOrEmail; // Contains either email or mobile number based on isEmail flag
 
   MobileOtpVerification({
     super.key,
@@ -37,7 +37,8 @@ class MobileOtpVerification extends StatefulWidget {
 /// State class for the MobileOtpVerification widget
 /// Manages OTP input, verification, countdown timer, and UI states
 class _MobileOtpVerificationState extends State<MobileOtpVerification> {
-  TextEditingController otpController = TextEditingController(); // Controls OTP input
+  TextEditingController otpController =
+      TextEditingController(); // Controls OTP input
   int _timerSeconds = 59; // Initial countdown timer value (59 seconds)
   late Timer _timer; // Timer instance for countdown
   bool _isOtpIncorrect = false; // Tracks if entered OTP is invalid
@@ -93,7 +94,7 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
     // TODO: Restore original implementation with proper API verification when ready
     widget.isEmail
         ? navi(MobileOtp(email: widget.email),
-        context) // Email flow -> Mobile OTP screen
+            context) // Email flow -> Mobile OTP screen
         : navi(PanDetails(), context); // Mobile flow -> PAN details screen
     //   constWidgets.snackbar("OTP verified successfully", Colors.green,
     //       navigatorKey.currentContext!);
@@ -136,7 +137,8 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
       // Main body with gesture detection to dismiss keyboard on tap outside
       body: GestureDetector(
         onTap: () {
-          FocusScope.of(context).unfocus(); // Dismiss keyboard when tapping outside
+          FocusScope.of(context)
+              .unfocus(); // Dismiss keyboard when tapping outside
         },
         behavior: HitTestBehavior.opaque,
         child: Padding(
@@ -181,8 +183,9 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
                         color: _isOtpIncorrect
                             ? Colors.red // Red border when OTP is incorrect
                             : isDark
-                            ? Colors.white54 // Normal border in dark mode
-                            : Colors.black38), // Normal border in light mode
+                                ? Colors.white54 // Normal border in dark mode
+                                : Colors
+                                    .black38), // Normal border in light mode
                   ),
                 ),
                 onChanged: (value) {
@@ -203,8 +206,8 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
                       color: _timerSeconds == 0
                           ? Colors.green // Active color when timer is zero
                           : isDark
-                          ? Color(0xffc9cacc) // Inactive color in dark mode
-                          : Colors.grey), // Inactive color in light mode
+                              ? Color(0xffc9cacc) // Inactive color in dark mode
+                              : Colors.grey), // Inactive color in light mode
                 ),
               ),
               SizedBox(height: 24.h),
@@ -219,7 +222,7 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
                       const TextSpan(text: "Resend in "),
                       TextSpan(
                         text:
-                        "${(_timerSeconds ~/ 60).toString().padLeft(2, '0')}:${(_timerSeconds % 60).toString().padLeft(2, '0')} ", // MM:SS format
+                            "${(_timerSeconds ~/ 60).toString().padLeft(2, '0')}:${(_timerSeconds % 60).toString().padLeft(2, '0')} ", // MM:SS format
                         style: TextStyle(color: Colors.green),
                       ),
                       const TextSpan(text: "seconds"),
@@ -227,90 +230,74 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
                   ),
                 ),
               ),
+              SizedBox(height: 24.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    style: TextStyle(
+                        fontSize: 13.sp,
+                        color: isDark ? Colors.white70 : Colors.black54),
+                    children: [
+                      TextSpan(
+                          text:
+                              "By continuing to Verify, I agree to Sapphire "),
+                      // Clickable Terms & Conditions link
+                      TextSpan(
+                        text: "Terms & Conditions ",
+                        style: TextStyle(color: Colors.green),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () async {
+                            if (await canLaunchUrl(Uri.parse(
+                                'https://www.sapphirebroking.com/terms-and-conditions'))) {
+                              await launchUrl(Uri.parse(
+                                  'https://www.sapphirebroking.com/terms-and-conditions'));
+                            }
+                          },
+                      ),
+                      TextSpan(text: "and "),
+                      // Clickable Privacy Policy link
+                      TextSpan(
+                        text: "Privacy Policy.",
+                        style: TextStyle(color: Colors.green),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () async {
+                            if (await canLaunchUrl(Uri.parse(
+                                'https://www.sapphirebroking.com/privacy-policy'))) {
+                              await launchUrl(Uri.parse(
+                                  'https://www.sapphirebroking.com/privacy-policy'));
+                            }
+                          },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               const Expanded(child: SizedBox()), // Pushes content to top
+              constWidgets.greenButton(
+                "Verify",
+                onTap: () {
+                  if (otpController.text.length == 6) {
+                    verifyOtp();
+                  }
+                },
+                isDisabled: otpController.text.length != 6,
+              ),
             ],
           ),
         ),
       ),
       // Bottom area with terms acceptance text and verify button
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15.w),
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             // Terms and conditions acceptance text with clickable links
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w),
-              child: RichText(
-                textAlign: TextAlign.start,
-                text: TextSpan(
-                  style: TextStyle(
-                      fontSize: 13.sp,
-                      color: isDark ? Colors.white70 : Colors.black54),
-                  children: [
-                    TextSpan(
-                        text: "By continuing to Verify, I agree to Sapphire "),
-                    // Clickable Terms & Conditions link
-                    TextSpan(
-                      text: "Terms & Conditions ",
-                      style: TextStyle(color: Colors.green),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () async {
-                          if (await canLaunchUrl(Uri.parse(
-                              'https://www.sapphirebroking.com/terms-and-conditions'))) {
-                            await launchUrl(Uri.parse(
-                                'https://www.sapphirebroking.com/terms-and-conditions'));
-                          }
-                        },
-                    ),
-                    TextSpan(text: "and "),
-                    // Clickable Privacy Policy link
-                    TextSpan(
-                      text: "Privacy Policy.",
-                      style: TextStyle(color: Colors.green),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () async {
-                          if (await canLaunchUrl(Uri.parse(
-                              'https://www.sapphirebroking.com/privacy-policy'))) {
-                            await launchUrl(Uri.parse(
-                                'https://www.sapphirebroking.com/privacy-policy'));
-                          }
-                        },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 30.h),
-            // Verify button - conditionally styled based on OTP completion
-            Container(
-              height: 52.h,
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  otpController.text.length == 6 ? verifyOtp() : null; // Only verify if OTP is complete
-                },
-                child: Text(
-                  "Verify",
-                  style: TextStyle(
-                      fontSize: 17.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: otpController.text.length == 6
-                      ? Color(0xFF1DB954) // Green when OTP is complete
-                      : isDark
-                      ? Color(0xff2f2f2f) // Dark gray in dark mode when incomplete
-                      : Colors.grey[300], // Light gray in light mode when incomplete
-                  foregroundColor: isDark ? Colors.white : Colors.black,
-                ),
-              ),
-            ),
-            SizedBox(height: 10.h),
+
             // Help button for user assistance
             Center(child: constWidgets.needHelpButton(context)),
-            SizedBox(height: 10.h),
           ],
         ),
       ),

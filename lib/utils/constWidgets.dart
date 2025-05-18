@@ -33,7 +33,8 @@ class constWidgets {
   }
 
   static segmentChoiceChipiWithCheckbox(
-      String text, bool val, BuildContext context, bool isDark) {
+      String text, bool val, BuildContext context, bool isDark,
+      {bool isDisabled = false}) {
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -45,7 +46,7 @@ class constWidgets {
               scale: 0.9,
               child: Checkbox(
                 value: val,
-                onChanged: (val) {
+                onChanged: isDisabled ? null : (val) {
                   // You can add logic here if needed
                 },
 

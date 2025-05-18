@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/auth/login/login.dart';
 import 'package:sapphire/utils/constWidgets.dart';
+import 'package:sapphire/utils/naviWithoutAnimation.dart';
 
 class changePassword extends StatefulWidget {
   const changePassword({super.key});
@@ -236,20 +238,54 @@ class _changePasswordState extends State<changePassword> {
                           onTap: _isButtonDisabled
                               ? null
                               : () {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'Password updated successfully!',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.sp,
+                                  showModalBottomSheet(
+                                    context: context,
+                                    backgroundColor: Colors.black,
+                                    builder: (context) {
+                                      return Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 20, horizontal: 16),
+                                        decoration: BoxDecoration(
+                                          color: isDark
+                                              ? Color(0xff121413)
+                                              : Colors.white,
+                                          borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(16)),
                                         ),
-                                      ),
-                                      backgroundColor: Colors.green,
-                                      duration: Duration(seconds: 2),
-                                    ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            SizedBox(height: 35.h),
+                                            SvgPicture.asset(
+                                              "assets/svgs/doneMark.svg",
+                                            ),
+                                            SizedBox(height: 16.h),
+                                            Text(
+                                              "Password changed successfully",
+                                              style: TextStyle(
+                                                fontSize: 21.sp,
+                                                color: Color(0xFFEBEEF5),
+                                              ),
+                                            ),
+                                            SizedBox(height: 24.h),
+                                            Text(
+                                              "Your password has been updated. Please use the new password to log in.",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 15.sp,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            // Bottom sheet title
+                                          ],
+                                        ),
+                                      );
+                                    },
                                   );
-                                  naviRep(LoginScreen(), context);
+                                  Future.delayed(Duration(seconds: 2), () {
+                                    naviWithoutAnimation(
+                                        context, LoginScreen());
+                                  });
                                 },
                           isDisabled: _isButtonDisabled,
                         ),

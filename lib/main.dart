@@ -4,8 +4,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
-import 'package:sapphire/screens/auth/login/loginOtp.dart';
-import 'package:sapphire/screens/auth/signUp/initialPage.dart'; // Initial landing screen
+import 'package:sapphire/screens/account/profile/profile.dart';
+import 'package:sapphire/screens/auth/signUp/aadharDetails/aadharDetails.dart';
+import 'package:sapphire/screens/auth/signUp/congratulations.dart';
+import 'package:sapphire/screens/auth/signUp/finalStep/eSign.dart';
+import 'package:sapphire/screens/auth/signUp/initialPage.dart';
+import 'package:sapphire/screens/auth/signUp/signature/signature.dart';
+import 'package:sapphire/screens/home/homeWarpper.dart';
 import 'package:sapphire/themeProvider.dart'; // Theme state management
 import 'package:provider/provider.dart'; // State management solution
 import 'package:sapphire/utils/appTheme.dart'; // App-wide theme configurations.
@@ -108,7 +113,7 @@ class MyApp extends StatelessWidget {
           darkTheme: AppThemes.darkTheme, // Dark theme configuration
           themeMode:
               themeProvider.themeMode, // Current theme mode (system/light/dark)
-          home: InitialScreen(), // Starting screen of the application
+          home: CongratulationsScreen(), // Starting screen of the application
           // home: loginOtp(), // Alternate entry point (currently commented out)
         );
       },

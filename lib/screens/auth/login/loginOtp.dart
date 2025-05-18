@@ -1,23 +1,21 @@
 // File: loginOtp.dart
 // Description: OTP verification screen for login flow in Sapphire Trading application.
-// This screen handles verification of both email and mobile numbers during login.
+// This screen handles verification of OTP sent to user's registered email and mobile.
 
 import 'dart:async'; // For timer functionality
 import 'package:flutter/gestures.dart'; // For advanced gesture handling
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
-import 'package:pinput/pinput.dart';
-import 'package:sapphire/main.dart';
-import 'package:sapphire/screens/auth/signUp/contactDetails/email.dart';
-import 'package:sapphire/screens/home/riskDisclosure.dart';
-import 'package:sapphire/utils/constWidgets.dart'; // Specialized OTP input widget
+import 'package:pinput/pinput.dart'; // Specialized OTP input widget
+import 'package:sapphire/main.dart'; // App-wide navigation utilities
+import 'package:sapphire/screens/auth/login/useMpinScreen.dart'; // MPIN screen destination
+import 'package:sapphire/screens/auth/signUp/contactDetails/email.dart'; // Sign-up screen
+import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
 
 /// loginOtp - Screen for OTP verification during login
 /// This screen handles verification of OTP sent to user's registered email and mobile
 class loginOtp extends StatefulWidget {
-  loginOtp({
-    super.key,
-  });
+  const loginOtp({super.key});
 
   @override
   State<loginOtp> createState() => _loginOtpState();
@@ -52,45 +50,16 @@ class _loginOtpState extends State<loginOtp> {
     });
   }
 
-  @override
-  void dispose() {
-    _timer.cancel(); // Cancel timer to prevent memory leaks
-    otpController.dispose(); // Clean up text controller
-    super.dispose();
-  }
-
   /// Handles OTP verification process for login
-  /// Validates OTP and navigates to dashboard on success
-  /// Handles OTP verification for login
-  /// Validates the OTP and navigates to the dashboard if successful
-  /// If verification fails, displays an error message
-  /// Note: Actual API verification is not yet implemented
+  /// Validates OTP length and navigates to MPIN screen
   Future<void> verifyOtp() async {
-    // TODO: Implement actual API verification
-    // Example implementation:
-    // if (otpController.text.length != 6) {
-    //   constWidgets.snackbar('Enter a valid 6-digit OTP', Colors.red, context);
-    //   return;
-    // }
-    // bool isOtpVerified = await AuthFunctions().loginOtp(otpController.text);
-    // if (isOtpVerified) {
-    //   constWidgets.snackbar("Login successful", Colors.green, context);
-    //   Navigator.pushAndRemoveUntil(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => Dashboard()),
-    //     (route) => false,
-    //   );
-    // } else {
-    //   setState(() => _isOtpIncorrect = true);
-    //   constWidgets.snackbar("Invalid OTP", Colors.red, context);
-    // }
-
-    // Temporary simplified implementation - bypasses API verification
-    // Navigator.pushAndRemoveUntil(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => Dashboard()),
-    //   (route) => false,
-    // );
+    if (otpController.text.length != 6) {
+      setState(() => _isOtpIncorrect = true);
+      constWidgets.snackbar('Please enter a 6-digit OTP', Colors.red, context);
+      return;
+    }
+    // Temporary navigation to MPIN screen (no backend verification)
+    naviRep(const UseMpinScreen(), context);
   }
 
   /// Handles the resend OTP functionality
@@ -108,8 +77,14 @@ class _loginOtpState extends State<loginOtp> {
   }
 
   @override
+  void dispose() {
+    _timer.cancel(); // Cancel timer to prevent memory leaks
+    otpController.dispose(); // Clean up text controller
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Always use dark theme for this screen as shown in the image
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       backgroundColor: isDark ? Colors.black : Colors.white,
@@ -118,13 +93,16 @@ class _loginOtpState extends State<loginOtp> {
         leading: Padding(
           padding: EdgeInsets.only(top: 16.h),
           child: IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back,
+                color: isDark ? Colors.white : Colors.black),
             iconSize: 28.sp,
             onPressed: () {
               Navigator.pop(context);
             },
           ),
         ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -132,15 +110,15 @@ class _loginOtpState extends State<loginOtp> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // SizedBox(height: 10.h),
+            const Spacer(),
             // Welcome header
-            Spacer(),
             Text(
               "Welcome to\nSapphire",
               style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black,
-                  fontSize: 34.sp,
-                  fontWeight: FontWeight.w600),
+                color: isDark ? Colors.white : Colors.black,
+                fontSize: 34.sp,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             SizedBox(height: 8.h),
             // Instruction text for OTP
@@ -148,7 +126,7 @@ class _loginOtpState extends State<loginOtp> {
               "Enter OTP sent to registered Email and Mobile Number",
               style: TextStyle(
                 fontSize: 17.sp,
-                color: Colors.white,
+                color: isDark ? Colors.white70 : Colors.black54,
               ),
             ),
             SizedBox(height: 40.h),
@@ -162,20 +140,21 @@ class _loginOtpState extends State<loginOtp> {
                 height: 48.h,
                 textStyle: TextStyle(
                   fontSize: 20.sp,
-                  color: Colors.white,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.r),
                   border: Border.all(
-                    color: _isOtpIncorrect
-                        ? Colors.red // Red border when OTP is incorrect
-                        : Color(0xff2f2f2f), // Normal border
+                    color:
+                        _isOtpIncorrect ? Colors.red : const Color(0xff2f2f2f),
                     width: 1,
                   ),
                 ),
               ),
               onChanged: (value) {
-                setState(() {}); // Update UI on OTP input change
+                setState(() {
+                  _isOtpIncorrect = false; // Clear error on input change
+                });
               },
               onCompleted: (otp) async {
                 // Auto-verify when all 6 digits entered
@@ -187,12 +166,12 @@ class _loginOtpState extends State<loginOtp> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Resend OTP button - only active when timer reaches zero
+                // Resend OTP button - faded and disabled until timer reaches zero
                 TextButton(
                   onPressed: _timerSeconds == 0 ? resendOtp : null,
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.zero,
-                    minimumSize: Size(80, 30),
+                    minimumSize: const Size(80, 30),
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                   child: Text(
@@ -200,7 +179,7 @@ class _loginOtpState extends State<loginOtp> {
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
-                      color: Colors.green,
+                      color: _timerSeconds == 0 ? Colors.green : Colors.grey,
                     ),
                   ),
                 ),
@@ -209,26 +188,26 @@ class _loginOtpState extends State<loginOtp> {
                   text: TextSpan(
                     style: TextStyle(
                       fontSize: 16.sp,
-                      color: Colors.white,
+                      color: isDark ? Colors.white70 : Colors.black54,
                     ),
                     children: [
-                      TextSpan(text: "Expires in "),
+                      const TextSpan(text: "Expires in "),
                       TextSpan(
                         text: "0:${_timerSeconds.toString().padLeft(2, '0')}",
-                        style: TextStyle(color: Colors.green),
+                        style: const TextStyle(color: Colors.green),
                       ),
-                      TextSpan(text: " seconds"),
+                      const TextSpan(text: " seconds"),
                     ],
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 70.h), // Push continue button to bottom
-
+            SizedBox(height: 70.h),
+            // Continue button
             constWidgets.greenButton(
               "Continue",
               onTap: () {
-                naviRep(Disclosure(), context);
+                verifyOtp();
               },
               isDisabled: otpController.text.length != 6,
             ),
@@ -237,7 +216,7 @@ class _loginOtpState extends State<loginOtp> {
             Center(
               child: RichText(
                 text: TextSpan(
-                  text: "Dont have an account? ",
+                  text: "Don't have an account? ",
                   style: TextStyle(
                     fontSize: 13.sp,
                     color: isDark
@@ -250,11 +229,11 @@ class _loginOtpState extends State<loginOtp> {
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: Colors.blue,
+                        decoration: TextDecoration.underline,
                         decorationColor: Colors.blue,
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          // Navigate to the Sign Up screen
                           naviRep(const EmailScreen(), context);
                         },
                     ),
@@ -262,7 +241,7 @@ class _loginOtpState extends State<loginOtp> {
                 ),
               ),
             ),
-            Expanded(child: SizedBox()),
+            const Expanded(child: SizedBox()),
             // Disclaimer text
             Text(
               "© 2025 Sapphire Broking. SEBI Registered Stock Broker | Member: NSE, BSE, MCX, NCDEX. Investments are subject to market risks. Read all documents carefully. Disputes subject to Nagpur jurisdiction.",
@@ -283,7 +262,7 @@ class _loginOtpState extends State<loginOtp> {
                   "Need Help?",
                   style: TextStyle(
                     fontSize: 14.sp,
-                    color: Colors.white,
+                    color: isDark ? Colors.white : Colors.black,
                   ),
                 ),
               ),

@@ -10,10 +10,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive U
 import 'package:flutter_svg/flutter_svg.dart'; // For SVG rendering support
 import 'package:pinput/pinput.dart'; // Specialized PIN input widget
 import 'package:sapphire/main.dart'; // App-wide navigation utilities
+import 'package:sapphire/screens/auth/login/mpins/reEnterMpin.dart';
 import 'package:sapphire/screens/home/homeWarpper.dart'; // Home screen destination
 import 'package:local_auth/local_auth.dart'; // For biometric authentication
-import 'package:local_auth/error_codes.dart'
-    as auth_error; // Biometric error codes
+import 'package:local_auth/error_codes.dart' as auth_error;
+import 'package:sapphire/utils/naviWithoutAnimation.dart'; // Biometric error codes
 
 /// MpinScreen - Secure authentication screen for accessing the application
 /// Provides numeric keypad for entering 4-digit PIN with option for biometric authentication
@@ -45,9 +46,8 @@ class _MpinScreenState extends State<MpinScreen> {
         enteredPin = enteredPin.substring(0, enteredPin.length - 1);
       });
     } else if (value == "submit") {
-      // Handle submit - navigate to home screen
-      // Note: In production, this would validate the PIN first
-      navi(HomeWrapper(), context);
+      // Submit handled in keypad to show error for incomplete PIN
+      return;
     } else if (enteredPin.length < 4) {
       // Add digit if PIN is not complete
       setState(() {
@@ -91,7 +91,7 @@ class _MpinScreenState extends State<MpinScreen> {
 
       if (authenticated) {
         // Authentication successful - navigate to home screen
-        navi(HomeWrapper(), context);
+        naviRep(const HomeWrapper(), context);
       } else {
         // Authentication failed - show error message
         ScaffoldMessenger.of(context).showSnackBar(
@@ -101,7 +101,7 @@ class _MpinScreenState extends State<MpinScreen> {
               style: TextStyle(fontSize: 14.sp, color: Colors.white),
             ),
             backgroundColor: Colors.red,
-            duration: Duration(seconds: 2),
+            duration: const Duration(seconds: 2),
           ),
         );
       }
@@ -128,7 +128,7 @@ class _MpinScreenState extends State<MpinScreen> {
             style: TextStyle(fontSize: 14.sp, color: Colors.white),
           ),
           backgroundColor: Colors.red,
-          duration: Duration(seconds: 2),
+          duration: const Duration(seconds: 2),
         ),
       );
     }
@@ -138,47 +138,43 @@ class _MpinScreenState extends State<MpinScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: isDark ? Colors.black : Colors.white,
+      appBar: AppBar(
+        leadingWidth: 46.w,
+        leading: Padding(
+          padding: EdgeInsets.only(top: 4.h),
+          child: IconButton(
+            icon: Icon(Icons.arrow_back,
+                size: 28.sp, color: isDark ? Colors.white : Colors.black),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+        backgroundColor: isDark ? Colors.black : Colors.white,
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(height: 35.h),
-          // App logo
-          Image.asset(
-            "assets/images/whiteLogo.png",
-            scale: 0.7,
-          ),
-          SizedBox(height: 20.h),
-
-          // User name display
-          Text(
-            "Nakul Pratap Thakur", // Should be dynamic in production
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 21.sp,
-              color: isDark ? Colors.white : Colors.black,
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Text(
+                "Set an MPIN",
+                style: TextStyle(
+                  fontSize: 22.sp,
+                  fontWeight: FontWeight.w600,
+                  color: isDark ? Colors.white : Colors.black,
+                ),
+              ),
             ),
           ),
-          // Client code display
-          Text(
-            "J098WE", // Should be dynamic in production
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 15.sp,
-              color: Color(0xFF1DB954),
-            ),
-          ),
-          SizedBox(height: 30.h),
+          SizedBox(height: 45.h),
 
           // PIN input field using Pinput widget
           Pinput(
-            length: 4,
-            // 4-digit PIN
+            length: 4, // 4-digit PIN
             controller: _pinController,
-            obscureText: true,
-            // Mask PIN for security
-            enabled: false,
-            // No direct input - uses custom keypad
+            obscureText: true, // Mask PIN for security
+            enabled: false, // No direct input - uses custom keypad
             separatorBuilder: (index) => SizedBox(width: 12.w),
             // Default style for PIN dots
             defaultPinTheme: PinTheme(
@@ -191,8 +187,9 @@ class _MpinScreenState extends State<MpinScreen> {
               ),
               decoration: BoxDecoration(
                 border: Border.all(
-                    color: isDark ? Colors.grey : Colors.grey.shade400,
-                    width: 1),
+                  color: isDark ? Colors.grey : Colors.grey.shade400,
+                  width: 1,
+                ),
                 borderRadius: BorderRadius.circular(6.r),
               ),
             ),
@@ -207,7 +204,9 @@ class _MpinScreenState extends State<MpinScreen> {
               ),
               decoration: BoxDecoration(
                 border: Border.all(
-                    color: isDark ? Colors.white : Colors.black, width: 2),
+                  color: isDark ? Colors.white : Colors.black,
+                  width: 2,
+                ),
                 borderRadius: BorderRadius.circular(8.r),
               ),
             ),
@@ -215,54 +214,52 @@ class _MpinScreenState extends State<MpinScreen> {
           SizedBox(height: 20.h),
 
           // Conditionally show biometric authentication option if available
-          FutureBuilder<bool>(
-            future: _canAuthenticate(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return SizedBox.shrink(); // Show nothing while checking
-              }
-              bool canAuthenticate = snapshot.data ?? false;
-              if (!canAuthenticate) {
-                return SizedBox.shrink(); // Hide if biometrics not available
-              }
+          // FutureBuilder<bool>(
+          //   future: _canAuthenticate(),
+          //   builder: (context, snapshot) {
+          //     if (snapshot.connectionState == ConnectionState.waiting) {
+          //       return const SizedBox.shrink(); // Show nothing while checking
+          //     }
+          //     bool canAuthenticate = snapshot.data ?? false;
+          //     if (!canAuthenticate) {
+          //       return const SizedBox.shrink(); // Hide if biometrics not available
+          //     }
 
-              // Show appropriate biometric option based on platform
-              return GestureDetector(
-                onTap: _authenticate, // Trigger biometric authentication
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Adaptive text based on platform
-                    Text(
-                      Platform.isAndroid
-                          ? "Use Fingerprint"
-                          : Platform.isIOS
-                              ? "Use Face ID"
-                              : "Use Biometric",
-                      style: TextStyle(
-                        color: Color(0xFF1DB954),
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(width: 7.w),
-                    // Adaptive icon based on platform
-                    SvgPicture.asset(
-                      Platform.isAndroid
-                          ? "assets/svgs/fingerprint.svg"
-                          : "assets/svgs/face.svg",
-                      width: 20.w,
-                      colorFilter: ColorFilter.mode(
-                        Color(0xFF1DB954),
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-          Spacer(), // Push numeric keypad to bottom
+          //     // Show appropriate biometric option based on platform
+          //     return GestureDetector(
+          //       onTap: _authenticate, // Trigger biometric authentication
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.center,
+          //         children: [
+          //           Text(
+          //             Platform.isAndroid
+          //                 ? "Use Fingerprint"
+          //                 : Platform.isIOS
+          //                     ? "Use Face ID"
+          //                     : "Use Biometric",
+          //             style: TextStyle(
+          //               color: const Color(0xFF1DB954),
+          //               fontSize: 14.sp,
+          //               fontWeight: FontWeight.w500,
+          //             ),
+          //           ),
+          //           SizedBox(width: 7.w),
+          //           SvgPicture.asset(
+          //             Platform.isAndroid
+          //                 ? "assets/svgs/fingerprint.svg"
+          //                 : "assets/svgs/face.svg",
+          //             width: 20.w,
+          //             colorFilter: const ColorFilter.mode(
+          //               Color(0xFF1DB954),
+          //               BlendMode.srcIn,
+          //             ),
+          //           ),
+          //         ],
+          //       ),
+          //     );
+          //   },
+          // ),
+          const Spacer(), // Push numeric keypad to bottom
 
           // Custom numeric keypad for PIN entry
           buildKeypad(),
@@ -288,7 +285,7 @@ class _MpinScreenState extends State<MpinScreen> {
       "9",
       "back",
       "0",
-      "submit"
+      "submit",
     ];
 
     return Padding(
@@ -313,21 +310,39 @@ class _MpinScreenState extends State<MpinScreen> {
               ),
               child: keys[index] == "back"
                   ? Icon(Icons.backspace,
-                      color: Color(0xFF1DB954), size: 28) // Backspace button
+                      color: const Color(0xFF1DB954),
+                      size: 28) // Backspace button
                   : keys[index] == "submit"
                       ? InkWell(
                           onTap: () {
-                            // Navigate to home screen and replace route (no back navigation)
-                            naviRep(HomeWrapper(), context);
+                            if (enteredPin.length == 4) {
+                              // Navigate to home screen and replace route (no back navigation)
+                              naviWithoutAnimation(
+                                  context, ReEnterMpinScreen(pin: enteredPin));
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: Colors.red,
+                                  content: Text(
+                                    "Please enter a 4-digit MPIN",
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  duration: const Duration(seconds: 2),
+                                ),
+                              );
+                            }
                           },
                           child: Icon(Icons.check,
-                              color: Color(0xFF1DB954),
+                              color: const Color(0xFF1DB954),
                               size: 30)) // Submit button
                       : Text(
                           keys[index], // Number button
                           style: TextStyle(
                             fontSize: 22.sp,
-                            color: Color(0xFF1DB954),
+                            color: const Color(0xFF1DB954),
                           ),
                         ),
             ),

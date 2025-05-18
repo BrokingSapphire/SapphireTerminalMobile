@@ -1,133 +1,33 @@
 // File: otherDetails.dart
 // Description: Other details collection screen in the Sapphire Trading application.
-// This screen collects additional regulatory information including occupation, income range,
+// This screen collects additional regulatory information including occupation
 // and politically exposed person (PEP) status as required by SEBI and AML regulations.
 
-import 'dart:convert'; // For JSON encoding/decoding
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
-import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // For secure token storage
-import 'package:http/http.dart' as http; // For API requests
 import 'package:sapphire/screens/auth/signUp/bankDetails/linkBankAccount.dart'; // Next screen in registration flow
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
 import 'package:sapphire/main.dart'; // App-wide navigation utilities
 
-/// Otherdetails - Screen for collecting additional regulatory information
-/// Gathers occupation, income level, and politically exposed person status data
-/// Note: Class name should follow Dart conventions (OtherDetails)
-class Otherdetails extends StatefulWidget {
-  const Otherdetails({super.key});
+/// OtherDetails - Screen for collecting additional regulatory information
+/// Gathers occupation and politically exposed person status data
+class OtherDetails extends StatefulWidget {
+  const OtherDetails({super.key});
 
   @override
-  State<Otherdetails> createState() => _OtherdetailsScreenState();
+  State<OtherDetails> createState() => _OtherDetailsState();
 }
 
-/// State class for the Otherdetails widget
-/// Manages user selections and API submission
-class _OtherdetailsScreenState extends State<Otherdetails> {
-  // Secure storage for authentication token
-  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
-
+/// State class for the OtherDetails widget
+/// Manages user selections and navigation
+class _OtherDetailsState extends State<OtherDetails> {
   // Selection state variables
-  String? selectedExperience;
-  String? selectedIncome;
-  String? selectedSettlement;
-  String? selectedPEP;
   String? selectedOccupation;
-
-  // Mapping of display income ranges to API values
-  final Map<String, String> incomeMap = {
-    "<1 Lakh": "le_1_Lakh",
-    "1 Lakh - 5 Lakh": "1_5_Lakh",
-    "5 Lakh - 10 Lakh": "5_10_Lakh",
-    "10 Lakh - 25 Lakh": "10_25_Lakh",
-    "25 Lakh - 1 Crore": "25_1_Cr",
-    "> 1 Crore": "Ge_1_Cr",
-  };
+  String? selectedPEP;
 
   /// Computed property to check if all required selections are made
   /// Used to enable/disable the continue button
-  bool get isFormComplete =>
-      selectedExperience != null &&
-      selectedIncome != null &&
-      selectedSettlement != null;
-
-  /// Updates selection state for a given category
-  /// @param category The field category being updated ('experience', 'income', 'settlement', or 'PEP')
-  /// @param value The selected value for the category
-  void _selectOption(String category, String value) {
-    setState(() {
-      if (category == "experience") {
-        selectedExperience = value;
-      } else if (category == "income") {
-        selectedIncome = value;
-      } else if (category == "settlement") {
-        selectedSettlement = value;
-      } else if (category == "PEP") {
-        selectedPEP = value;
-      }
-    });
-  }
-
-  /// Submits the collected details to the backend API
-  /// Sends occupation, income, and settlement preference to server
-  Future<void> submitDetails() async {
-    // Retrieve authentication token from secure storage
-    final token = await secureStorage.read(key: 'auth_token');
-
-    // API endpoint for submitting account details
-    final url = Uri.parse(
-        "https://api.backend.sapphirebroking.com:8443/api/v1/auth/signup/checkpoint");
-
-    // Prepare request payload
-    final body = {
-      "step": "account_detail",
-      "annual_income": incomeMap[selectedIncome] ??
-          selectedIncome, // Map display value to API value
-      "settlement": selectedSettlement,
-    };
-
-    // Show loading indicator during API call
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => const Center(
-        child: CircularProgressIndicator(color: Color(0xFF1DB954)),
-      ),
-    );
-
-    try {
-      // Send API request
-      final response = await http.post(
-        url,
-        headers: {
-          "accept": "application/json",
-          "Content-Type": "application/json",
-          "Authorization": "Bearer $token",
-        },
-        body: jsonEncode(body),
-      );
-
-      // Dismiss loading indicator
-      Navigator.of(context).pop();
-
-      // Handle API response
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        // Success case
-        constWidgets.snackbar("Account details saved!", Colors.green, context);
-        navi(linkBankScreen(), context); // Navigate to bank linking screen
-      } else {
-        // Error case - extract error message if available
-        final msg = jsonDecode(response.body)['error']?['message'] ??
-            'Failed to save details';
-        constWidgets.snackbar(msg, Colors.red, context);
-      }
-    } catch (e) {
-      // Handle exceptions during API call
-      Navigator.of(context).pop();
-      constWidgets.snackbar("Error: $e", Colors.red, context);
-    }
-  }
+  bool get isFormComplete => selectedOccupation != null && selectedPEP != null;
 
   /// Updates the selected occupation
   /// @param value The selected occupation
@@ -139,17 +39,6 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
   Widget build(BuildContext context) {
     // Determine if app is in dark mode
     final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
-    Widget _buildSelectableChip(String category, String value, double width) {
-      bool isSelected =
-          (category == "Settlement" && selectedSettlement == value) |
-              (category == "PEP" && selectedPEP == value);
-
-      return InkWell(
-        onTap: () => _selectOption(category, value),
-        child:
-            constWidgets.choiceChip(value, isSelected, context, width, isDark),
-      );
-    }
 
     // Calculate width for choice chips based on screen size
     double chipWidth = MediaQuery.of(context).size.width / 3 - 20;
@@ -178,24 +67,28 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
             Text(
               "Other Details",
               style: TextStyle(
-                  fontSize: 21.sp,
-                  fontWeight: FontWeight.w600,
-                  color: isDark ? Colors.white : Colors.black),
+                fontSize: 21.sp,
+                fontWeight: FontWeight.w600,
+                color: isDark ? Colors.white : Colors.black,
+              ),
             ),
             SizedBox(height: 16.h),
 
             /// Occupation selection section
-            Text("Occupation",
-                style: TextStyle(
-                    fontSize: 17.sp,
-                    fontWeight: FontWeight.w500,
-                    color: isDark ? Colors.white : Colors.black)),
+            Text(
+              "Occupation",
+              style: TextStyle(
+                fontSize: 17.sp,
+                fontWeight: FontWeight.w500,
+                color: isDark ? Colors.white : Colors.black,
+              ),
+            ),
             SizedBox(height: 16.h),
 
             // Wrap widget creates a flowing grid of occupation options
             Wrap(
-              spacing: 12,
-              runSpacing: 12,
+              spacing: 12.w,
+              runSpacing: 12.h,
               children: [
                 "Student",
                 "Govt. Servant",
@@ -204,17 +97,20 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
                 "Agriculturist",
                 "Self Employed",
                 "Housewife",
-                "Other"
+                "Other",
               ]
-                  .map((item) => InkWell(
-                        onTap: () => _selectOccupation(item),
-                        child: constWidgets.choiceChip(
-                            item,
-                            selectedOccupation == item,
-                            context,
-                            chipWidth,
-                            isDark),
-                      ))
+                  .map(
+                    (item) => InkWell(
+                      onTap: () => _selectOccupation(item),
+                      child: constWidgets.choiceChip(
+                        item,
+                        selectedOccupation == item,
+                        context,
+                        chipWidth,
+                        isDark,
+                      ),
+                    ),
+                  )
                   .toList(),
             ),
             SizedBox(height: 24.h),
@@ -223,7 +119,9 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
             Text(
               "Are you a Politically Exposed Person (PEP)?",
               style: TextStyle(
-                  fontSize: 17.sp, color: isDark ? Colors.white : Colors.black),
+                fontSize: 17.sp,
+                color: isDark ? Colors.white : Colors.black,
+              ),
             ),
             SizedBox(height: 12.h),
 
@@ -231,9 +129,9 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                _buildSelectableChip("PEP", "Yes", 106.w),
+                _buildSelectableChip("Yes", isDark, chipWidth),
                 SizedBox(width: 20.w),
-                _buildSelectableChip("PEP", "No", 106.w),
+                _buildSelectableChip("No", isDark, chipWidth),
               ],
             ),
 
@@ -241,17 +139,16 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
             const Spacer(),
 
             /// Continue Button
-            // Original implementation with conditional onTap
-            // constWidgets.greenButton(
-            //   "Continue",
-            //   onTap: isFormComplete ? submitDetails : null,
-            // ),
-
-            // Current implementation (note: missing onTap parameter)
-            constWidgets.greenButton('Continue', onTap: () {
-              navi(
-                  linkBankScreen(), context); // Navigate to bank linking screen
-            }),
+            constWidgets.greenButton(
+              "Continue",
+              onTap: isFormComplete
+                  ? () {
+                      navi(linkBankScreen(),
+                          context); // Navigate to bank linking screen
+                    }
+                  : null,
+              isDisabled: !isFormComplete,
+            ),
             SizedBox(height: 10.h),
 
             /// Help button for user assistance
@@ -259,6 +156,19 @@ class _OtherdetailsScreenState extends State<Otherdetails> {
           ],
         ),
       ),
+    );
+  }
+
+  /// Builds a selectable choice chip for PEP options
+  /// @param value The display value for the chip (Yes/No)
+  /// @param isDark Whether the app is in dark mode
+  /// @param width The width of the chip
+  /// @return A tappable choice chip widget
+  Widget _buildSelectableChip(String value, bool isDark, double width) {
+    bool isSelected = selectedPEP == value;
+    return InkWell(
+      onTap: () => setState(() => selectedPEP = value),
+      child: constWidgets.choiceChip(value, isSelected, context, width, isDark),
     );
   }
 }
