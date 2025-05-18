@@ -4,15 +4,15 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // For TextInputFormatter
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:flutter_svg/svg.dart'; // For SVG rendering support
 import 'package:sapphire/main.dart'; // Contains app-wide utilities
 import 'package:sapphire/screens/auth/login/loginOtp.dart';
 import 'package:sapphire/screens/auth/login/troubleLoggingIn/panInput.dart';
-import 'package:sapphire/screens/home/riskDisclosure.dart';
 import 'package:sapphire/screens/auth/signUp/contactDetails/email.dart';
-import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
-import 'package:sapphire/utils/naviWithoutAnimation.dart'; // Custom navigation utility
+import 'package:sapphire/utils/constWidgets.dart';
+import 'package:sapphire/utils/naviWithoutAnimation.dart'; // Reusable UI components
 
 /// LoginScreen - Authentication screen that collects user credentials
 /// Allows users to enter their client ID and password to access the application
@@ -34,6 +34,31 @@ class _LoginScreenState extends State<LoginScreen> {
   // State variables for UI toggles
   bool rememberMe = false; // Checkbox state for remembering credentials
   bool isPasswordVisible = false; // Toggle for password visibility
+
+  @override
+  void initState() {
+    super.initState();
+    // Add listeners to update the UI when client ID or password changes
+    clientId.addListener(_updateButtonState);
+    password.addListener(_updateButtonState);
+  }
+
+  // Update the button's disabled state based on input fields
+  void _updateButtonState() {
+    setState(() {
+      // Force a rebuild to update the green button's disabled state
+    });
+  }
+
+  @override
+  void dispose() {
+    // Clean up controllers and listeners
+    clientId.removeListener(_updateButtonState);
+    password.removeListener(_updateButtonState);
+    clientId.dispose();
+    password.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,12 +98,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Top spacing
-                        // SizedBox(height: 40.h),
-
-                        // App logo
-                        // Image.asset("assets/images/whiteLogo.png", scale: 0.7),
-
                         Spacer(),
 
                         // Welcome header section
@@ -89,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             children: [
                               // Main welcome title
                               Text(
-                                "Welcome",
+                                "Welcome to\nSapphire",
                                 style: TextStyle(
                                     color: isDark ? Colors.white : Colors.black,
                                     fontSize: 34.sp,
@@ -111,10 +130,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(height: 42.h),
 
                         /// Client ID input field
-                        /// Collects the user's unique client identifier
+                        /// Collects the user's unique client identifier, forces uppercase
                         TextFormField(
                           controller: clientId,
                           keyboardType: TextInputType.text,
+                          inputFormatters: [
+                            // Force uppercase input
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[A-Za-z0-9]')),
+                            UpperCaseTextFormatter(),
+                          ],
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 15),
@@ -260,8 +285,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             suffixIconConstraints:
                                 BoxConstraints(minWidth: 40.w),
                           ),
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 16.sp),
+                          style: TextStyle(
+                              color: isDark ? Colors.white : Colors.black,
+                              fontSize: 16.sp),
                           // Input validation
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -349,8 +375,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         /// Processes the login attempt and navigates to next screen on success
                         constWidgets.greenButton("Continue", onTap: () {
                           // Navigate to the Disclosure screen without animation
-                          navi(loginOtp(), context);
-                        }),
+                          clientId.text.isEmpty || password.text.isEmpty
+                              ? null
+                              : naviWithoutAnimation(context, loginOtp());
+                        },
+                            isDisabled:
+                                clientId.text.isEmpty || password.text.isEmpty),
                         SizedBox(height: 24.h),
                         RichText(
                           text: TextSpan(
@@ -401,6 +431,18 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Custom TextInputFormatter to convert input to uppercase
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    return newValue.copyWith(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
     );
   }
 }

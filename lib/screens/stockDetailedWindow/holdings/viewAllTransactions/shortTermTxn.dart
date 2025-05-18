@@ -5,6 +5,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
+import 'package:sapphire/screens/stockDetailedWindow/holdings/viewAllTransactions/longTermTxn.dart';
 import 'package:sapphire/utils/constWidgets.dart'; // For common UI components
 
 /// ViewAllTransactions - Widget that displays stock transaction history
@@ -21,7 +22,10 @@ class ViewAllTransactions extends StatefulWidget {
 class _ViewAllTransactionsState extends State<ViewAllTransactions>
     with SingleTickerProviderStateMixin {
   late TabController _tabController; // Controller for tab navigation
-  List<String> tabOptions = ['Short Term', 'Long Term']; // Tab options for time periods
+  List<String> tabOptions = [
+    'Short Term',
+    'Long Term'
+  ]; // Tab options for time periods
 
   @override
   void initState() {
@@ -37,12 +41,21 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions>
     super.dispose();
   }
 
+  /// Handles the refresh action for the Short Term tab
+  Future<void> _onRefresh() async {
+    // Simulate a network fetch or data refresh
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {
+      // Update state if needed after refresh
+    });
+  }
+
   /// Builds an individual transaction item widget
   /// @param date - Transaction date
   /// @param quantity - Number of shares in the transaction
   /// @param investedPrice - Total amount invested
   /// @param atp - Average trade price
-  /// @return Widget - Formatted transaction information 
+  /// @return Widget - Formatted transaction information
   Widget _buildTransactionItem(
       String date, String quantity, String investedPrice, String atp) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
@@ -165,7 +178,7 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions>
         ListView.separated(
           shrinkWrap: true, // Ensure it doesn't scroll independently
           physics:
-          const NeverScrollableScrollPhysics(), // Disable scrolling within ListView
+              const NeverScrollableScrollPhysics(), // Disable scrolling within ListView
           itemCount: transactions.length,
           itemBuilder: (context, index) {
             final transaction = transactions[index];
@@ -191,8 +204,8 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions>
     );
   }
 
-  /// Builds the Short Term tab content 
-  /// @return Widget - Short term transactions view with summary
+  /// Builds the Short Term tab content
+  /// @return Widget - Short term transactions view with fixed summary and scrollable list
   Widget _buildShortTermTab() {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -205,22 +218,28 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions>
         'atp': '₹134',
       },
       {
-        'date': '12 April 2025',
-        'quantity': '60 Shares',
-        'investedPrice': '₹1,34,789.00',
-        'atp': '₹134',
+        'date': '10 April 2025',
+        'quantity': '50 Shares',
+        'investedPrice': '₹1,12,500.00',
+        'atp': '₹225',
       },
       {
-        'date': '12 April 2025',
-        'quantity': '60 Shares',
-        'investedPrice': '₹1,34,789.00',
-        'atp': '₹134',
+        'date': '8 April 2025',
+        'quantity': '75 Shares',
+        'investedPrice': '₹1,68,750.00',
+        'atp': '₹225',
       },
       {
-        'date': '12 April 2025',
-        'quantity': '60 Shares',
-        'investedPrice': '₹1,34,789.00',
-        'atp': '₹134',
+        'date': '5 April 2025',
+        'quantity': '40 Shares',
+        'investedPrice': '₹90,000.00',
+        'atp': '₹225',
+      },
+      {
+        'date': '2 April 2025',
+        'quantity': '100 Shares',
+        'investedPrice': '₹2,25,000.00',
+        'atp': '₹225',
       },
     ];
 
@@ -232,21 +251,78 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions>
         'atp': '₹134',
       },
       {
+        'date': '20 March 2025',
+        'quantity': '80 Shares',
+        'investedPrice': '₹1,76,000.00',
+        'atp': '₹220',
+      },
+      {
         'date': '16 March 2025',
-        'quantity': '60 Shares',
-        'investedPrice': '₹1,34,789.00',
-        'atp': '₹134',
+        'quantity': '45 Shares',
+        'investedPrice': '₹99,000.00',
+        'atp': '₹220',
+      },
+      {
+        'date': '10 March 2025',
+        'quantity': '70 Shares',
+        'investedPrice': '₹1,54,000.00',
+        'atp': '₹220',
       },
     ];
 
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.all(16.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Summary section - provides overview of transaction metrics
-            Container(
+    final februaryTransactions = [
+      {
+        'date': '28 February 2025',
+        'quantity': '55 Shares',
+        'investedPrice': '₹1,23,750.00',
+        'atp': '₹225',
+      },
+      {
+        'date': '15 February 2025',
+        'quantity': '65 Shares',
+        'investedPrice': '₹1,46,250.00',
+        'atp': '₹225',
+      },
+      {
+        'date': '5 February 2025',
+        'quantity': '90 Shares',
+        'investedPrice': '₹2,02,500.00',
+        'atp': '₹225',
+      },
+    ];
+
+    final januaryTransactions = [
+      {
+        'date': '25 January 2025',
+        'quantity': '30 Shares',
+        'investedPrice': '₹66,000.00',
+        'atp': '₹220',
+      },
+      {
+        'date': '18 January 2025',
+        'quantity': '85 Shares',
+        'investedPrice': '₹1,87,000.00',
+        'atp': '₹220',
+      },
+      {
+        'date': '10 January 2025',
+        'quantity': '50 Shares',
+        'investedPrice': '₹1,10,000.00',
+        'atp': '₹220',
+      },
+    ];
+
+    return RefreshIndicator(
+      onRefresh: _onRefresh,
+      color: Colors.green, // Spinner color
+      backgroundColor: isDark ? Colors.black : Colors.white, // Background color
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Summary section - fixed, non-scrollable
+          Padding(
+            padding: EdgeInsets.all(16.w),
+            child: Container(
               padding: EdgeInsets.all(16.w),
               decoration: BoxDecoration(
                 color: isDark ? Color(0xff121413) : Colors.grey[100],
@@ -365,34 +441,33 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions>
                 ],
               ),
             ),
-            SizedBox(height: 16.h),
-            // April 2025 transactions section
-            _buildMonthSection("April 2025", aprilTransactions),
-            SizedBox(height: 16.h),
-            // March 2025 transactions section
-            _buildMonthSection("March 2025", marchTransactions),
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// Builds the Long Term tab content
-  /// @return Widget - Long term transactions view (empty state)
-  Widget _buildLongTermTab() {
-    final bool isDark = Theme.of(context).brightness == Brightness.dark;
-
-    // Empty state display when no long term transactions exist
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(16.w),
-        child: Text(
-          "No long term transactions available",
-          style: TextStyle(
-            fontSize: 14.sp,
-            color: isDark ? Colors.white : Colors.black,
           ),
-        ),
+          // Scrollable transaction list
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(), // Ensure scrollable for RefreshIndicator
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // April 2025 transactions section
+                    _buildMonthSection("April 2025", aprilTransactions),
+                    SizedBox(height: 16.h),
+                    // March 2025 transactions section
+                    _buildMonthSection("March 2025", marchTransactions),
+                    SizedBox(height: 16.h),
+                    // February 2025 transactions section
+                    _buildMonthSection("February 2025", februaryTransactions),
+                    SizedBox(height: 16.h),
+                    // January 2025 transactions section
+                    _buildMonthSection("January 2025", januaryTransactions),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -451,7 +526,7 @@ class _ViewAllTransactionsState extends State<ViewAllTransactions>
         controller: _tabController,
         children: [
           _buildShortTermTab(), // Short Term tab content
-          _buildLongTermTab(),  // Long Term tab content
+          Longtermtxn(), // Long Term tab content
         ],
       ),
     );

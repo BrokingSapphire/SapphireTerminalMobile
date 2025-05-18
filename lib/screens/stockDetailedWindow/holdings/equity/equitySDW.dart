@@ -230,6 +230,7 @@ class _EquityDetailsState extends State<EquityDetails> {
         ),
         // Title section with stock info
         title: Column(
+          
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
@@ -281,6 +282,7 @@ class _EquityDetailsState extends State<EquityDetails> {
         ),
       ),
       body: Column(
+        
         children: [
           // Divider below app bar
           Divider(
@@ -288,517 +290,515 @@ class _EquityDetailsState extends State<EquityDetails> {
             color: Color(0xff2f2f2f),
           ),
           Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 12.h),
-                    // Overall Loss Section - Shows performance metrics
-                    Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.all(16.w),
-                      decoration: BoxDecoration(
-                        color:
-                        isDark ? const Color(0xff121212) : Colors.grey[100],
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Section header
-                          Row(
-                            children: [
-                              Text(
-                                "Overall Loss", // Performance header
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: isDark
-                                      ? Color(0xffc9cacc)
-                                      : Colors.grey[600],
-                                ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 12.h),
+                  // Overall Loss Section - Shows performance metrics
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(16.w),
+                    decoration: BoxDecoration(
+                      color:
+                      isDark ? const Color(0xff121212) : Colors.grey[100],
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Section header
+                        Row(
+                          children: [
+                            Text(
+                              "Overall Loss", // Performance header
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: isDark
+                                    ? Color(0xffc9cacc)
+                                    : Colors.grey[600],
                               ),
-                            ],
-                          ),
-                          SizedBox(height: 6.h),
-                          // Loss amount and percentage
-                          Row(
-                            children: [
-                              Text(
-                                "-₹22,678.80", // Loss amount (negative)
-                                style: TextStyle(
-                                  fontSize: 15.sp,
-                                  color: Colors.red, // Red for loss
-                                ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 6.h),
+                        // Loss amount and percentage
+                        Row(
+                          children: [
+                            Text(
+                              "-₹22,678.80", // Loss amount (negative)
+                              style: TextStyle(
+                                fontSize: 15.sp,
+                                color: Colors.red, // Red for loss
                               ),
-                              SizedBox(width: 4.w),
-                              Text(
-                                "(-2.78%)", // Loss percentage
+                            ),
+                            SizedBox(width: 4.w),
+                            Text(
+                              "(-2.78%)", // Loss percentage
+                              style: TextStyle(
+                                fontSize: 13.sp,
+                                color: Colors.red, // Red for loss
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16.h),
+                        // Position details in two columns
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            // Left column of position metrics
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  _buildInfoCard("Total Qty.", "1500/1500"), // Total quantity
+                                  SizedBox(height: 12.h),
+                                  _buildInfoCard("Invested", "₹12,445.78"), // Total invested amount
+                                  SizedBox(height: 12.h),
+                                  _buildInfoCard("Total gain", "₹12,445.60"), // Total unrealized gain/loss
+                                ],
+                              ),
+                            ),
+                            // Right column of position metrics
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  _buildInfoCard(
+                                      "Avg. Trade Price", "₹327.00"), // Average trade price
+                                  SizedBox(height: 12.h),
+                                  _buildInfoCard(
+                                      "Market Value", "₹12,445.60"), // Current market value
+                                  SizedBox(height: 12.h),
+                                  _buildInfoCard(
+                                      "Total realized gain", "₹12,445.60"), // Total realized gain/loss
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 12.h),
+            
+                  // Action Buttons - Set Alert, Option Chain, Create GTT
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 16.h),
+                    decoration: BoxDecoration(
+                      color:
+                      isDark ? const Color(0xff121212) : Colors.grey[100],
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildActionButton(
+                            "assets/svgs/notification.svg", "Set Alert"), // Create price alerts
+                        _buildActionButton(
+                            "assets/svgs/chain.svg", "Option Chain"), // View option chain
+                        _buildActionButton(
+                            "assets/svgs/createGtt.svg", "Create GTT"), // Create Good Till Triggered order
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 12.h),
+            
+                  // Price Details Section - Shows price metrics
+                  Container(
+                    padding: EdgeInsets.all(16.w),
+                    decoration: BoxDecoration(
+                      color:
+                      isDark ? const Color(0xff121212) : Colors.grey[100],
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Average traded price
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildAvgInfoCard("Avg. Traded Price", "₹678.80"), // Average trade price
+                          ],
+                        ),
+                        SizedBox(height: 16.h),
+                        // Price details row
+                        Row(
+                          children: [
+                            Expanded(
+                              child: _buildInfoCard(
+                                  "Avg. Price without charges", "₹445.60"), // Actual price before charges
+                            ),
+                            Expanded(
+                                child: _buildInfoCard(
+                                    "Charges Per Share", "₹7.00")), // Trading charges per share
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 12.h),
+            
+                  // Stock Details Section - Shows transaction history
+                  Container(
+                    padding: EdgeInsets.all(16.w),
+                    decoration: BoxDecoration(
+                      color: isDark ? Color(0xff121413) : Colors.grey[100],
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    child: Column(
+                      children: [
+                        // Header with title and view all link
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Stock Details",
+                              style: TextStyle(
+                                fontSize: 15.sp,
+                                color: isDark ? Colors.white : Colors.black,
+                              ),
+                            ),
+                            // View all transactions link
+                            GestureDetector(
+                              onTap: () {
+                                navi(ViewAllTransactions(), context);
+                              },
+                              child: Text(
+                                "View all Transactions",
                                 style: TextStyle(
                                   fontSize: 13.sp,
-                                  color: Colors.red, // Red for loss
+                                  color: const Color(0xff1DB954),
                                 ),
                               ),
-                            ],
-                          ),
-                          SizedBox(height: 16.h),
-                          // Position details in two columns
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              // Left column of position metrics
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _buildInfoCard("Total Qty.", "1500/1500"), // Total quantity
-                                    SizedBox(height: 12.h),
-                                    _buildInfoCard("Invested", "₹12,445.78"), // Total invested amount
-                                    SizedBox(height: 12.h),
-                                    _buildInfoCard("Total gain", "₹12,445.60"), // Total unrealized gain/loss
-                                  ],
-                                ),
-                              ),
-                              // Right column of position metrics
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _buildInfoCard(
-                                        "Avg. Trade Price", "₹327.00"), // Average trade price
-                                    SizedBox(height: 12.h),
-                                    _buildInfoCard(
-                                        "Market Value", "₹12,445.60"), // Current market value
-                                    SizedBox(height: 12.h),
-                                    _buildInfoCard(
-                                        "Total realized gain", "₹12,445.60"), // Total realized gain/loss
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 12.h),
-
-                    // Action Buttons - Set Alert, Option Chain, Create GTT
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 16.h),
-                      decoration: BoxDecoration(
-                        color:
-                        isDark ? const Color(0xff121212) : Colors.grey[100],
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          _buildActionButton(
-                              "assets/svgs/notification.svg", "Set Alert"), // Create price alerts
-                          _buildActionButton(
-                              "assets/svgs/chain.svg", "Option Chain"), // View option chain
-                          _buildActionButton(
-                              "assets/svgs/createGtt.svg", "Create GTT"), // Create Good Till Triggered order
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 12.h),
-
-                    // Price Details Section - Shows price metrics
-                    Container(
-                      padding: EdgeInsets.all(16.w),
-                      decoration: BoxDecoration(
-                        color:
-                        isDark ? const Color(0xff121212) : Colors.grey[100],
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Average traded price
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              _buildAvgInfoCard("Avg. Traded Price", "₹678.80"), // Average trade price
-                            ],
-                          ),
-                          SizedBox(height: 16.h),
-                          // Price details row
-                          Row(
-                            children: [
-                              Expanded(
-                                child: _buildInfoCard(
-                                    "Avg. Price without charges", "₹445.60"), // Actual price before charges
-                              ),
-                              Expanded(
-                                  child: _buildInfoCard(
-                                      "Charges Per Share", "₹7.00")), // Trading charges per share
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 12.h),
-
-                    // Stock Details Section - Shows transaction history
-                    Container(
-                      padding: EdgeInsets.all(16.w),
-                      decoration: BoxDecoration(
-                        color: isDark ? Color(0xff121413) : Colors.grey[100],
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Column(
-                        children: [
-                          // Header with title and view all link
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Stock Details",
-                                style: TextStyle(
-                                  fontSize: 15.sp,
-                                  color: isDark ? Colors.white : Colors.black,
-                                ),
-                              ),
-                              // View all transactions link
-                              GestureDetector(
-                                onTap: () {
-                                  navi(ViewAllTransactions(), context);
-                                },
-                                child: Text(
-                                  "View all Transactions",
-                                  style: TextStyle(
-                                    fontSize: 13.sp,
-                                    color: const Color(0xff1DB954),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 16.h),
-                          // Position Rows - Short term and Long term details
-                          Row(
-                            children: [
-                              // Short term container
-                              Expanded(
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12.w, vertical: 8.h),
-                                  decoration: BoxDecoration(
-                                    color: isDark
-                                        ? Color(0xff121212)
-                                        : Colors.grey[100],
-                                    borderRadius: BorderRadius.circular(8.r),
-                                    border: Border.all(
-                                      color: isDark
-                                          ? Color(0xff2F2F2F)
-                                          : Colors.grey[300]!,
-                                      width: 1,
-                                    ),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      // Short term header
-                                      Text(
-                                        "Short term", // Holdings < 1 year
-                                        style: TextStyle(
-                                          fontSize: 13.sp,
-                                          color: isDark
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ),
-                                      ),
-                                      SizedBox(height: 6.h),
-                                      // Short term details container
-                                      Container(
-                                        padding: EdgeInsets.all(12.w),
-                                        decoration: BoxDecoration(
-                                          color: isDark
-                                              ? Color(0xff252525)
-                                              : Colors.grey[100],
-                                          borderRadius:
-                                          BorderRadius.circular(8.r),
-                                          border: Border.all(
-                                            color: isDark
-                                                ? Color(0xff2F2F2F)
-                                                : Colors.grey[300]!,
-                                            width: 1,
-                                          ),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            // Quantity column
-                                            Column(
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "Qty.", // Quantity
-                                                  style: TextStyle(
-                                                    fontSize: 11.sp,
-                                                    color: isDark
-                                                        ? Color(0xffC9CACC)
-                                                        : Colors.grey[600],
-                                                  ),
-                                                ),
-                                                SizedBox(height: 4.h),
-                                                Text(
-                                                  "1000", // Number of shares
-                                                  style: TextStyle(
-                                                    fontSize: 11.sp,
-                                                    color: isDark
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            // Value column
-                                            Column(
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                              children: [
-                                                Text(
-                                                  "Value", // Current value
-                                                  style: TextStyle(
-                                                    fontSize: 11.sp,
-                                                    color: isDark
-                                                        ? Color(0xffC9CACC)
-                                                        : Colors.grey[600],
-                                                  ),
-                                                ),
-                                                SizedBox(height: 4.h),
-                                                Text(
-                                                  "-₹12,347.00", // Loss amount (negative)
-                                                  style: TextStyle(
-                                                    fontSize: 11.sp,
-                                                    color: Colors.red, // Red for loss
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 12.w),
-                              // Long term container
-                              Expanded(
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12.w, vertical: 8.h),
-                                  decoration: BoxDecoration(
-                                    color: isDark
-                                        ? Color(0xff121212)
-                                        : Colors.grey[100],
-                                    borderRadius: BorderRadius.circular(8.r),
-                                    border: Border.all(
-                                      color: isDark
-                                          ? Color(0xff2F2F2F)
-                                          : Colors.grey[300]!,
-                                      width: 1,
-                                    ),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      // Long term header
-                                      Text(
-                                        "Long term", // Holdings > 1 year
-                                        style: TextStyle(
-                                          fontSize: 13.sp,
-                                          color: isDark
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ),
-                                      ),
-                                      SizedBox(height: 6.h),
-                                      // Long term details container
-                                      Container(
-                                        padding: EdgeInsets.all(12.w),
-                                        decoration: BoxDecoration(
-                                          color: isDark
-                                              ? Color(0xff252525)
-                                              : Colors.grey[100],
-                                          borderRadius:
-                                          BorderRadius.circular(8.r),
-                                          border: Border.all(
-                                            color: isDark
-                                                ? Color(0xff2F2F2F)
-                                                : Colors.grey[300]!,
-                                            width: 1,
-                                          ),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            // Quantity column
-                                            Column(
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "Qty.", // Quantity
-                                                  style: TextStyle(
-                                                    fontSize: 11.sp,
-                                                    color: isDark
-                                                        ? Color(0xffC9CACC)
-                                                        : Colors.grey[600],
-                                                  ),
-                                                ),
-                                                SizedBox(height: 4.h),
-                                                Text(
-                                                  "0", // Zero shares (no long term holdings)
-                                                  style: TextStyle(
-                                                    fontSize: 11.sp,
-                                                    color: isDark
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            // Value column
-                                            Column(
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                              children: [
-                                                Text(
-                                                  "Value", // Current value
-                                                  style: TextStyle(
-                                                    fontSize: 11.sp,
-                                                    color: isDark
-                                                        ? Color(0xffC9CACC)
-                                                        : Colors.grey[600],
-                                                  ),
-                                                ),
-                                                SizedBox(height: 4.h),
-                                                Text(
-                                                  "+₹12,347.00", // Profit amount (positive)
-                                                  style: TextStyle(
-                                                    fontSize: 11.sp,
-                                                    color: Colors.green, // Green for profit
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 12.h),
-                    // View Chart and Stock Details buttons
-                    Container(
-                      decoration: BoxDecoration(
-                        color: isDark ? Colors.black : Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 4,
-                            offset: Offset(0, -1),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color:
-                                isDark ? Color(0xff121413) : Colors.white,
-                                borderRadius: BorderRadius.circular(6.r),
-                              ),
-                              child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 16.w, vertical: 12.h),
-                                  child: Row(
-                                    children: [
-                                      // View Chart button (left)
-                                      Expanded(
-                                          child: Container(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                              children: [
-                                                SvgPicture.asset(
-                                                  "assets/svgs/viewChart.svg",
-                                                  color: Color(0xff1db954),
-                                                  height: 20.h,
-                                                  width: 20.w,
-                                                ),
-                                                SizedBox(width: 4.w),
-                                                Text(
-                                                  "View Chart", // View price chart
-                                                  style: TextStyle(
-                                                      fontSize: 13.sp,
-                                                      color: isDark
-                                                          ? Color(0xffEBEEF5)
-                                                          : Color(0xffEBEEF5)),
-                                                ),
-                                              ],
-                                            ),
-                                          )),
-                                      // Vertical divider
-                                      Container(
-                                        width: 2.w,
-                                        height: 25.h,
-                                        color: Color(0xff2f2f2f),
-                                      ),
-                                      // Stock Details button (right)
-                                      Expanded(
-                                          child: Container(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                              children: [
-                                                SvgPicture.asset(
-                                                  "assets/svgs/stockDetails.svg",
-                                                  color: Color(0xff1db954),
-                                                  height: 20.h,
-                                                  width: 20.w,
-                                                ),
-                                                SizedBox(width: 4.w),
-                                                Text(
-                                                  "Stock Details", // View detailed stock information
-                                                  style: TextStyle(
-                                                      fontSize: 13.sp,
-                                                      color: isDark
-                                                          ? Color(0xffEBEEF5)
-                                                          : Color(0xffEBEEF5)),
-                                                ),
-                                              ],
-                                            ),
-                                          )),
-                                    ],
-                                  )),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
+                        SizedBox(height: 16.h),
+                        // Position Rows - Short term and Long term details
+                        Row(
+                          children: [
+                            // Short term container
+                            Expanded(
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 12.w, vertical: 8.h),
+                                decoration: BoxDecoration(
+                                  color: isDark
+                                      ? Color(0xff121212)
+                                      : Colors.grey[100],
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  border: Border.all(
+                                    color: isDark
+                                        ? Color(0xff2F2F2F)
+                                        : Colors.grey[300]!,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    // Short term header
+                                    Text(
+                                      "Short term", // Holdings < 1 year
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        color: isDark
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                    ),
+                                    SizedBox(height: 6.h),
+                                    // Short term details container
+                                    Container(
+                                      padding: EdgeInsets.all(12.w),
+                                      decoration: BoxDecoration(
+                                        color: isDark
+                                            ? Color(0xff252525)
+                                            : Colors.grey[100],
+                                        borderRadius:
+                                        BorderRadius.circular(8.r),
+                                        border: Border.all(
+                                          color: isDark
+                                              ? Color(0xff2F2F2F)
+                                              : Colors.grey[300]!,
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          // Quantity column
+                                          Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Qty.", // Quantity
+                                                style: TextStyle(
+                                                  fontSize: 11.sp,
+                                                  color: isDark
+                                                      ? Color(0xffC9CACC)
+                                                      : Colors.grey[600],
+                                                ),
+                                              ),
+                                              SizedBox(height: 4.h),
+                                              Text(
+                                                "1000", // Number of shares
+                                                style: TextStyle(
+                                                  fontSize: 11.sp,
+                                                  color: isDark
+                                                      ? Colors.white
+                                                      : Colors.black,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          // Value column
+                                          Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                            children: [
+                                              Text(
+                                                "Value", // Current value
+                                                style: TextStyle(
+                                                  fontSize: 11.sp,
+                                                  color: isDark
+                                                      ? Color(0xffC9CACC)
+                                                      : Colors.grey[600],
+                                                ),
+                                              ),
+                                              SizedBox(height: 4.h),
+                                              Text(
+                                                "-₹12,347.00", // Loss amount (negative)
+                                                style: TextStyle(
+                                                  fontSize: 11.sp,
+                                                  color: Colors.red, // Red for loss
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 12.w),
+                            // Long term container
+                            Expanded(
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 12.w, vertical: 8.h),
+                                decoration: BoxDecoration(
+                                  color: isDark
+                                      ? Color(0xff121212)
+                                      : Colors.grey[100],
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  border: Border.all(
+                                    color: isDark
+                                        ? Color(0xff2F2F2F)
+                                        : Colors.grey[300]!,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    // Long term header
+                                    Text(
+                                      "Long term", // Holdings > 1 year
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        color: isDark
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                    ),
+                                    SizedBox(height: 6.h),
+                                    // Long term details container
+                                    Container(
+                                      padding: EdgeInsets.all(12.w),
+                                      decoration: BoxDecoration(
+                                        color: isDark
+                                            ? Color(0xff252525)
+                                            : Colors.grey[100],
+                                        borderRadius:
+                                        BorderRadius.circular(8.r),
+                                        border: Border.all(
+                                          color: isDark
+                                              ? Color(0xff2F2F2F)
+                                              : Colors.grey[300]!,
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          // Quantity column
+                                          Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Qty.", // Quantity
+                                                style: TextStyle(
+                                                  fontSize: 11.sp,
+                                                  color: isDark
+                                                      ? Color(0xffC9CACC)
+                                                      : Colors.grey[600],
+                                                ),
+                                              ),
+                                              SizedBox(height: 4.h),
+                                              Text(
+                                                "0", // Zero shares (no long term holdings)
+                                                style: TextStyle(
+                                                  fontSize: 11.sp,
+                                                  color: isDark
+                                                      ? Colors.white
+                                                      : Colors.black,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          // Value column
+                                          Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                            children: [
+                                              Text(
+                                                "Value", // Current value
+                                                style: TextStyle(
+                                                  fontSize: 11.sp,
+                                                  color: isDark
+                                                      ? Color(0xffC9CACC)
+                                                      : Colors.grey[600],
+                                                ),
+                                              ),
+                                              SizedBox(height: 4.h),
+                                              Text(
+                                                "+₹12,347.00", // Profit amount (positive)
+                                                style: TextStyle(
+                                                  fontSize: 11.sp,
+                                                  color: Colors.green, // Green for profit
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-
-                    SizedBox(height: 24.h),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 12.h),
+                  // View Chart and Stock Details buttons
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //     color: isDark ? Colors.black : Colors.white,
+                  //     boxShadow: [
+                  //       BoxShadow(
+                  //         color: Colors.black.withOpacity(0.1),
+                  //         blurRadius: 4,
+                  //         offset: Offset(0, -1),
+                  //       ),
+                  //     ],
+                  //   ),
+                  //   child: Row(
+                  //     children: [
+                  //       Expanded(
+                  //         child: Container(
+                  //           width: double.infinity,
+                  //           decoration: BoxDecoration(
+                  //             color:
+                  //             isDark ? Color(0xff121413) : Colors.white,
+                  //             borderRadius: BorderRadius.circular(6.r),
+                  //           ),
+                  //           child: Padding(
+                  //               padding: EdgeInsets.symmetric(
+                  //                   horizontal: 16.w, vertical: 12.h),
+                  //               child: Row(
+                  //                 children: [
+                  //                   // View Chart button (left)
+                  //                   Expanded(
+                  //                       child: Container(
+                  //                         child: Row(
+                  //                           mainAxisAlignment:
+                  //                           MainAxisAlignment.center,
+                  //                           children: [
+                  //                             SvgPicture.asset(
+                  //                               "assets/svgs/viewChart.svg",
+                  //                               color: Color(0xff1db954),
+                  //                               height: 20.h,
+                  //                               width: 20.w,
+                  //                             ),
+                  //                             SizedBox(width: 4.w),
+                  //                             Text(
+                  //                               "View Chart", // View price chart
+                  //                               style: TextStyle(
+                  //                                   fontSize: 13.sp,
+                  //                                   color: isDark
+                  //                                       ? Color(0xffEBEEF5)
+                  //                                       : Color(0xffEBEEF5)),
+                  //                             ),
+                  //                           ],
+                  //                         ),
+                  //                       )),
+                  //                   // Vertical divider
+                  //                   Container(
+                  //                     width: 2.w,
+                  //                     height: 25.h,
+                  //                     color: Color(0xff2f2f2f),
+                  //                   ),
+                  //                   // Stock Details button (right)
+                  //                   Expanded(
+                  //                       child: Container(
+                  //                         child: Row(
+                  //                           mainAxisAlignment:
+                  //                           MainAxisAlignment.center,
+                  //                           children: [
+                  //                             SvgPicture.asset(
+                  //                               "assets/svgs/stockDetails.svg",
+                  //                               color: Color(0xff1db954),
+                  //                               height: 20.h,
+                  //                               width: 20.w,
+                  //                             ),
+                  //                             SizedBox(width: 4.w),
+                  //                             Text(
+                  //                               "Stock Details", // View detailed stock information
+                  //                               style: TextStyle(
+                  //                                   fontSize: 13.sp,
+                  //                                   color: isDark
+                  //                                       ? Color(0xffEBEEF5)
+                  //                                       : Color(0xffEBEEF5)),
+                  //                             ),
+                  //                           ],
+                  //                         ),
+                  //                       )),
+                  //                 ],
+                  //               )),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+            
+                  SizedBox(height: 24.h),
+                ],
               ),
             ),
           ),

@@ -603,7 +603,7 @@ class constWidgets {
 
   /// Creates a standard green action button used across the app
   /// Primary call-to-action button for forms, confirmations, and actions
-  static greenButton(String text, {Function? onTap}) {
+  static greenButton(String text, {Function? onTap, bool isDisabled = false}) {
     return Container(
       height: 52.h,
       width: double.infinity,
@@ -614,9 +614,12 @@ class constWidgets {
           style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w600),
         ),
         style: ButtonStyle(
-          foregroundColor: WidgetStateProperty.all(Colors.white),
-          backgroundColor:
-              WidgetStateProperty.all(Color(0xFF1DB954)), // Brand green color
+          foregroundColor: isDisabled
+              ? WidgetStateProperty.all(Color(0xff666666))
+              : WidgetStateProperty.all(Colors.white),
+          backgroundColor: isDisabled
+              ? WidgetStateProperty.all(Color(0xff2f2f2f))
+              : WidgetStateProperty.all(Color(0xFF1DB954)), // Brand green color
         ),
       ),
     );

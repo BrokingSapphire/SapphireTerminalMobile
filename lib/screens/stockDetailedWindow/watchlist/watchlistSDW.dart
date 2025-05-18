@@ -29,13 +29,13 @@ class watchlistSDW extends StatefulWidget {
   /// Constructor to initialize all stock detail properties
   const watchlistSDW(
       { // Added const constructor
-        super.key,
-        required this.stockName,
-        required this.stockCode,
-        required this.price,
-        required this.change,
-        required this.onBuy,
-        required this.onSell});
+      super.key,
+      required this.stockName,
+      required this.stockCode,
+      required this.price,
+      required this.change,
+      required this.onBuy,
+      required this.onSell});
 
   @override
   State<watchlistSDW> createState() => _watchlistSDWState();
@@ -48,13 +48,15 @@ class _watchlistSDWState extends State<watchlistSDW>
   // Tab selection states
   String selectedEarningsTab = 'Revenue'; // Selected tab in earnings section
   String earningsPeriod = 'Yearly'; // Period selection for earnings data
-  String shareholdingPeriod = 'Mar 2025'; // Period selection for shareholding pattern
+  String shareholdingPeriod =
+      'Mar 2025'; // Period selection for shareholding pattern
   bool isNSE = true; // Toggle between NSE and BSE exchange
   String selectedRange = '1D'; // Selected time range for chart
   bool show20depth = false; // Toggle for showing more market depth rows
   bool scroll = false; // Control for scroll behavior
   final GlobalKey _scrollKey = GlobalKey(); // Key for scroll detection
-  final ScrollController scrollController = ScrollController(); // Controller for scrolling
+  final ScrollController scrollController =
+      ScrollController(); // Controller for scrolling
 
   bool isDividerVisible = true; // Visibility state for divider
 
@@ -62,7 +64,11 @@ class _watchlistSDWState extends State<watchlistSDW>
   String selectedTab = 'Overview'; // Currently selected main tab
 
   // Custom tab options for the new tab bar
-  List<String> customTabOptions = ["Overview", "News", "Events"]; // Available main tabs
+  List<String> customTabOptions = [
+    "Overview",
+    "News",
+    "Events"
+  ]; // Available main tabs
 
   // TabController for the existing tab system
   late TabController _tabController; // Controller for tab navigation
@@ -72,7 +78,8 @@ class _watchlistSDWState extends State<watchlistSDW>
 
   // Scroll controller to track scroll position
   late ScrollController _scrollController; // Controller for main scroll view
-  bool _showAppBarTitle = false; // Toggle for showing title in app bar when scrolled
+  bool _showAppBarTitle =
+      false; // Toggle for showing title in app bar when scrolled
 
   List<String> last12Months = []; // List of past 12 months for period selection
 
@@ -186,7 +193,7 @@ class _watchlistSDWState extends State<watchlistSDW>
     if (_scrollKey.currentContext == null) return;
 
     final RenderBox box =
-    _scrollKey.currentContext!.findRenderObject() as RenderBox;
+        _scrollKey.currentContext!.findRenderObject() as RenderBox;
     final position = box.localToGlobal(Offset.zero);
 
     // If the divider's top position is outside the visible screen bounds (AppBar height or screen height)
@@ -232,59 +239,59 @@ class _watchlistSDWState extends State<watchlistSDW>
         // Dynamic title that shows when scrolled down
         title: _showAppBarTitle
             ? Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Stock name
-            Text(
-              widget.stockName,
-              style: TextStyle(
-                fontSize: 15.sp,
-                fontWeight: FontWeight.w600,
-                color: isDark ? Colors.white : Colors.black,
-              ),
-            ),
-            SizedBox(height: 4.h),
-            // Price and change row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  widget.price,
-                  style: TextStyle(
-                    fontSize: 13.sp,
-                    fontWeight: FontWeight.w500,
-                    color: isDark ? Colors.white : Colors.black,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Stock name
+                  Text(
+                    widget.stockName,
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w600,
+                      color: isDark ? Colors.white : Colors.black,
+                    ),
                   ),
-                ),
-                SizedBox(width: 4.h),
-                Text(
-                  widget.change,
-                  style: TextStyle(
-                    fontSize: 13.sp,
-                    fontWeight: FontWeight.w400,
-                    color: widget.change.contains('+')
-                        ? Colors.green
-                        : Colors.red,
+                  SizedBox(height: 4.h),
+                  // Price and change row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.price,
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w500,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                      SizedBox(width: 4.h),
+                      Text(
+                        widget.change,
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w400,
+                          color: widget.change.contains('+')
+                              ? Colors.green
+                              : Colors.red,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-          ],
-        )
+                ],
+              )
             : null,
         centerTitle: false,
         // Divider at bottom of app bar when title is visible
         bottom: _showAppBarTitle
             ? PreferredSize(
-          preferredSize: Size.fromHeight(1.0),
-          child: Divider(
-            height: 1.0,
-            thickness: 1.0,
-            color: isDark
-                ? const Color(0xFF2F2F2F)
-                : const Color(0xFFD1D5DB),
-          ),
-        )
+                preferredSize: Size.fromHeight(1.0),
+                child: Divider(
+                  height: 1.0,
+                  thickness: 1.0,
+                  color: isDark
+                      ? const Color(0xFF2F2F2F)
+                      : const Color(0xFFD1D5DB),
+                ),
+              )
             : null,
         // Action buttons in the app bar
         actions: [
@@ -407,19 +414,19 @@ class _watchlistSDWState extends State<watchlistSDW>
                                   },
                                   child: show20depth
                                       ? Text(
-                                    'Show 5 depth',
-                                    style: TextStyle(
-                                      color: Color(0xff1DB954),
-                                      fontSize: 14.sp,
-                                    ),
-                                  )
+                                          'Show 5 depth',
+                                          style: TextStyle(
+                                            color: Color(0xff1DB954),
+                                            fontSize: 14.sp,
+                                          ),
+                                        )
                                       : Text(
-                                    'Show 20 depth',
-                                    style: TextStyle(
-                                      color: Color(0xff1DB954),
-                                      fontSize: 14.sp,
-                                    ),
-                                  )),
+                                          'Show 20 depth',
+                                          style: TextStyle(
+                                            color: Color(0xff1DB954),
+                                            fontSize: 14.sp,
+                                          ),
+                                        )),
                             ),
                             Divider(
                                 key: _scrollKey,
@@ -437,7 +444,8 @@ class _watchlistSDWState extends State<watchlistSDW>
                             // Tab content container
                             SizedBox(height: 16.h),
                             Container(
-                              height: 600.h, // Fixed height that can be adjusted as needed
+                              height: 600
+                                  .h, // Fixed height that can be adjusted as needed
                               child: TabBarView(
                                 controller: _tabController,
                                 children: [
@@ -575,8 +583,8 @@ class _watchlistSDWState extends State<watchlistSDW>
                         color: isNSE
                             ? Color(0xff1db954)
                             : isDark
-                            ? Colors.transparent
-                            : Color(0xFFF4F4F9),
+                                ? Colors.transparent
+                                : Color(0xFFF4F4F9),
                         borderRadius: BorderRadius.circular(2.r),
                       ),
                       child: Center(
@@ -588,8 +596,8 @@ class _watchlistSDWState extends State<watchlistSDW>
                             color: isNSE
                                 ? Colors.white
                                 : isDark
-                                ? Colors.white
-                                : Colors.black,
+                                    ? Colors.white
+                                    : Colors.black,
                           ),
                         ),
                       ),
@@ -608,8 +616,8 @@ class _watchlistSDWState extends State<watchlistSDW>
                         color: !isNSE
                             ? Color(0xff1db954)
                             : isDark
-                            ? Colors.transparent
-                            : Color(0xFFF4F4F9),
+                                ? Colors.transparent
+                                : Color(0xFFF4F4F9),
                         borderRadius: BorderRadius.circular(2.r),
                       ),
                       child: Center(
@@ -621,8 +629,8 @@ class _watchlistSDWState extends State<watchlistSDW>
                             color: !isNSE
                                 ? Colors.white
                                 : isDark
-                                ? Colors.white
-                                : Colors.black,
+                                    ? Colors.white
+                                    : Colors.black,
                           ),
                         ),
                       ),
@@ -768,11 +776,11 @@ class _watchlistSDWState extends State<watchlistSDW>
                 gridData: FlGridData(show: false),
                 titlesData: FlTitlesData(
                   leftTitles:
-                  AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
                   rightTitles:
-                  AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
                   topTitles:
-                  AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
@@ -821,9 +829,9 @@ class _watchlistSDWState extends State<watchlistSDW>
                 ],
                 lineTouchData: LineTouchData(enabled: true),
                 minY:
-                dataPoints.map((e) => e.y).reduce((a, b) => a < b ? a : b),
+                    dataPoints.map((e) => e.y).reduce((a, b) => a < b ? a : b),
                 maxY:
-                dataPoints.map((e) => e.y).reduce((a, b) => a > b ? a : b),
+                    dataPoints.map((e) => e.y).reduce((a, b) => a > b ? a : b),
               ),
             ),
           ),
@@ -857,7 +865,7 @@ class _watchlistSDWState extends State<watchlistSDW>
                       // Text label with consistent white color
                       label: Text(range,
                           style:
-                          TextStyle(color: Colors.white, fontSize: 13.sp)),
+                              TextStyle(color: Colors.white, fontSize: 13.sp)),
                       selected: selectedRange == range,
                       onSelected: (_) => onRangeSelected(range),
                       // Use #2F2F2F for selected chips
@@ -876,7 +884,7 @@ class _watchlistSDWState extends State<watchlistSDW>
                         borderRadius: BorderRadius.circular(2.r),
                       ),
                       padding:
-                      EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h),
+                          EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h),
                       labelPadding: const EdgeInsets.symmetric(horizontal: 2),
                     ),
                   ),
@@ -892,7 +900,7 @@ class _watchlistSDWState extends State<watchlistSDW>
                       height: 18.h,
                       width: 18.w,
                       colorFilter:
-                      ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                          ColorFilter.mode(Colors.white, BlendMode.srcIn),
                     ),
                     selected: selectedRange == 'Expand',
                     onSelected: (_) => onRangeSelected('Expand'),
@@ -912,7 +920,7 @@ class _watchlistSDWState extends State<watchlistSDW>
                       borderRadius: BorderRadius.circular(2.r),
                     ),
                     padding:
-                    EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h),
+                        EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h),
                     labelPadding: const EdgeInsets.symmetric(horizontal: 2),
                   ),
                 ),
@@ -935,7 +943,7 @@ class _watchlistSDWState extends State<watchlistSDW>
     // Set a specific height for Fundamental Ratios
     final bool isFundamentalRatios = title == 'Fundamental Ratios';
     final double contentHeight =
-    isFundamentalRatios ? 500.h : 300.h; // Default height for other dialogs
+        isFundamentalRatios ? 500.h : 300.h; // Default height for other dialogs
 
     showModalBottomSheet(
       context: context,
@@ -996,32 +1004,32 @@ class _watchlistSDWState extends State<watchlistSDW>
               SizedBox(height: 6.h),
               Divider(
                 color:
-                isDark ? const Color(0xFF2F2F2F) : const Color(0xFFD1D5DB),
+                    isDark ? const Color(0xFF2F2F2F) : const Color(0xFFD1D5DB),
               ),
               SizedBox(height: 6.h),
 
               // Content - with fixed height for Fundamental Ratios
               isFundamentalRatios
                   ? Container(
-                height: contentHeight,
-                child: SingleChildScrollView(
-                  child: _buildRichRatioContent(isDark, content),
-                ),
-              )
+                      height: contentHeight,
+                      child: SingleChildScrollView(
+                        child: _buildRichRatioContent(isDark, content),
+                      ),
+                    )
                   : Flexible(
-                child: SingleChildScrollView(
-                  child: Text(
-                    content,
-                    style: TextStyle(
-                      color: isDark
-                          ? Colors.white.withOpacity(0.9)
-                          : Colors.black87,
-                      fontSize: 14.sp,
-                      height: 1.5,
+                      child: SingleChildScrollView(
+                        child: Text(
+                          content,
+                          style: TextStyle(
+                            color: isDark
+                                ? Colors.white.withOpacity(0.9)
+                                : Colors.black87,
+                            fontSize: 14.sp,
+                            height: 1.5,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
 
               // Bottom padding
               SizedBox(height: 24.h),
@@ -1066,7 +1074,7 @@ class _watchlistSDWState extends State<watchlistSDW>
                   parts[1], // Ratio description
                   style: TextStyle(
                     color:
-                    isDark ? Colors.white.withOpacity(0.8) : Colors.black87,
+                        isDark ? Colors.white.withOpacity(0.8) : Colors.black87,
                     fontSize: 14.sp,
                     height: 1.4,
                   ),
@@ -1091,11 +1099,11 @@ class _watchlistSDWState extends State<watchlistSDW>
     switch (title) {
       case 'Market Depth':
         infoContent =
-        'Market Depth shows the real-time demand and supply for a stock at different price levels. It displays the number of buy and sell orders pending at various prices, helping traders assess liquidity, price movement potential, and the overall sentiment in the market.';
+            'Market Depth shows the real-time demand and supply for a stock at different price levels. It displays the number of buy and sell orders pending at various prices, helping traders assess liquidity, price movement potential, and the overall sentiment in the market.';
         break;
       case 'Performance':
         infoContent =
-        'Performance reflects how a stock has behaved over various timeframes—daily, weekly, monthly, or annually. It includes price change percentages, comparisons with indices or peers, and helps investors evaluate a stock\'s consistency, volatility, and returns.';
+            'Performance reflects how a stock has behaved over various timeframes—daily, weekly, monthly, or annually. It includes price change percentages, comparisons with indices or peers, and helps investors evaluate a stock\'s consistency, volatility, and returns.';
         break;
       case 'Fundamental Ratios':
         infoContent = 'P/E Ratio\n'
@@ -1119,15 +1127,15 @@ class _watchlistSDWState extends State<watchlistSDW>
         break;
       case 'Shareholding Pattern':
         infoContent =
-        'The Shareholding Pattern reveals the ownership distribution of a company among promoters, institutional investors, foreign investors, and the public. It offers transparency on who controls the company and signals investor confidence or concern.';
+            'The Shareholding Pattern reveals the ownership distribution of a company among promoters, institutional investors, foreign investors, and the public. It offers transparency on who controls the company and signals investor confidence or concern.';
         break;
       case 'Earnings':
         infoContent =
-        'Earnings indicate a company\'s profitability over a specific period, typically quarterly or annually. They include revenue, net profit, earnings per share, and margin data, which are crucial for assessing the company\'s financial performance and growth prospects.';
+            'Earnings indicate a company\'s profitability over a specific period, typically quarterly or annually. They include revenue, net profit, earnings per share, and margin data, which are crucial for assessing the company\'s financial performance and growth prospects.';
         break;
       case 'About Company':
         infoContent =
-        'This section provides a brief overview of the company, including its history, core business operations, key products or services, leadership, and market presence. It helps investors understand the company\'s identity, mission, and competitive positioning.';
+            'This section provides a brief overview of the company, including its history, core business operations, key products or services, leadership, and market presence. It helps investors understand the company\'s identity, mission, and competitive positioning.';
         break;
       default:
         infoContent = 'Information about $title';
@@ -1845,7 +1853,8 @@ class _watchlistSDWState extends State<watchlistSDW>
               // Vertical divider that spans the whole grid
               Container(
                 width: 1,
-                height: ratiosData.length * 26.0, // Approximate height based on rows
+                height: ratiosData.length *
+                    26.0, // Approximate height based on rows
                 color: isDark ? Color(0xFF2F2F2F) : Color(0xFFECECEC),
               ),
 
@@ -1902,15 +1911,15 @@ class _watchlistSDWState extends State<watchlistSDW>
     // ============= COLOR CUSTOMIZATION =============
     // Container colors for the dropdown
     final Color containerBackgroundColor =
-    const Color(0xFF1A1A1A); // Darker background
+        const Color(0xFF1A1A1A); // Darker background
     final Color containerBorderColor = const Color(0xFF333333); // Subtle border
 
     // Dropdown colors
     final Color dropdownBackgroundColor =
-    const Color(0xFF121413); // Dropdown menu background
+        const Color(0xFF121413); // Dropdown menu background
     final Color textColor = const Color(0xFFFFFFFF); // Text color
     final Color iconColor =
-    const Color(0xFF999999); // Icon color (slightly dimmed)
+        const Color(0xFF999999); // Icon color (slightly dimmed)
     // =============================================
 
     return Row(
@@ -1943,7 +1952,7 @@ class _watchlistSDWState extends State<watchlistSDW>
                 child: DropdownButton<String>(
                   value: shareholdingPeriod,
                   dropdownColor:
-                  dropdownBackgroundColor, // Custom dropdown background
+                      dropdownBackgroundColor, // Custom dropdown background
                   style: TextStyle(
                     color: textColor, // Custom text color
                     fontSize: 11.sp,
@@ -2088,7 +2097,7 @@ class _watchlistSDWState extends State<watchlistSDW>
                       // Apply fading if needed
                       final Color sectionColor = shouldFade
                           ? baseColor.withOpacity(
-                          0.3) // Fade out non-selected sections
+                              0.3) // Fade out non-selected sections
                           : baseColor;
 
                       return PieChartSectionData(
@@ -2119,7 +2128,7 @@ class _watchlistSDWState extends State<watchlistSDW>
                     // Apply fading if needed
                     final Color labelColor = shouldFade
                         ? baseColor
-                        .withOpacity(0.3) // Fade out non-selected labels
+                            .withOpacity(0.3) // Fade out non-selected labels
                         : baseColor;
 
                     // Create label text with percentage
@@ -2322,7 +2331,7 @@ class _watchlistSDWState extends State<watchlistSDW>
   }
 
   /// Individual earnings tab
-  /// @param isDark - Current theme mode 
+  /// @param isDark - Current theme mode
   /// @param title - Tab title
   /// @param isSelected - Whether this tab is currently selected
   /// @return Widget - Selectable tab
@@ -2347,8 +2356,8 @@ class _watchlistSDWState extends State<watchlistSDW>
           border: Border.all(
               color: isDark
                   ? isSelected
-                  ? const Color(0xffEBEEF5)
-                  : const Color(0xffC9CACC)
+                      ? const Color(0xffEBEEF5)
+                      : const Color(0xffC9CACC)
                   : const Color(0xffC9CACC),
               width: isSelected ? 1 : 0.5),
           borderRadius: BorderRadius.circular(2.r),
@@ -2439,7 +2448,7 @@ class _watchlistSDWState extends State<watchlistSDW>
         // Bar visualization with animation - using key to force rebuild
         TweenAnimationBuilder<double>(
           key:
-          _animationKey, // Using the key to force rebuild and restart animation
+              _animationKey, // Using the key to force rebuild and restart animation
           // Always start from 0 (bottom) and animate to the target percentage if visible
           tween: Tween<double>(begin: 0, end: isVisible ? percentage : 0),
           // Animation duration
@@ -2548,11 +2557,11 @@ class _watchlistSDWState extends State<watchlistSDW>
             borderRadius: BorderRadius.circular(6.r),
             border: isSelected
                 ? Border.all(
-              color: isSelected
-                  ? const Color(0xff1DB954)
-                  : Colors.transparent,
-              width: isSelected ? 1 : 0,
-            )
+                    color: isSelected
+                        ? const Color(0xff1DB954)
+                        : Colors.transparent,
+                    width: isSelected ? 1 : 0,
+                  )
                 : null,
           ),
           alignment: Alignment.center,
@@ -2562,8 +2571,8 @@ class _watchlistSDWState extends State<watchlistSDW>
               color: isSelected
                   ? (isDark ? const Color(0xff1DB954) : const Color(0xff1DB954))
                   : (isDark
-                  ? const Color(0xffC9CACC)
-                  : const Color(0xff6B7280)),
+                      ? const Color(0xffC9CACC)
+                      : const Color(0xff6B7280)),
               fontSize: 13.sp,
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
             ),
@@ -2625,8 +2634,8 @@ class _watchlistSDWState extends State<watchlistSDW>
           border: Border.all(
               color: isDark
                   ? isSelected
-                  ? const Color(0xffEBEEF5)
-                  : const Color(0xffC9CACC)
+                      ? const Color(0xffEBEEF5)
+                      : const Color(0xffC9CACC)
                   : const Color(0xffC9CACC),
               width: isSelected ? 1 : 0.5),
           borderRadius: BorderRadius.circular(2.r),
@@ -2690,7 +2699,7 @@ class _watchlistSDWState extends State<watchlistSDW>
   }
 
   /// Summary metrics for the Summary tab
-  /// @param isDark - Current theme mode 
+  /// @param isDark - Current theme mode
   /// @return Widget - Column of summary metrics
   Widget _buildSummaryMetrics(bool isDark) {
     return Column(
@@ -2748,7 +2757,7 @@ class _watchlistSDWState extends State<watchlistSDW>
       },
       {
         'title':
-        'Jio Platforms partners with global tech giant for cloud services',
+            'Jio Platforms partners with global tech giant for cloud services',
         'date': '08 May 2025',
         'source': 'Mint'
       },
@@ -2892,4 +2901,3 @@ class _watchlistSDWState extends State<watchlistSDW>
     );
   }
 }
-                    

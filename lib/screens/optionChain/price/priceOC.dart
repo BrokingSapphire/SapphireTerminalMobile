@@ -1,34 +1,23 @@
-// File: priceOC.dart
-// Description: Price view component for the option chain in the Sapphire Trading application.
-// This screen displays option chain data with price information in a scrollable format with a highlighted
-// current price row in the center of the screen.
-
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-/// optionChainPrice - Widget that displays option chain price data
-/// Shows a scrollable list of option strikes with call and put price information
 class optionChainPrice extends StatefulWidget {
-  final String symbol; // Stock symbol for which option chain is displayed
+  final String symbol;
 
-  /// Constructor to initialize the option chain price view
   const optionChainPrice({super.key, required this.symbol});
 
   @override
   State<optionChainPrice> createState() => _optionChainPriceState();
 }
 
-/// State class for the optionChainPrice widget
-/// Manages the display of option chain price data and maintains scroll position
 class _optionChainPriceState extends State<optionChainPrice>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController; // Controller for tab navigation
-  late ScrollController _scrollController; // Controller for scrolling the option chain
-  final GlobalKey _capsuleKey = GlobalKey(); // Key for the highlighted price row
-  final GlobalKey _headerKey = GlobalKey(); // Key for the header row
+  late TabController _tabController;
+  late ScrollController _scrollController;
+  final GlobalKey _capsuleKey = GlobalKey();
+  final GlobalKey _headerKey = GlobalKey();
+  final GlobalKey _firstRowKey = GlobalKey();
 
-  // Mock data for the option chain above the highlighted row
-  // Contains option data for strikes below the current price
   final List<Map<String, dynamic>> optionChainDataAbove = [
     {
       'leftVolume': '1K',
@@ -39,20 +28,233 @@ class _optionChainPriceState extends State<optionChainPrice>
       'putPercent': '+4.55%',
       'rightVolume': '120K',
     },
-    // Additional data entries...
+    {
+      'leftVolume': '5K',
+      'callPrice': '₹1,620.30',
+      'callPercent': '+3.80%',
+      'strikePrice': '23,650',
+      'putPrice': '₹1,540.20',
+      'putPercent': '+5.10%',
+      'rightVolume': '150K',
+    },
+    {
+      'leftVolume': '8K',
+      'callPrice': '₹1,660.00',
+      'callPercent': '+3.20%',
+      'strikePrice': '23,600',
+      'putPrice': '₹1,500.00',
+      'putPercent': '+5.75%',
+      'rightVolume': '90K',
+    },
+    {
+      'leftVolume': '12K',
+      'callPrice': '₹1,700.50',
+      'callPercent': '+2.65%',
+      'strikePrice': '23,550',
+      'putPrice': '₹1,460.80',
+      'putPercent': '+6.30%',
+      'rightVolume': '200K',
+    },
+    {
+      'leftVolume': '15K',
+      'callPrice': '₹1,740.20',
+      'callPercent': '+2.10%',
+      'strikePrice': '23,500',
+      'putPrice': '₹1,420.40',
+      'putPercent': '+6.90%',
+      'rightVolume': '80K',
+    },
     {
       'leftVolume': '18K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '24,150',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
+      'callPrice': '₹1,780.60',
+      'callPercent': '+1.55%',
+      'strikePrice': '23,450',
+      'putPrice': '₹1,380.60',
+      'putPercent': '+7.45%',
       'rightVolume': '60K',
+    },
+    {
+      'leftVolume': '20K',
+      'callPrice': '₹1,820.00',
+      'callPercent': '+1.00%',
+      'strikePrice': '23,400',
+      'putPrice': '₹1,340.00',
+      'putPercent': '+8.00%',
+      'rightVolume': '50K',
+    },
+    {
+      'leftVolume': '22K',
+      'callPrice': '₹1,860.50',
+      'callPercent': '+0.50%',
+      'strikePrice': '23,350',
+      'putPrice': '₹1,300.50',
+      'putPercent': '+8.50%',
+      'rightVolume': '45K',
+    },
+    {
+      'leftVolume': '25K',
+      'callPrice': '₹1,900.00',
+      'callPercent': '+0.10%',
+      'strikePrice': '23,300',
+      'putPrice': '₹1,260.00',
+      'putPercent': '+9.00%',
+      'rightVolume': '40K',
+    },
+    {
+      'leftVolume': '28K',
+      'callPrice': '₹1,940.60',
+      'callPercent': '-0.30%',
+      'strikePrice': '23,250',
+      'putPrice': '₹1,220.60',
+      'putPercent': '+9.50%',
+      'rightVolume': '35K',
+    },
+    {
+      'leftVolume': '30K',
+      'callPrice': '₹1,980.20',
+      'callPercent': '-0.70%',
+      'strikePrice': '23,200',
+      'putPrice': '₹1,180.20',
+      'putPercent': '+10.00%',
+      'rightVolume': '30K',
+    },
+    {
+      'leftVolume': '32K',
+      'callPrice': '₹2,020.00',
+      'callPercent': '-1.10%',
+      'strikePrice': '23,150',
+      'putPrice': '₹1,140.00',
+      'putPercent': '+9.80%',
+      'rightVolume': '28K',
+    },
+    {
+      'leftVolume': '35K',
+      'callPrice': '₹2,060.50',
+      'callPercent': '-1.50%',
+      'strikePrice': '23,100',
+      'putPrice': '₹1,100.50',
+      'putPercent': '+9.60%',
+      'rightVolume': '25K',
+    },
+    {
+      'leftVolume': '38K',
+      'callPrice': '₹2,100.00',
+      'callPercent': '-1.90%',
+      'strikePrice': '23,050',
+      'putPrice': '₹1,060.00',
+      'putPercent': '+9.40%',
+      'rightVolume': '22K',
+    },
+    {
+      'leftVolume': '40K',
+      'callPrice': '₹2,140.60',
+      'callPercent': '-2.30%',
+      'strikePrice': '23,000',
+      'putPrice': '₹1,020.60',
+      'putPercent': '+9.20%',
+      'rightVolume': '20K',
+    },
+    {
+      'leftVolume': '42K',
+      'callPrice': '₹2,180.20',
+      'callPercent': '-2.70%',
+      'strikePrice': '22,950',
+      'putPrice': '₹980.20',
+      'putPercent': '+9.00%',
+      'rightVolume': '18K',
+    },
+    {
+      'leftVolume': '45K',
+      'callPrice': '₹2,220.00',
+      'callPercent': '-3.10%',
+      'strikePrice': '22,900',
+      'putPrice': '₹940.00',
+      'putPercent': '+8.80%',
+      'rightVolume': '16K',
+    },
+    {
+      'leftVolume': '48K',
+      'callPrice': '₹2,260.50',
+      'callPercent': '-3.50%',
+      'strikePrice': '22,850',
+      'putPrice': '₹900.50',
+      'putPercent': '+8.60%',
+      'rightVolume': '14K',
+    },
+    {
+      'leftVolume': '50K',
+      'callPrice': '₹2,300.00',
+      'callPercent': '-3.90%',
+      'strikePrice': '22,800',
+      'putPrice': '₹860.00',
+      'putPercent': '+8.40%',
+      'rightVolume': '12K',
+    },
+    {
+      'leftVolume': '52K',
+      'callPrice': '₹2,340.60',
+      'callPercent': '-4.30%',
+      'strikePrice': '22,750',
+      'putPrice': '₹81,580.00',
+      'putPercent': '+8.20%',
+      'rightVolume': '10K',
+    },
+    {
+      'leftVolume': '55K',
+      'callPrice': '₹2,380.20',
+      'callPercent': '-4.70%',
+      'strikePrice': '22,700',
+      'putPrice': '₹780.20',
+      'putPercent': '+8.00%',
+      'rightVolume': '8K',
+    },
+    {
+      'leftVolume': '58K',
+      'callPrice': '₹2,420.00',
+      'callPercent': '-5.10%',
+      'strikePrice': '22,650',
+      'putPrice': '₹740.00',
+      'putPercent': '+7.80%',
+      'rightVolume': '6K',
+    },
+    {
+      'leftVolume': '60K',
+      'callPrice': '₹2,460.50',
+      'callPercent': '-5.50%',
+      'strikePrice': '22,600',
+      'putPrice': '₹700.50',
+      'putPercent': '+7.60%',
+      'rightVolume': '5K',
+    },
+    {
+      'leftVolume': '62K',
+      'callPrice': '₹2,500.00',
+      'callPercent': '-5.90%',
+      'strikePrice': '22,550',
+      'putPrice': '₹660.00',
+      'putPercent': '+7.40%',
+      'rightVolume': '4K',
+    },
+    {
+      'leftVolume': '65K',
+      'callPrice': '₹2,540.60',
+      'callPercent': '-6.30%',
+      'strikePrice': '22,500',
+      'putPrice': '₹620.60',
+      'putPercent': '+7.20%',
+      'rightVolume': '3K',
+    },
+    {
+      'leftVolume': '68K',
+      'callPrice': '₹2,580.20',
+      'callPercent': '-6.70%',
+      'strikePrice': '22,450',
+      'putPrice': '₹580.20',
+      'putPercent': '+7.00%',
+      'rightVolume': '2K',
     },
   ];
 
-  // Mock data for the option chain below the highlighted row
-  // Contains option data for strikes above the current price
   final List<Map<String, dynamic>> optionChainDataBelow = [
     {
       'leftVolume': '20K',
@@ -63,68 +265,305 @@ class _optionChainPriceState extends State<optionChainPrice>
       'putPercent': '+4.55%',
       'rightVolume': '55L',
     },
-    // Additional data entries...
+    {
+      'leftVolume': '15K',
+      'callPrice': '₹1,540.20',
+      'callPercent': '+5.10%',
+      'strikePrice': '24,300',
+      'putPrice': '₹1,620.30',
+      'putPercent': '+3.80%',
+      'rightVolume': '40L',
+    },
+    {
+      'leftVolume': '10K',
+      'callPrice': '₹1,500.00',
+      'callPercent': '+5.75%',
+      'strikePrice': '24,350',
+      'putPrice': '₹1,660.00',
+      'putPercent': '+3.20%',
+      'rightVolume': '30L',
+    },
+    {
+      'leftVolume': '8K',
+      'callPrice': '₹1,460.80',
+      'callPercent': '+6.30%',
+      'strikePrice': '24,400',
+      'putPrice': '₹1,700.50',
+      'putPercent': '+2.65%',
+      'rightVolume': '20L',
+    },
+    {
+      'leftVolume': '5K',
+      'callPrice': '₹1,420.40',
+      'callPercent': '+6.90%',
+      'strikePrice': '24,450',
+      'putPrice': '₹1,740.20',
+      'putPercent': '+2.10%',
+      'rightVolume': '15L',
+    },
     {
       'leftVolume': '2K',
-      'callPrice': '₹1,580.60',
-      'callPercent': '+4.55%',
-      'strikePrice': '24,700',
-      'putPrice': '₹1,580.60',
-      'putPercent': '+4.55%',
+      'callPrice': '₹1,380.60',
+      'callPercent': '+7.45%',
+      'strikePrice': '24,500',
+      'putPrice': '₹1,780.60',
+      'putPercent': '+1.55%',
       'rightVolume': '10L',
     },
+    {
+      'leftVolume': '1.5K',
+      'callPrice': '₹1,340.00',
+      'callPercent': '+8.00%',
+      'strikePrice': '24,550',
+      'putPrice': '₹1,820.00',
+      'putPercent': '+1.00%',
+      'rightVolume': '8L',
+    },
+    {
+      'leftVolume': '1.2K',
+      'callPrice': '₹1,300.50',
+      'callPercent': '+8.50%',
+      'strikePrice': '24,600',
+      'putPrice': '₹1,860.50',
+      'putPercent': '+0.50%',
+      'rightVolume': '6L',
+    },
+    {
+      'leftVolume': '1K',
+      'callPrice': '₹1,260.00',
+      'callPercent': '+9.00%',
+      'strikePrice': '24,650',
+      'putPrice': '₹1,900.00',
+      'putPercent': '+0.10%',
+      'rightVolume': '5L',
+    },
+    {
+      'leftVolume': '900',
+      'callPrice': '₹1,220.60',
+      'callPercent': '+9.50%',
+      'strikePrice': '24,700',
+      'putPrice': '₹1,940.60',
+      'putPercent': '-0.30%',
+      'rightVolume': '4L',
+    },
+    {
+      'leftVolume': '800',
+      'callPrice': '₹1,180.20',
+      'callPercent': '+10.00%',
+      'strikePrice': "24,750",
+      'putPrice': '₹1,980.20',
+      'putPercent': '-0.70%',
+      'rightVolume': '3L',
+    },
+    {
+      'leftVolume': '700',
+      'callPrice': '₹1,140.00',
+      'callPercent': '+9.80%',
+      'strikePrice': '24,800',
+      'putPrice': '₹2,020.00',
+      'putPercent': '-1.10%',
+      'rightVolume': '2.5L',
+    },
+    {
+      'leftVolume': '600',
+      'callPrice': '₹1,100.50',
+      'callPercent': '+9.60%',
+      'strikePrice': '24,850',
+      'putPrice': '₹2,060.50',
+      'putPercent': '-1.50%',
+      'rightVolume': '2L',
+    },
+    {
+      'leftVolume': '500',
+      'callPrice': '₹1,060.00',
+      'callPercent': '+9.40%',
+      'strikePrice': '24,900',
+      'putPrice': '₹2,100.00',
+      'putPercent': '-1.90%',
+      'rightVolume': '1.8L',
+    },
+    {
+      'leftVolume': '400',
+      'callPrice': '₹1,020.60',
+      'callPercent': '+9.20%',
+      'strikePrice': '24,950',
+      'putPrice': '₹2,140.60',
+      'putPercent': '-2.30%',
+      'rightVolume': '1.5L',
+    },
+    {
+      'leftVolume': '300',
+      'callPrice': '₹980.20',
+      'callPercent': '+9.00%',
+      'strikePrice': '25,000',
+      'putPrice': '₹2,180.20',
+      'putPercent': '-2.70%',
+      'rightVolume': '1.2L',
+    },
+    {
+      'leftVolume': '200',
+      'callPrice': '₹940.00',
+      'callPercent': '+8.80%',
+      'strikePrice': '25,050',
+      'putPrice': '₹2,220.00',
+      'putPercent': '-3.10%',
+      'rightVolume': '1L',
+    },
+    {
+      'leftVolume': '150',
+      'callPrice': '₹900.50',
+      'callPercent': '+8.60%',
+      'strikePrice': '25,100',
+      'putPrice': '₹2,260.50',
+      'putPercent': '-3.50%',
+      'rightVolume': '900K',
+    },
+    {
+      'leftVolume': '100',
+      'callPrice': '₹860.00',
+      'callPercent': '+8.40%',
+      'strikePrice': '25,150',
+      'putPrice': '₹2,300.00',
+      'putPercent': '-3.90%',
+      'rightVolume': '800K',
+    },
+    {
+      'leftVolume': '80',
+      'callPrice': '₹820.60',
+      'callPercent': '+8.20%',
+      'strikePrice': '25,200',
+      'putPrice': '₹2,340.60',
+      'putPercent': '-4.30%',
+      'rightVolume': '700K',
+    },
+    {
+      'leftVolume': '60',
+      'callPrice': '₹780.20',
+      'callPercent': '+8.00%',
+      'strikePrice': '25,250',
+      'putPrice': '₹2,380.20',
+      'putPercent': '-4.70%',
+      'rightVolume': '600K',
+    },
+    {
+      'leftVolume': '50',
+      'callPrice': '₹740.00',
+      'callPercent': '+7.80%',
+      'strikePrice': '25,300',
+      'putPrice': '₹2,420.00',
+      'putPercent': '-5.10%',
+      'rightVolume': '500K',
+    },
+    {
+      'leftVolume': '40',
+      'callPrice': '₹700.50',
+      'callPercent': '+7.60%',
+      'strikePrice': '25,350',
+      'putPrice': '₹2,460.50',
+      'putPercent': '-5.50%',
+      'rightVolume': '400K',
+    },
+    {
+      'leftVolume': '30',
+      'callPrice': '₹660.00',
+      'callPercent': '+7.40%',
+      'strikePrice': '25,400',
+      'putPrice': '₹2,500.00',
+      'putPercent': '-5.90%',
+      'rightVolume': '300K',
+    },
+    {
+      'leftVolume': '20',
+      'callPrice': '₹620.60',
+      'callPercent': '+7.20%',
+      'strikePrice': '25,450',
+      'putPrice': '₹2,540.60',
+      'putPercent': '-6.30%',
+      'rightVolume': '200K',
+    },
+    {
+      'leftVolume': '10',
+      'callPrice': '₹580.20',
+      'callPercent': '+7.00%',
+      'strikePrice': '25,500',
+      'putPrice': '₹2,580.20',
+      'putPercent': '-6.70%',
+      'rightVolume': '100K',
+    },
   ];
+
+  double _headerHeight = 0.0;
+  double _capsuleHeight = 0.0;
+  double _rowHeight = 0.0;
+  bool _isCapsuleAtBottom = false;
+  bool _isCapsuleAtTop = false;
 
   @override
   void initState() {
     super.initState();
-    // Initialize controllers
     _scrollController = ScrollController();
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(() {
       setState(() {});
     });
 
-    // Center the highlighted price row on initial load
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Use a longer delay to ensure the UI is fully rendered
       Future.delayed(const Duration(milliseconds: 300), () {
         if (!mounted || !_scrollController.hasClients) return;
 
-        // Get the total number of items in the list
-        final totalItems =
-            optionChainDataAbove.length + 1 + optionChainDataBelow.length;
+        final headerRenderBox = _headerKey.currentContext?.findRenderObject() as RenderBox?;
+        if (headerRenderBox != null) {
+          _headerHeight = headerRenderBox.size.height;
+        }
 
-        // Calculate the index of the capsule (highlighted row)
+        final capsuleRenderBox = _capsuleKey.currentContext?.findRenderObject() as RenderBox?;
+        if (capsuleRenderBox != null) {
+          _capsuleHeight = capsuleRenderBox.size.height;
+        }
+
+        final rowRenderBox = _firstRowKey.currentContext?.findRenderObject() as RenderBox?;
+        if (rowRenderBox != null) {
+          _rowHeight = rowRenderBox.size.height;
+        }
+
+        final totalItems = optionChainDataAbove.length + 1 + optionChainDataBelow.length;
         final capsuleIndex = optionChainDataAbove.length;
-
-        // Calculate how many items should be visible on screen
-        final visibleItemCount =
-        7; // Adjust this number based on your screen size
-
-        // Calculate how many items should be above the capsule to center it
+        const visibleItemCount = 7;
         final itemsAboveCapsule = (visibleItemCount - 1) ~/ 2;
-
-        // Calculate which item should be at the top of the screen
         final topItemIndex = capsuleIndex - itemsAboveCapsule;
+        final offset = topItemIndex * _rowHeight;
 
-        // Estimate the height of each row (this is an approximation)
-        final estimatedRowHeight = 50.h;
-
-        // Calculate the scroll offset
-        final offset = topItemIndex * estimatedRowHeight;
-
-        // Apply the scroll offset to center the highlighted row
         if (offset >= 0) {
           _scrollController.jumpTo(offset);
         }
+
+        _scrollController.addListener(_updateCapsulePosition);
       });
     });
   }
 
+  void _updateCapsulePosition() {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final scrollOffset = _scrollController.offset;
+    final capsuleNaturalTop = _headerHeight + (optionChainDataAbove.length * _rowHeight) - scrollOffset;
+    final capsuleBottom = capsuleNaturalTop + _capsuleHeight;
+
+    final bool newIsCapsuleAtTop = capsuleNaturalTop <= _headerHeight;
+    final bool newIsCapsuleAtBottom = capsuleNaturalTop >= screenHeight - _capsuleHeight - _headerHeight;
+
+    if (newIsCapsuleAtTop != _isCapsuleAtTop || newIsCapsuleAtBottom != _isCapsuleAtBottom) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          _isCapsuleAtTop = newIsCapsuleAtTop;
+          _isCapsuleAtBottom = newIsCapsuleAtBottom;
+        });
+      });
+    }
+  }
+
   @override
   void dispose() {
-    // Clean up resources when widget is disposed
+    _scrollController.removeListener(_updateCapsulePosition);
     _scrollController.dispose();
     _tabController.dispose();
     super.dispose();
@@ -132,89 +571,72 @@ class _optionChainPriceState extends State<optionChainPrice>
 
   @override
   Widget build(BuildContext context) {
-    // Generate option rows above the highlighted row from data
-    final List<Widget> rowsAbove = optionChainDataAbove
-        .map((data) => _buildOptionRow(
-      data['leftVolume'],
-      data['callPrice'],
-      data['callPercent'],
-      data['strikePrice'],
-      data['putPrice'],
-      data['putPercent'],
-      data['rightVolume'],
-    ))
-        .toList();
+    final List<Widget> rowsAbove = optionChainDataAbove.asMap().entries.map((entry) {
+      final index = entry.key;
+      final data = entry.value;
+      return _buildOptionRow(
+        data['leftVolume'],
+        data['callPrice'],
+        data['callPercent'],
+        data['strikePrice'],
+        data['putPrice'],
+        data['putPercent'],
+        data['rightVolume'],
+        key: index == 0 ? _firstRowKey : null,
+      );
+    }).toList();
 
-    // Generate option rows below the highlighted row from data
-    final List<Widget> rowsBelow = optionChainDataBelow
-        .map((data) => _buildOptionRow(
-      data['leftVolume'],
-      data['callPrice'],
-      data['callPercent'],
-      data['strikePrice'],
-      data['putPrice'],
-      data['putPercent'],
-      data['rightVolume'],
-    ))
-        .toList();
+    final List<Widget> rowsBelow = optionChainDataBelow.map((data) => _buildOptionRow(
+          data['leftVolume'],
+          data['callPrice'],
+          data['callPercent'],
+          data['strikePrice'],
+          data['putPrice'],
+          data['putPercent'],
+          data['rightVolume'],
+        )).toList();
 
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Column(
+      body: Stack(
         children: [
-          // Header row with column titles
-          _buildHeaderRow(key: _headerKey),
-          // Option chain list with highlighted current price
-          Expanded(
-            child: NotificationListener<ScrollNotification>(
-              onNotification: (scrollInfo) {
-                if (scrollInfo is ScrollUpdateNotification) {
-                  setState(() {
-                    // Calculations for tracking scroll position relative to the capsule
-                    final rowHeight = 50.h;
-                    final capsuleHeight = 30.h;
-                    final totalHeightAbove =
-                        optionChainDataAbove.length * rowHeight;
-                    final screenHeight = MediaQuery.of(context).size.height;
-
-                    // Calculate the capsule's natural position
-                    final capsuleNaturalOffset = totalHeightAbove -
-                        (screenHeight / 2) +
-                        (capsuleHeight / 2);
-
-                    // Capsule scrolls normally with the list
-                  });
-                }
-                return false;
-              },
-              child: CustomScrollView(
-                controller: _scrollController,
-                physics: const BouncingScrollPhysics(),
-                slivers: [
-                  // Option rows for strikes below current price
-                  SliverList(
-                    delegate: SliverChildListDelegate(rowsAbove),
-                  ),
-                  // Highlighted row showing current price
-                  SliverToBoxAdapter(
-                    child: _buildHighlightedRow(key: _capsuleKey),
-                  ),
-                  // Option rows for strikes above current price
-                  SliverList(
-                    delegate: SliverChildListDelegate(rowsBelow),
-                  ),
-                ],
+          CustomScrollView(
+            controller: _scrollController,
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              SliverToBoxAdapter(
+                child: _buildHeaderRow(key: _headerKey),
               ),
-            ),
+              SliverList(
+                delegate: SliverChildListDelegate(rowsAbove),
+              ),
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: _HighlightedRowDelegate(
+                  child: _buildHighlightedRow(key: _capsuleKey),
+                  isAtBottom: _isCapsuleAtBottom,
+                ),
+              ),
+              SliverList(
+                delegate: SliverChildListDelegate(rowsBelow),
+              ),
+              SliverToBoxAdapter(
+                child: SizedBox(height: MediaQuery.of(context).size.height * 2),
+              ),
+            ],
           ),
+          if (_isCapsuleAtBottom)
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: _buildHighlightedRow(),
+            ),
         ],
       ),
     );
   }
 
-  /// Builds the header row with column titles
-  /// @param key - Optional key for the header widget
-  /// @return Widget - Header row with column labels
   Widget _buildHeaderRow({Key? key}) {
     return Column(
       children: [
@@ -224,7 +646,6 @@ class _optionChainPriceState extends State<optionChainPrice>
           padding: EdgeInsets.only(top: 8.h),
           child: Row(
             children: [
-              // Volume column header (left side)
               Expanded(
                 flex: 1,
                 child: Column(
@@ -234,17 +655,9 @@ class _optionChainPriceState extends State<optionChainPrice>
                       style: TextStyle(color: Colors.white, fontSize: 13.sp),
                       textAlign: TextAlign.center,
                     ),
-                    // Commented divider code
-                    // SizedBox(height: 16.h),
-                    // Container(
-                    //   width: double.infinity,
-                    //   height: 1.h,
-                    //   color: Colors.white10,
-                    // ),
                   ],
                 ),
               ),
-              // Call Price column header
               Expanded(
                 flex: 1,
                 child: Column(
@@ -254,17 +667,9 @@ class _optionChainPriceState extends State<optionChainPrice>
                       style: TextStyle(color: Colors.white, fontSize: 13.sp),
                       textAlign: TextAlign.center,
                     ),
-                    // Commented divider code
-                    // SizedBox(height: 16.h),
-                    // Container(
-                    //   width: double.infinity,
-                    //   height: 1.h,
-                    //   color: Colors.white10,
-                    // ),
                   ],
                 ),
               ),
-              // Strike Price column header (center)
               Expanded(
                 flex: 1,
                 child: Column(
@@ -277,7 +682,6 @@ class _optionChainPriceState extends State<optionChainPrice>
                   ],
                 ),
               ),
-              // Put Price column header
               Expanded(
                 flex: 1,
                 child: Column(
@@ -287,17 +691,9 @@ class _optionChainPriceState extends State<optionChainPrice>
                       style: TextStyle(color: Colors.white, fontSize: 13.sp),
                       textAlign: TextAlign.center,
                     ),
-                    // Commented divider code
-                    // SizedBox(height: 8.h),
-                    // Container(
-                    //   width: double.infinity,
-                    //   height: 1.h,
-                    //   color: Colors.white10,
-                    // ),
                   ],
                 ),
               ),
-              // Volume column header (right side)
               Expanded(
                 flex: 1,
                 child: Column(
@@ -307,39 +703,18 @@ class _optionChainPriceState extends State<optionChainPrice>
                       style: TextStyle(color: Colors.white, fontSize: 13.sp),
                       textAlign: TextAlign.center,
                     ),
-                    // Commented divider code
-                    // SizedBox(height: 8.h),
-                    // Container(
-                    //   width: double.infinity,
-                    //   height: 1.h,
-                    //   color: Colors.white10,
-                    // ),
                   ],
                 ),
               ),
             ],
           ),
         ),
-        SizedBox(
-          height: 8.h,
-        ),
-        // Horizontal divider below header
-        Divider(
-          color: Color(0xff2f2f2f),
-        )
+        SizedBox(height: 8.h),
+        Divider(color: const Color(0xff2f2f2f)),
       ],
     );
   }
 
-  /// Builds a regular option chain row with all data columns
-  /// @param leftVolume - Call option volume
-  /// @param callPrice - Call option price
-  /// @param callPercent - Call option price change percentage
-  /// @param strikePrice - Option strike price
-  /// @param putPrice - Put option price
-  /// @param putPercent - Put option price change percentage
-  /// @param rightVolume - Put option volume
-  /// @return Widget - Complete option row with all data cells
   Widget _buildOptionRow(
       String leftVolume,
       String callPrice,
@@ -347,13 +722,14 @@ class _optionChainPriceState extends State<optionChainPrice>
       String strikePrice,
       String putPrice,
       String putPercent,
-      String rightVolume) {
+      String rightVolume,
+      {Key? key}) {
     return Container(
+      key: key,
       color: const Color(0xff000000),
       padding: EdgeInsets.symmetric(vertical: 8.h),
       child: Row(
         children: [
-          // Call option volume (left column)
           Expanded(
             child: Center(
               child: Text(
@@ -362,7 +738,6 @@ class _optionChainPriceState extends State<optionChainPrice>
               ),
             ),
           ),
-          // Call option price with percentage change
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -374,12 +749,14 @@ class _optionChainPriceState extends State<optionChainPrice>
                 Text(
                   callPercent,
                   style: TextStyle(
-                      color: const Color(0xff1DB954), fontSize: 11.sp),
+                      color: callPercent.startsWith('-')
+                          ? Colors.red
+                          : const Color(0xff1DB954),
+                      fontSize: 11.sp),
                 ),
               ],
             ),
           ),
-          // Strike price (center column) with call/put indicator bars
           Expanded(
             child: Center(
               child: Column(
@@ -391,10 +768,7 @@ class _optionChainPriceState extends State<optionChainPrice>
                         fontSize: 11.sp,
                         fontWeight: FontWeight.w500),
                   ),
-                  SizedBox(
-                    height: 4.h,
-                  ),
-                  // Red/Green indicator bars for call/put strength
+                  SizedBox(height: 4.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -403,9 +777,7 @@ class _optionChainPriceState extends State<optionChainPrice>
                         height: 1.h,
                         color: Colors.red,
                       ),
-                      SizedBox(
-                        width: 4.w,
-                      ),
+                      SizedBox(width: 4.w),
                       Container(
                         width: 25.w,
                         height: 1.h,
@@ -417,7 +789,6 @@ class _optionChainPriceState extends State<optionChainPrice>
               ),
             ),
           ),
-          // Put option price with percentage change
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -429,12 +800,14 @@ class _optionChainPriceState extends State<optionChainPrice>
                 Text(
                   putPercent,
                   style: TextStyle(
-                      color: const Color(0xff1DB954), fontSize: 11.sp),
+                      color: putPercent.startsWith('-')
+                          ? Colors.red
+                          : const Color(0xff1DB954),
+                      fontSize: 11.sp),
                 ),
               ],
             ),
           ),
-          // Put option volume (right column)
           Expanded(
             child: Center(
               child: Text(
@@ -448,10 +821,6 @@ class _optionChainPriceState extends State<optionChainPrice>
     );
   }
 
-  /// Builds the highlighted row showing current price
-  /// This row appears between the strike prices and indicates the current market price
-  /// @param key - Optional key for the highlighted row widget
-  /// @return Widget - Highlighted current price row
   Widget _buildHighlightedRow({Key? key}) {
     return Container(
       key: key,
@@ -460,7 +829,6 @@ class _optionChainPriceState extends State<optionChainPrice>
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // Horizontal line extending across the row
           Positioned.fill(
             child: Row(
               children: [
@@ -480,11 +848,10 @@ class _optionChainPriceState extends State<optionChainPrice>
               ],
             ),
           ),
-          // Capsule containing current price and change percentage
           Container(
             padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 12.w),
             decoration: BoxDecoration(
-              color: const Color(0xff1D1D1D),
+              color: const Color(0xff1D1D1A),
               borderRadius: BorderRadius.circular(20.r),
             ),
             child: Text(
@@ -499,5 +866,31 @@ class _optionChainPriceState extends State<optionChainPrice>
         ],
       ),
     );
+  }
+}
+
+class _HighlightedRowDelegate extends SliverPersistentHeaderDelegate {
+  final Widget child;
+  final bool isAtBottom;
+
+  _HighlightedRowDelegate({required this.child, required this.isAtBottom});
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Opacity(
+      opacity: isAtBottom ? 0.0 : 1.0,
+      child: child,
+    );
+  }
+
+  @override
+  double get maxExtent => 45.h;
+
+  @override
+  double get minExtent => 45.h;
+
+  @override
+  bool shouldRebuild(covariant _HighlightedRowDelegate oldDelegate) {
+    return oldDelegate.isAtBottom != isAtBottom;
   }
 }

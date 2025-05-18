@@ -51,92 +51,85 @@ class _OrderSectionState extends State<OrderSection> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xff000000),
-      appBar: AppBar(
-        elevation: 0,
-        surfaceTintColor: Colors.black,
-        shadowColor: Colors.transparent,
-        backgroundColor: const Color(0xff000000),
-        automaticallyImplyLeading: false,
-        toolbarHeight: 0,
-      ),
-      body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Orders",
-                    style: TextStyle(
-                      letterSpacing: 1,
-                      fontSize: 22.sp,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xffEBEEF5),
+    return SafeArea(
+      child: Scaffold(
+        body: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Orders",
+                      style: TextStyle(
+                        letterSpacing: 1,
+                        fontSize: 22.sp,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xffEBEEF5),
+                      ),
                     ),
-                  ),
-                  Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: GestureDetector(
+                    Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: GestureDetector(
+                        onTap: () {
+                          naviWithoutAnimation(context, FundsScreen());
+                        },
+                        child: SvgPicture.asset("assets/svgs/wallet.svg",
+                            width: 20.w, height: 23.h, color: Colors.white),
+                      ),
+                    ),
+                    InkWell(
                       onTap: () {
-                        naviWithoutAnimation(context, FundsScreen());
+                        naviWithoutAnimation(context, ProfileScreen());
                       },
-                      child: SvgPicture.asset("assets/svgs/wallet.svg",
-                          width: 20.w, height: 23.h, color: Colors.white),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      naviWithoutAnimation(context, ProfileScreen());
-                    },
-                    child: CircleAvatar(
-                      backgroundColor: const Color(0xff021814),
-                      radius: 22.r,
-                      child: Text(
-                        "NK",
-                        style: TextStyle(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xff22A06B),
+                      child: CircleAvatar(
+                        backgroundColor: const Color(0xff021814),
+                        radius: 22.r,
+                        child: Text(
+                          "NK",
+                          style: TextStyle(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xff22A06B),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.only(left: 16.w, right: 16.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  MarketDataCard("NIFTY 50", "23,018.20", "-218.20 (1.29%)"),
-                  MarketDataCard("SENSEX", "73,018.20", "+218.20 (1.29%)"),
-                ],
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    MarketDataCard("NIFTY 50", "23,018.20", "-218.20 (1.29%)"),
+                    MarketDataCard("SENSEX", "73,018.20", "+218.20 (1.29%)"),
+                  ],
+                ),
               ),
             ),
-          ),
-          SliverPersistentHeader(
-            pinned: true,
-            delegate: _TabBarHeaderDelegate(
-              tabNames: tabs,
-              selectedIndex: _selectedIndex,
-              onTabTapped: _onTabTapped,
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: _TabBarHeaderDelegate(
+                tabNames: tabs,
+                selectedIndex: _selectedIndex,
+                onTabTapped: _onTabTapped,
+              ),
             ),
+          ],
+          body: PageView.builder(
+            controller: _pageController,
+            onPageChanged: _onPageChanged,
+            itemCount: tabs.length,
+            itemBuilder: (context, index) =>
+                OrderTabContent(tabType: tabs[index]),
           ),
-        ],
-        body: PageView.builder(
-          controller: _pageController,
-          onPageChanged: _onPageChanged,
-          itemCount: tabs.length,
-          itemBuilder: (context, index) =>
-              OrderTabContent(tabType: tabs[index]),
         ),
       ),
     );
@@ -148,7 +141,6 @@ class _TabBarHeaderDelegate extends SliverPersistentHeaderDelegate {
   final int selectedIndex;
   final Function(int) onTabTapped;
 
-  // Add a GlobalKey to reference the Icon widget
   final GlobalKey _menuButtonKey = GlobalKey();
 
   _TabBarHeaderDelegate({
@@ -179,8 +171,6 @@ class _TabBarHeaderDelegate extends SliverPersistentHeaderDelegate {
               ),
             ),
           ),
-          // Green indicator
-
           Row(
             children: [
               Expanded(
@@ -280,12 +270,18 @@ class _TabBarHeaderDelegate extends SliverPersistentHeaderDelegate {
                   );
                 },
                 child: Padding(
-                  padding: EdgeInsets.only(right: 20.w, top: 16.h),
-                  child: Icon(
-                    Icons.more_vert,
-                    key: _menuButtonKey,
-                    color: Colors.white,
-                    size: 24.sp,
+                  padding: EdgeInsets.only(right: 20.w),
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 8.h),
+                      child: Icon(
+                        Icons.more_vert,
+                        key: _menuButtonKey,
+                        color: Colors.white,
+                        size: 24.sp,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -313,9 +309,6 @@ class OrderTabContent extends StatefulWidget {
 }
 
 class _OrderTabContentState extends State<OrderTabContent> {
-  bool _isSearchBarVisible = true; // State to control search bar visibility
-  double _previousOffset = 0.0; // Track previous scroll offset
-
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -360,7 +353,6 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "change": "(-0.25%)",
             "type": "MTF"
           },
-          // ... Repeat for other entries, alternating or mixing types
           {
             "title": "ICICIBANK",
             "quantity": "25/50",
@@ -577,7 +569,6 @@ class _OrderTabContentState extends State<OrderTabContent> {
             "change": "(+0.10%)",
             "type": "MTF"
           },
-          // ... Add type for all remaining entries, alternating types as desired
         ];
         break;
       case "Cancelled":
@@ -736,108 +727,92 @@ class _OrderTabContentState extends State<OrderTabContent> {
         'Loading data for tab: ${widget.tabType}, ${orderData.length} orders');
 
     if (orderData.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-                height: 64.h,
-                width: 64.w,
-                child: SvgPicture.asset("assets/svgs/doneMark.svg")),
-            SizedBox(height: 20.h),
-            Text(
-              "No ${widget.tabType} Orders",
-              style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold),
+      return CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 16.w),
+              child: constWidgets.searchField(
+                  context, "Search Everything...", "orders", isDark),
             ),
-            SizedBox(
-              width: 250.w,
-              child: Text(
-                "Your ${widget.tabType.toLowerCase()} orders will appear here. Start trading now!",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 13.sp, color: Color(0xffC9CACC)),
+          ),
+          SliverFillRemaining(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                      height: 64.h,
+                      width: 64.w,
+                      child: SvgPicture.asset("assets/svgs/doneMark.svg")),
+                  SizedBox(height: 20.h),
+                  Text(
+                    "No ${widget.tabType} Orders",
+                    style:
+                        TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    width: 250.w,
+                    child: Text(
+                      "Your ${widget.tabType.toLowerCase()} orders will appear here. Start trading now!",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 13.sp, color: Color(0xffC9CACC)),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       );
     }
 
-    return Column(
-      children: [
-        // Search bar with visibility control
-        Visibility(
-          visible: _isSearchBarVisible,
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 16.w),
-            child: constWidgets.searchField(
-                context, "Search Everything...", "orders", isDark),
-          ),
-        ),
-        Expanded(
-          child: NotificationListener<ScrollNotification>(
-            onNotification: (scrollNotification) {
-              if (scrollNotification is ScrollStartNotification) {
-                _previousOffset = scrollNotification.metrics.pixels;
-              } else if (scrollNotification is ScrollUpdateNotification) {
-                double currentOffset = scrollNotification.metrics.pixels;
-                bool isAtTop = currentOffset < 5.0; // Threshold for "top"
-                bool isScrollingDown = currentOffset > _previousOffset;
-
-                if (isAtTop && isScrollingDown) {
-                  if (_isSearchBarVisible) {
-                    setState(() {
-                      _isSearchBarVisible = false;
-                    });
-                  }
-                } else if (currentOffset < 5.0 && !isScrollingDown) {
-                  if (!_isSearchBarVisible) {
-                    setState(() {
-                      _isSearchBarVisible = true;
-                    });
-                  }
-                }
-                _previousOffset = currentOffset;
-              }
-              return true;
-            },
-            child: RefreshIndicator(
-              color: Color(0xff1DB954),
-              onRefresh: () async {
-                await Future.delayed(const Duration(seconds: 1));
-                setState(() {});
-              },
-              child: ListView.builder(
-                itemCount: orderData.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          navi(OrdersDetails(), context);
-                        },
-                        behavior: HitTestBehavior.opaque,
-                        child: contentCard(
-                          orderData[index]["title"]!,
-                          orderData[index]["quantity"]!,
-                          orderData[index]["time"]!,
-                          orderData[index]["price"]!,
-                          orderData[index]["ltp"]!,
-                          orderData[index]["change"]!,
-                          orderData[index]["type"] ?? "DEL",
-                          orderStatus:
-                              widget.tabType, // Pass the current tab type
-                        ),
-                      ),
-                      if (index != orderData.length - 1)
-                        Divider(color: const Color(0xff2f2f2f)),
-                    ],
-                  );
-                },
-              ),
+    return RefreshIndicator(
+      color: Color(0xff1DB954),
+      onRefresh: () async {
+        await Future.delayed(const Duration(seconds: 1));
+        setState(() {});
+      },
+      child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 16.w),
+              child: constWidgets.searchField(
+                  context, "Search Everything...", "orders", isDark),
             ),
           ),
-        )
-      ],
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                return Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        navi(OrdersDetails(), context);
+                      },
+                      behavior: HitTestBehavior.opaque,
+                      child: contentCard(
+                        orderData[index]["title"]!,
+                        orderData[index]["quantity"]!,
+                        orderData[index]["time"]!,
+                        orderData[index]["price"]!,
+                        orderData[index]["ltp"]!,
+                        orderData[index]["change"]!,
+                        orderData[index]["type"] ?? "DEL",
+                        orderStatus: widget.tabType,
+                      ),
+                    ),
+                    if (index != orderData.length - 1)
+                      Divider(color: const Color(0xff2f2f2f)),
+                  ],
+                );
+              },
+              childCount: orderData.length,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -865,9 +840,7 @@ Widget contentCard(String title, String quantity, String time, String price,
                     style: TextStyle(fontSize: 10.sp, color: Colors.green)),
               ),
               SizedBox(width: 4.w),
-
               _infoChip("NSE-EQ"),
-              // Show exchange chip only for executed and declined orders
             ],
           ),
           SizedBox(height: 6.h),

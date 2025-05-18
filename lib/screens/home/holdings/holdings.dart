@@ -51,7 +51,6 @@ class _HoldingsScreenState extends State<HoldingsScreen> {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: isDark ? Colors.black : Colors.white,
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sapphire/main.dart';
+import 'package:sapphire/screens/auth/login/login.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class changePassword extends StatefulWidget {
@@ -13,32 +15,75 @@ class changePassword extends StatefulWidget {
 class _changePasswordState extends State<changePassword> {
   bool _obscureText1 = true;
   bool _obscureText2 = true;
+  bool _isButtonDisabled = true;
+  String? _errorMessage;
 
-  TextEditingController newPassword = TextEditingController();
-  TextEditingController confirmPassword = TextEditingController();
+  final TextEditingController newPassword = TextEditingController();
+  final TextEditingController confirmPassword = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Listen to text changes to validate passwords
+    newPassword.addListener(_validatePasswords);
+    confirmPassword.addListener(_validatePasswords);
+  }
+
+  @override
+  void dispose() {
+    newPassword.removeListener(_validatePasswords);
+    confirmPassword.removeListener(_validatePasswords);
+    newPassword.dispose();
+    confirmPassword.dispose();
+    super.dispose();
+  }
+
+  // Validate passwords
+  void _validatePasswords() {
+    final newPass = newPassword.text;
+    final confirmPass = confirmPassword.text;
+
+    setState(() {
+      // Password must be at least 8 characters, with letters, numbers, and symbols
+      final passwordRegex = RegExp(
+          r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$');
+      if (newPass.isEmpty || confirmPass.isEmpty) {
+        _errorMessage = null;
+        _isButtonDisabled = true;
+      } else if (!passwordRegex.hasMatch(newPass)) {
+        _errorMessage =
+            'Password must be at least 8 characters with letters, numbers, and symbols';
+        _isButtonDisabled = true;
+      } else if (newPass != confirmPass) {
+        _errorMessage = 'Passwords do not match';
+        _isButtonDisabled = true;
+      } else {
+        _errorMessage = null;
+        _isButtonDisabled = false;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-        appBar: AppBar(
-          leading: Padding(
-            padding: EdgeInsets.only(top: 4.h),
-            child: IconButton(
-              icon: Icon(Icons.arrow_back,
-                  size: 28.sp, color: isDark ? Colors.white : Colors.black),
-              onPressed: () => Navigator.pop(context),
-            ),
+      appBar: AppBar(
+        leading: Padding(
+          padding: EdgeInsets.only(top: 4.h),
+          child: IconButton(
+            icon: Icon(Icons.arrow_back,
+                size: 28.sp, color: isDark ? Colors.white : Colors.black),
+            onPressed: () => Navigator.pop(context),
           ),
-          backgroundColor: isDark ? Colors.black : Colors.white,
         ),
-        body: GestureDetector(
-          onTap: () {
-            FocusScope.of(context)
-                .unfocus(); // Dismiss keyboard when tapping outside
-          },
-          behavior: HitTestBehavior.opaque,
-          child: Column(children: [
-            // Divider(color: isDark ? Color(0xff2F2F2F) : Color(0xffD1D5DB)),
+        backgroundColor: isDark ? Colors.black : Colors.white,
+      ),
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        behavior: HitTestBehavior.opaque,
+        child: Column(
+          children: [
             Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -54,24 +99,18 @@ class _changePasswordState extends State<changePassword> {
                       ),
                     ),
                     SizedBox(height: 16.h),
-                    // Dynamic instruction text with partially masked contact info
                     Text(
-                      "Use at least 8 characters with letters, numbers & symbols.", // Masked phone number
+                      "Use at least 8 characters with letters, numbers & symbols.",
                       style: TextStyle(
                           fontSize: 15.sp,
                           color: isDark ? Colors.white70 : Colors.black54),
                     ),
                     SizedBox(height: 24.h),
-                    // Enter New MPIN Field
-
+                    // New Password Field
                     SizedBox(
                       height: 54.h,
                       child: TextField(
                         controller: newPassword,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(4),
-                        ],
                         obscureText: _obscureText1,
                         style: TextStyle(
                             color: isDark ? Colors.white : Colors.black),
@@ -122,19 +161,12 @@ class _changePasswordState extends State<changePassword> {
                         ),
                       ),
                     ),
-
                     SizedBox(height: 24.h),
-
-                    // Confirm New MPIN Field
-
+                    // Confirm Password Field
                     SizedBox(
                       height: 54.h,
                       child: TextField(
                         controller: confirmPassword,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(4),
-                        ],
                         obscureText: _obscureText2,
                         style: TextStyle(
                             color: isDark ? Colors.white : Colors.black),
@@ -185,24 +217,53 @@ class _changePasswordState extends State<changePassword> {
                         ),
                       ),
                     ),
-                    const Expanded(child: SizedBox()), // Pushes content to top
+                    if (_errorMessage != null) ...[
+                      SizedBox(height: 8.h),
+                      Text(
+                        _errorMessage!,
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 14.sp,
+                        ),
+                      ),
+                    ],
+                    const Expanded(child: SizedBox()),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        constWidgets.greenButton(
+                          "Continue",
+                          onTap: _isButtonDisabled
+                              ? null
+                              : () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Password updated successfully!',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16.sp,
+                                        ),
+                                      ),
+                                      backgroundColor: Colors.green,
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                  naviRep(LoginScreen(), context);
+                                },
+                          isDisabled: _isButtonDisabled,
+                        ),
+                        SizedBox(height: 10.h),
+                        Center(child: constWidgets.needHelpButton(context)),
+                      ],
+                    ),
                   ],
                 ),
               ),
             ),
-          ]),
+          ],
         ),
-        bottomNavigationBar: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15.w),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              constWidgets.greenButton("Continue", onTap: () {}),
-              SizedBox(height: 10.h),
-              // Help button for user assistance
-              Center(child: constWidgets.needHelpButton(context)),
-            ],
-          ),
-        ));
+      ),
+    );
   }
 }

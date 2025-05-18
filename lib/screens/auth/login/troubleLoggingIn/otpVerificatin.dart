@@ -102,7 +102,7 @@ class _otpVerificationState extends State<otpVerification> {
               SizedBox(height: 16.h),
               // Dynamic instruction text with partially masked contact info
               Text(
-                "Enter OTP sent on Registered Email and Mobile Number", // Masked phone number
+                "Enter OTP sent on registered Email and Mobile Number", // Masked phone number
                 style: TextStyle(
                     fontSize: 15.sp,
                     color: isDark ? Colors.white70 : Colors.black54),
@@ -173,52 +173,49 @@ class _otpVerificationState extends State<otpVerification> {
                   ),
                 ),
               ),
-              const Expanded(child: SizedBox()), // Pushes content to top
+              const Expanded(child: SizedBox()),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Terms and conditions acceptance text with clickable links
+
+                  // Verify button - conditionally styled based on OTP completion
+                  Container(
+                    height: 52.h,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        otpController.text.length == 6
+                            ? verifyOtp()
+                            : null; // Only verify if OTP is complete
+                      },
+                      child: Text(
+                        "Verify",
+                        style: TextStyle(
+                            fontSize: 17.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: otpController.text.length == 6
+                            ? Color(0xFF1DB954) // Green when OTP is complete
+                            : isDark
+                                ? Color(
+                                    0xff2f2f2f) // Dark gray in dark mode when incomplete
+                                : Colors.grey[
+                                    300], // Light gray in light mode when incomplete
+                        foregroundColor: isDark ? Colors.white : Colors.black,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10.h),
+                  // Help button for user assistance
+                  Center(child: constWidgets.needHelpButton(context)),
+                  SizedBox(height: 10.h),
+                ],
+              ), // Pushes content to top
             ],
           ),
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15.w),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Terms and conditions acceptance text with clickable links
-
-            // Verify button - conditionally styled based on OTP completion
-            Container(
-              height: 52.h,
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  otpController.text.length == 6
-                      ? verifyOtp()
-                      : null; // Only verify if OTP is complete
-                },
-                child: Text(
-                  "Verify",
-                  style: TextStyle(
-                      fontSize: 17.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: otpController.text.length == 6
-                      ? Color(0xFF1DB954) // Green when OTP is complete
-                      : isDark
-                          ? Color(
-                              0xff2f2f2f) // Dark gray in dark mode when incomplete
-                          : Colors.grey[
-                              300], // Light gray in light mode when incomplete
-                  foregroundColor: isDark ? Colors.white : Colors.black,
-                ),
-              ),
-            ),
-            SizedBox(height: 10.h),
-            // Help button for user assistance
-            Center(child: constWidgets.needHelpButton(context)),
-            SizedBox(height: 10.h),
-          ],
         ),
       ),
     );

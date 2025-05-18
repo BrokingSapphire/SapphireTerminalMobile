@@ -136,7 +136,7 @@ class _loginOtpState extends State<loginOtp> {
             // Welcome header
             Spacer(),
             Text(
-              "Welcome",
+              "Welcome to\nSapphire",
               style: TextStyle(
                   color: isDark ? Colors.white : Colors.black,
                   fontSize: 34.sp,
@@ -230,6 +230,7 @@ class _loginOtpState extends State<loginOtp> {
               onTap: () {
                 naviRep(Disclosure(), context);
               },
+              isDisabled: otpController.text.length != 6,
             ),
             SizedBox(height: 24.h),
             // Sign up option

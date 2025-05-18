@@ -41,6 +41,7 @@ dependencies:
   local_auth: ^2.3.0
   webview_flutter:
   visibility_detector: ^0.4.0+2
+  flutter_recaptcha_v2_compat: 
   
 
 dev_dependencies:
