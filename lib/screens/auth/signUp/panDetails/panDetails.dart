@@ -406,14 +406,6 @@ class _PanDetailsState extends State<PanDetails> {
                     fontWeight: FontWeight.w600,
                     color: isDark ? Colors.white : Colors.black),
               ),
-              SizedBox(height: 16.h),
-              Text(
-                "We need your PAN as per SEBI regulations",
-                style: TextStyle(
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.w400,
-                    color: isDark ? Colors.white70 : Colors.black54),
-              ),
               SizedBox(height: 24.h),
               // Updated PAN input field
               TextField(
@@ -469,26 +461,21 @@ class _PanDetailsState extends State<PanDetails> {
                 ),
               ),
               Spacer(),
+              constWidgets.greenButton(
+                "Verify",
+                onTap: isButtonDisabled
+                    ? null
+                    : () => verifyPanNumber(panNumber.text),
+                isDisabled: isButtonDisabled,
+              ),
+              SizedBox(height: 10.h),
             ],
           ),
         ),
       ),
       bottomNavigationBar: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            constWidgets.greenButton(
-              "Verify",
-              onTap: isButtonDisabled
-                  ? null
-                  : () => verifyPanNumber(panNumber.text),
-              isDisabled: isButtonDisabled,
-            ),
-            SizedBox(height: 10.h),
-            Center(child: constWidgets.needHelpButton(context)),
-          ],
-        ),
+        child: constWidgets.needHelpButton(context),
       ),
     );
   }

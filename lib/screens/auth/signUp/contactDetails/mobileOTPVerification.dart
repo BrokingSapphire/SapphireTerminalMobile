@@ -284,6 +284,7 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
                 },
                 isDisabled: otpController.text.length != 6,
               ),
+              SizedBox(height: 10.h),
             ],
           ),
         ),
