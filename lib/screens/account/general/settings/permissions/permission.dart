@@ -36,7 +36,7 @@ class _permissionScreenState extends State<permissionScreen> {
             "Permissions",
             style: TextStyle(
                 fontWeight: FontWeight.w600,
-                fontSize: 15.sp,
+                fontSize: 17.sp,
                 color: isDark ? Colors.white : Colors.black),
           ),
         ),

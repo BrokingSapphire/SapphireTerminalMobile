@@ -31,7 +31,7 @@ class _LedgerScreenState extends State<LedgerScreen> {
             "Ledger",
             style: TextStyle(
                 fontWeight: FontWeight.w600,
-                fontSize: 15.sp,
+                fontSize: 17.sp,
                 color: isDark ? Colors.white : Colors.black),
           ),
         ),

@@ -28,11 +28,12 @@ class _ReferAFriendState extends State<ReferAFriend> {
             Navigator.pop(context);
           },
         ),
+        leadingWidth: 24.w,
         title: Text(
           "Refer a friend",
           style: TextStyle(
             color: isDark ? Colors.white : Colors.black,
-            fontSize: 18.sp,
+            fontSize: 17.sp,
             fontWeight: FontWeight.bold,
           ),
         ),

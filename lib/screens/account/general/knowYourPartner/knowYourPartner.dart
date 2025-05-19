@@ -25,7 +25,7 @@ class _KnowYourPartnerState extends State<KnowYourPartner> {
             "Know Your Partner",
             style: TextStyle(
                 fontWeight: FontWeight.w600,
-                fontSize: 15.sp,
+                fontSize: 17.sp,
                 color: isDark ? Colors.white : Colors.black),
           ),
         ),

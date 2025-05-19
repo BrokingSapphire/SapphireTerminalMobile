@@ -115,8 +115,8 @@ Widget ipoTile({
                         padding: EdgeInsets.symmetric(
                             horizontal: 4.w, vertical: 3.h),
                         decoration: BoxDecoration(
-                          color: Color(0xFF491787)
-                              .withAlpha((255 * 0.5).round()), // Purple background
+                          color: Color(0xFF491787).withAlpha(
+                              (255 * 0.5).round()), // Purple background
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(badge1,
@@ -144,7 +144,7 @@ Widget ipoTile({
             ),
           ],
         ),
-        SizedBox(height: 16.h),
+        SizedBox(height: 8.h),
 
         // Company description with "View more" option
         Text.rich(
@@ -164,7 +164,7 @@ Widget ipoTile({
           maxLines: 4,
           overflow: TextOverflow.ellipsis,
         ),
-        SizedBox(height: 14.h),
+        SizedBox(height: 8.h),
 
         // Subscription status container
         Container(
@@ -181,8 +181,8 @@ Widget ipoTile({
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color:
-                      const Color(0xFFD9C544).withAlpha((255 * 0.2).round()), // Golden yellow
+                  color: const Color(0xFFD9C544)
+                      .withAlpha((255 * 0.2).round()), // Golden yellow
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(statusDay,
@@ -203,7 +203,7 @@ Widget ipoTile({
             ],
           ),
         ),
-        SizedBox(height: 14.h),
+        SizedBox(height: 8.h),
 
         // Price and lot size row
         Row(
@@ -239,7 +239,7 @@ Widget ipoTile({
             ),
           ],
         ),
-        SizedBox(height: 14.h),
+        SizedBox(height: 8.h),
 
         // Apply now button
         SizedBox(

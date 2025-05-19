@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sapphire/main.dart';
+import 'package:sapphire/screens/home/discover/ipo/applied/modifyApplication.dart';
 
 class ipoApplication extends StatefulWidget {
   const ipoApplication({super.key});
@@ -85,6 +87,16 @@ class _ipoApplicationState extends State<ipoApplication> {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'IPO Application Cancelled',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                      // Navigator.pop(context);
                       // Add cancel logic here
                     },
                     style: ElevatedButton.styleFrom(
@@ -137,18 +149,18 @@ class _ipoApplicationState extends State<ipoApplication> {
       backgroundColor: isDark ? Colors.black : Colors.white,
       appBar: AppBar(
         backgroundColor: isDark ? Colors.black : Colors.white,
-        // or your desired color
         elevation: 0,
         scrolledUnderElevation: 0,
-        // prevent shadow when scrolling
-        leadingWidth: 32.w,
+        leadingWidth: 24.w,
         title: Padding(
-          padding: const EdgeInsets.only(top: 15),
+          padding: EdgeInsets.only(
+            top: 15.w,
+          ),
           child: Text(
             "IPO Application Status",
             style: TextStyle(
+                fontSize: 17.sp,
                 fontWeight: FontWeight.w600,
-                fontSize: 15.sp,
                 color: isDark ? Colors.white : Colors.black),
           ),
         ),
@@ -163,12 +175,16 @@ class _ipoApplicationState extends State<ipoApplication> {
           ),
         ),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(15.h), // Height of the divider
-          child: Divider(
-            color: isDark
-                ? const Color(0xff2F2F2F)
-                : const Color(0xffD1D5DB), // Color for the divider
-            // thickness: 1, // Divider thickness
+          preferredSize: Size.fromHeight(20.h),
+          child: Column(
+            children: [
+              Divider(
+                height: 1,
+                color:
+                    isDark ? const Color(0xff2F2F2F) : const Color(0xffD1D5DB),
+              ),
+              SizedBox(height: 10.h),
+            ],
           ),
         ),
       ),
@@ -230,7 +246,7 @@ class _ipoApplicationState extends State<ipoApplication> {
                                               : Colors.black,
                                           fontWeight: FontWeight.w600),
                                     ),
-                                    SizedBox(height: 4.h),
+                                    SizedBox(height: 8.h),
                                     Row(
                                       children: [
                                         Container(
@@ -463,7 +479,9 @@ class _ipoApplicationState extends State<ipoApplication> {
                         child: SizedBox(
                           height: 40.h,
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              navi(modifyApplication(), context);
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFF1DB954),
                               foregroundColor: Colors.white,

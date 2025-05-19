@@ -10,7 +10,7 @@ import 'package:sapphire/screens/account/general/settings/settings.dart';
 import 'package:sapphire/screens/account/manage/fundSettelmentFrequency/fundSettelmentFrequency.dart';
 import 'package:sapphire/screens/account/profile/profile.dart';
 import 'package:sapphire/screens/account/manage/dematAccount/dematAccount.dart';
-import 'package:sapphire/screens/account/reports/customCalender.dart';
+import 'package:sapphire/utils/customCalender.dart';
 import 'package:sapphire/screens/account/reports/ledger/ledger.dart';
 import 'package:sapphire/screens/account/manage/segmentActivation/segmentActivation.dart';
 import 'package:sapphire/screens/account/manage/bankAccounts/bankAccounts.dart';
@@ -980,7 +980,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   iconTheme: IconThemeData(
                       color: isDark ? Colors.white : Colors.black),
                   titleTextStyle: TextStyle(
-                    fontSize: 22.sp,
+                    fontSize: 17.sp,
                     fontWeight: FontWeight.bold,
                     color: isDark ? Colors.white : Colors.black,
                   ),
@@ -1005,7 +1005,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 title: Text(
                   "Account",
                   style: TextStyle(
-                    fontSize: 15.sp,
+                    fontSize: 17.sp,
                     fontWeight: FontWeight.bold,
                     color: isDark ? Colors.white : Colors.black,
                   ),

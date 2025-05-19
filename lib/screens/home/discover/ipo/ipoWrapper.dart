@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sapphire/screens/home/discover/ipo/ipoApplied.dart';
+import 'package:sapphire/screens/home/discover/ipo/applied/ipoApplied.dart';
+
 import 'package:sapphire/screens/home/discover/ipo/ongoing/ipoOngoing.dart';
 import 'package:sapphire/screens/home/discover/ipo/upcoming/ipoUpcoming.dart';
 import 'package:sapphire/utils/constWidgets.dart';
@@ -55,14 +56,16 @@ class _IPOWrapperState extends State<IPOWrapper>
         backgroundColor: isDark ? Colors.black : Colors.white,
         elevation: 0,
         scrolledUnderElevation: 0,
-        leadingWidth: 32.w,
+        leadingWidth: 24.w,
         title: Padding(
-          padding: const EdgeInsets.only(top: 15),
+          padding: EdgeInsets.only(
+            top: 15.w,
+          ),
           child: Text(
             "IPO",
             style: TextStyle(
                 fontWeight: FontWeight.w600,
-                fontSize: 18.sp,
+                fontSize: 17.sp,
                 color: isDark ? Colors.white : Colors.black),
           ),
         ),

@@ -18,24 +18,56 @@ class _createAlertScreenState extends State<createAlertScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 15.w),
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            leadingWidth: 38.w,
-            title: Text("Create New Alert",
-                style: TextStyle(color: Colors.white, fontSize: 15.sp)),
-            bottom: PreferredSize(
-              preferredSize: Size.fromHeight(1.h),
-              child: Divider(
-                color: Colors.grey.shade800,
-                thickness: 1.h,
-                height: 1.h,
-              ),
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: isDark ? Colors.black : Colors.white,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          leadingWidth: 24.w,
+          title: Padding(
+            padding: EdgeInsets.only(
+              top: 15.w,
+            ),
+            child: Text(
+              "Create New Alert",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 17.sp,
+                  color: isDark ? Colors.white : Colors.black),
             ),
           ),
-          body: SingleChildScrollView(
+          leading: Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back,
+                  color: isDark ? Colors.white : Colors.black),
+            ),
+          ),
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(20.h),
+            child: Column(
+              children: [
+                Divider(
+                  height: 1,
+                  color: isDark
+                      ? const Color(0xff2F2F2F)
+                      : const Color(0xffD1D5DB),
+                ),
+                SizedBox(
+                  height: 10.h,
+                )
+              ],
+            ),
+          ),
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -138,6 +170,22 @@ class _createAlertScreenState extends State<createAlertScreen> {
                                     decoration: InputDecoration(
                                       contentPadding: EdgeInsets.symmetric(
                                           horizontal: 10.w),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(6.r),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(6.r),
+                                        borderSide: BorderSide(
+                                            color: Color(0xff2f2f2f)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(6.r),
+                                        borderSide: BorderSide(
+                                            color: Color(0xff2f2f2f)),
+                                      ),
                                     ),
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 16.sp),
@@ -156,25 +204,25 @@ class _createAlertScreenState extends State<createAlertScreen> {
                                   height: 50.h,
                                   width: 150.w,
                                   child: TextField(
-                                    readOnly: false,
+                                    readOnly: true,
                                     style: TextStyle(color: Color(0xffC9CACC)),
                                     decoration: InputDecoration(
                                       hintText: "NIFTY 50",
                                       border: OutlineInputBorder(
                                         borderRadius:
-                                            BorderRadius.circular(8.r),
+                                            BorderRadius.circular(6.r),
                                       ),
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius:
-                                            BorderRadius.circular(8.r),
-                                        borderSide:
-                                            BorderSide(color: Colors.grey),
+                                            BorderRadius.circular(6.r),
+                                        borderSide: BorderSide(
+                                            color: Color(0xff2f2f2f)),
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(8.r),
-                                        borderSide:
-                                            BorderSide(color: Colors.grey),
+                                        borderSide: BorderSide(
+                                            color: Color(0xff2f2f2f)),
                                       ),
                                     ),
                                   ),
@@ -213,15 +261,16 @@ class _createAlertScreenState extends State<createAlertScreen> {
                               contentPadding:
                                   EdgeInsets.symmetric(horizontal: 10.w),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.r),
+                                borderRadius: BorderRadius.circular(6.r),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.r),
-                                borderSide: BorderSide(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(6.r),
+                                borderSide:
+                                    BorderSide(color: Color(0xff2f2f2f)),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.r),
-                                borderSide: BorderSide(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(6.r),
+                                borderSide: BorderSide(color: Colors.white),
                               ),
                             ),
                           ),
@@ -251,14 +300,14 @@ class _createAlertScreenState extends State<createAlertScreen> {
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(8.r),
-                                        borderSide:
-                                            BorderSide(color: Colors.grey),
+                                        borderSide: BorderSide(
+                                            color: Color(0xff2f2f2f)),
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(8.r),
                                         borderSide:
-                                            BorderSide(color: Colors.grey),
+                                            BorderSide(color: Colors.white),
                                       ),
                                       hintText: '22913.15',
                                     ),
@@ -283,19 +332,19 @@ class _createAlertScreenState extends State<createAlertScreen> {
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
                                         borderRadius:
-                                            BorderRadius.circular(8.r),
+                                            BorderRadius.circular(6.r),
                                       ),
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius:
-                                            BorderRadius.circular(8.r),
-                                        borderSide:
-                                            BorderSide(color: Colors.grey),
+                                            BorderRadius.circular(6.r),
+                                        borderSide: BorderSide(
+                                            color: Color(0xff2f2f2f)),
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderRadius:
-                                            BorderRadius.circular(8.r),
+                                            BorderRadius.circular(6.r),
                                         borderSide:
-                                            BorderSide(color: Colors.grey),
+                                            BorderSide(color: Colors.white),
                                       ),
                                       hintText: '0.0',
                                     ),
@@ -311,11 +360,15 @@ class _createAlertScreenState extends State<createAlertScreen> {
                   ),
                 ),
                 SizedBox(height: 20.h),
-                // Spacer(),
               ],
             ),
           ),
-          bottomNavigationBar: constWidgets.greenButton("Create"),
+        ),
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.only(
+            bottom: 10.sp,
+          ),
+          child: constWidgets.greenButton("Create"),
         ),
       ),
     );

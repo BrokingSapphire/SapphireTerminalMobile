@@ -28,7 +28,7 @@ class _ChooseRecipientState extends State<ChooseRecipient> {
             "Send a gift",
             style: TextStyle(
                 fontWeight: FontWeight.w600,
-                fontSize: 15.sp,
+                fontSize: 17.sp,
                 color: isDark ? Colors.white : Colors.black),
             softWrap: true,
           ),

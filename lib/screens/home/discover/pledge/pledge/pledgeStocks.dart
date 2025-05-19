@@ -215,6 +215,9 @@ class _PledgeListItemState extends State<_PledgeListItem> {
         setState(() {
           checked = !checked; // Toggle the checkbox
         });
+        if (widget.onCheckChanged != null) {
+          widget.onCheckChanged!(widget.stockName, checked);
+        }
         print('Tapped on ${widget.stockName}');
       },
       behavior: HitTestBehavior.opaque,

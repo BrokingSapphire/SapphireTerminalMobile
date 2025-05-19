@@ -295,7 +295,7 @@ class _changePinScreenState extends State<changePinScreen> {
             "Change PIN",
             style: TextStyle(
                 fontWeight: FontWeight.w600,
-                fontSize: 15.sp,
+                fontSize: 17.sp,
                 color: isDark ? Colors.white : Colors.black),
           ),
         ),

@@ -2,9 +2,57 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sapphire/utils/customCalender.dart';
 
-class PledgeHistory extends StatelessWidget {
+class PledgeHistory extends StatefulWidget {
   const PledgeHistory({super.key});
+
+  @override
+  State<PledgeHistory> createState() => _PledgeHistoryState();
+}
+
+class _PledgeHistoryState extends State<PledgeHistory> {
+  DateTimeRange? _selectedRange;
+
+  // Default range: last 7 days
+  @override
+  void initState() {
+    super.initState();
+    final now = DateTime.now();
+    _selectedRange = DateTimeRange(
+      start: now.subtract(const Duration(days: 7)),
+      end: now,
+    );
+  }
+
+  void _onDateRangeSelected(DateTimeRange range) {
+    setState(() {
+      _selectedRange = range;
+    });
+  }
+
+  String _formatDate(DateTime date) {
+    return "${date.day.toString().padLeft(2, '0')} ${_monthName(date.month)} ${date.year}";
+  }
+
+  String _monthName(int month) {
+    const months = [
+      '',
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ];
+    return months[month];
+  }
 
   Widget _buildHistoryItem(
       {required String date,
@@ -249,20 +297,38 @@ class PledgeHistory extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 4.h),
-                    Text(
-                      "10 Feb 2025 - 17 Feb 2025",
-                      style: TextStyle(
-                        color: Colors.green,
-                        fontSize: 13.sp,
-                        fontWeight: FontWeight.w600,
+                    if (_selectedRange != null)
+                      Text(
+                        '${_formatDate(_selectedRange!.start)} - ${_formatDate(_selectedRange!.end)}',
+                        style: TextStyle(
+                          color: Colors.green,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
                   ],
                 ),
-                Icon(
-                  size: 24.sp,
-                  Icons.calendar_today_outlined,
-                  color: Colors.green,
+                GestureDetector(
+                  onTap: () async {
+                    final picked = await showModalBottomSheet<DateTimeRange>(
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      isScrollControlled: true,
+                      builder: (context) => CustomDateRangePickerBottomSheet(
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime.now(),
+                        initialDateRange: _selectedRange,
+                      ),
+                    );
+                    if (picked != null) {
+                      _onDateRangeSelected(picked);
+                    }
+                  },
+                  child: Icon(
+                    size: 24.sp,
+                    Icons.calendar_today_outlined,
+                    color: Colors.green,
+                  ),
                 ),
               ],
             ),

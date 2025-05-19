@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:sapphire/main.dart';
 
 import 'package:sapphire/screens/home/discover/pledge/history/pledgeHistory.dart';
-import 'package:sapphire/screens/home/discover/pledge/pledgeStocks.dart';
+import 'package:sapphire/screens/home/discover/pledge/pledge/pledgeStocks.dart';
+import 'package:sapphire/screens/home/discover/pledge/unpledge/unpledge.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
 class Pledge extends StatefulWidget {
@@ -27,26 +29,53 @@ class _PledgeState extends State<Pledge> with SingleTickerProviderStateMixin {
   double totalSelectedAmount = 0.0;
   String formattedAmount = "";
 
+  // Store all pledge items for correct total calculation
+  List<Map<String, dynamic>> _allPledgeItems = [
+    {
+      'stockName': 'BAJAJ-AUTO',
+      'amount': 1995.55,
+    },
+    {
+      'stockName': 'GMRAIRPORT',
+      'amount': 1995.55,
+    },
+    {
+      'stockName': 'RELIANCE',
+      'amount': 3450.75,
+    },
+    {
+      'stockName': 'TATAMOTORS',
+      'amount': 2750.00,
+    },
+    {
+      'stockName': 'HDFCBANK',
+      'amount': 4125.30,
+    },
+  ];
+
   // Method to update selected stocks (will be passed to child widgets)
   void updateSelectedStock(String stockName, bool isSelected, double amount) {
     setState(() {
       selectedStocks[stockName] = isSelected;
 
-      // Recalculate total amount
+      // Recalculate total amount using the correct amounts for each selected stock
       totalSelectedAmount = 0.0;
       selectedStocks.forEach((stock, selected) {
-        formattedAmount = NumberFormat.currency(
-          locale: 'en_IN',
-          symbol: '₹',
-          decimalDigits: 2,
-        ).format(totalSelectedAmount);
-
         if (selected) {
-          // Find the stock in the data and add its amount
-          // This is a placeholder - actual implementation would use real data
-          totalSelectedAmount += amount;
+          // Find the correct stock in _allPledgeItems by name
+          final stockData = _allPledgeItems.firstWhere(
+            (item) => item['stockName'] == stock,
+          );
+          if (stockData != null) {
+            totalSelectedAmount += (stockData['amount'] as double);
+          }
         }
       });
+      formattedAmount = NumberFormat.currency(
+        locale: 'en_IN',
+        symbol: '₹',
+        decimalDigits: 2,
+      ).format(totalSelectedAmount);
     });
   }
 
@@ -72,31 +101,51 @@ class _PledgeState extends State<Pledge> with SingleTickerProviderStateMixin {
       child: Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
-          leadingWidth: 38.w,
-          backgroundColor: Colors.black,
+          backgroundColor: isDark ? Colors.black : Colors.white,
           elevation: 0,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+          scrolledUnderElevation: 0,
+          leadingWidth: 24.w,
+          title: Padding(
+            padding: EdgeInsets.only(
+              top: 15.w,
+            ),
+            child: Text(
+              "Pledge",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 17.sp,
+                  color: isDark ? Colors.white : Colors.black),
+            ),
           ),
-          title: Text(
-            "Pledge",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
+          leading: Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back,
+                  color: isDark ? Colors.white : Colors.black),
+            ),
+          ),
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(20.h),
+            child: Column(
+              children: [
+                Divider(
+                  height: 1,
+                  color: isDark
+                      ? const Color(0xff2F2F2F)
+                      : const Color(0xffD1D5DB),
+                ),
+                SizedBox(
+                  height: 10.h,
+                )
+              ],
             ),
           ),
         ),
         body: Column(
           children: [
-            Divider(
-              height: 1,
-              color: const Color(0xFF2F2F2F),
-            ),
-            SizedBox(height: 16.h),
             // Tab bar
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -114,7 +163,7 @@ class _PledgeState extends State<Pledge> with SingleTickerProviderStateMixin {
                   PledgeContentContent(
                       updateSelectedStock: updateSelectedStock),
                   // Unpledge Tab
-                  UnpledgeContent(),
+                  unPledgedStocks(),
                   // History Tab
                   PledgeHistory(),
                 ],
@@ -128,7 +177,7 @@ class _PledgeState extends State<Pledge> with SingleTickerProviderStateMixin {
                 .isEmpty
             ? null
             : Container(
-                height: 90.h,
+                height: 100.h,
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
@@ -173,14 +222,24 @@ class _PledgeState extends State<Pledge> with SingleTickerProviderStateMixin {
                     ),
                     SizedBox(height: 8.h),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      padding: EdgeInsets.only(
+                          bottom: 10.w, left: 16.w, right: 16.w),
                       child: constWidgets.greenButton(
                         "Continue",
                         onTap: () {
                           showModalBottomSheet(
                             context: context,
                             backgroundColor: Colors.black,
-                            builder: (context) {
+                            builder: (sheetContext) {
+                              Future.delayed(Duration(seconds: 2), () {
+                                if (Navigator.of(sheetContext).canPop()) {
+                                  Navigator.of(sheetContext).pop();
+                                  // After closing modal, switch to History tab
+                                  Future.microtask(() {
+                                    if (mounted) tabController.index = 2;
+                                  });
+                                }
+                              });
                               return Container(
                                 padding: EdgeInsets.symmetric(
                                     vertical: 20, horizontal: 16),

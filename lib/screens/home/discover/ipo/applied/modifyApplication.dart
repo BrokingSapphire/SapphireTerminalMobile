@@ -5,14 +5,14 @@ import 'package:sapphire/main.dart';
 import 'package:sapphire/screens/home/discover/ipo/applied/ipoApplicationStatus.dart';
 import 'package:sapphire/utils/constWidgets.dart';
 
-class IPOApply extends StatefulWidget {
-  const IPOApply({Key? key}) : super(key: key);
+class modifyApplication extends StatefulWidget {
+  const modifyApplication({Key? key}) : super(key: key);
 
   @override
-  State<IPOApply> createState() => _IPOApplyState();
+  State<modifyApplication> createState() => _modifyApplicationState();
 }
 
-class _IPOApplyState extends State<IPOApply>
+class _modifyApplicationState extends State<modifyApplication>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
@@ -83,31 +83,11 @@ class _IPOApplyState extends State<IPOApply>
           ),
         ),
       ),
-      // Column(
-      //       crossAxisAlignment: CrossAxisAlignment.start,
-      //       children: [
-      //         Text(
-      //           "Wagons Learning Ltd",
-      //           style: TextStyle(
-      //               fontSize: 15.sp,
-      //               fontWeight: FontWeight.w700,
-      //               color: isDark ? Colors.white : Colors.black),
-      //         ),
-      //         SizedBox(height: 4.h),
-      //         Text(
-      //           "₹78.89 - ₹82.89",
-      //           style: TextStyle(
-      //               fontSize: 13.sp,
-      //               fontWeight: FontWeight.w500,
-      //               color: isDark ? Colors.white : Color(0xff6B7280)),
-      //         ),
-      //       ],
-      //     ),
       body: Column(
         children: [
           Expanded(
             child: ListView(
-              padding: EdgeInsets.all(16.w),
+              padding: EdgeInsets.all(12.w),
               children: [
                 // Investor Type section
                 Container(
@@ -399,7 +379,7 @@ class _IPOApplyState extends State<IPOApply>
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12.h),
-                  child: constWidgets.greenButton("Apply for IPO", onTap: () {
+                  child: constWidgets.greenButton("Modify", onTap: () {
                     _showSuccessPopup(context);
                   }),
                 ),

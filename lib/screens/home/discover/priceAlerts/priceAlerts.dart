@@ -37,32 +37,59 @@ class _PriceAlertsState extends State<PriceAlerts> {
     return Scaffold(
       backgroundColor: isDark ? Colors.black : Colors.white,
       appBar: AppBar(
-        leadingWidth: 38.w,
         backgroundColor: isDark ? Colors.black : Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back,
-              color: isDark ? Colors.white : Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+        scrolledUnderElevation: 0,
+        leadingWidth: 24.w,
+        title: Padding(
+          padding: EdgeInsets.only(
+            top: 15.w,
+          ),
+          child: Text(
+            "Price Alerts",
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 17.sp,
+                color: isDark ? Colors.white : Colors.black),
+          ),
         ),
-        title: Text(
-          "Price Alerts",
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
-            color: Color(0xffC9CACC),
+        leading: Padding(
+          padding: const EdgeInsets.only(top: 15),
+          child: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back,
+                color: isDark ? Colors.white : Colors.black),
           ),
         ),
         actions: [
-          IconButton(
-            onPressed: () {
-              navi(createAlertScreen(), context);
-            },
-            icon: Icon(Icons.add, color: isDark ? Colors.white : Colors.black),
-          )
+          Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: IconButton(
+              onPressed: () {
+                navi(createAlertScreen(), context);
+              },
+              icon:
+                  Icon(Icons.add, color: isDark ? Colors.white : Colors.black),
+            ),
+          ),
         ],
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(20.h),
+          child: Column(
+            children: [
+              Divider(
+                height: 1,
+                color:
+                    isDark ? const Color(0xff2F2F2F) : const Color(0xffD1D5DB),
+              ),
+              SizedBox(
+                height: 10.h,
+              )
+            ],
+          ),
+        ),
       ),
       body: alerts.isEmpty
           ? Center(
@@ -93,11 +120,6 @@ class _PriceAlertsState extends State<PriceAlerts> {
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Divider(
-                  color: Color(0xFF2F2F2F),
-                  thickness: 1.h,
-                  height: 1.h,
-                ),
                 SizedBox(height: 16.h),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),

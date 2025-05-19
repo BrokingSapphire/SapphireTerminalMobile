@@ -263,7 +263,7 @@ class _ProfitAndLossState extends State<ProfitAndLoss>
           padding: const EdgeInsets.only(top: 15),
           child: Text(
             "Profit & Loss",
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15.sp),
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17.sp),
           ),
         ),
         leading: Padding(

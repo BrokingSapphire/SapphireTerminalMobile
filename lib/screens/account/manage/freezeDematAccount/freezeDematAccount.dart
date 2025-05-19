@@ -27,7 +27,7 @@ class _FreezeAccountState extends State<FreezeAccount> {
             "Freeze Demat Account",
             style: TextStyle(
                 fontWeight: FontWeight.w600,
-                fontSize: 15.sp,
+                fontSize: 17.sp,
                 color: isDark ? Colors.white : Colors.black),
           ),
         ),

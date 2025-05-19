@@ -44,6 +44,7 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
       appBar: AppBar(
         backgroundColor: isDark ? Colors.black : Colors.white,
         elevation: 0,
+        leadingWidth: 24.w,
         leading: IconButton(
           icon: Icon(Icons.arrow_back,
               color: isDark ? Colors.white : Colors.black, size: 24.sp),
@@ -55,7 +56,7 @@ class _VerifiedPnLState extends State<VerifiedPnL> {
           "Verified P&L",
           style: TextStyle(
             color: isDark ? Colors.white : Colors.black,
-            fontSize: 18.sp,
+            fontSize: 17.sp,
             fontWeight: FontWeight.bold,
           ),
         ),

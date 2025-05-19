@@ -349,7 +349,6 @@ class _ChoosestocktogiftState extends State<Choosestocktogift>
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
@@ -368,7 +367,7 @@ class _ChoosestocktogiftState extends State<Choosestocktogift>
               "Choose Stocks to Gift",
               style: TextStyle(
                   fontWeight: FontWeight.w600,
-                  fontSize: 15.sp,
+                  fontSize: 17.sp,
                   color: isDark ? Colors.white : Colors.black),
               softWrap: true,
             ),
