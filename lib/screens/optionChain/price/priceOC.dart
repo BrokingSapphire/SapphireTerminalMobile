@@ -195,7 +195,7 @@ class _optionChainPriceState extends State<optionChainPrice>
       'callPrice': '₹2,340.60',
       'callPercent': '-4.30%',
       'strikePrice': '22,750',
-      'putPrice': '₹81,580.00',
+      'putPrice': '₹820.60', // Corrected potential typo from ₹81,580.00
       'putPercent': '+8.20%',
       'rightVolume': '10K',
     },
@@ -497,6 +497,7 @@ class _optionChainPriceState extends State<optionChainPrice>
   double _rowHeight = 0.0;
   bool _isCapsuleAtBottom = false;
   bool _isCapsuleAtTop = false;
+  DateTime _lastUpdate = DateTime.now();
 
   @override
   void initState() {
@@ -511,22 +512,26 @@ class _optionChainPriceState extends State<optionChainPrice>
       Future.delayed(const Duration(milliseconds: 300), () {
         if (!mounted || !_scrollController.hasClients) return;
 
-        final headerRenderBox = _headerKey.currentContext?.findRenderObject() as RenderBox?;
+        final headerRenderBox =
+            _headerKey.currentContext?.findRenderObject() as RenderBox?;
         if (headerRenderBox != null) {
           _headerHeight = headerRenderBox.size.height;
         }
 
-        final capsuleRenderBox = _capsuleKey.currentContext?.findRenderObject() as RenderBox?;
+        final capsuleRenderBox =
+            _capsuleKey.currentContext?.findRenderObject() as RenderBox?;
         if (capsuleRenderBox != null) {
           _capsuleHeight = capsuleRenderBox.size.height;
         }
 
-        final rowRenderBox = _firstRowKey.currentContext?.findRenderObject() as RenderBox?;
+        final rowRenderBox =
+            _firstRowKey.currentContext?.findRenderObject() as RenderBox?;
         if (rowRenderBox != null) {
           _rowHeight = rowRenderBox.size.height;
         }
 
-        final totalItems = optionChainDataAbove.length + 1 + optionChainDataBelow.length;
+        final totalItems =
+            optionChainDataAbove.length + 1 + optionChainDataBelow.length;
         final capsuleIndex = optionChainDataAbove.length;
         const visibleItemCount = 7;
         final itemsAboveCapsule = (visibleItemCount - 1) ~/ 2;
@@ -543,20 +548,27 @@ class _optionChainPriceState extends State<optionChainPrice>
   }
 
   void _updateCapsulePosition() {
+    // Debounce updates to avoid excessive setState calls
+    final now = DateTime.now();
+    if (now.difference(_lastUpdate).inMilliseconds < 16) return; // ~60fps
+    _lastUpdate = now;
+
     final screenHeight = MediaQuery.of(context).size.height;
     final scrollOffset = _scrollController.offset;
-    final capsuleNaturalTop = _headerHeight + (optionChainDataAbove.length * _rowHeight) - scrollOffset;
-    final capsuleBottom = capsuleNaturalTop + _capsuleHeight;
+    final capsuleNaturalTop = _headerHeight +
+        (optionChainDataAbove.length * _rowHeight) -
+        scrollOffset;
 
+    // Slightly adjust the threshold to trigger sticking earlier
+    final bool newIsCapsuleAtBottom =
+        capsuleNaturalTop >= screenHeight - _capsuleHeight - _headerHeight - 10.h;
     final bool newIsCapsuleAtTop = capsuleNaturalTop <= _headerHeight;
-    final bool newIsCapsuleAtBottom = capsuleNaturalTop >= screenHeight - _capsuleHeight - _headerHeight;
 
-    if (newIsCapsuleAtTop != _isCapsuleAtTop || newIsCapsuleAtBottom != _isCapsuleAtBottom) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {
-          _isCapsuleAtTop = newIsCapsuleAtTop;
-          _isCapsuleAtBottom = newIsCapsuleAtBottom;
-        });
+    if (newIsCapsuleAtTop != _isCapsuleAtTop ||
+        newIsCapsuleAtBottom != _isCapsuleAtBottom) {
+      setState(() {
+        _isCapsuleAtTop = newIsCapsuleAtTop;
+        _isCapsuleAtBottom = newIsCapsuleAtBottom;
       });
     }
   }
@@ -571,7 +583,8 @@ class _optionChainPriceState extends State<optionChainPrice>
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> rowsAbove = optionChainDataAbove.asMap().entries.map((entry) {
+    final List<Widget> rowsAbove =
+        optionChainDataAbove.asMap().entries.map((entry) {
       final index = entry.key;
       final data = entry.value;
       return _buildOptionRow(
@@ -586,15 +599,17 @@ class _optionChainPriceState extends State<optionChainPrice>
       );
     }).toList();
 
-    final List<Widget> rowsBelow = optionChainDataBelow.map((data) => _buildOptionRow(
-          data['leftVolume'],
-          data['callPrice'],
-          data['callPercent'],
-          data['strikePrice'],
-          data['putPrice'],
-          data['putPercent'],
-          data['rightVolume'],
-        )).toList();
+    final List<Widget> rowsBelow = optionChainDataBelow
+        .map((data) => _buildOptionRow(
+              data['leftVolume'],
+              data['callPrice'],
+              data['callPercent'],
+              data['strikePrice'],
+              data['putPrice'],
+              data['putPercent'],
+              data['rightVolume'],
+            ))
+        .toList();
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -626,7 +641,8 @@ class _optionChainPriceState extends State<optionChainPrice>
             ],
           ),
           if (_isCapsuleAtBottom)
-            Positioned(
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 50),
               left: 0,
               right: 0,
               bottom: 0,
@@ -876,7 +892,8 @@ class _HighlightedRowDelegate extends SliverPersistentHeaderDelegate {
   _HighlightedRowDelegate({required this.child, required this.isAtBottom});
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Opacity(
       opacity: isAtBottom ? 0.0 : 1.0,
       child: child,

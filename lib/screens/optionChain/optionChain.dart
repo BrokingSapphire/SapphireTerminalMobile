@@ -23,11 +23,11 @@ class OptionChainWrapper extends StatefulWidget {
   /// Constructor to initialize all option chain wrapper properties
   const OptionChainWrapper(
       {super.key,
-        required this.symbol,
-        required this.exchange,
-        required this.stockName,
-        required this.price,
-        required this.change});
+      required this.symbol,
+      required this.exchange,
+      required this.stockName,
+      required this.price,
+      required this.change});
 
   @override
   State<OptionChainWrapper> createState() => _OptionChainWrapperState();
@@ -36,20 +36,27 @@ class OptionChainWrapper extends StatefulWidget {
 /// State class for the OptionChainWrapper widget
 /// Manages the display of option chain data and tab navigation
 class _OptionChainWrapperState extends State<OptionChainWrapper> {
-  late PageController _pageController; // PageController to manage the tab content
+  late PageController
+      _pageController; // PageController to manage the tab content
   int _selectedIndex = 0; // Selected tab index - 0: Price, 1: OI, 2: Greeks
   String expirySelectors = '20 May'; // Currently selected expiry date
-  List<String> displayMonths = ['20 May', '27 May', '20 Jun']; // Available expiry dates
+  List<String> displayMonths = [
+    '20 May',
+    '27 May',
+    '20 Jun'
+  ]; // Available expiry dates
 
   // Colors for container styling - Defined for consistent UI theming
   final Color containerBackgroundColor =
-  const Color(0xFF1A1A1A); // Darker background for containers
-  final Color containerBorderColor = const Color(0xFF333333); // Subtle border color
+      const Color(0xFF1A1A1A); // Darker background for containers
+  final Color containerBorderColor =
+      const Color(0xFF333333); // Subtle border color
   final Color dropdownBackgroundColor =
-  const Color(0xFF121413); // Dropdown menu background color
-  final Color textColor = const Color(0xFFFFFFFF); // Text color for most elements
-  final Color iconColor =
-  const Color(0xFF999999); // Icon color (slightly dimmed for visual hierarchy)
+      const Color(0xFF121413); // Dropdown menu background color
+  final Color textColor =
+      const Color(0xFFFFFFFF); // Text color for most elements
+  final Color iconColor = const Color(
+      0xFF999999); // Icon color (slightly dimmed for visual hierarchy)
 
   /// Helper method to get month name from month number
   /// @param month - Month number (1-12)
@@ -91,7 +98,8 @@ class _OptionChainWrapperState extends State<OptionChainWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark; // Check for dark theme
+    final isDark =
+        Theme.of(context).brightness == Brightness.dark; // Check for dark theme
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -128,6 +136,7 @@ class _OptionChainWrapperState extends State<OptionChainWrapper> {
                       ],
                     ),
                     SizedBox(height: 4.h),
+
                     /// Price Row - Shows current price and change
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -159,14 +168,16 @@ class _OptionChainWrapperState extends State<OptionChainWrapper> {
                 ),
 
                 const Spacer(),
+
                 /// Expiry Date Selector - Dropdown for selecting option expiry
                 Center(
                   child: Container(
                     height: 32.h,
                     padding:
-                    EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
                     decoration: BoxDecoration(
-                      color: containerBackgroundColor, // Custom background color
+                      color:
+                          containerBackgroundColor, // Custom background color
                       borderRadius: BorderRadius.circular(4.r),
                       border: Border.all(
                           color: containerBorderColor,
@@ -177,9 +188,9 @@ class _OptionChainWrapperState extends State<OptionChainWrapper> {
                       data: Theme.of(context).copyWith(
                         scrollbarTheme: ScrollbarThemeData(
                           thumbColor:
-                          WidgetStateProperty.all(const Color(0xFF2F2F2F)),
+                              WidgetStateProperty.all(const Color(0xFF2F2F2F)),
                           trackColor:
-                          WidgetStateProperty.all(const Color(0xFF2F2F2F)),
+                              WidgetStateProperty.all(const Color(0xFF2F2F2F)),
                           thickness: WidgetStateProperty.all(4.0),
                           radius: const Radius.circular(10.0),
                         ),
@@ -187,7 +198,8 @@ class _OptionChainWrapperState extends State<OptionChainWrapper> {
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                           value: expirySelectors,
-                          dropdownColor: dropdownBackgroundColor, // Custom dropdown background
+                          dropdownColor:
+                              dropdownBackgroundColor, // Custom dropdown background
                           style: TextStyle(
                             color: textColor, // Custom text color
                             fontSize: 11.sp,
@@ -200,7 +212,8 @@ class _OptionChainWrapperState extends State<OptionChainWrapper> {
                           ),
                           isDense: true, // Compact dropdown style
                           // Show more items with a larger height (50% of screen)
-                          menuMaxHeight: MediaQuery.of(context).size.height * 0.5,
+                          menuMaxHeight:
+                              MediaQuery.of(context).size.height * 0.5,
                           // Generate dropdown items from available expiry dates
                           items: displayMonths.map((String month) {
                             return DropdownMenuItem<String>(
@@ -208,14 +221,16 @@ class _OptionChainWrapperState extends State<OptionChainWrapper> {
                               child: Text(
                                 month,
                                 style: TextStyle(
-                                  color: textColor, // Custom text color for items
+                                  color:
+                                      textColor, // Custom text color for items
                                   fontSize: 11.sp,
                                 ),
                               ),
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
-                            print('DEBUG: Dropdown changed to: $newValue'); // Debug log
+                            print(
+                                'DEBUG: Dropdown changed to: $newValue'); // Debug log
                             setState(() {
                               expirySelectors = newValue!;
                             });
@@ -228,6 +243,7 @@ class _OptionChainWrapperState extends State<OptionChainWrapper> {
                 SizedBox(
                   width: 16.w,
                 ),
+
                 /// Search Icon - For searching within option chain
                 SvgPicture.asset(
                   "assets/svgs/search-svgrepo-com (1).svg",
@@ -268,6 +284,7 @@ class _OptionChainWrapperState extends State<OptionChainWrapper> {
               borderRadius: 30,
             ),
           ),
+
           /// Page View Container - Shows content for selected tab
           Expanded(
             child: PageView(
@@ -280,7 +297,7 @@ class _OptionChainWrapperState extends State<OptionChainWrapper> {
               children: [
                 // Tab content views for different option chain metrics
                 optionChainPrice(symbol: widget.symbol), // Price view
-                optionChainOI(symbol: widget.symbol),    // Open Interest view
+                optionChainOI(symbol: widget.symbol), // Open Interest view
                 optionChainGreek(symbol: widget.symbol), // Greeks view
               ],
             ),

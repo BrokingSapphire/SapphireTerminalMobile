@@ -83,9 +83,6 @@ class _ongoingIpoState extends State<ongoingIpo>
                           ],
                         ),
                       ),
-                      // Placeholder for other tabs
-                      Center(child: Text('Applied IPOs tab')),
-                      Center(child: Text('Closed IPOs tab')),
                     ],
                   ),
                 ),
