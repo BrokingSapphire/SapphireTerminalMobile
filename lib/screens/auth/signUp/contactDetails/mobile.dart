@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
+import 'package:sapphire/functions/auth/index.dart';
 import 'package:sapphire/screens/auth/signUp/contactDetails/mobileOTPVerification.dart'; // Next screen in registration flow
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
 
@@ -106,6 +107,9 @@ class _MobileOtpState extends State<MobileOtp> {
                     ),
                     Spacer(),
                     constWidgets.greenButton("Continue", onTap: () {
+                      AuthFunctions().mobileVerification(
+                          _phoneNumber.text.toString(), widget.email, context);
+
                       navi(
                           MobileOtpVerification(
                               isEmail: false,

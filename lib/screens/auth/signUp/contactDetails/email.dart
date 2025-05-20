@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // For input formatting
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sapphire/functions/auth/index.dart';
 import 'package:sapphire/main.dart'; // App-wide utilities
 import 'package:sapphire/screens/auth/signUp/contactDetails/mobileOTPVerification.dart'; // Next screen in registration flow
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
-import 'package:sapphire/functions/authFunctions.dart'; // Auth functions for verification
+// Auth functions for verification
 
 /// EmailScreen - First step in the user registration process
 /// Collects and validates the user's email address before proceeding to verification
@@ -70,7 +71,8 @@ class _EmailScreenState extends State<EmailScreen> {
         _email.clear();
       });
     } else {
-      // AuthFunctions().emailVerification(_email.text.toString());
+      AuthFunctions().emailVerification(_email.text.toString(), context);
+
       navi(
           MobileOtpVerification(
               isEmail: true,
@@ -78,6 +80,14 @@ class _EmailScreenState extends State<EmailScreen> {
               mobileOrEmail: _email.text.toString()),
           context);
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _email.addListener(() {
+      setState(() {});
+    });
   }
 
   @override

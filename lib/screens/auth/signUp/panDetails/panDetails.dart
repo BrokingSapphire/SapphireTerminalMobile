@@ -9,6 +9,7 @@ import 'package:flutter/services.dart'; // For TextInputFormatter
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // For secure token storage
 import 'package:http/http.dart' as http; // For API requests
+import 'package:sapphire/functions/auth/index.dart';
 import 'package:sapphire/main.dart'; // App-wide utilities
 import 'package:sapphire/screens/auth/signUp/aadharDetails/aadharDetails.dart'; // Next screen in registration flow
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
@@ -36,6 +37,7 @@ class _PanDetailsState extends State<PanDetails> {
   bool isButtonDisabled = true; // Controls button state based on PAN validity
   TextInputType _keyboardType = TextInputType.text; // Dynamic keyboard type
   String _hintText = 'ABCDE1234F'; // Hint for PAN format
+  Future<String?> token = FlutterSecureStorage().read(key: 'auth_token');
 
   @override
   void initState() {
@@ -159,41 +161,41 @@ class _PanDetailsState extends State<PanDetails> {
 
   /// First API call to verify the PAN number format and existence
   Future<bool> verifyPanStep(String pan, String? token) async {
-    // final verifyUrl = Uri.parse(
-    //     "https://api.backend.sapphirebroking.com:8443/api/v1/auth/signup/checkpoint");
+    final verifyUrl = Uri.parse(
+        "https://api.backend.sapphirebroking.com:8443/api/v1/auth/signup/checkpoint");
 
-    // try {
-    //   final response = await http.post(
-    //     verifyUrl,
-    //     headers: {
-    //       "Accept": "application/json",
-    //       "Content-Type": "application/json",
-    //       "Authorization": "Bearer $token",
-    //     },
-    //     body: jsonEncode({
-    //       "step": "pan",
-    //       "pan_number": pan,
-    //     }),
-    //   );
+    try {
+      final response = await http.post(
+        verifyUrl,
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+        body: jsonEncode({
+          "step": "pan",
+          "pan_number": pan,
+        }),
+      );
 
-    //   print("📨 Verify PAN Status: ${response.statusCode}");
-    //   print("📨 Verify PAN Response: ${response.body}");
+      print("📨 Verify PAN Status: ${response.statusCode}");
+      print("📨 Verify PAN Response: ${response.body}");
 
-    //   if (response.statusCode == 200) {
-    //     final data = jsonDecode(response.body);
-    //     final success = data['success'] == true;
-    //     final message = data['message'] ?? "PAN verified";
-    //     if (success) {
-    //       constWidgets.snackbar(message, Colors.green, context);
-    //     }
-    //     return success;
-    //   } else {
-    //     constWidgets.snackbar("PAN verification failed", Colors.red, context);
-    //   }
-    // } catch (e) {
-    //   print(e);
-    //   constWidgets.snackbar("Error verifying PAN: $e", Colors.red, context);
-    // }
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final success = data['success'] == true;
+        final message = data['message'] ?? "PAN verified";
+        if (success) {
+          constWidgets.snackbar(message, Colors.green, context);
+        }
+        return success;
+      } else {
+        constWidgets.snackbar("PAN verification failed", Colors.red, context);
+      }
+    } catch (e) {
+      print(e);
+      constWidgets.snackbar("Error verifying PAN: $e", Colors.red, context);
+    }
 
     // return false;
     return true;
@@ -201,38 +203,38 @@ class _PanDetailsState extends State<PanDetails> {
 
   /// Second API call to fetch detailed information associated with the PAN
   Future<void> fetchPanInfo(String? token) async {
-    // final infoUrl = Uri.parse(
-    //     "https://api.backend.sapphirebroking.com:8443/api/v1/auth/signup/checkpoint/pan");
+    final infoUrl =
+        Uri.parse("http://13.202.238.76:3000/api/v1/auth/signup/checkpoint");
 
-    // try {
-    //   final response = await http.get(
-    //     infoUrl,
-    //     headers: {
-    //       "Accept": "application/json",
-    //       "Authorization": "Bearer $token",
-    //     },
-    //   );
+    try {
+      final response = await http.get(
+        infoUrl,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      );
 
-    //   hideLoadingDialog();
-    //   print("📨 PAN Info Status: ${response.statusCode}");
-    //   print("📨 PAN Info Response: ${response.body}");
+      hideLoadingDialog();
+      print("📨 PAN Info Status: ${response.statusCode}");
+      print("📨 PAN Info Response: ${response.body}");
 
-    //   if (response.statusCode == 200) {
-    //     final data = jsonDecode(response.body);
-    //     final name = data['name'];
-    //     final dob = data['dob'];
-    //     if (name != null && dob != null) {
-    showNameConfirmationBottomSheet(context, "Nakul Takur", "01/01/01");
-    //     } else {
-    //       constWidgets.snackbar("PAN info is incomplete", Colors.red, context);
-    //     }
-    //   } else {
-    //     constWidgets.snackbar("Failed to fetch PAN info", Colors.red, context);
-    //   }
-    // } catch (e) {
-    //   hideLoadingDialog();
-    //   constWidgets.snackbar("Error fetching PAN info: $e", Colors.red, context);
-    // }
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final name = data['name'];
+        final dob = data['dob'];
+        if (name != null && dob != null) {
+          showNameConfirmationBottomSheet(context, name, dob);
+        } else {
+          constWidgets.snackbar("PAN info is incomplete", Colors.red, context);
+        }
+      } else {
+        constWidgets.snackbar("Failed to fetch PAN info", Colors.red, context);
+      }
+    } catch (e) {
+      hideLoadingDialog();
+      constWidgets.snackbar("Error fetching PAN info: $e", Colors.red, context);
+    }
   }
 
   /// Shows bottom sheet to confirm user's name and DOB retrieved from PAN database

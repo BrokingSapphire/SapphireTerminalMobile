@@ -7,6 +7,7 @@ import 'package:flutter/gestures.dart'; // For advanced gesture handling
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // For responsive UI scaling
 import 'package:pinput/pinput.dart'; // Specialized OTP input widget
+import 'package:sapphire/functions/auth/index.dart';
 import 'package:sapphire/screens/auth/signUp/panDetails/panDetails.dart'; // Next screen in mobile verification flow
 import 'package:sapphire/utils/constWidgets.dart'; // Reusable UI components
 import 'package:url_launcher/url_launcher.dart'; // For opening web URLs
@@ -75,34 +76,31 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
   /// Note: API verification is currently commented out in favor of direct navigation
   Future<void> verifyOtp() async {
     // Original API verification implementation (currently disabled)
-    // if (otpController.text.length != 6) {
-    //   constWidgets.snackbar('Enter a valid 6-digit OTP', Colors.red, context);
-    //   return;
-    // }
+    if (otpController.text.length != 6) {
+      constWidgets.snackbar('Enter a valid 6-digit OTP', Colors.red, context);
+      return;
+    }
 
-    // bool isOtpVerified = widget.isEmail
-    //     ? await AuthFunctions().emailOtpVerification(
-    //         widget.mobileOrEmail, otpController.text) // Email verification
-    //     : await AuthFunctions().mobileOtpVerification(
-    //         widget.mobileOrEmail,
-    //         otpController.text,
-    //         widget.email); // Mobile verification (includes email)
+    bool isOtpVerified = widget.isEmail
+        ? await AuthFunctions().emailOtpVerification(
+            widget.mobileOrEmail, otpController.text) // Email verification
+        : await AuthFunctions().mobileOtpVerification(
+            widget.mobileOrEmail,
+            otpController.text,
+            widget.email); // Mobile verification (includes email)
 
-    // if (isOtpVerified) {
-
-    // Temporary simplified implementation - bypasses API verification
-    // TODO: Restore original implementation with proper API verification when ready
-    widget.isEmail
-        ? navi(MobileOtp(email: widget.email),
-            context) // Email flow -> Mobile OTP screen
-        : navi(PanDetails(), context); // Mobile flow -> PAN details screen
-    //   constWidgets.snackbar("OTP verified successfully", Colors.green,
-    //       navigatorKey.currentContext!);
-    // } else {
-    //   setState(() => _isOtpIncorrect = true);
-    //   constWidgets.snackbar(
-    //       "Failed to verify OTP", Colors.red, navigatorKey.currentContext!);
-    // }
+    if (isOtpVerified) {
+      // Temporary simplified implementation - bypasses API verification
+      // TODO: Restore original implementation with proper API verification when ready
+      widget.isEmail
+          ? navi(MobileOtp(email: widget.email),
+              context) // Email flow -> Mobile OTP screen
+          : navi(PanDetails(), context); // Mobile flow -> PAN details screen
+    } else {
+      setState(() => _isOtpIncorrect = true);
+      // constWidgets.snackbar(
+      //     "Failed to verify OTP", Colors.red, navigatorKey.currentContext!);
+    }
   }
 
   /// Handles the resend OTP functionality
@@ -111,6 +109,8 @@ class _MobileOtpVerificationState extends State<MobileOtpVerification> {
   void resendOtp() {
     if (_timerSeconds == 0) {
       // TODO: Implement actual resend OTP API call
+      AuthFunctions()
+          .mobileVerification(widget.mobileOrEmail, widget.email, context);
       setState(() {
         _timerSeconds = 59; // Reset to 59 seconds
         _isOtpIncorrect = false; // Clear error state
