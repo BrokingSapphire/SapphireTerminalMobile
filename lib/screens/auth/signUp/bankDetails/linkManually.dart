@@ -104,6 +104,8 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
   Widget build(BuildContext context) {
     // Detect if the app is running in dark mode
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    // Check if keyboard is visible
+    final isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
 
     return Scaffold(
       // App bar with back button
@@ -128,207 +130,240 @@ class _ManualLinkingScreenState extends State<ManualLinkingScreen> {
           FocusScope.of(context).unfocus();
         },
         behavior: HitTestBehavior.opaque,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 8.h),
-              // Progress indicator showing current step (1 of 5)
-              constWidgets.topProgressBar(1, 5, context),
-              SizedBox(height: 24.h),
+        child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 8.h),
+                // Progress indicator showing current step (1 of 5)
+                constWidgets.topProgressBar(1, 5, context),
+                SizedBox(height: 24.h),
 
-              // Screen title
-              Text(
-                "Link your bank account",
-                style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black,
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
+                // Screen title
+                Text(
+                  "Link your bank account",
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              SizedBox(height: 16.h),
+                SizedBox(height: 16.h),
 
-              // Instruction text
-              Text(
-                "Make sure that you are linking a bank account that is in your name.",
-                style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black,
-                  fontSize: 14.sp,
-                ),
-              ),
-              SizedBox(height: 16.h),
-
-              // IFSC code input field with dynamic keyboard
-              TextField(
-                controller: ifscController,
-                focusNode: _ifscFocusNode,
-                keyboardType:
-                    _isNumericPhase ? TextInputType.number : TextInputType.text,
-                inputFormatters: [
-                  IfscInputFormatter(), // Enforce 4 letters + 7 digits
-                  UpperCaseTextFormatter(), // Force uppercase for letters
-                  LengthLimitingTextInputFormatter(
-                      11), // Limit to 11 characters
-                ],
-                style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black,
-                  fontSize: 14.sp,
-                ),
-                onChanged: _handleIfscChange,
-                decoration: InputDecoration(
-                  labelText: "IFSC Code",
-                  labelStyle: TextStyle(
-                    color: isDark ? Colors.white70 : Colors.black54,
+                // Instruction text
+                Text(
+                  "Make sure that you are linking a bank account that is in your name.",
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black,
                     fontSize: 14.sp,
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.r),
-                    borderSide: BorderSide(
-                      color: isDark ? Colors.grey[600]! : Colors.grey[400]!,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.r),
-                    borderSide: BorderSide(
-                      color: isDark ? Colors.grey[600]! : Colors.grey[400]!,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.r),
-                    borderSide: const BorderSide(
-                      color: Color(0xFF1DB954), // Green focused border
-                      width: 2,
-                    ),
-                  ),
                 ),
-              ),
-              SizedBox(height: 12.h),
+                SizedBox(height: 16.h),
 
-              // Account number input field with numeric input
-              TextField(
-                controller: accountNumberController,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly, // Restrict to digits
-                ],
-                style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black,
-                  fontSize: 14.sp,
-                ),
-                decoration: InputDecoration(
-                  labelText: "Account Number",
-                  labelStyle: TextStyle(
-                    color: isDark ? Colors.white70 : Colors.black54,
+                // IFSC code input field with dynamic keyboard
+                TextField(
+                  controller: ifscController,
+                  focusNode: _ifscFocusNode,
+                  keyboardType: _isNumericPhase
+                      ? TextInputType.number
+                      : TextInputType.text,
+                  inputFormatters: [
+                    IfscInputFormatter(), // Enforce 4 letters + 7 digits
+                    UpperCaseTextFormatter(), // Force uppercase for letters
+                    LengthLimitingTextInputFormatter(
+                        11), // Limit to 11 characters
+                  ],
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black,
                     fontSize: 14.sp,
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.r),
-                    borderSide: BorderSide(
-                      color: isDark ? Colors.grey[600]! : Colors.grey[400]!,
+                  onChanged: _handleIfscChange,
+                  decoration: InputDecoration(
+                    labelText: "IFSC Code",
+                    labelStyle: TextStyle(
+                      color: isDark ? Colors.white70 : Colors.black54,
+                      fontSize: 14.sp,
                     ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.r),
-                    borderSide: BorderSide(
-                      color: isDark ? Colors.grey[600]! : Colors.grey[400]!,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.r),
+                      borderSide: BorderSide(
+                        color: isDark ? Colors.grey[600]! : Colors.grey[400]!,
+                      ),
                     ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.r),
-                    borderSide: const BorderSide(
-                      color: Color(0xFF1DB954), // Green focused border
-                      width: 2,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.r),
+                      borderSide: BorderSide(
+                        color: isDark ? Colors.grey[600]! : Colors.grey[400]!,
+                      ),
                     ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 18.h),
-
-              // Account type selection section
-              Text(
-                "Account Type",
-                style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black,
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 12.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  // Savings account option
-                  _buildSelectableChip("Savings", isDark),
-                  SizedBox(width: 20.w),
-                  // Current account option
-                  _buildSelectableChip("Current", isDark),
-                ],
-              ),
-              SizedBox(height: 24.h),
-
-              // Divider with "OR" text for alternative linking method
-              Row(
-                children: [
-                  Expanded(child: Divider()),
-                  Text(
-                    "  OR  ",
-                    style: TextStyle(
-                      color: isDark ? Colors.white : Color(0xFFC9CACC),
-                    ),
-                  ),
-                  Expanded(child: Divider()),
-                ],
-              ),
-              SizedBox(height: 6.h),
-
-              // Alternative UPI linking option
-              Center(
-                child: TextButton(
-                  onPressed: () {
-                    navi(linkWithUpiScreen(),
-                        context); // Navigate to UPI linking screen
-                  },
-                  child: Text(
-                    "Link bank account using UPI",
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.r),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF1DB954), // Green focused border
+                        width: 2,
+                      ),
                     ),
                   ),
                 ),
-              ),
+                SizedBox(height: 12.h),
 
-              // Push content to top
-              const Spacer(),
-            ],
+                // Account number input field with numeric input
+                TextField(
+                  controller: accountNumberController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter
+                        .digitsOnly, // Restrict to digits
+                  ],
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black,
+                    fontSize: 14.sp,
+                  ),
+                  decoration: InputDecoration(
+                    labelText: "Account Number",
+                    labelStyle: TextStyle(
+                      color: isDark ? Colors.white70 : Colors.black54,
+                      fontSize: 14.sp,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.r),
+                      borderSide: BorderSide(
+                        color: isDark ? Colors.grey[600]! : Colors.grey[400]!,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.r),
+                      borderSide: BorderSide(
+                        color: isDark ? Colors.grey[600]! : Colors.grey[400]!,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.r),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF1DB954), // Green focused border
+                        width: 2,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 18.h),
+
+                // Account type selection section
+                Text(
+                  "Account Type",
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 12.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    // Savings account option
+                    _buildSelectableChip("Savings", isDark),
+                    SizedBox(width: 20.w),
+                    // Current account option
+                    _buildSelectableChip("Current", isDark),
+                  ],
+                ),
+                SizedBox(height: 24.h),
+
+                // Divider with "OR" text for alternative linking method
+                Row(
+                  children: [
+                    Expanded(child: Divider()),
+                    Text(
+                      "  OR  ",
+                      style: TextStyle(
+                        color: isDark ? Colors.white : Color(0xFFC9CACC),
+                      ),
+                    ),
+                    Expanded(child: Divider()),
+                  ],
+                ),
+                SizedBox(height: 6.h),
+
+                // Alternative UPI linking option
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      navi(linkWithUpiScreen(),
+                          context); // Navigate to UPI linking screen
+                    },
+                    child: Text(
+                      "Link bank account using UPI",
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+
+                // Extra space to avoid content clipping
+                SizedBox(height: 80.h),
+              ],
+            ),
           ),
         ),
       ),
 
-      // Bottom navigation area with continue button and help option
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15.w),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Continue button - enabled only when form is complete
-            constWidgets.greenButton(
-              "Continue",
-              onTap: _isButtonDisabled
-                  ? null
-                  : () {
-                      navi(confirmBankDetails(),
-                          context); // Navigate to confirmation screen
-                    },
-              isDisabled: _isButtonDisabled,
-            ),
-            SizedBox(height: 10.h),
+      // Bottom navigation area with continue button and conditional footer
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.only(
+            left: 15.w,
+            right: 15.w,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 8.h,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Continue button - enabled only when form is complete
+              Container(
+                height: 52.h,
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _isButtonDisabled
+                      ? null
+                      : () {
+                          navi(confirmBankDetails(),
+                              context); // Navigate to confirmation screen
+                        },
+                  child: Text(
+                    "Continue",
+                    style: TextStyle(
+                      fontSize: 17.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _isButtonDisabled
+                        ? const Color(0xff2f2f2f)
+                        : const Color(0xFF1DB954),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.r),
+                    ),
+                  ),
+                ),
+              ),
+              // Conditionally show disclaimer and help button
+              if (!isKeyboardVisible) ...[
+                SizedBox(height: 15.h),
+                // Footer section with legal information
 
-            // Help button for user assistance
-            Center(child: constWidgets.needHelpButton(context)),
-          ],
+                // Help button for user assistance
+                Center(child: constWidgets.needHelpButton(context)),
+              ],
+            ],
+          ),
         ),
       ),
     );

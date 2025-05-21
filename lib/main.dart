@@ -9,7 +9,10 @@ import 'package:sapphire/screens/auth/signUp/aadharDetails/aadharDetails.dart';
 import 'package:sapphire/screens/auth/signUp/congratulations.dart';
 import 'package:sapphire/screens/auth/signUp/finalStep/eSign.dart';
 import 'package:sapphire/screens/auth/signUp/initialPage.dart';
+import 'package:sapphire/screens/auth/signUp/panDetails/panDetails.dart';
 import 'package:sapphire/screens/auth/signUp/signature/signature.dart';
+import 'package:sapphire/screens/auth/signUp/tradingAccountDetails/familyDetails.dart';
+import 'package:sapphire/screens/home/discover/ipo/ipoWrapper.dart';
 import 'package:sapphire/screens/home/homeWarpper.dart';
 import 'package:sapphire/themeProvider.dart'; // Theme state management
 import 'package:provider/provider.dart'; // State management solution

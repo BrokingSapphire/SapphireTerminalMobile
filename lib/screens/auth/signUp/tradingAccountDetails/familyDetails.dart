@@ -182,26 +182,13 @@ class _FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
               // Mother's name input field
               constWidgets.textField("Mother's Name", mothersName,
                   isDark: isDark),
-              SizedBox(height: 20.h),
-              // Marital status selection section (currently commented out)
-              // TODO: Uncomment and implement marital status selection UI when required
-              // Text(
-              //   "Marital Status",
-              //   style: TextStyle(
-              //     fontSize: 18.sp,
-              //     fontWeight: FontWeight.w500,
-              //     color: isDark ? Colors.white : Colors.black,
-              //   ),
-              // ),
-              // SizedBox(height: 12.h),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     _buildSelectableChip("Single", isDark),
-              //     _buildSelectableChip("Married", isDark),
-              //     _buildSelectableChip("Divorced", isDark),
-              //   ],
-              // ),
+              Spacer(),
+              constWidgets.greenButton(
+                "Continue",
+                onTap: () => navi(PersonalDetails(), context),
+                isDisabled: _isGray,
+              ),
+              SizedBox(height: 10.h),
             ],
           ),
         ),
@@ -209,59 +196,8 @@ class _FamilyDetailsScreenState extends State<FamilyDetailsScreen> {
       // Bottom navigation area with continue button and help option
       bottomNavigationBar: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.w),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Continue button - conditionally styled based on form completion
-            constWidgets.greenButton(
-              "Continue",
-              onTap: () => navi(PersonalDetails(), context),
-              isDisabled: _isGray,
-            ),
-            SizedBox(height: 10.h),
-            // Help button for user assistance
-            Center(child: constWidgets.needHelpButton(context)),
-          ],
-        ),
+        child: constWidgets.needHelpButton(context),
       ),
     );
   }
-
-// Note: The _buildSelectableChip method implementation is missing from the provided code
-// This would typically be implemented to create the selectable marital status chips
-/*
-  /// Creates a selectable chip widget for marital status selection
-  /// Handles selection state and appearance changes
-  Widget _buildSelectableChip(String label, bool isDark) {
-    final isSelected = selectedMaritalStatus == label;
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedMaritalStatus = label;
-        });
-      },
-      child: Container(
-        width: width,
-        padding: EdgeInsets.symmetric(vertical: 12.h),
-        decoration: BoxDecoration(
-          color: isSelected 
-              ? Color(0xFF1DB954) 
-              : isDark ? Color(0xff212221) : Colors.grey[200],
-          borderRadius: BorderRadius.circular(8.r),
-        ),
-        child: Center(
-          child: Text(
-            label,
-            style: TextStyle(
-              color: isSelected 
-                  ? Colors.white 
-                  : isDark ? Colors.white : Colors.black,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-  */
 }

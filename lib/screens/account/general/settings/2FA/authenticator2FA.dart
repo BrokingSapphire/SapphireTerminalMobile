@@ -31,7 +31,7 @@ class _manual2faScreenState extends State<manual2faScreen> {
               "Two Factor Authentication",
               style: TextStyle(
                   fontWeight: FontWeight.w600,
-                  fontSize: 15.sp,
+                  fontSize: 17.sp,
                   color: isDark ? Colors.white : Colors.black),
             ),
           ),
